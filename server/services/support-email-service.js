@@ -21,9 +21,9 @@ ${feedbackData.name}
 ${feedbackData.email}
       `
 		});
-		return true;
+		return { feedbackSent: true };
 	} catch (error) {
-		return false;
+		return { feedbackSent: false };
 	}
 }
 

@@ -84,7 +84,7 @@ function* watchSearchFormSubmit() {
 }
 
 function* handleSaveResult(action) {
-	const savedResultId = yield call(
+	const { savedResultId } = yield call(
 		[APIService, APIService.callApi],
 		'post',
 		'searchResult',
@@ -109,7 +109,7 @@ function* watchSaveResultClicked() {
 }
 
 function* handleSubmitFeedback(action) {
-	const feedbackSent = yield call(
+	const { feedbackSent } = yield call(
 		[APIService, APIService.callApi],
 		'post',
 		'feedback',

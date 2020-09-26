@@ -15,7 +15,7 @@ const PAGE_SIZE = 25;
 
 async function saveSearchResult(result) {
 	const savedResult = await db.insert(result);
-	return savedResult._id;
+	return { savedResultId: savedResult._id };
 }
 
 async function getSavedResults(filter = '', page = 1, userId) {
