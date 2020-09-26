@@ -1,0 +1,95 @@
+import { connect } from 'react-redux';
+import {
+	DropdownItem,
+	DropdownMenu,
+	DropdownToggle,
+	Nav,
+	NavItem,
+	NavLink,
+	UncontrolledDropdown
+} from 'reactstrap';
+
+import UIActions from '../client/actions/ui-actions';
+import SearchForm from '../client/components/search-form';
+import MySavedResults from '../client/components/save-results/my-saved-results';
+import SEARCH_MODE, { SEARCH_MODE_MAP } from '../client/constants/search-mode';
+
+const mapStateToProps = state => {
+	return {
+		curSearchMode: state.formDataState.searchMode
+	};
+};
+
+const mapDispatchToProps = {
+	onSearchModeChange: UIActions.formFieldChanged
+};
+
+const SearchTabs = ({ curSearchMode, onSearchModeChange }) => {
+	const generateTab = searchMode => {
+		return (
+			<NavItem key={searchMode.id + 'Tab'}>
+				<NavLink
+					active={curSearchMode === searchMode.id}
+					onClick={() => onSearchModeChange('searchMode', searchMode.id)}
+					href='#'
+				>
+					<strong>{searchMode.name}</strong>
+				</NavLink>
+			</NavItem>
+		);
+	};
+
+	const generateOption = searchMode => {
+		return (
+			<DropdownItem
+				key={searchMode.id + 'Option'}
+				onClick={() => onSearchModeChange('searchMode', searchMode.id)}
+			>
+				{searchMode.name}
+			</DropdownItem>
+		);
+	};
+
+	const getTabsAndOptions = () => {
+		const tabList = [];
+		const optionList = [];
+
+		SEARCH_MODE.forEach(searchMode => {
+			tabList.push(generateTab(searchMode));
+			optionList.push(generateOption(searchMode));
+		});
+
+		return { tabList: tabList, optionList: optionList };
+	};
+
+	const getCurrentSearchModeInfo = () => SEARCH_MODE_MAP[curSearchMode].description;
+
+	const tabsAndOptions = getTabsAndOptions();
+	return (
+		<div className='container-fluid'>
+			<div className='d-none d-md-block'>
+				<Nav tabs>{tabsAndOptions.tabList}</Nav>
+			</div>
+			<div className='d-block d-md-none'>
+				<UncontrolledDropdown size='lg'>
+					<DropdownToggle caret block outline size='lg' color='primary'>
+						{SEARCH_MODE_MAP[curSearchMode].name}
+					</DropdownToggle>
+					<DropdownMenu className='w-100 text-center'>{tabsAndOptions.optionList}</DropdownMenu>
+				</UncontrolledDropdown>
+			</div>
+			{curSearchMode === 'SAVED_RESULTS' ? (
+				<MySavedResults />
+			) : (
+				<>
+					<p className='mt-3 ml-3'>
+						<strong>{`Results shown will be from ${getCurrentSearchModeInfo()}.`}</strong>
+					</p>
+					<SearchForm />
+				</>
+			)}
+		</div>
+	);
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchTabs);
