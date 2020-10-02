@@ -7,12 +7,14 @@ import UIActions from '../client/actions/ui-actions';
 import Alerts from '../client/components/alerts';
 import Header from '../client/components/header';
 import Footer from '../client/components/footer';
-const FbLogin = dynamic(() => import('../client/components/login/fb-login'), {
-	ssr: false
-});
 import RouteLink from '../client/components/nav/route-link';
 import { wrapper } from '../client/store/store';
 import '../styles/globals.css';
+
+const loginCompFile = process.env.NEXT_PUBLIC_TEST_DATA === 'true' ? 'fb-login-test' : 'fb-login';
+const FbLogin = dynamic(() => import(`../client/components/login/${loginCompFile}`), {
+	ssr: false
+});
 
 const App = ({ Component, pageProps }) => {
 	const dispatch = useDispatch();
