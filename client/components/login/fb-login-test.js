@@ -10,7 +10,11 @@ const testUser = {
 	email: 'mark.monday0504@gmail.com'
 };
 
-const mapStateToProps = ({ loginState: { fbUserId } }) => ({ userId: fbUserId });
+const mapStateToProps = ({
+	loginState: {
+		fbUserInfo: { userId }
+	}
+}) => ({ userId });
 
 const mapDispatchToProps = {
 	setInitComplete: APIActions.setFbInitComplete,
@@ -21,8 +25,12 @@ const mapDispatchToProps = {
 
 const FbLogin = ({ clearUserData, setInitComplete, setUserData, setUserId, userId }) => {
 	useEffect(() => {
-		setInitComplete();
-		if (userId) document.cookie = `userId=${userId}`;
+		if (window) {
+			setTimeout(() => {
+				setInitComplete();
+				if (userId) document.cookie = `userId=${userId}`;
+			}, 200);
+		}
 	}, []);
 
 	const loginClicked = () => {

@@ -42,9 +42,9 @@ const getFieldErrorMessage = (fieldName, value) => {
 	return '';
 };
 
-const mapStateToProps = ({ loginState }) => ({
-	defaultName: loginState.fbName,
-	defaultEmail: loginState.fbEmail
+const mapStateToProps = ({ loginState: { fbUserInfo } }) => ({
+	defaultName: fbUserInfo.name,
+	defaultEmail: fbUserInfo.email
 });
 
 const mapDispatchToProps = {

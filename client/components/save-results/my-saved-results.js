@@ -30,7 +30,7 @@ const initCache = () => {
 
 const mapStateToProps = ({ loginState }) => ({
 	fbInitComplete: loginState.fbInitComplete,
-	userId: loginState.fbUserId
+	userId: loginState.fbUserInfo.userId
 });
 
 const MySavedResults = ({ fbInitComplete, userId }) => {
@@ -84,8 +84,8 @@ const MySavedResults = ({ fbInitComplete, userId }) => {
 
 	useEffect(() => {
 		initCache();
-		getSavedResults();
-	}, []);
+		if (userId && fbInitComplete) getSavedResults();
+	}, [userId]);
 
 	return (
 		<>

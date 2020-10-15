@@ -34,7 +34,7 @@ const loadFbSdkAsync = () => {
 
 const mapStateToProps = ({ loginState }) => ({
 	initComplete: loginState.fbInitComplete,
-	userId: loginState.fbUserId
+	userId: loginState.fbUserInfo.fbUserId
 });
 
 const mapDispatchToProps = {
