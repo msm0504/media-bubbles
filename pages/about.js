@@ -5,7 +5,7 @@ const About = () => (
 		<BackButton className='mb-3' />
 		<p>
 			I’m a center-left Democrat. Let’s just get that out of the way. Like most people who care
-			about politics, I have my own views and biases. I starting caring because I opposed the Iraq
+			about politics, I have my own views and biases. I started caring because I opposed the Iraq
 			War. I will always view it as a mistake. I enjoyed The Daily Show and The Colbert Report, and
 			after years of watching them point out the absurdity of Fox News, will never be able to watch
 			it. I still enjoy shows that are a mix of comedy and political analysis, e.g. The Late Show,
