@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import IconUtil from '../util/icon-util';
+import IconUtil from '../../util/icon-util';
 
 const ColumnHeadingIcon = ({ className, column, isColumnSlant }) =>
 	isColumnSlant ? (

@@ -10,10 +10,10 @@ import {
 	UncontrolledTooltip
 } from 'reactstrap';
 
-import MAX_SOURCE_SELECTIONS from '../constants/max-source-selections';
-import { SOURCE_SLANT } from '../constants/source-slant';
-import UIActions from '../actions/ui-actions';
-import APIActions from '../actions/api-actions';
+import MAX_SOURCE_SELECTIONS from '../../constants/max-source-selections';
+import { SOURCE_SLANT } from '../../constants/source-slant';
+import UIActions from '../../actions/ui-actions';
+import APIActions from '../../actions/api-actions';
 
 const mapStateToProps = state => {
 	return {

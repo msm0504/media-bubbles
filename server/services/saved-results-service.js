@@ -1,13 +1,13 @@
 const datastore = require('nedb-promise');
 const path = require('path');
-const { ROOT, useTestData } = require('../constants');
+const { useTestData } = require('../constants');
 
 const dbFilePath = useTestData
 	? '/test-data/db/db_search_results.db'
 	: '/data/db_search_results.db';
 
 const db = datastore({
-	filename: path.join(ROOT, 'server', dbFilePath),
+	filename: path.join(process.cwd(), 'server', dbFilePath),
 	autoload: true,
 	timestampData: true
 });

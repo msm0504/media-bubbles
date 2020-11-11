@@ -12,13 +12,13 @@ import {
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
-import BackButton from './nav/back-button';
+import BackButton from '../nav/back-button';
 import ColumnHeadingIcon from './search-result-column-icon';
-import SaveResults from './save-results/save-results';
-import { SOURCE_SLANT } from '../constants/source-slant';
-import UIActions from '../actions/ui-actions';
+import SaveResults from '../save-results/save-results';
+import { SOURCE_SLANT } from '../../constants/source-slant';
+import UIActions from '../../actions/ui-actions';
 
-const ShareButtons = dynamic(() => import('./save-results/share-buttons'), { ssr: false });
+const ShareButtons = dynamic(() => import('../save-results/share-buttons'), { ssr: false });
 
 const mapStateToProps = state => {
 	return {
