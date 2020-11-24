@@ -6,7 +6,7 @@ const formatRoute = routePath =>
 	routePath.length && routePath.charAt(0) === '/' ? routePath : `/${routePath}`;
 
 const RouteLink = ({ buttonText, routePath }) => {
-	if (!buttonText.length) return null;
+	if (!buttonText) return null;
 
 	const router = useRouter();
 	const linkClicked = () => {
@@ -24,7 +24,7 @@ const RouteLink = ({ buttonText, routePath }) => {
 };
 
 RouteLink.propTypes = {
-	buttonText: PropTypes.string.isRequired,
+	buttonText: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
 	routePath: PropTypes.string.isRequired
 };
 
