@@ -1,8 +1,5 @@
-import BackButton from '../client/components/nav/back-button';
-
 const Terms = () => (
 	<>
-		<BackButton className='mb-3' />
 		<h1>Terms and Conditions</h1>
 		<p>Last updated: July 21, 2020</p>
 		<p>Please read these terms and conditions carefully before using Our Service.</p>

@@ -5,7 +5,7 @@ import { Button } from 'reactstrap';
 const formatRoute = routePath =>
 	routePath.length && routePath.charAt(0) === '/' ? routePath : `/${routePath}`;
 
-const RouteLink = ({ buttonText, routePath }) => {
+const RouteLink = ({ buttonText, className = '', routePath }) => {
 	if (!buttonText) return null;
 
 	const router = useRouter();
@@ -17,7 +17,7 @@ const RouteLink = ({ buttonText, routePath }) => {
 	};
 
 	return (
-		<Button color='link' className='p-0 mr-4' onClick={linkClicked}>
+		<Button color='link' className={`p-0 mr-4 ${className}`} onClick={linkClicked}>
 			{buttonText}
 		</Button>
 	);
@@ -25,6 +25,7 @@ const RouteLink = ({ buttonText, routePath }) => {
 
 RouteLink.propTypes = {
 	buttonText: PropTypes.oneOfType([PropTypes.string, PropTypes.element]).isRequired,
+	className: PropTypes.string,
 	routePath: PropTypes.string.isRequired
 };
 

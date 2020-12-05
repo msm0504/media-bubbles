@@ -1,8 +1,6 @@
-import BackButton from '../client/components/nav/back-button';
-
 const About = () => (
 	<>
-		<BackButton className='mb-3' />
+		<h1 className='text-info'>About</h1>
 		<p>
 			I’m a center-left Democrat. Let’s just get that out of the way. Like most people who care
 			about politics, I have my own views and biases. I started caring because I opposed the Iraq

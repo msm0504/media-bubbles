@@ -114,7 +114,16 @@ class UIActions {
 		return {
 			type: UIActionTypes.SUBMIT_FEEDBACK,
 			payload: {
-				feedbackData: feedbackData
+				feedbackData
+			}
+		};
+	}
+
+	submitBlogPost(blogPostData) {
+		return {
+			type: UIActionTypes.SUBMIT_BLOG_POST,
+			payload: {
+				blogPostData
 			}
 		};
 	}

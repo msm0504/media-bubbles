@@ -12,7 +12,6 @@ import {
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
-import BackButton from '../nav/back-button';
 import ColumnHeadingIcon from './search-result-column-icon';
 import SaveResults from '../save-results/save-results';
 import { SOURCE_SLANT } from '../../constants/source-slant';
@@ -106,8 +105,8 @@ const SearchResults = ({ onPanelClose, onPanelOpen, searchResultState, sourceSta
 		if (articleListState) {
 			const articleList = articleListState.map(article => {
 				return (
-					<Card key={article.url} body outline color='info'>
-						<CardBody className='p-0'>
+					<>
+						<CardBody key={article.url} className='p-0'>
 							<CardTitle>
 								<a
 									href={article.url}
@@ -118,7 +117,8 @@ const SearchResults = ({ onPanelClose, onPanelOpen, searchResultState, sourceSta
 							</CardTitle>
 							<CardText dangerouslySetInnerHTML={{ __html: article.description }} />
 						</CardBody>
-					</Card>
+						<hr className='bg-info' />
+					</>
 				);
 			});
 			return articleList.length ? <CardBody>{articleList}</CardBody> : NOT_FOUND_MESSAGE;
@@ -158,7 +158,6 @@ const SearchResults = ({ onPanelClose, onPanelOpen, searchResultState, sourceSta
 	const collapseAndFullViews = generateCollapseAndFullViews();
 	return (
 		<div className='container-fluid col-sm-12'>
-			<BackButton />
 			{!resultId && <SaveResults />}
 			{displayShareButtons()}
 			<div className='d-none d-xl-block'>

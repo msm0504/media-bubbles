@@ -27,6 +27,7 @@ const AsyncList = ({
 	apiGetPath,
 	apiListName,
 	fbInitComplete,
+	keyField,
 	ListItemComponent,
 	loginRequired,
 	loginRequiredMessage,
@@ -92,14 +93,14 @@ const AsyncList = ({
 			<Row className='mt-4'>
 				<Col xs={12} md={{ size: 8, offset: 2 }} lg={{ size: 6, offset: 3 }}>
 					<FormGroup className='row'>
-						<Label xs={3} sm={2} for='my-results-filter'>
+						<Label xs={3} sm={2} for={`${apiListName}-filter`}>
 							Filter:
 						</Label>
 						<Col xs={9} sm={10}>
 							<Input
 								type='text'
 								name='filter'
-								id='my-results-filter'
+								id={`${apiListName}-filter`}
 								onChange={event => debouncedSearch(event.target.value)}
 							/>
 						</Col>
@@ -108,7 +109,7 @@ const AsyncList = ({
 			</Row>
 			<ListGroup>
 				{items.map((item, index) => (
-					<ListGroupItem key={item._id} color={index % 2 === 0 ? '' : 'secondary'}>
+					<ListGroupItem key={item[keyField]} color={index % 2 === 0 ? '' : 'secondary'}>
 						<ListItemComponent {...item} />
 					</ListGroupItem>
 				))}
@@ -131,6 +132,7 @@ const AsyncList = ({
 AsyncList.propTypes = {
 	apiGetPath: PropTypes.string.isRequired,
 	apiListName: PropTypes.string.isRequired,
+	keyField: PropTypes.string.isRequired,
 	ListItemComponent: PropTypes.elementType.isRequired,
 	loginRequired: PropTypes.bool,
 	loginRequiredMessage: PropTypes.string

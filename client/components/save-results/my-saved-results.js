@@ -31,6 +31,7 @@ const MySavedResults = () => (
 	<AsyncList
 		apiGetPath='searchResult'
 		apiListName='savedResults'
+		keyField='_id'
 		ListItemComponent={SavedResultItem}
 		loginRequired
 		loginRequiredMessage='Log in to view your saved search results'
