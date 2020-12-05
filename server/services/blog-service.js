@@ -16,7 +16,7 @@ title: ${title}
 excerpt: ${excerpt}
 slug: ${slug}
 author: ${author}
-date: ${date}
+date: '${date}'
 ---
 
 ${content}`;
