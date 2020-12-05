@@ -1,11 +1,6 @@
-const fs = require('fs');
+const fsPromises = require('fs').promises;
 const path = require('path');
-const { promisify } = require('util');
 const matter = require('gray-matter');
-
-const writeFilePromise = promisify(fs.writeFile);
-const readDirPromise = promisify(fs.readdir);
-const readFilePromise = promisify(fs.readFile);
 
 const blogPostsDir = path.join(process.cwd(), 'server/blog-posts');
 const PAGE_SIZE = 10;
@@ -18,31 +13,38 @@ slug: ${slug}
 author: ${author}
 date: '${date}'
 ---
-
 ${content}`;
+
+const SLUG_WITH_TS_PATTERN = /^\d{4}_\d{2}_\d{2}_/;
 
 async function addPost({ author, slug, title, content }) {
 	const date = new Date().toISOString();
-	const slugWithTs = `${date.split('T')[0].replace(/-/g, '_')}_${slug.toLowerCase()}`;
-	const excerpt = content.substring(0, content.lastIndexOf(' ', 300));
+	const slugWithTs = SLUG_WITH_TS_PATTERN.test(slug)
+		? slug
+		: `${date.split('T')[0].replace(/-/g, '_')}_${slug.toLowerCase()}`;
+	const excerpt = `${content.substring(0, content.lastIndexOf('.', 350))}...`;
 	const fileName = path.join(blogPostsDir, `${slugWithTs}.md`);
-	await writeFilePromise(fileName, formatPost(title, excerpt, slugWithTs, author, date, content));
+	await fsPromises.writeFile(
+		fileName,
+		formatPost(title, excerpt, slugWithTs, author, date, content)
+	);
 	return { slug: slugWithTs };
 }
 
 async function getAllPostSlugs() {
-	const unorderedSlugs = await readDirPromise(blogPostsDir);
+	const unorderedSlugs = await fsPromises.readdir(blogPostsDir);
 	return unorderedSlugs.sort().reverse();
 }
 
 async function getPost(slug) {
-	const fileContents = await readFilePromise(path.join(blogPostsDir, slug));
+	const fileName = slug.endsWith('.md') ? slug : `${slug}.md`;
+	const fileContents = await fsPromises.readFile(path.join(blogPostsDir, fileName));
 	const { data, content } = matter(fileContents);
 	return { ...data, content };
 }
 
 async function getPostMetaData(slug) {
-	const fileContents = await readFilePromise(path.join(blogPostsDir, slug));
+	const fileContents = await fsPromises.readFile(path.join(blogPostsDir, slug));
 	return matter(fileContents).data;
 }
 

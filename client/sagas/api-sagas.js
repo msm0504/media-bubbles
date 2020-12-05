@@ -142,10 +142,10 @@ function* handleSubmitBlogPost(action) {
 
 	if (!slug) {
 		yield put(
-			UIActions.showAlert(ALERT_LEVEL.danger, 'Adding blog post failed. Please try again later.')
+			UIActions.showAlert(ALERT_LEVEL.danger, 'Saving blog post failed. Please try again later.')
 		);
 	} else {
-		yield put(UIActions.showAlert(ALERT_LEVEL.success, `Blog post ${slug} added successfully.`));
+		yield put(UIActions.showAlert(ALERT_LEVEL.success, `Blog post ${slug} saved successfully.`));
 	}
 }
 

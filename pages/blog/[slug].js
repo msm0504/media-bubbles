@@ -14,7 +14,10 @@ const BlogPost = ({ post }) => {
 			<small className='text-muted'>{`Last updated at ${new Date(post.date).toLocaleString()} by ${
 				post.author
 			}`}</small>
-			<div dangerouslySetInnerHTML={{ __html: markdownToHtml(post.content) }}></div>
+			<div
+				className='mt-2'
+				dangerouslySetInnerHTML={{ __html: markdownToHtml(post.content) }}
+			></div>
 		</>
 	);
 };
@@ -22,7 +25,7 @@ const BlogPost = ({ post }) => {
 export default BlogPost;
 
 export async function getStaticProps({ params: { slug } }) {
-	const post = await getPost(`${slug}.md`);
+	const post = await getPost(slug);
 	const processedContent = markdownToHtml(post.content);
 	return {
 		props: {

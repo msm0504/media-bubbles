@@ -5,30 +5,43 @@ import AsyncList from '../../client/components/async-list';
 import RouteLink from '../../client/components/nav/route-link';
 import markdownToHtml from '../../client/util/markdown-to-html';
 
-const PostSummary = ({ title, excerpt, author, slug, date }) => (
-	<CardBody>
-		<CardTitle>
-			<RouteLink buttonText={title} routePath={`/blog/${slug}`} />
-		</CardTitle>
-		<div className='d-flex'>
-			<CardText dangerouslySetInnerHTML={{ __html: markdownToHtml(excerpt) }} />
-		</div>
-		<CardText>
-			<small className='text-muted'>{`Last updated at ${new Date(
-				date
-			).toLocaleString()} by ${author}`}</small>
-		</CardText>
-	</CardBody>
+const AddPost = (
+	<span>
+		Add Post <i className='fa fa-plus' aria-hidden='true' aria-label='Add Post'></i>
+	</span>
 );
+
+const EditPost = (
+	<i className='fa fa-2x fa-pencil-square-o' aria-hidden='true' aria-label='Edit post'></i>
+);
+
+const PostSummary = ({ title, excerpt, author, slug, date }) => {
+	const userId = useSelector(({ loginState }) => loginState.fbUserInfo.userId);
+
+	return (
+		<CardBody>
+			<CardTitle>
+				<RouteLink buttonText={title} routePath={`/blog/${slug}`} />
+			</CardTitle>
+			{userId === process.env.NEXT_PUBLIC_ADMIN_ID && (
+				<RouteLink
+					buttonText={EditPost}
+					className='float-right ml-2'
+					routePath={`/blog/edit-post/${slug}`}
+				/>
+			)}
+			<CardText dangerouslySetInnerHTML={{ __html: markdownToHtml(excerpt) }} />
+			<CardText>
+				<small className='text-muted'>{`Last updated at ${new Date(
+					date
+				).toLocaleString()} by ${author}`}</small>
+			</CardText>
+		</CardBody>
+	);
+};
 
 const BlogPosts = () => {
 	const userId = useSelector(({ loginState }) => loginState.fbUserInfo.userId);
-
-	const AddPost = (
-		<span>
-			Add Post <i className='fa fa-plus' aria-hidden='true' aria-label='Add Post'></i>
-		</span>
-	);
 
 	return (
 		<>

@@ -26,7 +26,7 @@ const SaveResults = ({ formState, newSearchState, saveResult, sourceState }) => 
 			: ''
 	}`;
 
-	const savedClicked = () => {
+	const saveClicked = () => {
 		saveResult(
 			name,
 			newSearchState.articleMap,
@@ -43,7 +43,7 @@ const SaveResults = ({ formState, newSearchState, saveResult, sourceState }) => 
 			outline
 			color='primary'
 			size='lg'
-			onClick={() => savedClicked()}
+			onClick={() => saveClicked()}
 		>
 			<strong>Save Results</strong>
 		</Button>
