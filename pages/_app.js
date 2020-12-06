@@ -36,7 +36,6 @@ const App = ({ Component, pageProps }) => {
 					<div className='d-flex justify-content-end mb-2'>
 						<RouteLink buttonText='Home' routePath='/' />
 						<RouteLink buttonText='About' routePath='/about' />
-						<RouteLink buttonText='Blog' routePath='/blog' />
 						<RouteLink buttonText='Contact Us' routePath='/contact' />
 					</div>
 					<Alerts />
