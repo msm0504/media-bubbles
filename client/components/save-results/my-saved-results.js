@@ -3,7 +3,7 @@ import { Button } from 'reactstrap';
 
 import AsyncList from '../async-list';
 
-const SavedResultItem = ({ _id, name, createdAt }) => {
+const SavedResultItem = ({ _id, name, createdAt, fnDeleteItem }) => {
 	const router = useRouter();
 	return (
 		<>
@@ -13,6 +13,18 @@ const SavedResultItem = ({ _id, name, createdAt }) => {
 					<small>{`Saved at: ${new Date(createdAt).toLocaleString()}`}</small>
 				</p>
 			</div>
+			<Button
+				className='float-right d-block d-sm-inline-block'
+				color='link'
+				onClick={() => fnDeleteItem(_id, name)}
+			>
+				<i
+					className='fa fa-lg fa-trash-o'
+					id={`delete-${_id}-icon`}
+					aria-hidden='true'
+					aria-label={`Delete saved result ${name}`}
+				></i>
+			</Button>
 			<Button
 				className='float-right d-block d-sm-inline-block'
 				outline
@@ -29,8 +41,8 @@ const SavedResultItem = ({ _id, name, createdAt }) => {
 
 const MySavedResults = () => (
 	<AsyncList
-		apiGetPath='searchResult'
 		apiListName='savedResults'
+		apiPath='searchResult'
 		keyField='_id'
 		ListItemComponent={SavedResultItem}
 		loginRequired

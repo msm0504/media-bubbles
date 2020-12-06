@@ -61,8 +61,15 @@ async function getPostSummaries(filter = '', page = 1) {
 	};
 }
 
+async function deletePost(slug) {
+	const fileName = slug.endsWith('.md') ? slug : `${slug}.md`;
+	const error = await fsPromises.unlink(path.join(blogPostsDir, fileName));
+	return { itemDeleted: !error };
+}
+
 module.exports = {
 	addPost,
+	deletePost,
 	getAllPostSlugs,
 	getPost,
 	getPostSummaries

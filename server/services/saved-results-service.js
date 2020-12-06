@@ -52,7 +52,13 @@ async function getSavedResult(id) {
 	return db.findOne({ _id: id });
 }
 
+async function deleteSavedResult(id, userId) {
+	const numRemoved = await db.remove({ _id: id, userId: userId });
+	return { itemDeleted: numRemoved === 1 };
+}
+
 module.exports = {
+	deleteSavedResult,
 	getAllSavedResults,
 	getSavedResult,
 	getSavedResults,
