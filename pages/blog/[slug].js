@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import Spinner from '../../client/components/spinner';
+import BlogPostTemplate from '../../client/components/blog/blog-post-template';
 import markdownToHtml from '../../client/util/markdown-to-html';
 import { getAllPostSlugs, getPost } from '../../server/services/blog-service';
 
@@ -9,16 +10,7 @@ const BlogPost = ({ post }) => {
 	return router.isFallback ? (
 		<Spinner />
 	) : (
-		<>
-			<h1 className='text-info'>{post.title}</h1>
-			<small className='text-muted'>{`Last updated at ${new Date(post.date).toLocaleString()} by ${
-				post.author
-			}`}</small>
-			<div
-				className='mt-2'
-				dangerouslySetInnerHTML={{ __html: markdownToHtml(post.content) }}
-			></div>
-		</>
+		<BlogPostTemplate content={post.content} date={post.date} title={post.title} />
 	);
 };
 

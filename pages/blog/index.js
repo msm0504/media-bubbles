@@ -15,7 +15,7 @@ const EditPost = (
 	<i className='fa fa-lg fa-pencil-square-o' aria-hidden='true' aria-label='Edit post'></i>
 );
 
-const PostSummary = ({ title, excerpt, author, slug, date, fnDeleteItem }) => {
+const PostSummary = ({ title, excerpt, slug, date, fnDeleteItem }) => {
 	const userId = useSelector(({ loginState }) => loginState.fbUserInfo.userId);
 
 	return (
@@ -46,9 +46,7 @@ const PostSummary = ({ title, excerpt, author, slug, date, fnDeleteItem }) => {
 			)}
 			<CardText dangerouslySetInnerHTML={{ __html: markdownToHtml(excerpt) }} />
 			<CardText>
-				<small className='text-muted'>{`Last updated at ${new Date(
-					date
-				).toLocaleString()} by ${author}`}</small>
+				<small className='text-muted'>{`Last updated at ${new Date(date).toLocaleString()}`}</small>
 			</CardText>
 		</CardBody>
 	);

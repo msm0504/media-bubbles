@@ -1,8 +1,10 @@
 import { connect } from 'react-redux';
 import { CardBody } from 'reactstrap';
 
+import BlogPostTemplate from './blog-post-template';
 import SaveableForm, { getRequiredMessage } from '../saveable-form';
 import UIActions from '../../actions/ui-actions';
+import markdownToHtml from '../../util/markdown-to-html';
 
 const blankBlogPostForm = {
 	author: '',
@@ -45,6 +47,12 @@ const mapDispatchToProps = {
 	submitForm: UIActions.submitBlogPost
 };
 
+const BlogPostPreview = ({ content, title }) => {
+	const processedContent = markdownToHtml(content);
+	const currentDate = new Date().toISOString();
+	return <BlogPostTemplate content={processedContent} date={currentDate} title={title} />;
+};
+
 const AddEditBlogPost = ({ author, authorId, currentVersion, submitForm }) => {
 	if (authorId !== process.env.NEXT_PUBLIC_ADMIN_ID)
 		return <CardBody className='text-info'>You shall not post!</CardBody>;
@@ -83,8 +91,9 @@ const AddEditBlogPost = ({ author, authorId, currentVersion, submitForm }) => {
 			<SaveableForm
 				fieldList={fieldList}
 				fieldValidateFn={getFieldErrorMessage}
-				formName='feedback'
+				formName='blog-post'
 				initialData={initialData}
+				PreviewComponent={BlogPostPreview}
 				submitFn={submitForm}
 				submitLabel='Save Post'
 			/>
