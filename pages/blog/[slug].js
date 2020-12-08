@@ -25,7 +25,8 @@ export async function getStaticProps({ params: { slug } }) {
 				...post,
 				content: processedContent
 			}
-		}
+		},
+		revalidate: 60
 	};
 }
 

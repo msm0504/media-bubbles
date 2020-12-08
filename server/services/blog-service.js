@@ -5,15 +5,18 @@ const matter = require('gray-matter');
 const blogPostsDir = path.join(process.cwd(), 'server/blog-posts');
 const PAGE_SIZE = 10;
 
-const formatPost = (title, excerpt, slug, author, date, content) =>
+const formatPost = (title, slug, author, date, content) =>
 	`---
 title: ${title}
-excerpt: ${excerpt}
+excerpt: ${formatExcerpt(content)}...
 slug: ${slug}
 author: ${author}
 date: '${date}'
 ---
 ${content}`;
+
+const formatExcerpt = content =>
+	content.replace(/['"*]/g, '').replace(/\s+/g, ' ').substring(0, content.lastIndexOf('.', 350));
 
 const SLUG_WITH_TS_PATTERN = /^\d{4}_\d{2}_\d{2}_/;
 
@@ -22,12 +25,10 @@ async function addPost({ author, slug, title, content }) {
 	const slugWithTs = SLUG_WITH_TS_PATTERN.test(slug)
 		? slug
 		: `${date.split('T')[0].replace(/-/g, '_')}_${slug.toLowerCase()}`;
-	const excerpt = `${content.substring(0, content.lastIndexOf('.', 350))}...`;
 	const fileName = path.join(blogPostsDir, `${slugWithTs}.md`);
-	await fsPromises.writeFile(
-		fileName,
-		formatPost(title, excerpt, slugWithTs, author, date, content)
-	);
+	await fsPromises.writeFile(fileName, formatPost(title, slugWithTs, author, date, content), {
+		mode: '666'
+	});
 	return { slug: slugWithTs };
 }
 
