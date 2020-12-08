@@ -16,7 +16,7 @@ date: '${date}'
 ${content}`;
 
 const formatExcerpt = content =>
-	content.replace(/['"*]/g, '').replace(/\s+/g, ' ').substring(0, content.lastIndexOf('.', 350));
+	content.replace(/["*]/g, '').replace(/\s+/g, ' ').substring(0, content.lastIndexOf('.', 350));
 
 const SLUG_WITH_TS_PATTERN = /^\d{4}_\d{2}_\d{2}_/;
 
