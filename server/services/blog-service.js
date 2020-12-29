@@ -8,15 +8,17 @@ const PAGE_SIZE = 10;
 const formatPost = (title, slug, author, date, content) =>
 	`---
 title: ${title}
-excerpt: ${formatExcerpt(content)}...
 slug: ${slug}
 author: ${author}
 date: '${date}'
 ---
 ${content}`;
 
-const formatExcerpt = content =>
-	content.replace(/["*]/g, '').replace(/\s+/g, ' ').substring(0, content.lastIndexOf('.', 350));
+const formatExcerpt = content => {
+	const MAX_LENGTH = 350;
+	const lastSentenceEnd = content.substring(0, MAX_LENGTH).search(/[.?!][^.?!]*$/);
+	return `${content.substring(0, lastSentenceEnd)}...`;
+};
 
 const SLUG_WITH_TS_PATTERN = /^\d{4}_\d{2}_\d{2}_/;
 
@@ -45,8 +47,10 @@ async function getPost(slug) {
 }
 
 async function getPostMetaData(slug) {
-	const fileContents = await fsPromises.readFile(path.join(blogPostsDir, slug));
-	return matter(fileContents).data;
+	const fileName = slug.endsWith('.md') ? slug : `${slug}.md`;
+	const fileContents = await fsPromises.readFile(path.join(blogPostsDir, fileName));
+	const { data, content } = matter(fileContents);
+	return { ...data, excerpt: formatExcerpt(content) };
 }
 
 async function getPostSummaries(filter = '', page = 1) {
