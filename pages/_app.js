@@ -30,7 +30,7 @@ const App = ({ Component, pageProps }) => {
 					name='description'
 					content='Escape your information bubble and view headlines from sources across the political spectrum.'
 				></meta>
-				<meta property='og:url' content={process.env.NEXT_PUBLIC_API_URL}></meta>
+				<meta property='og:url' content={process.env.NEXT_PUBLIC_API_URL} key='ogUrl'></meta>
 				<meta property='fb:app_id' content='2356113588028211'></meta>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>

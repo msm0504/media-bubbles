@@ -16,6 +16,7 @@ const BlogPost = ({ post }) => {
 				<meta
 					property='og:url'
 					content={`${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`}
+					key='ogUrl'
 				></meta>
 				<meta property='og:title' content={post.title}></meta>
 				<meta property='og:description' content={post.excerpt}></meta>
