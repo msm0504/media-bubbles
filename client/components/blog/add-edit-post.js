@@ -4,7 +4,6 @@ import { CardBody } from 'reactstrap';
 import BlogPostTemplate from './blog-post-template';
 import SaveableForm, { getRequiredMessage } from '../saveable-form';
 import UIActions from '../../actions/ui-actions';
-import markdownToHtml from '../../util/markdown-to-html';
 
 const blankBlogPostForm = {
 	author: '',
@@ -48,9 +47,8 @@ const mapDispatchToProps = {
 };
 
 const BlogPostPreview = ({ content, title }) => {
-	const processedContent = markdownToHtml(content);
 	const currentDate = new Date().toISOString();
-	return <BlogPostTemplate content={processedContent} date={currentDate} title={title} />;
+	return <BlogPostTemplate content={content} date={currentDate} title={title} />;
 };
 
 const AddEditBlogPost = ({ author, authorId, currentVersion, submitForm }) => {

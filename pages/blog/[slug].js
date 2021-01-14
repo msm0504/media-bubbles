@@ -1,7 +1,8 @@
+import Head from 'next/head';
 import { useRouter } from 'next/router';
+
 import Spinner from '../../client/components/spinner';
 import BlogPostTemplate from '../../client/components/blog/blog-post-template';
-import markdownToHtml from '../../client/util/markdown-to-html';
 import { getAllPostSlugs, getPost } from '../../server/services/blog-service';
 
 const BlogPost = ({ post }) => {
@@ -10,7 +11,20 @@ const BlogPost = ({ post }) => {
 	return router.isFallback ? (
 		<Spinner />
 	) : (
-		<BlogPostTemplate content={post.content} date={post.date} title={post.title} />
+		<>
+			<Head>
+				<meta
+					property='og:url'
+					content={`${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`}
+				></meta>
+				<meta property='og:title' content={post.title}></meta>
+				<meta property='og:description' content={post.excerpt}></meta>
+				<meta property='og:type' content='article'></meta>
+				<meta property='article:published_time' content={post.date}></meta>
+				<meta property='article:tag' content={post.slug.split('_').slice(3).join(' ')}></meta>
+			</Head>
+			<BlogPostTemplate content={post.content} date={post.date} title={post.title} />
+		</>
 	);
 };
 
@@ -18,13 +32,9 @@ export default BlogPost;
 
 export async function getStaticProps({ params: { slug } }) {
 	const post = await getPost(slug);
-	const processedContent = markdownToHtml(post.content);
 	return {
 		props: {
-			post: {
-				...post,
-				content: processedContent
-			}
+			post
 		},
 		revalidate: 60
 	};

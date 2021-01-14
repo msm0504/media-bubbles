@@ -44,7 +44,7 @@ const PostSummary = ({ title, excerpt, slug, date, fnDeleteItem }) => {
 					/>
 				</>
 			)}
-			<CardText dangerouslySetInnerHTML={{ __html: markdownToHtml(excerpt) }} />
+			{markdownToHtml(excerpt, 'card-text')}
 			<CardText>
 				<small className='text-muted'>{`Last updated at ${new Date(date).toLocaleString()}`}</small>
 			</CardText>

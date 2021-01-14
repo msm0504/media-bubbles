@@ -43,7 +43,7 @@ async function getPost(slug) {
 	const fileName = slug.endsWith('.md') ? slug : `${slug}.md`;
 	const fileContents = await fsPromises.readFile(path.join(blogPostsDir, fileName));
 	const { data, content } = matter(fileContents);
-	return { ...data, content };
+	return { ...data, content, excerpt: formatExcerpt(content) };
 }
 
 async function getPostMetaData(slug) {

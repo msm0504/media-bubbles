@@ -1,6 +1,9 @@
-import remark from 'remark';
-import html from 'remark-html';
+import ReactMarkdown from 'react-markdown';
+import gfm from 'remark-gfm';
 
-const markdownToHtml = markdown => remark().use(html).processSync(markdown).toString();
-
+const markdownToHtml = (markdown, className = '') => (
+	<ReactMarkdown className={className} plugins={[gfm]}>
+		{markdown}
+	</ReactMarkdown>
+);
 export default markdownToHtml;
