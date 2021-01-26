@@ -74,7 +74,7 @@ async function getHeadlines(params) {
 
 async function getTopHeadlines(sourceIds) {
 	const url = `${path}/top-headlines`;
-	const params = { sources: sourceIds, language: 'en', pageSize: 50 };
+	const params = { sources: sourceIds, pageSize: 50 };
 	const requestOptions = { method: 'GET', headers };
 	const response = await fetch(`${url}${formatGetQuery(params)}`, requestOptions);
 	return response.json();
@@ -82,7 +82,7 @@ async function getTopHeadlines(sourceIds) {
 
 async function getTopHeadlinesBySlant(sourceIds) {
 	const url = `${path}/top-headlines`;
-	const params = { sources: sourceIds, language: 'en', pageSize: 10 };
+	const params = { sources: sourceIds, pageSize: 10 };
 	const requestOptions = { method: 'GET', headers };
 	const responses = await Promise.all(
 		sourceIds.map(slantIds =>
