@@ -23,6 +23,7 @@ async function getSources() {
 	const params = { language: 'en' };
 	const requestOptions = { method: 'GET', headers };
 	const response = await fetch(`${url}${formatGetQuery(params)}`, requestOptions);
+	console.log(response);
 	return response.json();
 }
 
