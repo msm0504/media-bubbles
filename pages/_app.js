@@ -26,6 +26,13 @@ const App = ({ Component, pageProps }) => {
 		<div className='container-fluid'>
 			<Head>
 				<title>Media Bubbles</title>
+				<meta
+					name='description'
+					content='Escape your information bubble and view headlines from sources across the political spectrum.'
+				></meta>
+				<meta property='og:url' content={process.env.NEXT_PUBLIC_API_URL} key='ogUrl'></meta>
+				<meta property='og:image' content='/images/og_image.png' key='ogImage'></meta>
+				<meta property='fb:app_id' content='2356113588028211'></meta>
 				<link rel='icon' href='/favicon.ico' />
 			</Head>
 
@@ -36,6 +43,7 @@ const App = ({ Component, pageProps }) => {
 					<div className='d-flex justify-content-end mb-2'>
 						<RouteLink buttonText='Home' routePath='/' />
 						<RouteLink buttonText='About' routePath='/about' />
+						<RouteLink buttonText='Blog' routePath='/blog' />
 						<RouteLink buttonText='Contact Us' routePath='/contact' />
 					</div>
 					<Alerts />

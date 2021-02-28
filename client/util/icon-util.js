@@ -1,9 +1,10 @@
 class IconUtil {
 	static getIconUrl(siteUrl) {
 		const iconApiUrl = 'https://logo.clearbit.com';
-		if (siteUrl.indexOf('abcnews') > -1) {
+		if (siteUrl.includes('abcnews')) {
 			return this.getIconUrlSecondTry(siteUrl);
 		}
+		siteUrl = siteUrl.replace('huffingtonpost', 'huffpost');
 		return `${iconApiUrl}/${siteUrl}`;
 	}
 

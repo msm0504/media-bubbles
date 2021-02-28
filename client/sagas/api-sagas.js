@@ -132,11 +132,33 @@ function* watchSubmitFeedback() {
 	yield takeEvery(UIActionTypes.SUBMIT_FEEDBACK, handleSubmitFeedback);
 }
 
+function* handleSubmitBlogPost(action) {
+	const { slug } = yield call(
+		[APIService, APIService.callApi],
+		'post',
+		'blog-posts',
+		action.payload.blogPostData
+	);
+
+	if (!slug) {
+		yield put(
+			UIActions.showAlert(ALERT_LEVEL.danger, 'Saving blog post failed. Please try again later.')
+		);
+	} else {
+		yield put(UIActions.showAlert(ALERT_LEVEL.success, `Blog post ${slug} saved successfully.`));
+	}
+}
+
+function* watchSubmitBlogPost() {
+	yield takeEvery(UIActionTypes.SUBMIT_BLOG_POST, handleSubmitBlogPost);
+}
+
 export default function* apiSaga() {
 	yield all([
 		watchGetSourceLists(),
 		watchSearchFormSubmit(),
 		watchSaveResultClicked(),
-		watchSubmitFeedback()
+		watchSubmitFeedback(),
+		watchSubmitBlogPost()
 	]);
 }

@@ -10,7 +10,7 @@ import {
 } from 'reactstrap';
 
 import UIActions from '../client/actions/ui-actions';
-import SearchForm from '../client/components/search-form';
+import SearchForm from '../client/components/search-form/search-form';
 import MySavedResults from '../client/components/save-results/my-saved-results';
 import SEARCH_MODE, { SEARCH_MODE_MAP } from '../client/constants/search-mode';
 

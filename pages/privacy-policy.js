@@ -1,8 +1,5 @@
-import BackButton from '../client/components/nav/back-button';
-
 const PrivacyPolicy = () => (
 	<>
-		<BackButton className='mb-3' />
 		<h1>Privacy Policy</h1>
 		<p>Last updated: July 21, 2020</p>
 		<p>
@@ -416,9 +413,5 @@ const PrivacyPolicy = () => (
 		</ul>
 	</>
 );
-
-export async function getStaticProps() {
-	return { props: {} };
-}
 
 export default PrivacyPolicy;

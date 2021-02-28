@@ -1,7 +1,10 @@
 import dynamic from 'next/dynamic';
-const SearchResults = dynamic(() => import('../../client/components/search-results'), {
-	ssr: false
-});
+const SearchResults = dynamic(
+	() => import('../../client/components/search-results/search-results'),
+	{
+		ssr: false
+	}
+);
 
 const NewSearchResults = () => <SearchResults />;
 

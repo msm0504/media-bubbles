@@ -26,7 +26,7 @@ const SaveResults = ({ formState, newSearchState, saveResult, sourceState }) => 
 			: ''
 	}`;
 
-	const savedClicked = () => {
+	const saveClicked = () => {
 		saveResult(
 			name,
 			newSearchState.articleMap,
@@ -38,13 +38,7 @@ const SaveResults = ({ formState, newSearchState, saveResult, sourceState }) => 
 	};
 
 	return (
-		<Button
-			className='ml-3 d-inline-block'
-			outline
-			color='primary'
-			size='lg'
-			onClick={() => savedClicked()}
-		>
+		<Button className='ml-3 d-inline-block' outline color='info' onClick={() => saveClicked()}>
 			<strong>Save Results</strong>
 		</Button>
 	);
