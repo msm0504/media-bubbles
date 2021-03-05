@@ -13,6 +13,8 @@ import {
 	Row
 } from 'reactstrap';
 
+import useInterval from '../util/use-interval';
+
 const capitalize = str => `${str.charAt(0).toUpperCase()}${str.substring(1)}`;
 const kebabCaseToTitleCase = str => str.split('-').map(capitalize).join(' ');
 
@@ -23,6 +25,7 @@ const SaveableForm = ({
 	fieldValidateFn,
 	formName,
 	initialData,
+	localStorageInterval,
 	PreviewComponent,
 	submitFn,
 	submitLabel
@@ -31,6 +34,17 @@ const SaveableForm = ({
 	const [errors, setErrors] = useState({});
 	const [submit, setSubmit] = useState(false);
 	const [preview, setPreview] = useState(false);
+
+	useEffect(() => {
+		if (localStorageInterval && localStorageInterval > 0) {
+			const storedFormData = JSON.parse(localStorage.getItem(formName));
+			if (storedFormData) {
+				setFormData(storedFormData);
+			}
+		}
+	}, []);
+
+	useInterval(() => localStorage.setItem(formName, JSON.stringify(formData)), localStorageInterval);
 
 	useEffect(() => {
 		if (submit && !Object.keys(errors).length) {

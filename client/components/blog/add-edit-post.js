@@ -13,6 +13,7 @@ const blankBlogPostForm = {
 };
 
 const SLUG_PATTERN = /^[a-z0-9_]+$/;
+const MILLISECONDS_IN_MINUTE = 1000 * 60;
 
 const getFieldErrorMessage = (fieldName, value) => {
 	switch (fieldName) {
@@ -91,6 +92,7 @@ const AddEditBlogPost = ({ author, authorId, currentVersion, submitForm }) => {
 				fieldValidateFn={getFieldErrorMessage}
 				formName='blog-post'
 				initialData={initialData}
+				localStorageInterval={!currentVersion && MILLISECONDS_IN_MINUTE}
 				PreviewComponent={BlogPostPreview}
 				submitFn={submitForm}
 				submitLabel='Save Post'
