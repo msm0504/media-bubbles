@@ -44,10 +44,17 @@ const SaveableForm = ({
 		}
 	}, []);
 
-	useInterval(() => localStorage.setItem(formName, JSON.stringify(formData)), localStorageInterval);
+	useInterval(
+		() => localStorage.setItem(formName, JSON.stringify(formData)),
+		// stop local storage backup when form has been submitted
+		submit ? -1 : localStorageInterval
+	);
 
 	useEffect(() => {
 		if (submit && !Object.keys(errors).length) {
+			if (localStorageInterval && localStorageInterval > 0) {
+				localStorage.removeItem(formName);
+			}
 			submitFn(formData);
 		}
 		setSubmit(false);

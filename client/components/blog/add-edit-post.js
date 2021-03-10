@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { CardBody } from 'reactstrap';
+import { useRouter } from 'next/router';
 
 import BlogPostTemplate from './blog-post-template';
 import SaveableForm, { getRequiredMessage } from '../saveable-form';
@@ -56,6 +57,7 @@ const AddEditBlogPost = ({ author, authorId, currentVersion, submitForm }) => {
 	if (authorId !== process.env.NEXT_PUBLIC_ADMIN_ID)
 		return <CardBody className='text-info'>You shall not post!</CardBody>;
 
+	const router = useRouter();
 	const mode = currentVersion ? 'Edit' : 'Add';
 	const initialData = currentVersion || { ...blankBlogPostForm, author };
 	const fieldList = [
@@ -84,6 +86,11 @@ const AddEditBlogPost = ({ author, authorId, currentVersion, submitForm }) => {
 		}
 	];
 
+	const submitFn = blogPostData => {
+		submitForm(blogPostData);
+		router.push('/blog');
+	};
+
 	return (
 		<>
 			<h1 className='text-info'>{`${mode} Post`}</h1>
@@ -94,7 +101,7 @@ const AddEditBlogPost = ({ author, authorId, currentVersion, submitForm }) => {
 				initialData={initialData}
 				localStorageInterval={!currentVersion && MILLISECONDS_IN_MINUTE}
 				PreviewComponent={BlogPostPreview}
-				submitFn={submitForm}
+				submitFn={submitFn}
 				submitLabel='Save Post'
 			/>
 		</>
