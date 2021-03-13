@@ -8,7 +8,7 @@ export default nc()
 	})
 	.post(async function (req, res) {
 		const session = await getSession({ req });
-		if (!(session.user && session.user.isAdmin)) {
+		if (!session?.user.isAdmin) {
 			res.json({ slug: null });
 		} else {
 			res.json(await addPost(req.body));

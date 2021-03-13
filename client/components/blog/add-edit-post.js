@@ -49,7 +49,7 @@ const AddEditBlogPost = ({ currentVersion }) => {
 	const dispatch = useDispatch();
 	const [session] = useSession();
 
-	if (!session.user.isAdmin) return <CardBody className='text-info'>You shall not post!</CardBody>;
+	if (!session?.user.isAdmin) return <CardBody className='text-info'>You shall not post!</CardBody>;
 
 	const router = useRouter();
 	const mode = currentVersion ? 'Edit' : 'Add';

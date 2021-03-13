@@ -23,7 +23,7 @@ const PostSummary = ({ title, excerpt, slug, date, fnDeleteItem }) => {
 			<CardTitle>
 				<RouteLink buttonText={title} routePath={`/blog/${slug}`} />
 			</CardTitle>
-			{session.user.isAdmin && (
+			{session?.user.isAdmin && (
 				<>
 					<Button
 						className='float-right p-0 d-block d-sm-inline-block'
@@ -58,7 +58,7 @@ const BlogPosts = () => {
 	return (
 		<>
 			<h1 className='text-info d-block d-sm-inline-block'>Blog Posts</h1>
-			{session.user.isAdmin && (
+			{session?.user.isAdmin && (
 				<RouteLink
 					buttonText={AddPost}
 					className='float-right d-block d-sm-inline-block'

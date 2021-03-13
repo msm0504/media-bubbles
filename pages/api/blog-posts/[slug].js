@@ -8,7 +8,7 @@ export default nc()
 	})
 	.delete(async function (req, res) {
 		const session = await getSession({ req });
-		if (!(session.user && session.user.isAdmin)) {
+		if (!session?.user.isAdmin) {
 			res.json({ itemDeleted: false });
 		} else {
 			res.json(await deletePost(req.query.slug));

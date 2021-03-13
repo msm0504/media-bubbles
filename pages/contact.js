@@ -44,8 +44,8 @@ const Feedback = () => {
 
 	const initialData = {
 		...blankFeedbackForm,
-		name: session.user.name,
-		email: session.user.email
+		name: session?.user.name,
+		email: session?.user.email
 	};
 
 	const fieldList = [

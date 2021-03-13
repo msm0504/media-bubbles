@@ -5,7 +5,7 @@ import { getSavedResults, saveSearchResult } from '../../../server/services/save
 export default nc()
 	.get(async function (req, res) {
 		const session = await getSession({ req });
-		if (!(session.user && session.user.id)) {
+		if (!session?.user.id) {
 			res.json({ savedResults: [], hasMore: false });
 		} else {
 			res.json(await getSavedResults(req.query.filter, req.query.page, session.user.id));
@@ -14,7 +14,7 @@ export default nc()
 	.post(async function (req, res) {
 		const session = await getSession({ req });
 		const resultToSave = req.body;
-		if (session.user && session.user.id) {
+		if (session?.user.id) {
 			resultToSave.userId = session.user.id;
 		}
 		res.json(await saveSearchResult(resultToSave));

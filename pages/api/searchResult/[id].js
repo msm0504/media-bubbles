@@ -8,5 +8,5 @@ export default nc()
 	})
 	.delete(async function (req, res) {
 		const session = await getSession({ req });
-		res.json(await deleteSavedResult(req.query.id, session.user.id));
+		res.json(await deleteSavedResult(req.query.id, session?.user.id));
 	});
