@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { CardBody, Col, FormGroup, Input, Label, ListGroup, ListGroupItem, Row } from 'reactstrap';
+import { useSession } from 'next-auth/client';
 import debounce from 'lodash.debounce';
 
 import UIActions from '../actions/ui-actions';
@@ -10,27 +11,17 @@ import APIService from '../services/api-service';
 
 const CACHE_SIZE = 10;
 
-const mapStateToProps = ({ loginState }) => ({
-	fbInitComplete: loginState.fbInitComplete,
-	userId: loginState.fbUserInfo.userId
-});
-
-const mapDispatchToProps = {
-	showAlert: UIActions.showAlert
-};
-
 const AsyncList = ({
 	apiListName,
 	apiPath,
-	fbInitComplete,
 	keyField,
 	ListItemComponent,
 	loginRequired,
 	loginRequiredMessage,
-	maxResults,
-	showAlert,
-	userId
+	maxResults
 }) => {
+	const dispatch = useDispatch();
+	const [session] = useSession();
 	const [items, setItems] = useState([]);
 	const [hasMore, setHasMore] = useState(false);
 	const filter = useRef('');
@@ -39,8 +30,8 @@ const AsyncList = ({
 
 	useEffect(() => {
 		initCache();
-		if (!loginRequired || (userId && fbInitComplete)) getListItems();
-	}, [loginRequired, userId, fbInitComplete]);
+		if (!loginRequired || session) getListItems();
+	}, [loginRequired, session]);
 
 	const initCache = () => {
 		filter.current = '';
@@ -48,7 +39,7 @@ const AsyncList = ({
 		cache.current = {};
 	};
 
-	if (loginRequired && !(userId && fbInitComplete))
+	if (loginRequired && !session)
 		return (
 			<CardBody className='text-info'>
 				{loginRequiredMessage || 'Log in to view this page'}
@@ -84,12 +75,16 @@ const AsyncList = ({
 	async function deleteItem(itemId, itemName) {
 		const { itemDeleted } = await APIService.callApi('delete', `${apiPath}/${itemId}`);
 		if (itemDeleted !== true) {
-			showAlert(
-				ALERT_LEVEL.danger,
-				`Deleting ${itemName || itemId} failed. Please try again later.`
+			dispatch(
+				UIActions.showAlert(
+					ALERT_LEVEL.danger,
+					`Deleting ${itemName || itemId} failed. Please try again later.`
+				)
 			);
 		} else {
-			showAlert(ALERT_LEVEL.success, `${itemName || itemId} deleted successfully.`);
+			dispatch(
+				UIActions.showAlert(ALERT_LEVEL.success, `${itemName || itemId} deleted successfully.`)
+			);
 			page.current = 1;
 			cache.current = {};
 			getListItems();
@@ -175,4 +170,4 @@ AsyncList.defaultProps = {
 	maxResults: 25
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AsyncList);
+export default AsyncList;

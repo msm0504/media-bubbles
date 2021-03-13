@@ -1,5 +1,5 @@
 import nc from 'next-connect';
-import { ADMIN_ID } from '../../../server/constants';
+import { getSession } from 'next-auth/client';
 import { getPost, deletePost } from '../../../server/services/blog-service';
 
 export default nc()
@@ -7,7 +7,8 @@ export default nc()
 		res.json(await getPost(req.query.slug));
 	})
 	.delete(async function (req, res) {
-		if (!(req.cookies && req.cookies.userId && req.cookies.userId === ADMIN_ID)) {
+		const session = await getSession({ req });
+		if (!(session.user && session.user.isAdmin)) {
 			res.json({ itemDeleted: false });
 		} else {
 			res.json(await deletePost(req.query.slug));

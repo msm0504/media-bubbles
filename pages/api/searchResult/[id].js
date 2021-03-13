@@ -1,4 +1,5 @@
 import nc from 'next-connect';
+import { getSession } from 'next-auth/client';
 import { getSavedResult, deleteSavedResult } from '../../../server/services/saved-results-service';
 
 export default nc()
@@ -6,5 +7,6 @@ export default nc()
 		res.json(await getSavedResult(req.query.id));
 	})
 	.delete(async function (req, res) {
-		res.json(await deleteSavedResult(req.query.id, req.cookies.userId));
+		const session = await getSession({ req });
+		res.json(await deleteSavedResult(req.query.id, session.user.id));
 	});

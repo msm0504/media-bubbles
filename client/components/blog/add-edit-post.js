@@ -1,6 +1,7 @@
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { CardBody } from 'reactstrap';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/client';
 
 import BlogPostTemplate from './blog-post-template';
 import SaveableForm, { getRequiredMessage } from '../saveable-form';
@@ -39,27 +40,20 @@ const getFieldErrorMessage = (fieldName, value) => {
 	return '';
 };
 
-const mapStateToProps = ({ loginState: { fbUserInfo } }) => ({
-	authorId: fbUserInfo.userId,
-	author: fbUserInfo.name
-});
-
-const mapDispatchToProps = {
-	submitForm: UIActions.submitBlogPost
-};
-
 const BlogPostPreview = ({ content, title }) => {
 	const currentDate = new Date().toISOString();
 	return <BlogPostTemplate content={content} date={currentDate} title={title} />;
 };
 
-const AddEditBlogPost = ({ author, authorId, currentVersion, submitForm }) => {
-	if (authorId !== process.env.NEXT_PUBLIC_ADMIN_ID)
-		return <CardBody className='text-info'>You shall not post!</CardBody>;
+const AddEditBlogPost = ({ currentVersion }) => {
+	const dispatch = useDispatch();
+	const [session] = useSession();
+
+	if (!session.user.isAdmin) return <CardBody className='text-info'>You shall not post!</CardBody>;
 
 	const router = useRouter();
 	const mode = currentVersion ? 'Edit' : 'Add';
-	const initialData = currentVersion || { ...blankBlogPostForm, author };
+	const initialData = currentVersion || { ...blankBlogPostForm, author: session.user.name };
 	const fieldList = [
 		{
 			name: 'author',
@@ -87,7 +81,7 @@ const AddEditBlogPost = ({ author, authorId, currentVersion, submitForm }) => {
 	];
 
 	const submitFn = blogPostData => {
-		submitForm(blogPostData);
+		dispatch(UIActions.submitBlogPost(blogPostData));
 		router.push('/blog');
 	};
 
@@ -108,4 +102,4 @@ const AddEditBlogPost = ({ author, authorId, currentVersion, submitForm }) => {
 	);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddEditBlogPost);
+export default AddEditBlogPost;
