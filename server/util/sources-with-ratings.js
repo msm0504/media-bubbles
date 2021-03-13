@@ -46,7 +46,8 @@ const filteredBiasRatings = sourceBiasRatings.reduce((acc, sourceBiasRating) => 
 const oddMappings = {
 	time: 'time-magazine',
 	'nbc-news': 'nbcnews.com',
-	'huffington-post': 'huffpost'
+	'huffington-post': 'huffpost',
+	'vice-news': 'vice'
 };
 
 const excludeSources = {
