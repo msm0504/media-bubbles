@@ -4,7 +4,7 @@ const { nanoid } = require('nanoid');
 const { MONGODB_URL } = require('../constants');
 
 const COLLECTION_NAME = 'saved_results';
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 25;
 const client = new MongoClient(MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const _collection = new Promise(resolve => {
