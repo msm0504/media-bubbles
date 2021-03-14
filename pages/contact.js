@@ -1,4 +1,5 @@
-import { connect } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useSession } from 'next-auth/client';
 
 import SaveableForm, { getRequiredMessage } from '../client/components/saveable-form';
 import UIActions from '../client/actions/ui-actions';
@@ -37,20 +38,14 @@ const getFieldErrorMessage = (fieldName, value) => {
 	return '';
 };
 
-const mapStateToProps = ({ loginState: { fbUserInfo } }) => ({
-	defaultName: fbUserInfo.name,
-	defaultEmail: fbUserInfo.email
-});
+const Feedback = () => {
+	const dispatch = useDispatch();
+	const [session] = useSession();
 
-const mapDispatchToProps = {
-	submitForm: UIActions.submitFeedback
-};
-
-const Feedback = ({ defaultEmail, defaultName, submitForm }) => {
 	const initialData = {
 		...blankFeedbackForm,
-		name: defaultName,
-		email: defaultEmail
+		name: session?.user.name,
+		email: session?.user.email
 	};
 
 	const fieldList = [
@@ -85,11 +80,11 @@ const Feedback = ({ defaultEmail, defaultName, submitForm }) => {
 				fieldValidateFn={getFieldErrorMessage}
 				formName='feedback'
 				initialData={initialData}
-				submitFn={submitForm}
+				submitFn={feedbackData => dispatch(UIActions.submitFeedback(feedbackData))}
 				submitLabel='Send Message'
 			/>
 		</>
 	);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
+export default Feedback;

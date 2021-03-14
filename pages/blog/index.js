@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useSession } from 'next-auth/client';
 import { Button, CardBody, CardTitle, CardText } from 'reactstrap';
 
 import AsyncList from '../../client/components/async-list';
@@ -16,14 +16,14 @@ const EditPost = (
 );
 
 const PostSummary = ({ title, excerpt, slug, date, fnDeleteItem }) => {
-	const userId = useSelector(({ loginState }) => loginState.fbUserInfo.userId);
+	const [session] = useSession();
 
 	return (
 		<CardBody>
 			<CardTitle>
 				<RouteLink buttonText={title} routePath={`/blog/${slug}`} />
 			</CardTitle>
-			{userId === process.env.NEXT_PUBLIC_ADMIN_ID && (
+			{session?.user.isAdmin && (
 				<>
 					<Button
 						className='float-right p-0 d-block d-sm-inline-block'
@@ -53,12 +53,12 @@ const PostSummary = ({ title, excerpt, slug, date, fnDeleteItem }) => {
 };
 
 const BlogPosts = () => {
-	const userId = useSelector(({ loginState }) => loginState.fbUserInfo.userId);
+	const [session] = useSession();
 
 	return (
 		<>
 			<h1 className='text-info d-block d-sm-inline-block'>Blog Posts</h1>
-			{userId === process.env.NEXT_PUBLIC_ADMIN_ID && (
+			{session?.user.isAdmin && (
 				<RouteLink
 					buttonText={AddPost}
 					className='float-right d-block d-sm-inline-block'

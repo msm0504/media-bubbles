@@ -1,31 +1,37 @@
-const datastore = require('nedb-promise');
-const path = require('path');
-const { useTestData } = require('../constants');
+const { MongoClient } = require('mongodb');
+const { nanoid } = require('nanoid');
 
-const dbFilePath = useTestData
-	? '/test-data/db/db_search_results.db'
-	: '/data/db_search_results.db';
+const { MONGODB_URL } = require('../constants');
 
-const db = datastore({
-	filename: path.join(process.cwd(), 'server', dbFilePath),
-	autoload: true,
-	timestampData: true
-});
+const COLLECTION_NAME = 'saved_results';
 const PAGE_SIZE = 25;
+const client = new MongoClient(MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+
+const _collection = new Promise(resolve => {
+	client
+		.connect()
+		.then(() => resolve(client.db(process.env.MONGODB_DBNAME).collection(COLLECTION_NAME)));
+});
 
 async function saveSearchResult(result) {
-	const savedResult = await db.insert(result);
-	return { savedResultId: savedResult._id };
+	const db = await _collection;
+	const { insertedId } = await db.insertOne({
+		_id: nanoid(16),
+		...result,
+		createdAt: new Date().toISOString()
+	});
+	return { savedResultId: insertedId };
 }
 
 async function getSavedResults(filter = '', page = 1, userId) {
+	const db = await _collection;
 	const savedResults = await db
-		.cfind({ name: new RegExp(`^.*${filter}.*$`, 'i'), userId: userId })
-		.projection({ name: 1, createdAt: 1 })
+		.find({ name: { $regex: `^.*${filter}.*$`, $options: 'i' }, userId: userId })
+		.map(({ _id, name, createdAt }) => ({ _id, name, createdAt }))
 		.sort({ createdAt: -1 })
 		.skip(PAGE_SIZE * (page - 1))
 		.limit(PAGE_SIZE + 1)
-		.exec();
+		.toArray();
 
 	return {
 		savedResults: savedResults.slice(0, PAGE_SIZE),
@@ -34,13 +40,14 @@ async function getSavedResults(filter = '', page = 1, userId) {
 }
 
 async function getAllSavedResults(filter = '', page = 1) {
+	const db = await _collection;
 	const savedResults = await db
-		.cfind({ name: new RegExp(`^.*${filter}.*$`, 'i') })
-		.projection({ name: 1, createdAt: 1 })
+		.find({ name: { $regex: `^.*${filter}.*$`, $options: 'i' } })
+		.map(({ _id, name, createdAt }) => ({ _id, name, createdAt }))
 		.sort({ createdAt: -1 })
 		.skip(PAGE_SIZE * (page - 1))
 		.limit(PAGE_SIZE + 1)
-		.exec();
+		.toArray();
 
 	return {
 		savedResults: savedResults.slice(0, PAGE_SIZE),
@@ -49,12 +56,14 @@ async function getAllSavedResults(filter = '', page = 1) {
 }
 
 async function getSavedResult(id) {
+	const db = await _collection;
 	return db.findOne({ _id: id });
 }
 
 async function deleteSavedResult(id, userId) {
-	const numRemoved = await db.remove({ _id: id, userId: userId });
-	return { itemDeleted: numRemoved === 1 };
+	const db = await _collection;
+	const { deletedCount } = await db.deleteOne({ _id: id, userId: userId });
+	return { itemDeleted: deletedCount === 1 };
 }
 
 module.exports = {

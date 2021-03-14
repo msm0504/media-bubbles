@@ -4383,7 +4383,7 @@
 		"news_source": "Newsweek",
 		"allsides_url": "https://www.allsides.com/news-source/newsweek",
 		"url": "https://www.newsweek.com/",
-		"bias_rating": "71"
+		"bias_rating": "73"
 	},
 	{
 		"news_source": "Newsy",
@@ -7312,6 +7312,12 @@
 		"allsides_url": "https://www.allsides.com/news-source/vanity-fair",
 		"url": "http://www.vanityfair.com/",
 		"bias_rating": "72"
+	},
+	{
+		"news_source": "Vice",
+		"allsides_url": "https://www.allsides.com/news-source/vice-media-bias",
+		"url": "http://www.vice.com/",
+		"bias_rating": "71"
 	},
 	{
 		"news_source": "Vinton Cedar Valley Daily News",

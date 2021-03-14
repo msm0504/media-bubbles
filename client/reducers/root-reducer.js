@@ -7,14 +7,12 @@ import merge from 'merge';
 
 import alertReducer from './alert-reducer';
 import formDataReducer from './form-data-reducer';
-import loginReducer from './login-reducer';
 import searchResultReducer from './search-result-reducer';
 import sourceReducer from './source-reducer';
 
 const combinedReducer = combineReducers({
 	alertState: alertReducer,
 	formDataState: formDataReducer,
-	loginState: loginReducer,
 	searchResultState: searchResultReducer,
 	sourceState: sourceReducer
 });
