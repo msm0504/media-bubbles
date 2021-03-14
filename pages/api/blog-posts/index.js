@@ -1,6 +1,6 @@
 import nc from 'next-connect';
 import { getSession } from 'next-auth/client';
-import { addPost, getPostSummaries } from '../../../server/services/blog-service';
+import { getPostSummaries, savePost } from '../../../server/services/blog-service';
 
 export default nc()
 	.get(async function (req, res) {
@@ -11,6 +11,6 @@ export default nc()
 		if (!session?.user.isAdmin) {
 			res.json({ slug: null });
 		} else {
-			res.json(await addPost(req.body));
+			res.json(await savePost(req.body));
 		}
 	});

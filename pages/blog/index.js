@@ -15,7 +15,7 @@ const EditPost = (
 	<i className='fa fa-lg fa-pencil-square-o' aria-hidden='true' aria-label='Edit post'></i>
 );
 
-const PostSummary = ({ title, excerpt, slug, date, fnDeleteItem }) => {
+const PostSummary = ({ title, excerpt, slug, updatedAt: date, fnDeleteItem }) => {
 	const [session] = useSession();
 
 	return (

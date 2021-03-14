@@ -1,18 +1,9 @@
-const fsPromises = require('fs').promises;
-const path = require('path');
-const matter = require('gray-matter');
+const { getCollection } = require('./db-connection');
 
-const blogPostsDir = path.join(process.cwd(), 'server/blog-posts');
+const COLLECTION_NAME = 'blog_posts';
 const PAGE_SIZE = 10;
 
-const formatPost = (title, slug, author, date, content) =>
-	`---
-title: ${title}
-slug: ${slug}
-author: ${author}
-date: '${date}'
----
-${content}`;
+const _collection = getCollection(COLLECTION_NAME);
 
 const formatExcerpt = content => {
 	const MAX_LENGTH = 350;
@@ -22,60 +13,75 @@ const formatExcerpt = content => {
 
 const SLUG_WITH_TS_PATTERN = /^\d{4}_\d{2}_\d{2}_/;
 
-async function addPost({ author, slug, title, content }) {
-	const date = new Date().toISOString();
-	const slugWithTs = SLUG_WITH_TS_PATTERN.test(slug)
-		? slug
-		: `${date.split('T')[0].replace(/-/g, '_')}_${slug.toLowerCase()}`;
-	const fileName = path.join(blogPostsDir, `${slugWithTs}.md`);
-	await fsPromises.writeFile(fileName, formatPost(title, slugWithTs, author, date, content), {
-		mode: '666'
+async function savePost(post) {
+	return SLUG_WITH_TS_PATTERN.test(post.slug) ? updatePost(post) : createPost(post);
+}
+
+async function createPost(post) {
+	const db = await _collection;
+	const createTs = new Date().toISOString();
+	const slugWithTs = `${createTs.split('T')[0].replace(/-/g, '_')}_${post.slug.toLowerCase()}`;
+	const { insertedId } = await db.insertOne({
+		...post,
+		_id: slugWithTs,
+		slug: slugWithTs,
+		excerpt: formatExcerpt(post.content),
+		createdAt: createTs,
+		updatedAt: createTs
 	});
-	return { slug: slugWithTs };
+	return { slug: insertedId };
+}
+
+async function updatePost(post) {
+	const db = await _collection;
+	const updateTs = new Date().toISOString();
+	const { modifiedCount } = await db.updateOne(
+		{ _id: post.slug },
+		{ $set: { ...post, excerpt: formatExcerpt(post.content), updatedAt: updateTs } }
+	);
+	return { slug: modifiedCount === 1 && post.slug };
 }
 
 async function getAllPostSlugs() {
-	const unorderedSlugs = await fsPromises.readdir(blogPostsDir);
-	return unorderedSlugs.sort().reverse();
+	const db = await _collection;
+	return db
+		.find()
+		.sort({ updatedAt: -1 })
+		.map(({ slug }) => slug)
+		.toArray();
 }
 
 async function getPost(slug) {
-	const fileName = slug.endsWith('.md') ? slug : `${slug}.md`;
-	const fileContents = await fsPromises.readFile(path.join(blogPostsDir, fileName));
-	const { data, content } = matter(fileContents);
-	return { ...data, content, excerpt: formatExcerpt(content) };
-}
-
-async function getPostMetaData(slug) {
-	const fileName = slug.endsWith('.md') ? slug : `${slug}.md`;
-	const fileContents = await fsPromises.readFile(path.join(blogPostsDir, fileName));
-	const { data, content } = matter(fileContents);
-	return { ...data, excerpt: formatExcerpt(content) };
+	const db = await _collection;
+	return db.findOne({ _id: slug });
 }
 
 async function getPostSummaries(filter = '', page = 1) {
-	const allSlugs = await getAllPostSlugs();
-	const matchingSlugs = allSlugs.filter(slug => !filter || slug.includes(filter.toLowerCase()));
-	const posts = await Promise.all(
-		matchingSlugs.slice(PAGE_SIZE * (page - 1), PAGE_SIZE * page).map(getPostMetaData)
-	);
+	const db = await _collection;
+	const postSummaries = await db
+		.find({ slug: { $regex: `^.*${filter}.*$`, $options: 'i' } })
+		.sort({ updatedAt: -1 })
+		.skip(PAGE_SIZE * (page - 1))
+		.limit(PAGE_SIZE + 1)
+		.map(({ content, ...metaData }) => metaData)
+		.toArray();
 
 	return {
-		posts,
-		hasMore: matchingSlugs.length > PAGE_SIZE
+		posts: postSummaries.slice(0, PAGE_SIZE),
+		hasMore: postSummaries.length > PAGE_SIZE
 	};
 }
 
 async function deletePost(slug) {
-	const fileName = slug.endsWith('.md') ? slug : `${slug}.md`;
-	const error = await fsPromises.unlink(path.join(blogPostsDir, fileName));
-	return { itemDeleted: !error };
+	const db = await _collection;
+	const { deletedCount } = await db.deleteOne({ _id: slug });
+	return { itemDeleted: deletedCount === 1 };
 }
 
 module.exports = {
-	addPost,
 	deletePost,
 	getAllPostSlugs,
 	getPost,
-	getPostSummaries
+	getPostSummaries,
+	savePost
 };
