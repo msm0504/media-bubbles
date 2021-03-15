@@ -3,9 +3,12 @@ const nodemailer = require('nodemailer');
 const SUPPORT_ADDRESS = 'support@mediabubbles.net';
 
 const transporter = nodemailer.createTransport({
-	sendmail: true,
-	newline: 'unix',
-	path: '/usr/sbin/sendmail'
+	host: process.env.SMTP_SERVER,
+	port: Number(process.env.SMTP_PORT),
+	auth: {
+		user: process.env.EMAIL_USERNAME,
+		pass: process.env.EMAIL_PASSWORD
+	}
 });
 
 async function sendSupportEmail(feedbackData) {
@@ -13,6 +16,7 @@ async function sendSupportEmail(feedbackData) {
 		await transporter.sendMail({
 			from: SUPPORT_ADDRESS,
 			to: SUPPORT_ADDRESS,
+			cc: feedbackData.email,
 			subject: `Media Bubbles ${feedbackData.reason}`,
 			text: `
 ${feedbackData.message}
