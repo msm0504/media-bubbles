@@ -1,7 +1,8 @@
 const { MILLISECONDS_IN_DAY } = require('../constants');
+const { getBiasRatingByNewsApiId, sourceListBySlant } = require('../util/sources-with-ratings');
 
-const headers = { Accept: 'application/json', 'X-Api-Key': 'ed7fda9ec90a40d6afe1de3c69e7ae19' };
-const path = 'https://newsapi.org/v2';
+const headers = { Accept: 'application/json', 'X-Api-Key': process.env.NEWS_API_KEY };
+const path = process.env.NEWS_API_URL;
 const DEFAULT_PREVIOUS_DAYS = 5;
 const DEFAULT_SORT = 'relevancy';
 
@@ -18,14 +19,6 @@ const formatGetQuery = params => {
 	return query.length > 0 ? '?' + query.join('&') : '';
 };
 
-async function getSources() {
-	const url = `${path}/sources`;
-	const params = { language: 'en' };
-	const requestOptions = { method: 'GET', headers };
-	const response = await fetch(`${url}${formatGetQuery(params)}`, requestOptions);
-	return response.json();
-}
-
 async function getHeadlines(params) {
 	if (!params || (!params.sources && !params.spectrumSearchAll)) {
 		return [];
@@ -33,7 +26,6 @@ async function getHeadlines(params) {
 
 	const articleMap = {};
 	if (!params.sources && params.spectrumSearchAll) {
-		const { getBiasRatingByNewsApiId, sourceListBySlant } = require('../util/sources-with-ratings');
 		params.sources = sourceListBySlant.map(slantSources =>
 			slantSources
 				.map(source => source.id)
@@ -121,6 +113,5 @@ async function getHeadlinesForKeyword({
 }
 
 module.exports = {
-	getSources,
 	getHeadlines
 };

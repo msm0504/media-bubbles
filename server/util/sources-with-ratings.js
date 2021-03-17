@@ -1,12 +1,13 @@
 const { MILLISECONDS_IN_DAY, useTestData } = require('../constants');
-const { getSources } = require('../services/news-api-service');
 const sourceBiasRatings = require('../../server/data/allsides_data.json');
+
+const headers = { Accept: 'application/json', 'X-Api-Key': process.env.NEWS_API_KEY };
+const path = process.env.NEWS_API_URL;
 
 const ALLSIDES_SCALE_START = 71;
 const ALLSIDES_MIXED = 2707;
 const ALLSIDES_UNKNOWN = 2690;
 const CENTER = 2;
-
 const ALLOWED_SOURCE_TYPES = ['general', 'business'];
 
 let appSourceList;
@@ -16,6 +17,14 @@ const resetSourceLists = () => {
 	appSourceList = [];
 	sourceListBySlant = [];
 };
+
+async function getSources() {
+	const url = `${path}/sources`;
+	const params = { language: 'en' };
+	const requestOptions = { method: 'GET', headers };
+	const response = await fetch(`${url}${formatGetQuery(params)}`, requestOptions);
+	return response.json();
+}
 
 const filteredBiasRatings = sourceBiasRatings.reduce((acc, sourceBiasRating) => {
 	if (
@@ -104,10 +113,8 @@ async function populateSourceLists() {
 	});
 }
 
-if (!(appSourceList && appSourceList.length)) {
-	populateSourceLists();
-	setInterval(populateSourceLists, MILLISECONDS_IN_DAY * 7);
-}
+populateSourceLists();
+setInterval(populateSourceLists, MILLISECONDS_IN_DAY * 7);
 
 module.exports = {
 	appSourceList,
