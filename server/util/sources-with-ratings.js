@@ -104,8 +104,10 @@ async function populateSourceLists() {
 	});
 }
 
-populateSourceLists();
-setInterval(populateSourceLists, MILLISECONDS_IN_DAY * 7);
+if (!(appSourceList && appSourceList.length)) {
+	populateSourceLists();
+	setInterval(populateSourceLists, MILLISECONDS_IN_DAY * 7);
+}
 
 module.exports = {
 	appSourceList,
