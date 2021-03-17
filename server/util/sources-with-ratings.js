@@ -1,3 +1,4 @@
+const formatGetQuery = require('./format-get-query');
 const { MILLISECONDS_IN_DAY, useTestData } = require('../constants');
 const sourceBiasRatings = require('../../server/data/allsides_data.json');
 

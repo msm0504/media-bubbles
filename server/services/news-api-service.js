@@ -1,23 +1,11 @@
 const { MILLISECONDS_IN_DAY } = require('../constants');
+const formatGetQuery = require('../util/format-get-query');
 const { getBiasRatingByNewsApiId, sourceListBySlant } = require('../util/sources-with-ratings');
 
 const headers = { Accept: 'application/json', 'X-Api-Key': process.env.NEWS_API_KEY };
 const path = process.env.NEWS_API_URL;
 const DEFAULT_PREVIOUS_DAYS = 5;
 const DEFAULT_SORT = 'relevancy';
-
-const formatGetQuery = params => {
-	const query = [];
-	if (params) {
-		Object.keys(params).forEach(key => {
-			query.push(
-				key + '=' + (typeof params[key] === 'object' ? params[key].toString() : params[key])
-			);
-		});
-	}
-
-	return query.length > 0 ? '?' + query.join('&') : '';
-};
 
 async function getHeadlines(params) {
 	if (!params || (!params.sources && !params.spectrumSearchAll)) {
