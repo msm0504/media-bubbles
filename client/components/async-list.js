@@ -1,7 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
-import { CardBody, Col, FormGroup, Input, Label, ListGroup, ListGroupItem, Row } from 'reactstrap';
+import {
+	CardBody,
+	Col,
+	FormGroup,
+	Input,
+	Label,
+	ListGroup,
+	ListGroupItem,
+	Pagination,
+	PaginationItem,
+	PaginationLink,
+	Row
+} from 'reactstrap';
 import { useSession } from 'next-auth/client';
 import debounce from 'lodash.debounce';
 
@@ -17,13 +29,12 @@ const AsyncList = ({
 	keyField,
 	ListItemComponent,
 	loginRequired,
-	loginRequiredMessage,
-	maxResults
+	loginRequiredMessage
 }) => {
 	const dispatch = useDispatch();
 	const [session] = useSession();
 	const [items, setItems] = useState([]);
-	const [hasMore, setHasMore] = useState(false);
+	const [pageCount, setPageCount] = useState(0);
 	const filter = useRef('');
 	const page = useRef(1);
 	const cache = useRef({});
@@ -47,29 +58,31 @@ const AsyncList = ({
 		);
 
 	async function getListItems() {
-		const { [apiListName]: returnedItems, hasMore } = await APIService.callApi('get', apiPath, {
+		const { [apiListName]: returnedItems, pageCount } = await APIService.callApi('get', apiPath, {
 			filter: filter.current,
 			page: page.current
 		});
 		if (page.current === 1) {
 			cache.current = {
 				...cache.current,
-				[filter.current]: { items: returnedItems, page: page.current, hasMore }
+				[filter.current]: { items: { [page.current]: returnedItems }, pageCount }
 			};
 			setItems(returnedItems);
 		} else if (page.current >= 1) {
-			const updatedItems = items.concat(returnedItems);
 			cache.current = {
 				...cache.current,
-				[filter.current]: { items: updatedItems, page: page.current, hasMore }
+				[filter.current]: {
+					items: { ...cache.current[filter.current].items, [page.current]: returnedItems },
+					pageCount
+				}
 			};
-			setItems(updatedItems);
+			setItems(returnedItems);
 		} else {
 			throw `Queried for page ${page.current} of results containing ${filter.current}`;
 		}
 		if (Object.keys(cache.current).length > CACHE_SIZE)
 			delete cache.current[Object.keys(cache.current)[0]];
-		setHasMore(hasMore);
+		setPageCount(pageCount);
 	}
 
 	async function deleteItem(itemId, itemName) {
@@ -92,11 +105,9 @@ const AsyncList = ({
 	}
 
 	const getOptionsFromCache = () => {
-		if (cache.current[filter.current] && cache.current[filter.current].page >= page.current) {
-			setItems(cache.current[filter.current].items.slice(0, maxResults * page.current));
-			setHasMore(
-				cache.current[filter.current].hasMore || cache.current[filter.current].page > page.current
-			);
+		if (cache.current[filter.current]?.items[page.current]) {
+			setItems(cache.current[filter.current].items[page.current]);
+			setPageCount(cache.current[filter.current].pageCount);
 			return true;
 		}
 		return false;
@@ -109,8 +120,8 @@ const AsyncList = ({
 	};
 	const debouncedSearch = debounce(handleSearch, 300);
 
-	const handleLoadMore = () => {
-		page.current += 1;
+	const handleLoadPage = selectedPage => {
+		page.current = selectedPage;
 		if (!getOptionsFromCache()) getListItems();
 	};
 
@@ -139,17 +150,29 @@ const AsyncList = ({
 						<ListItemComponent {...item} fnDeleteItem={deleteItem} />
 					</ListGroupItem>
 				))}
-				{hasMore && (
-					<ListGroupItem
-						className='text-center'
-						color='info'
-						tag='button'
-						action
-						onClick={handleLoadMore}
-					>
-						Load More
-					</ListGroupItem>
-				)}
+				{pageCount ? (
+					<Pagination listClassName='float-right' aria-label='change list page being displayed'>
+						<PaginationItem disabled={page.current <= 1}>
+							<PaginationLink first onClick={() => handleLoadPage(1)} />
+						</PaginationItem>
+						<PaginationItem disabled={page.current <= 1}>
+							<PaginationLink previous onClick={() => handleLoadPage(page.current - 1)} />
+						</PaginationItem>
+						{new Array(pageCount).fill(1).map((_, index) => (
+							<PaginationItem key={`page${index + 1}`} active={index + 1 === page.current}>
+								<PaginationLink onClick={() => handleLoadPage(index + 1)}>
+									{index + 1}
+								</PaginationLink>
+							</PaginationItem>
+						))}
+						<PaginationItem disabled={page.current >= pageCount}>
+							<PaginationLink next onClick={() => handleLoadPage(page.current + 1)} />
+						</PaginationItem>
+						<PaginationItem disabled={page.current >= pageCount}>
+							<PaginationLink last onClick={() => handleLoadPage(pageCount)} />
+						</PaginationItem>
+					</Pagination>
+				) : null}
 			</ListGroup>
 		</>
 	);
@@ -161,13 +184,11 @@ AsyncList.propTypes = {
 	keyField: PropTypes.string.isRequired,
 	ListItemComponent: PropTypes.elementType.isRequired,
 	loginRequired: PropTypes.bool,
-	loginRequiredMessage: PropTypes.string,
-	maxResults: PropTypes.number
+	loginRequiredMessage: PropTypes.string
 };
 
 AsyncList.defaultProps = {
-	loginRequired: false,
-	maxResults: 25
+	loginRequired: false
 };
 
 export default AsyncList;

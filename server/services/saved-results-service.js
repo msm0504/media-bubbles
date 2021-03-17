@@ -18,33 +18,37 @@ async function saveSearchResult(result) {
 
 async function getSavedResults(filter = '', page = 1, userId) {
 	const db = await _collection;
+	const count = await db
+		.find({ name: { $regex: `^.*${filter}.*$`, $options: 'i' }, userId: userId })
+		.count();
 	const savedResults = await db
 		.find({ name: { $regex: `^.*${filter}.*$`, $options: 'i' }, userId: userId })
 		.sort({ createdAt: -1 })
 		.skip(PAGE_SIZE * (page - 1))
-		.limit(PAGE_SIZE + 1)
+		.limit(PAGE_SIZE)
 		.map(({ _id, name, createdAt }) => ({ _id, name, createdAt }))
 		.toArray();
 
 	return {
-		savedResults: savedResults.slice(0, PAGE_SIZE),
-		hasMore: savedResults.length > PAGE_SIZE
+		savedResults: savedResults,
+		pageCount: Math.ceil(count / PAGE_SIZE)
 	};
 }
 
 async function getAllSavedResults(filter = '', page = 1) {
 	const db = await _collection;
+	const count = await db.find({ name: { $regex: `^.*${filter}.*$`, $options: 'i' } }).count();
 	const savedResults = await db
 		.find({ name: { $regex: `^.*${filter}.*$`, $options: 'i' } })
 		.sort({ createdAt: -1 })
 		.skip(PAGE_SIZE * (page - 1))
-		.limit(PAGE_SIZE + 1)
+		.limit(PAGE_SIZE)
 		.map(({ _id, name, createdAt }) => ({ _id, name, createdAt }))
 		.toArray();
 
 	return {
-		savedResults: savedResults.slice(0, PAGE_SIZE),
-		hasMore: savedResults.length > PAGE_SIZE
+		savedResults: savedResults,
+		pageCount: Math.ceil(count / PAGE_SIZE)
 	};
 }
 

@@ -5,7 +5,7 @@ import { getAllSavedResults } from '../../../server/services/saved-results-servi
 export default nc().get(async function (req, res) {
 	const session = await getSession({ req });
 	if (!session?.user.isAdmin) {
-		res.json({ savedResults: [], hasMore: false });
+		res.json({ savedResults: [], pageCount: 0 });
 	} else {
 		res.json(await getAllSavedResults(req.query.filter, req.query.page));
 	}

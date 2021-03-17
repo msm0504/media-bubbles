@@ -58,17 +58,30 @@ async function getPost(slug) {
 
 async function getPostSummaries(filter = '', page = 1) {
 	const db = await _collection;
+	const count = await db
+		.find({
+			$or: [
+				{ slug: { $regex: `^.*${filter}.*$`, $options: 'i' } },
+				{ title: { $regex: `^.*${filter}.*$`, $options: 'i' } }
+			]
+		})
+		.count();
 	const postSummaries = await db
-		.find({ slug: { $regex: `^.*${filter}.*$`, $options: 'i' } })
+		.find({
+			$or: [
+				{ slug: { $regex: `^.*${filter}.*$`, $options: 'i' } },
+				{ title: { $regex: `^.*${filter}.*$`, $options: 'i' } }
+			]
+		})
 		.sort({ updatedAt: -1 })
 		.skip(PAGE_SIZE * (page - 1))
-		.limit(PAGE_SIZE + 1)
+		.limit(PAGE_SIZE)
 		.map(({ content, ...metaData }) => metaData)
 		.toArray();
 
 	return {
-		posts: postSummaries.slice(0, PAGE_SIZE),
-		hasMore: postSummaries.length > PAGE_SIZE
+		posts: postSummaries,
+		pageCount: Math.ceil(count / PAGE_SIZE)
 	};
 }
 

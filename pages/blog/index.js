@@ -70,7 +70,6 @@ const BlogPosts = () => {
 				apiPath='blog-posts'
 				keyField='slug'
 				ListItemComponent={PostSummary}
-				maxResults={10}
 			/>
 		</>
 	);

@@ -6,7 +6,7 @@ export default nc()
 	.get(async function (req, res) {
 		const session = await getSession({ req });
 		if (!session?.user.id) {
-			res.json({ savedResults: [], hasMore: false });
+			res.json({ savedResults: [], pageCount: 0 });
 		} else {
 			res.json(await getSavedResults(req.query.filter, req.query.page, session.user.id));
 		}
