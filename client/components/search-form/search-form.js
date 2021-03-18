@@ -44,7 +44,7 @@ const SearchForm = ({
 		if (!(sourceState.appSourceList.length && sourceState.sourceListBySlant.length)) {
 			getSourceLists();
 		}
-	}, [sourceState]);
+	}, []);
 
 	const generateFormBySearchMode = () => {
 		switch (formState.searchMode) {
