@@ -39,7 +39,7 @@ const SearchForm = ({
 	sourceState,
 	submitForm
 }) => {
-	if (!(sourceState.appSourceList.length && sourceState.sourceListBySlant.length)) {
+	if (window && !(sourceState.appSourceList.length && sourceState.sourceListBySlant.length)) {
 		getSourceLists();
 	}
 
