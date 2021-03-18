@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
 	Button,
@@ -39,9 +40,11 @@ const SearchForm = ({
 	sourceState,
 	submitForm
 }) => {
-	if (window && !(sourceState.appSourceList.length && sourceState.sourceListBySlant.length)) {
-		getSourceLists();
-	}
+	useEffect(() => {
+		if (!(sourceState.appSourceList.length && sourceState.sourceListBySlant.length)) {
+			getSourceLists();
+		}
+	}, [sourceState]);
 
 	const generateFormBySearchMode = () => {
 		switch (formState.searchMode) {
