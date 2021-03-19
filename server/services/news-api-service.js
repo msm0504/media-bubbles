@@ -1,6 +1,6 @@
 const { MILLISECONDS_IN_DAY } = require('../constants');
 const formatGetQuery = require('../util/format-get-query');
-const { getBiasRatingByNewsApiId, getSourceLists } = require('../util/sources-with-ratings');
+const { getBiasRatingByNewsApiId, getSourceLists } = require('./source-list-service');
 
 const headers = { Accept: 'application/json', 'X-Api-Key': process.env.NEWS_API_KEY };
 const path = process.env.NEWS_API_URL;

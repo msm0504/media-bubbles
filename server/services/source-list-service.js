@@ -1,12 +1,15 @@
-const formatGetQuery = require('./format-get-query');
+const formatGetQuery = require('../util/format-get-query');
 const { MILLISECONDS_IN_DAY, useTestData } = require('../constants');
 
-const headers = { Accept: 'application/json', 'X-Api-Key': process.env.NEWS_API_KEY };
-const path = process.env.NEWS_API_URL;
+const headers = { Accept: 'application/json' };
 
-const ALLSIDES_SCALE_START = 71;
-const ALLSIDES_MIXED = 2707;
-const ALLSIDES_UNKNOWN = 2690;
+const ALL_SIDES_RATINGS_TO_INT = {
+	Left: 0,
+	'Lean Left': 1,
+	Center: 2,
+	'Lean Right': 3,
+	Right: 4
+};
 const CENTER = 2;
 const ALLOWED_SOURCE_TYPES = ['general', 'business'];
 
@@ -23,14 +26,17 @@ const resetSourceLists = () => {
 let testSourceData;
 let testBiasRatings;
 if (useTestData) {
-	testSourceData = require('../../server/test-data/source-data.json');
-	testBiasRatings = require('../../server/test-data/allsides_data.json');
+	testSourceData = require('../test-data/source-data.json');
+	testBiasRatings = require('../test-data/allsides_pub_data.json');
 }
 
 async function getSources() {
-	const url = `${path}/sources`;
+	const url = `${process.env.NEWS_API_URL}/sources`;
 	const params = { language: 'en' };
-	const requestOptions = { method: 'GET', headers };
+	const requestOptions = {
+		method: 'GET',
+		headers: { ...headers, 'X-Api-Key': process.env.NEWS_API_KEY }
+	};
 	const response = await fetch(`${url}${formatGetQuery(params)}`, requestOptions);
 	return response.json();
 }
@@ -46,16 +52,14 @@ async function setFilteredBiasRatings() {
 		return;
 	}
 
-	const biasRatings = useTestData ? testBiasRatings : await getBiasRatings();
-	filteredBiasRatings = biasRatings.reduce((acc, sourceBiasRating) => {
-		if (
-			!sourceBiasRating.bias_rating ||
-			sourceBiasRating.bias_rating == ALLSIDES_MIXED ||
-			sourceBiasRating.bias_rating == ALLSIDES_UNKNOWN
-		)
-			return acc;
+	const biasRatingsResponse = useTestData ? testBiasRatings : await getBiasRatings();
+	const biasRatings =
+		biasRatingsResponse?.allsides_media_bias_ratings.map(({ publication }) => publication) || [];
+	filteredBiasRatings = biasRatings.reduce((acc, { source_name, media_bias_rating }) => {
+		const biasRating = ALL_SIDES_RATINGS_TO_INT[media_bias_rating];
+		if (biasRating === null || typeof biasRating === 'undefined') return acc;
 
-		const sourceId = sourceBiasRating.news_source
+		const sourceId = source_name
 			.toLowerCase()
 			.replace(/\(.*\)/, '') // ignore part of name in ()
 			.replace(/^the\s/, '') // ignore 'the ' at start of name
@@ -65,7 +69,6 @@ async function setFilteredBiasRatings() {
 			.replace(/\s+-?\s*/g, '-')
 			.replace(/-$/, '');
 
-		const biasRating = +sourceBiasRating.bias_rating - ALLSIDES_SCALE_START;
 		// If multiple matches, use more extreme rating. Search results could include opinion pieces
 		if (!acc[sourceId] || Math.abs(biasRating - CENTER) > Math.abs(acc[sourceId] - CENTER)) {
 			acc[sourceId] = biasRating;
@@ -144,6 +147,5 @@ setInterval(resetSourceLists, MILLISECONDS_IN_DAY * 7);
 
 module.exports = {
 	getBiasRatingByNewsApiId,
-	getSourceLists,
-	setFilteredBiasRatings
+	getSourceLists
 };
