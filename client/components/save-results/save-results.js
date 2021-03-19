@@ -38,7 +38,7 @@ const SaveResults = ({ formState, newSearchState, saveResult, sourceState }) => 
 	};
 
 	return (
-		<Button className='ml-3 d-inline-block' outline color='info' onClick={() => saveClicked()}>
+		<Button className='mb-1 ml-3 d-inline-block' outline color='info' onClick={() => saveClicked()}>
 			<strong>Save Results</strong>
 		</Button>
 	);

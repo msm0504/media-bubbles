@@ -1,4 +1,4 @@
 import nc from 'next-connect';
-import { appSourceList, sourceListBySlant } from '../../server/util/sources-with-ratings';
+import { getSourceLists } from '../../server/util/sources-with-ratings';
 
-export default nc().get((req, res) => res.json({ appSourceList, sourceListBySlant }));
+export default nc().get(async (req, res) => res.json(await getSourceLists()));

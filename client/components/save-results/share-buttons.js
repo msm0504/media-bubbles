@@ -1,7 +1,13 @@
+import { useState, useEffect } from 'react';
 import { Button } from 'reactstrap';
 
 const ShareButtons = ({ urlToShare = '' }) => {
 	if (!urlToShare) return null;
+
+	const [hasShareApi, setHasShareApi] = useState(false);
+	useEffect(() => {
+		if (navigator?.share) setHasShareApi(true);
+	}, []);
 
 	const copyToClipboard = () => {
 		const el = document.createElement('textarea');
@@ -14,12 +20,11 @@ const ShareButtons = ({ urlToShare = '' }) => {
 		document.body.removeChild(el);
 	};
 
-	return navigator.share ? (
+	return hasShareApi ? (
 		<Button
-			className='ml-3 d-inline-block'
+			className='mb-1 ml-3 d-inline-block'
 			outline
 			color='primary'
-			size='lg'
 			onClick={() => {
 				navigator.share({ title: 'Media Bubbles Results', url: urlToShare });
 			}}

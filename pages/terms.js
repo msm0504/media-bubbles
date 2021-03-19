@@ -243,17 +243,56 @@ const Terms = () => (
 			to be bound by the revised terms. If You do not agree to the new terms, in whole or in part,
 			please stop using the website and the Service.
 		</p>
+		<h1>AllSides Terms</h1>
+		<a rel='license' href='http://creativecommons.org/licenses/by-nc/4.0/'>
+			<img
+				style={{ 'margin-top': '5px', 'margin-bottom': '5px', 'border-width': 0 }}
+				alt='Creative Commons License'
+				src='https://i.creativecommons.org/l/by-nc/4.0/88x31.png'
+			/>
+		</a>
+		<br />
+		<p>
+			<a
+				xmlnsDct='http://purl.org/dc/terms/'
+				href='https://www.allsides.com/media-bias/media-bias-ratings'
+				rel='dct:source'
+			>
+				<span
+					xmlnsDct='http://purl.org/dc/terms/'
+					href='http://purl.org/dc/dcmitype/Dataset'
+					property='dct:title'
+					rel='dct:type'
+				>
+					AllSides Media Bias Ratings
+				</span>
+			</a>
+			™ by{' '}
+			<a
+				xmlnsCc='http://creativecommons.org/ns#'
+				href='https://www.allsides.com/unbiased-balanced-news'
+				property='cc:attributionName'
+				rel='cc:attributionURL'
+			>
+				AllSides.com
+			</a>{' '}
+			are licensed under a{' '}
+			<a rel='license' href='http://creativecommons.org/licenses/by-nc/4.0/'>
+				Creative Commons Attribution-NonCommercial 4.0 International License
+			</a>
+			. These ratings may be used for research or noncommercial purposes with attribution.
+		</p>
 		<h1>Contact Us</h1>
 		<p>If you have any questions about these Terms and Conditions, You can contact us:</p>
 		<ul>
 			<li>
 				By visiting this page on our website:
 				<a
-					href='https://mediabubbles.net/contact'
+					href={`${process.env.NEXT_PUBLIC_API_URL}/contact`}
 					rel='external nofollow noopener noreferrer'
 					target='_blank'
 				>
-					https://mediabubbles.net/contact
+					{`${process.env.NEXT_PUBLIC_API_URL}/contact`}
 				</a>
 			</li>
 		</ul>

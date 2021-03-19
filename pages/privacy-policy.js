@@ -403,11 +403,11 @@ const PrivacyPolicy = () => (
 			<li>
 				By visiting this page on our website:
 				<a
-					href='https://mediabubbles.net/contact'
+					href={`${process.env.NEXT_PUBLIC_API_URL}/contact`}
 					rel='external nofollow noopener noreferrer'
 					target='_blank'
 				>
-					https://mediabubbles.net/contact
+					{`${process.env.NEXT_PUBLIC_API_URL}/contact`}
 				</a>
 			</li>
 		</ul>

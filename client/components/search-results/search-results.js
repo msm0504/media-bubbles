@@ -9,15 +9,13 @@ import {
 	CardTitle,
 	Collapse
 } from 'reactstrap';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
 import ColumnHeadingIcon from './search-result-column-icon';
 import SaveResults from '../save-results/save-results';
+import ShareButtons from '../save-results/share-buttons';
 import { SOURCE_SLANT } from '../../constants/source-slant';
 import UIActions from '../../actions/ui-actions';
-
-const ShareButtons = dynamic(() => import('../save-results/share-buttons'), { ssr: false });
 
 const mapStateToProps = state => {
 	return {
