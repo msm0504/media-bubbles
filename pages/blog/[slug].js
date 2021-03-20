@@ -1,15 +1,18 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { CardBody } from 'reactstrap';
 
 import Spinner from '../../client/components/spinner';
 import BlogPostTemplate from '../../client/components/blog/blog-post-template';
 import { getAllPostSlugs, getPost } from '../../server/services/blog-service';
 
-const BlogPost = ({ post }) => {
+const BlogPost = ({ post, notFound }) => {
 	const router = useRouter();
 
 	return router.isFallback ? (
 		<Spinner />
+	) : notFound ? (
+		<CardBody className='text-info'>{'No blog post found for this slug'}</CardBody>
 	) : (
 		<>
 			<Head>
@@ -35,7 +38,8 @@ export async function getStaticProps({ params: { slug } }) {
 	const post = await getPost(slug);
 	return {
 		props: {
-			post
+			post,
+			notFound: !(post && Object.keys(post).length)
 		},
 		revalidate: 60
 	};

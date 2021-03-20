@@ -70,7 +70,7 @@ const ShareButtons = ({ urlToShare = '' }) => {
 				<i className='fa fa-lg fa-envelope-o' aria-hidden='true'></i>
 				<span className='sr-only'>{'email'}</span>
 			</Button>
-			{document.queryCommandSupported('copy') && (
+			{document && document.queryCommandSupported('copy') && (
 				<Button color='secondary' className='d-inline-block mb-1 rounded' onClick={copyToClipboard}>
 					<i className='fa fa-clipboard fa-lg' aria-hidden='true'></i>
 					<span className='sr-only'>{'copy link'}</span>
