@@ -20,6 +20,7 @@ import debounce from 'lodash.debounce';
 import UIActions from '../actions/ui-actions';
 import ALERT_LEVEL from '../constants/alert-level';
 import APIService from '../services/api-service';
+import camelCaseToWords from '../util/camel-case-to-words';
 
 const CACHE_SIZE = 10;
 
@@ -145,11 +146,15 @@ const AsyncList = ({
 				</Col>
 			</Row>
 			<ListGroup>
-				{items.map((item, index) => (
-					<ListGroupItem key={item[keyField]} color={index % 2 === 0 ? '' : 'secondary'}>
-						<ListItemComponent {...item} fnDeleteItem={deleteItem} />
-					</ListGroupItem>
-				))}
+				{items && items.length ? (
+					items.map((item, index) => (
+						<ListGroupItem key={item[keyField]} color={index % 2 === 0 ? '' : 'secondary'}>
+							<ListItemComponent {...item} fnDeleteItem={deleteItem} />
+						</ListGroupItem>
+					))
+				) : (
+					<CardBody className='text-info'>{`No ${camelCaseToWords(apiListName)} found`}</CardBody>
+				)}
 				{pageCount ? (
 					<Pagination listClassName='float-right' aria-label='change list page being displayed'>
 						<PaginationItem disabled={page.current <= 1}>

@@ -4,7 +4,7 @@ import { getSavedResult, deleteSavedResult } from '../../../server/services/save
 
 export default nc()
 	.get(async function (req, res) {
-		res.json(await getSavedResult(req.query.id));
+		res.json((await getSavedResult(req.query.id)) || {});
 	})
 	.delete(async function (req, res) {
 		const session = await getSession({ req });

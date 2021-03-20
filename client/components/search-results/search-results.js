@@ -40,6 +40,10 @@ const SearchResults = ({ onPanelClose, onPanelOpen, searchResultState, sourceSta
 	const stateToDisplay = searchResultState[stateToDisplayName];
 	const { isSearchAll } = stateToDisplay;
 
+	if (resultId && !(stateToDisplay && Object.keys(stateToDisplay).length)) {
+		return <CardBody className='text-info'>{'No saved search result found for this id'}</CardBody>;
+	}
+
 	if (resultId && resultId !== stateToDisplay.savedResultId) return null;
 
 	const generateCollapse = (column, articleListHTML) => {
