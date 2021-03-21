@@ -1,2 +1,2 @@
-const camelCaseToWords = str => str.replaceAll(/([A-Z])/g, ' $1').toLowerCase();
+const camelCaseToWords = str => str.replace(/([A-Z])/g, ' $1').toLowerCase();
 export default camelCaseToWords;
