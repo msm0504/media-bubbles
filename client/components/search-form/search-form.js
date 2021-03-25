@@ -179,58 +179,22 @@ const SearchForm = ({
 						/>
 					</div>
 				</FormGroup>
-				{formState.keyword && (
-					<>
-						<FormGroup className='row'>
-							<Input
-								type='checkbox'
-								name='onlySearchTitles'
-								id='onlySearchTitles'
-								className='switch'
-								checked={formState.onlySearchTitles === 'Y'}
-								onChange={event =>
-									onFormFieldChange(event.target.name, event.target.checked ? 'Y' : 'N')
-								}
-							/>
-							<Label for='onlySearchTitles' className='col-lg-4'>
-								<strong className='ml-2'>Only Search for Keyword in Headlines</strong>
-							</Label>
-						</FormGroup>
-						<FormGroup className='row'>
-							<Label for='sortBy' className='col-sm-6 col-md-4 col-lg-2'>
-								<strong>Sort Results By:</strong>
-							</Label>
-							<Input
-								type='select'
-								name='sortBy'
-								id='sortBy'
-								bsSize='sm'
-								className='col-sm-6 col-lg-4'
-								value={formState.sortBy}
-								onChange={event => onFormFieldChange(event.target.name, event.target.value)}
-							>
-								<option value='relevancy'>Relevance</option>
-								<option value='publishedAt'>Publish Date</option>
-							</Input>
-						</FormGroup>
-						<FormGroup className='row'>
-							<Label for='sortBy' className='col-sm-6 col-md-4 col-lg-2'>
-								<strong>Search Past {formState.previousDays} Day(s)</strong>
-							</Label>
-							<input
-								type='range'
-								id='previousDays'
-								name='previousDays'
-								className='col-sm-6 col-lg-4 mt-1'
-								min='1'
-								max='7'
-								step='1'
-								value={formState.previousDays}
-								onChange={event => onFormFieldChange(event.target.name, event.target.value)}
-							/>
-						</FormGroup>
-					</>
-				)}
+				<FormGroup className='row'>
+					<Label for='previousDays' className='col-sm-6 col-md-4 col-lg-2'>
+						<strong>Search Past {formState.previousDays} Day(s)</strong>
+					</Label>
+					<input
+						type='range'
+						id='previousDays'
+						name='previousDays'
+						className='col-sm-6 col-lg-4 mt-1'
+						min='1'
+						max='7'
+						step='1'
+						value={formState.previousDays}
+						onChange={event => onFormFieldChange(event.target.name, event.target.value)}
+					/>
+				</FormGroup>
 			</CardBody>
 			<CardBody>{generateFormBySearchMode()}</CardBody>
 			<CardFooter>

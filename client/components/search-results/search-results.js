@@ -18,6 +18,10 @@ import { SOURCE_SLANT } from '../../constants/source-slant';
 import UIActions from '../../actions/ui-actions';
 const ShareButtons = dynamic(() => import('../save-results/share-buttons'), { ssr: false });
 
+const CENTER = SOURCE_SLANT[Math.floor(SOURCE_SLANT.length / 2)].id;
+const getTextClassBySlant = slant =>
+	slant > CENTER ? 'text-primary' : slant < CENTER ? 'text-info' : '';
+
 const mapStateToProps = state => {
 	return {
 		sourceState: state.sourceState,
@@ -107,7 +111,7 @@ const SearchResults = ({ onPanelClose, onPanelOpen, searchResultState, sourceSta
 		const articleListState = stateToDisplay.articleMap[columnId];
 		if (articleListState) {
 			const articleList = articleListState.map(article => {
-				return (
+				return article.title ? (
 					<>
 						<CardBody key={article.url} className='p-0'>
 							<CardTitle>
@@ -119,6 +123,18 @@ const SearchResults = ({ onPanelClose, onPanelOpen, searchResultState, sourceSta
 								></a>
 							</CardTitle>
 							<CardText dangerouslySetInnerHTML={{ __html: article.description }} />
+						</CardBody>
+						<hr className='bg-info' />
+					</>
+				) : (
+					<>
+						<CardBody key={article.id} className='p-0'>
+							{isSearchAll ? (
+								<CardTitle className={getTextClassBySlant(columnId)}>
+									{article.sourceName}
+								</CardTitle>
+							) : null}
+							<CardText dangerouslySetInnerHTML={{ __html: article.text }} />
 						</CardBody>
 						<hr className='bg-info' />
 					</>

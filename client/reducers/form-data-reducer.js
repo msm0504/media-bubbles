@@ -5,9 +5,7 @@ import getStateFromStorage from '../util/get-state-from-storage';
 const initialState = {
 	searchMode: SEARCH_MODE[0].id,
 	keyword: '',
-	onlySearchTitles: 'N',
 	previousDays: 5,
-	sortBy: 'relevancy',
 	sourceSlant: '',
 	spectrumSearchAll: '',
 	selectedSourceIds: []
@@ -16,9 +14,7 @@ const initialState = {
 const storageKeys = [
 	{ key: 'searchMode' },
 	{ key: 'keyword' },
-	{ key: 'onlySearchTitles' },
 	{ key: 'previousDays', type: 'number' },
-	{ key: 'sortBy' },
 	{ key: 'sourceSlant' },
 	{ key: 'spectrumSearchAll' },
 	{ key: 'selectedSourceIds', type: 'json' }
