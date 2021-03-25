@@ -50,7 +50,7 @@ async function setSourcesAndBiasRatings() {
 			const twitterHandle = await getTwitterHandle(modifiedName);
 			if (!twitterHandle) return 0;
 			if (twitterHandle.toLowerCase() === 'oann') {
-				source_url = 'https:/www.oann.com/';
+				source_url = 'https://www.oann.com/';
 			}
 			if (!Object.prototype.hasOwnProperty.call(global.sources.biasRatings, twitterHandle)) {
 				const formattedUrl = source_url.replace(/(?<!\/)\/[^/]+/g, ''); // remove subdomains
