@@ -1,5 +1,6 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
+import { ObjectID } from 'mongodb';
 
 import { MONGODB_URL } from '../../../server/constants';
 
@@ -21,13 +22,13 @@ export default NextAuth({
 		async session(session, user) {
 			if (session) {
 				session.user.id = user.id;
-				session.user.isAdmin = user.id === process.env.NEXT_PUBLIC_ADMIN_ID;
+				session.user.isAdmin = user.id === process.env.ADMIN_ID;
 			}
 			return session;
 		},
-		async jwt(token, user, account) {
-			if (token && account) {
-				return { ...token, id: account.id };
+		async jwt(token, user) {
+			if (token && user) {
+				return { ...token, id: ObjectID(user.id).toString() };
 			}
 			return token;
 		}
