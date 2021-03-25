@@ -53,7 +53,8 @@ async function setSourcesAndBiasRatings() {
 				source_url = 'https:/www.oann.com/';
 			}
 			if (!Object.prototype.hasOwnProperty.call(global.sources.biasRatings, twitterHandle)) {
-				global.sources.app.push({ id: twitterHandle, name: modifiedName, url: source_url });
+				const formattedUrl = source_url.replace(/(?<!\/)\/[^/]+/g, ''); // remove subdomains
+				global.sources.app.push({ id: twitterHandle, name: modifiedName, url: formattedUrl });
 			}
 			if (
 				!Object.prototype.hasOwnProperty.call(global.sources.biasRatings, twitterHandle) ||
