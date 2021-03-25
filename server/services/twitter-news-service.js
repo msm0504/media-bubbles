@@ -6,7 +6,7 @@ const headers = {
 	Accept: 'application/json',
 	Authorization: `Bearer ${process.env.TWITTER_APP_BEARER}`
 };
-const defaultParams = { max_results: 15, expansions: 'author_id' };
+const defaultParams = { max_results: 10, expansions: 'author_id' };
 const defaultOperators = 'has:links -is:retweet';
 const DEFAULT_PREVIOUS_DAYS = 5;
 
