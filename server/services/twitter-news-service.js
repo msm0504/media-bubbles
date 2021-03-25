@@ -27,18 +27,25 @@ async function getHeadlines(params) {
 		? (await getSourceLists()).sourceListBySlant
 		: params.sources.split(',');
 
-	return sources.reduce(async function (memo, sourceList) {
-		const {
-			data,
-			includes: { users }
-		} = await getRecentTweets(sourceList, params.keyword, params.previousDays);
-		const key = isSpectrumSearch ? getBiasRatingBySourceId(users[0].username) : users[0].username;
+	return sources.reduce(async function (memo, sources) {
+		const { meta, data, includes } = await getRecentTweets(
+			sources,
+			params.keyword,
+			params.previousDays
+		);
 		const acc = await memo;
-		acc[key] = data.map(tweet => ({
-			...tweet,
-			text: addAnchorsToText(tweet.text),
-			sourceName: getSourceName(tweet, users)
-		}));
+		if (meta.result_count) {
+			const { users } = includes;
+			const key = isSpectrumSearch ? getBiasRatingBySourceId(users[0].username) : users[0].username;
+			acc[key] = data.map(tweet => ({
+				...tweet,
+				text: addAnchorsToText(tweet.text),
+				sourceName: getSourceName(tweet, users)
+			}));
+		} else {
+			const key = isSpectrumSearch ? getBiasRatingBySourceId(sources[0]) : sources;
+			acc[key] = [];
+		}
 		return acc;
 	}, {});
 }
