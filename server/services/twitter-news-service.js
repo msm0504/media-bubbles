@@ -2,13 +2,32 @@ const { MILLISECONDS_IN_DAY } = require('../constants');
 const formatGetQuery = require('../util/format-get-query');
 const { getBiasRatingBySourceId, getSourceLists } = require('./source-list-service');
 
+const MAX_TWITTER_RESULTS = 100;
+const MAX_SHOW_PER_CATEGORY = 10;
 const headers = {
 	Accept: 'application/json',
 	Authorization: `Bearer ${process.env.TWITTER_APP_BEARER}`
 };
-const defaultParams = { max_results: 10, expansions: 'author_id' };
+const defaultParams = { max_results: MAX_TWITTER_RESULTS, expansions: 'author_id' };
 const defaultOperators = 'has:links -is:retweet';
 const DEFAULT_PREVIOUS_DAYS = 5;
+
+const filterDupeTweets = data => {
+	const uniqueTweets = {};
+	let uniqueCount = 0;
+	for (let i = 0; i < data.length && uniqueCount < MAX_SHOW_PER_CATEGORY; i++) {
+		const { text } = data[i];
+		const linkIndex = text.indexOf('http');
+		if (linkIndex > -1) {
+			const withoutLinks = text.substring(0, linkIndex).trim();
+			if (!uniqueTweets[withoutLinks]) {
+				uniqueTweets[withoutLinks] = data[i];
+				uniqueCount++;
+			}
+		}
+	}
+	return Object.values(uniqueTweets);
+};
 
 const addAnchorsToText = text =>
 	text.replace(
@@ -37,7 +56,7 @@ async function getHeadlines(params) {
 		if (meta.result_count) {
 			const { users } = includes;
 			const key = isSpectrumSearch ? getBiasRatingBySourceId(users[0].username) : users[0].username;
-			acc[key] = data.map(tweet => ({
+			acc[key] = filterDupeTweets(data).map(tweet => ({
 				...tweet,
 				text: addAnchorsToText(tweet.text),
 				sourceName: getSourceName(tweet, users)
