@@ -43,7 +43,7 @@ async function getHeadlines(params) {
 				sourceName: getSourceName(tweet, users)
 			}));
 		} else {
-			const key = isSpectrumSearch ? getBiasRatingBySourceId(sources[0]) : sources;
+			const key = isSpectrumSearch ? getBiasRatingBySourceId(sources[0].id) : sources;
 			acc[key] = [];
 		}
 		return acc;
