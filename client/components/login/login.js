@@ -5,7 +5,7 @@ const Login = () => {
 	const [session, loading] = useSession();
 	return (
 		<div className='d-flex justify-content-end m-0'>
-			{session && !session.user.isAdmin ? (
+			{session ? (
 				<Button
 					color='primary'
 					size='sm'
