@@ -179,22 +179,24 @@ const SearchForm = ({
 						/>
 					</div>
 				</FormGroup>
-				<FormGroup className='row'>
-					<Label for='previousDays' className='col-sm-6 col-md-4 col-lg-2'>
-						<strong>Search Past {formState.previousDays} Day(s)</strong>
-					</Label>
-					<input
-						type='range'
-						id='previousDays'
-						name='previousDays'
-						className='col-sm-6 col-lg-4 mt-1'
-						min='1'
-						max='7'
-						step='1'
-						value={formState.previousDays}
-						onChange={event => onFormFieldChange(event.target.name, event.target.value)}
-					/>
-				</FormGroup>
+				{formState.keyword && (
+					<FormGroup className='row'>
+						<Label for='previousDays' className='col-sm-6 col-md-4 col-lg-2'>
+							<strong>Search Past {formState.previousDays} Day(s)</strong>
+						</Label>
+						<input
+							type='range'
+							id='previousDays'
+							name='previousDays'
+							className='col-sm-6 col-lg-4 mt-1'
+							min='1'
+							max='7'
+							step='1'
+							value={formState.previousDays}
+							onChange={event => onFormFieldChange(event.target.name, event.target.value)}
+						/>
+					</FormGroup>
+				)}
 			</CardBody>
 			<CardBody>{generateFormBySearchMode()}</CardBody>
 			<CardFooter>

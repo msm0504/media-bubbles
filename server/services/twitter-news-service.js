@@ -35,16 +35,18 @@ const addAnchorsToText = text =>
 		'<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
 	);
 
-const getSourceName = (tweet, users) => users.find(user => user.id === tweet.author_id).name;
+const getSourceName = (tweet, users, appSourceList) => {
+	const twitterHandle = users.find(({ id }) => id === tweet.author_id).username;
+	return appSourceList.find(({ id }) => id === twitterHandle).name;
+};
 
 async function getHeadlines(params) {
 	if (!params || (!params.sources && !params.spectrumSearchAll)) {
 		return {};
 	}
+	const { appSourceList, sourceListBySlant } = await getSourceLists();
 	const isSpectrumSearch = !params.sources && params.spectrumSearchAll;
-	const sources = isSpectrumSearch
-		? (await getSourceLists()).sourceListBySlant
-		: params.sources.split(',');
+	const sources = isSpectrumSearch ? sourceListBySlant : params.sources.split(',');
 
 	return sources.reduce(async function (memo, sources) {
 		const { meta, data, includes } = await getRecentTweets(
@@ -59,7 +61,7 @@ async function getHeadlines(params) {
 			acc[key] = filterDupeTweets(data).map(tweet => ({
 				...tweet,
 				text: addAnchorsToText(tweet.text),
-				sourceName: getSourceName(tweet, users)
+				sourceName: getSourceName(tweet, users, appSourceList)
 			}));
 		} else {
 			const key = isSpectrumSearch ? getBiasRatingBySourceId(sources[0].id) : sources;
@@ -74,13 +76,16 @@ async function getRecentTweets(sources, keyword, previousDays) {
 		? `(${sources.map(({ id }) => `from:${id}`).join(' OR ')})`
 		: `from:${sources}`;
 	const query = `${keyword ? `${keyword} ` : ''}${fromFilters} ${defaultOperators}`;
+	const params = { query, ...defaultParams };
 
-	const fromDate = new Date(
-		Date.now() - MILLISECONDS_IN_DAY * ((previousDays || DEFAULT_PREVIOUS_DAYS) - 1)
-	);
-	fromDate.setHours(0, 0, 0);
+	if (keyword) {
+		const fromDate = new Date(
+			Date.now() - MILLISECONDS_IN_DAY * ((previousDays || DEFAULT_PREVIOUS_DAYS) - 1)
+		);
+		fromDate.setHours(0, 0, 0);
+		params.start_time = fromDate.toISOString();
+	}
 
-	const params = { query, start_time: fromDate.toISOString(), ...defaultParams };
 	const requestOptions = { method: 'GET', headers };
 	const response = await fetch(
 		`${process.env.TWITTER_POST_API_URL}${formatGetQuery(params)}`,
