@@ -7,7 +7,7 @@ import UIActions from '../client/actions/ui-actions';
 import Alerts from '../client/components/alerts';
 import Header from '../client/components/header';
 import Footer from '../client/components/footer';
-import FbLogin from '../client/components/login/fb-login';
+import Login from '../client/components/login/login';
 import RouteLink from '../client/components/nav/route-link';
 import { wrapper } from '../client/store/store';
 import '../styles/globals.css';
@@ -35,7 +35,7 @@ const App = ({ Component, pageProps }) => {
 				<div className='card'>
 					<Header />
 					<div className='card-body' style={{ minHeight: '600px' }}>
-						<FbLogin />
+						<Login />
 						<div className='d-flex justify-content-end mb-2'>
 							<RouteLink buttonText='Home' routePath='/' />
 							<RouteLink buttonText='About' routePath='/about' />
