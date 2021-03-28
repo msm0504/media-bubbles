@@ -151,7 +151,7 @@ const SearchForm = ({
 	};
 
 	return (
-		<Form className='fluid-container'>
+		<Form>
 			<CardBody>
 				<FormGroup className='row'>
 					<Label className='col-sm-2' for='keyword'>

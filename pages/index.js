@@ -66,7 +66,7 @@ const SearchTabs = ({ curSearchMode, onSearchModeChange }) => {
 
 	const tabsAndOptions = getTabsAndOptions();
 	return (
-		<div className='container-fluid'>
+		<>
 			<div className='d-none d-md-block'>
 				<Nav tabs>{tabsAndOptions.tabList}</Nav>
 			</div>
@@ -88,7 +88,7 @@ const SearchTabs = ({ curSearchMode, onSearchModeChange }) => {
 					<SearchForm />
 				</>
 			)}
-		</div>
+		</>
 	);
 };
 

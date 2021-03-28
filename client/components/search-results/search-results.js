@@ -176,14 +176,14 @@ const SearchResults = ({ onPanelClose, onPanelOpen, searchResultState, sourceSta
 
 	const collapseAndFullViews = generateCollapseAndFullViews();
 	return (
-		<div className='container-fluid col-sm-12'>
+		<>
 			{!resultId && <SaveResults />}
 			{displayShareButtons()}
 			<div className='d-none d-xl-block'>
 				<CardGroup>{collapseAndFullViews.fullViews}</CardGroup>
 			</div>
 			<div className='d-block d-xl-none'>{collapseAndFullViews.collapseViews}</div>
-		</div>
+		</>
 	);
 };
 

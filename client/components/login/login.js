@@ -4,7 +4,7 @@ import { signIn, signOut, useSession } from 'next-auth/client';
 const Login = () => {
 	const [session, loading] = useSession();
 	return (
-		<div className='d-flex justify-content-end m-0'>
+		<div className='d-flex justify-content-end mb-3'>
 			{session ? (
 				<Button
 					color='primary'

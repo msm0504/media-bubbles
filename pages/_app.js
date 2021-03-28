@@ -18,7 +18,7 @@ const App = ({ Component, pageProps }) => {
 	}, []);
 
 	return (
-		<div className='container-fluid'>
+		<div className='container-fluid p-0'>
 			<Head>
 				<title>Media Bubbles</title>
 				<meta
@@ -34,9 +34,9 @@ const App = ({ Component, pageProps }) => {
 			<Provider session={pageProps.session}>
 				<div className='card'>
 					<Header />
-					<div className='card-body' style={{ minHeight: '600px' }}>
+					<div className='card-body p-2 p-md-4' style={{ minHeight: '600px' }}>
 						<Login />
-						<div className='d-flex justify-content-end mb-2'>
+						<div className='d-flex justify-content-end mb-3'>
 							<RouteLink buttonText='Home' routePath='/' />
 							<RouteLink buttonText='About' routePath='/about' />
 							<RouteLink buttonText='Blog' routePath='/blog' />
