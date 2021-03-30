@@ -100,7 +100,7 @@ const SearchResults = ({ onPanelClose, onPanelOpen, searchResultState, sourceSta
 			<Card key={column.id + 'Card'} className='p-0' body outline color='info'>
 				<CardHeader>
 					<h1 className='text-center my-auto'>{column.name}</h1>
-					<ColumnHeadingIcon column={column} isColumnSlant={isSearchAll} />
+					<ColumnHeadingIcon className='m-lg-2' column={column} isColumnSlant={isSearchAll} />
 				</CardHeader>
 				{articleListHTML}
 			</Card>

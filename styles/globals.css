@@ -14,12 +14,16 @@
 	width: 128px;
 	display: inline-block;
 	border-radius: 50%;
-	background-image: url('/images/BubbleLogo.png');
+	background-image: url('/images/slant-bubbles/bubble-center.png');
 	background-position: right bottom;
 	background-repeat: no-repeat;
 	background-size: cover;
-	box-shadow: -1px 1px 8px var(--dark), 1px 1px 8px var(--dark), 1px -1px 8px var(--dark),
-		-1px -1px 8px var(--dark);
+}
+
+img.bubble-img {
+	height: 128px;
+	width: 128px;
+	border-radius: 50%;
 }
 
 .facebook-btn:not(:hover) {
@@ -31,4 +35,3 @@
 }
 
 @import url('./search-form.css');
-@import url('./search-result.css');
