@@ -33,6 +33,7 @@ const App = ({ Component, pageProps }) => {
 				<meta property='og:image' content='/images/og_image.png' key='ogImage'></meta>
 				<meta property='fb:app_id' content='2356113588028211'></meta>
 				<meta name='twitter:card' content='summary'></meta>
+				<meta name='twitter:image' content='/images/og_image_twitter.png'></meta>
 				<link rel='icon' href='/favicon.ico' />
 				<link rel='canonical' href={process.env.NEXT_PUBLIC_API_URL} />
 			</Head>
