@@ -1,5 +1,10 @@
+import Head from 'next/head';
+
 const PrivacyPolicy = () => (
 	<>
+		<Head>
+			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/privacy-policy`} />
+		</Head>
 		<h1>Privacy Policy</h1>
 		<p>Last updated: July 21, 2020</p>
 		<p>

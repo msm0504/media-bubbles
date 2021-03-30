@@ -25,10 +25,15 @@ const App = ({ Component, pageProps }) => {
 					name='description'
 					content='Escape your information bubble and view headlines from sources across the political spectrum.'
 				></meta>
+				<meta
+					name='keywords'
+					content='media bubbles, media bias, filter bubble, echo chamber, across the political spectrum, news across the political spectrum, headlines across the political spectrum'
+				></meta>
 				<meta property='og:url' content={process.env.NEXT_PUBLIC_API_URL} key='ogUrl'></meta>
 				<meta property='og:image' content='/images/og_image.png' key='ogImage'></meta>
 				<meta property='fb:app_id' content='2356113588028211'></meta>
 				<link rel='icon' href='/favicon.ico' />
+				<link rel='canonical' href={process.env.NEXT_PUBLIC_API_URL} />
 			</Head>
 
 			<Provider session={pageProps.session}>

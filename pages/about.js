@@ -1,5 +1,10 @@
+import Head from 'next/head';
+
 const About = () => (
 	<>
+		<Head>
+			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/about`} />
+		</Head>
 		<h1 className='text-info'>About</h1>
 		<p>
 			I’m a center-left Democrat. Let’s just get that out of the way. Like most people who care

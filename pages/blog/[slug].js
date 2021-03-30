@@ -26,6 +26,7 @@ const BlogPost = ({ post, notFound }) => {
 				<meta property='og:type' content='article'></meta>
 				<meta property='article:published_time' content={post.updatedAt}></meta>
 				<meta property='article:tag' content={post.slug.split('_').slice(3).join(' ')}></meta>
+				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`} />
 			</Head>
 			<BlogPostTemplate content={post.content} date={post.updatedAt} title={post.title} />
 		</>

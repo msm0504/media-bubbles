@@ -21,6 +21,7 @@ ${sourceList.length ? `Sources: ${sourceList.map(source => source.name).join(', 
 				></meta>
 				<meta property='og:title' content={name}></meta>
 				<meta property='og:description' content={description}></meta>
+				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`} />
 			</Head>
 			<SearchResults />
 		</>

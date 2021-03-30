@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { useSession } from 'next-auth/client';
+import Head from 'next/head';
 
 import SaveableForm, { getRequiredMessage } from '../client/components/saveable-form';
 import UIActions from '../client/actions/ui-actions';
@@ -74,6 +75,9 @@ const Feedback = () => {
 
 	return (
 		<>
+			<Head>
+				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/contact`} />
+			</Head>
 			<h1 className='text-info'>Contact Us</h1>
 			<SaveableForm
 				fieldList={fieldList}
