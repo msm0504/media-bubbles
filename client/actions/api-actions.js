@@ -41,6 +41,15 @@ class APIActions {
 		};
 	}
 
+	latestLoaded(articleMap) {
+		return {
+			type: APIActionTypes.LATEST_LOADED,
+			payload: {
+				articleMap
+			}
+		};
+	}
+
 	resultSaved(savedResultId) {
 		return {
 			type: APIActionTypes.RESULT_SAVED,

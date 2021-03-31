@@ -8,7 +8,8 @@ const initialState = {
 		savedResultId: null,
 		isSearchAll: false
 	},
-	loadedResult: {}
+	loadedResult: {},
+	latest: {}
 };
 
 const storageKeys = [
@@ -89,6 +90,18 @@ const searchResultReducer = (state = initialState, action) => {
 					savedResultId: loadedResult._id,
 					isSearchAll: loadedResult.isSearchAll,
 					sourceList: loadedResult.sourceList
+				}
+			};
+		}
+
+		case APIActionTypes.LATEST_LOADED: {
+			return {
+				...state,
+				latest: {
+					openPanels: [],
+					articleMap: action.payload.articleMap,
+					isSearchAll: true,
+					sourceList: []
 				}
 			};
 		}

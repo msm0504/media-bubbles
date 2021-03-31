@@ -1,10 +1,10 @@
-import APIActions from '../../client/actions/api-actions';
-import SearchResults from '../../client/components/search-results/search-results';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 
-import APIService from '../../client/services/api-service';
+import APIActions from '../../client/actions/api-actions';
+import SearchResults from '../../client/components/search-results/search-results';
 import { wrapper } from '../../client/store/store';
+import { getSavedResult } from '../../server/services/saved-results-service';
 
 const SavedSearchResults = ({ loadedResult: { name, createdAt = 0, sourceList = {} } }) => {
 	const router = useRouter();
@@ -31,7 +31,7 @@ ${sourceList.length ? `Sources: ${sourceList.map(source => source.name).join(', 
 export default SavedSearchResults;
 
 export const getServerSideProps = wrapper.getServerSideProps(async ({ params, store }) => {
-	const loadedResult = await APIService.callApi('get', `searchResult/${params.resultId}`);
+	const loadedResult = await getSavedResult(params.resultId);
 	if (loadedResult && Object.keys(loadedResult).length) {
 		store.dispatch(APIActions.resultLoaded(loadedResult));
 	}

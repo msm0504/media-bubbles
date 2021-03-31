@@ -16,7 +16,7 @@ const combinedReducer = combineReducers({
 	sourceState: sourceReducer
 });
 
-const serverStoreKeys = ['searchResultState.loadedResult'];
+const serverStoreKeys = ['searchResultState.loadedResult', 'searchResultState.latest'];
 
 const rootReducer = (state, action) => {
 	if (action.type === HYDRATE) {
