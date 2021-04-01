@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { connect } from 'react-redux';
 import {
 	Button,
@@ -118,8 +119,8 @@ const SearchResults = ({
 		if (articleListState) {
 			const articleList = articleListState.map(article => {
 				return article.title ? (
-					<>
-						<CardBody key={article.url} className='p-0'>
+					<Fragment key={article.url}>
+						<CardBody className='p-0'>
 							<CardTitle>
 								<a
 									href={article.url}
@@ -131,10 +132,10 @@ const SearchResults = ({
 							<CardText dangerouslySetInnerHTML={{ __html: article.description }} />
 						</CardBody>
 						<hr className='bg-info' />
-					</>
+					</Fragment>
 				) : (
-					<>
-						<CardBody key={article.id} className='p-0'>
+					<Fragment key={article.id}>
+						<CardBody className='p-0'>
 							{isSearchAll ? (
 								<CardTitle className={getTextClassBySlant(columnId)}>
 									{article.sourceName}
@@ -143,7 +144,7 @@ const SearchResults = ({
 							<CardText dangerouslySetInnerHTML={{ __html: article.text }} />
 						</CardBody>
 						<hr className='bg-info' />
-					</>
+					</Fragment>
 				);
 			});
 			return articleList.length ? <CardBody>{articleList}</CardBody> : NOT_FOUND_MESSAGE;

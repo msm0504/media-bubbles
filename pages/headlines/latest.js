@@ -4,11 +4,9 @@ import { useRouter } from 'next/router';
 import APIActions from '../../client/actions/api-actions';
 import SearchResults from '../../client/components/search-results/search-results';
 import { wrapper } from '../../client/store/store';
-import { getHeadlines } from '../../server/services/twitter-news-service';
+import { getLatestHeadlines } from '../../server/services/twitter-news-service';
 
-const SEC_IN_FIFTEEN_MIN = 60 * 15;
-
-const SavedSearchResults = () => {
+const LatestHeadlines = () => {
 	const router = useRouter();
 	return (
 		<>
@@ -30,14 +28,11 @@ const SavedSearchResults = () => {
 	);
 };
 
-export default SavedSearchResults;
+export default LatestHeadlines;
 
-export const getStaticProps = wrapper.getStaticProps(async ({ store }) => {
-	const latestArticleMap = await getHeadlines({ spectrumSearchAll: true });
+export const getServerSideProps = wrapper.getServerSideProps(async ({ store }) => {
+	const latestArticleMap = await getLatestHeadlines({ spectrumSearchAll: true });
 	if (latestArticleMap && Object.keys(latestArticleMap).length) {
 		store.dispatch(APIActions.latestLoaded(latestArticleMap));
 	}
-	return {
-		revalidate: SEC_IN_FIFTEEN_MIN
-	};
 });
