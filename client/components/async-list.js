@@ -30,7 +30,7 @@ const AsyncList = ({
 	keyField,
 	ListItemComponent,
 	loginRequired,
-	loginRequiredMessage
+	LoginRequiredComponent
 }) => {
 	const dispatch = useDispatch();
 	const [session] = useSession();
@@ -54,7 +54,7 @@ const AsyncList = ({
 	if (loginRequired && !session)
 		return (
 			<CardBody className='text-info'>
-				{loginRequiredMessage || 'Log in to view this page'}
+				{LoginRequiredComponent ? <LoginRequiredComponent /> : 'Log in to view this page'}
 			</CardBody>
 		);
 
@@ -189,7 +189,7 @@ AsyncList.propTypes = {
 	keyField: PropTypes.string.isRequired,
 	ListItemComponent: PropTypes.elementType.isRequired,
 	loginRequired: PropTypes.bool,
-	loginRequiredMessage: PropTypes.string
+	LoginRequiredComponent: PropTypes.elementType
 };
 
 AsyncList.defaultProps = {

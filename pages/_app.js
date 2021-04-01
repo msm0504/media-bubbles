@@ -7,7 +7,7 @@ import UIActions from '../client/actions/ui-actions';
 import Alerts from '../client/components/alerts';
 import Header from '../client/components/header';
 import Footer from '../client/components/footer';
-import Login from '../client/components/login/login';
+import Logout from '../client/components/login/logout';
 import RouteLink from '../client/components/nav/route-link';
 import { wrapper } from '../client/store/store';
 import '../styles/globals.css';
@@ -45,7 +45,7 @@ const App = ({ Component, pageProps }) => {
 				<div className='card'>
 					<Header />
 					<div className='card-body p-2 p-md-4' style={{ minHeight: '600px' }}>
-						<Login />
+						<Logout />
 						<div className='d-flex justify-content-end mb-3'>
 							<RouteLink buttonText='Home' routePath='/' />
 							<RouteLink buttonText='About' routePath='/about' />
