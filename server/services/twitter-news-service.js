@@ -1,4 +1,4 @@
-const { MILLISECONDS_IN_DAY, MILLISECONDS_IN_FIFTEEN_MIN } = require('../constants');
+const { MILLISECONDS_IN_DAY } = require('../constants');
 const formatGetQuery = require('../util/format-get-query');
 const { getBiasRatingBySourceId, getSourceLists } = require('./source-list-service');
 
@@ -11,8 +11,6 @@ const headers = {
 const defaultParams = { max_results: MAX_TWITTER_RESULTS, expansions: 'author_id' };
 const defaultOperators = 'has:links -is:retweet';
 const DEFAULT_PREVIOUS_DAYS = 5;
-
-global.latest = global.latest || { lastUpdate: 0 };
 
 const filterDupeTweets = data => {
 	const uniqueTweets = {};
@@ -96,16 +94,6 @@ async function getRecentTweets(sources, keyword, previousDays) {
 	return response.json();
 }
 
-async function getLatestHeadlines() {
-	const headlinesAreOld = Date.now() - MILLISECONDS_IN_FIFTEEN_MIN > global.latest.lastUpdate;
-	if (!global.latest.articleMap || headlinesAreOld) {
-		global.latest.articleMap = await getHeadlines({ spectrumSearchAll: true });
-		global.latest.lastUpdate = Date.now();
-	}
-	return global.latest.articleMap;
-}
-
 module.exports = {
-	getHeadlines,
-	getLatestHeadlines
+	getHeadlines
 };

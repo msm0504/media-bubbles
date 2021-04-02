@@ -39,16 +39,10 @@ const NOT_FOUND_MESSAGE = (
 	<CardBody className='text-center text-primary'>No Headlines Found</CardBody>
 );
 
-const SearchResults = ({
-	onPanelClose,
-	onPanelOpen,
-	searchResultState,
-	sourceState,
-	isLatest = false
-}) => {
+const SearchResults = ({ onPanelClose, onPanelOpen, searchResultState, sourceState }) => {
 	const router = useRouter();
 	const { resultId } = router.query;
-	const stateToDisplayName = isLatest ? 'latest' : resultId ? 'loadedResult' : 'newSearch';
+	const stateToDisplayName = resultId ? 'loadedResult' : 'newSearch';
 	const stateToDisplay = searchResultState[stateToDisplayName];
 	const { isSearchAll } = stateToDisplay;
 
