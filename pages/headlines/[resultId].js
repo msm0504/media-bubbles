@@ -1,17 +1,22 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { CardBody } from 'reactstrap';
 
 import APIActions from '../../client/actions/api-actions';
 import SearchResults from '../../client/components/search-results/search-results';
 import { wrapper } from '../../client/store/store';
 import { getSavedResult } from '../../server/services/saved-results-service';
 
-const SavedSearchResults = ({ loadedResult: { name, createdAt = 0, sourceList = {} } }) => {
-	const router = useRouter();
-	const description = `Result saved at: ${new Date(createdAt).toLocaleString()}
+const formatDescription = ({ createdAt = 0, sourceList = [] }) =>
+	`Result saved at: ${new Date(createdAt).toLocaleString()}
 ${sourceList.length ? `Sources: ${sourceList.map(source => source.name).join(', ')}` : ''}`;
 
-	return (
+const SavedSearchResults = ({ loadedResult, notFound }) => {
+	const router = useRouter();
+
+	return notFound ? (
+		<CardBody className='text-info'>{'No saved search result found for this id'}</CardBody>
+	) : (
 		<>
 			<Head>
 				<meta
@@ -19,8 +24,8 @@ ${sourceList.length ? `Sources: ${sourceList.map(source => source.name).join(', 
 					content={`${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`}
 					key='ogUrl'
 				></meta>
-				<meta property='og:title' content={name}></meta>
-				<meta property='og:description' content={description}></meta>
+				<meta property='og:title' content={loadedResult.name}></meta>
+				<meta property='og:description' content={formatDescription(loadedResult)}></meta>
 				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`} />
 			</Head>
 			<SearchResults />
@@ -31,14 +36,16 @@ ${sourceList.length ? `Sources: ${sourceList.map(source => source.name).join(', 
 export default SavedSearchResults;
 
 export const getServerSideProps = wrapper.getServerSideProps(async ({ params, store }) => {
-	const loadedResult = await getSavedResult(params.resultId);
-	if (loadedResult && Object.keys(loadedResult).length) {
+	const loadedResult = (await getSavedResult(params.resultId)) || {};
+	const resultFound = loadedResult && Object.keys(loadedResult).length;
+	if (resultFound) {
 		store.dispatch(APIActions.resultLoaded(loadedResult));
 	}
 
 	return {
 		props: {
-			loadedResult
+			loadedResult,
+			notFound: !resultFound
 		}
 	};
 });
