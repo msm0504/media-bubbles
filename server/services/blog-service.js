@@ -7,7 +7,7 @@ const _collection = getCollection(COLLECTION_NAME);
 
 const formatExcerpt = content => {
 	const MAX_LENGTH = 350;
-	const lastSentenceEnd = content.substring(0, MAX_LENGTH).search(/[.?!][^.?!]*$/);
+	const lastSentenceEnd = content.substring(0, MAX_LENGTH).search(/[,.?!]\s[^,.?!]*$/);
 	return `${content.substring(0, lastSentenceEnd)}...`;
 };
 
