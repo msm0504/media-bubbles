@@ -1,7 +1,7 @@
 class IconUtil {
 	static getIconUrl(siteUrl) {
 		const iconApiUrl = 'https://logo.clearbit.com';
-		if (siteUrl.includes('abcnews')) {
+		if (siteUrl.includes('abcnews') || siteUrl.includes('americanconservative')) {
 			return this.getIconUrlSecondTry(siteUrl);
 		}
 		siteUrl = siteUrl.replace('huffingtonpost', 'huffpost');
