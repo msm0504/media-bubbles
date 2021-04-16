@@ -17,18 +17,21 @@ const App = ({ Component, pageProps }) => {
 		dispatch(UIActions.loadLocalStorage());
 	}, []);
 
+	const title = 'Media Bubbles';
+	const description =
+		'Escape your information bubble and view headlines from sources across the political spectrum.';
+
 	return (
 		<div className='container-fluid p-0'>
 			<Head>
-				<title>Media Bubbles</title>
-				<meta
-					name='description'
-					content='Escape your information bubble and view headlines from sources across the political spectrum.'
-				></meta>
+				<title>{title}</title>
+				<meta name='description' content={description}></meta>
 				<meta
 					name='keywords'
 					content='media bubbles, media bias, filter bubble, echo chamber, across the political spectrum, news across the political spectrum, headlines across the political spectrum'
 				></meta>
+				<meta property='og:title' content={title} key='ogTitle'></meta>
+				<meta property='og:description' content={description} key='ogDesc'></meta>
 				<meta property='og:url' content={process.env.NEXT_PUBLIC_API_URL} key='ogUrl'></meta>
 				<meta
 					property='og:image'

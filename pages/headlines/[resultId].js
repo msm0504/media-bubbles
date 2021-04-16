@@ -24,8 +24,12 @@ const SavedSearchResults = ({ loadedResult, notFound }) => {
 					content={`${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`}
 					key='ogUrl'
 				></meta>
-				<meta property='og:title' content={loadedResult.name}></meta>
-				<meta property='og:description' content={formatDescription(loadedResult)}></meta>
+				<meta property='og:title' content={loadedResult.name} key='ogTitle'></meta>
+				<meta
+					property='og:description'
+					content={formatDescription(loadedResult)}
+					key='ogDesc'
+				></meta>
 				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`} />
 			</Head>
 			<SearchResults />
