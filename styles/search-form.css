@@ -44,7 +44,7 @@
 }
 .form-group input[type='checkbox']:checked.switch + label::before {
 	content: '\f205';
-	color: var(--primary);
+	color: var(--info);
 }
 
 .form-group:hover input[type='checkbox']:not(:checked):enabled + label::before,
@@ -61,7 +61,7 @@ input[type='range'] {
 	width: 100%;
 	height: 1rem;
 	border-radius: 0.75rem;
-	background: var(--light);
+	background: var(--info);
 	outline: none;
 	opacity: 0.7;
 	-webkit-transition: 0.2s;
@@ -79,7 +79,8 @@ input[type='range']::-webkit-slider-thumb {
 	width: 1.5rem;
 	height: 1.5rem;
 	border-radius: 50%;
-	background: var(--primary);
+	border: 2px solid var(--info);
+	background: var(--white);
 	cursor: pointer;
 }
 
@@ -87,6 +88,7 @@ input[type='range']::-moz-range-thumb {
 	width: 1.5rem;
 	height: 1.5rem;
 	border-radius: 50%;
-	background: var(--primary);
+	border: 2px solid var(--info);
+	background: var(--white);
 	cursor: pointer;
 }

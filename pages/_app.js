@@ -44,7 +44,10 @@ const App = ({ Component, pageProps }) => {
 			<Provider session={pageProps.session}>
 				<div className='card'>
 					<Header />
-					<div className='card-body p-2 p-md-4' style={{ minHeight: '600px' }}>
+					<div
+						className='card-body p-2 p-md-4'
+						style={{ minHeight: '600px', backgroundColor: 'var(--light)' }}
+					>
 						<Logout />
 						<div className='d-flex justify-content-end mb-3'>
 							<RouteLink buttonText='Home' routePath='/' />

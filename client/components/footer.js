@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 const Footer = () => (
-	<div className='card-footer text-muted'>
+	<div className='card-footer bg-white text-muted'>
 		<p className='d-inline-block'>
 			<Link href='/privacy-policy' target='_blank'>
 				<a>Privacy Policy</a>

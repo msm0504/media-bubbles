@@ -29,7 +29,7 @@ const SavedResultItem = ({ _id, name, createdAt, fnDeleteItem }) => {
 			<Button
 				className='float-right d-block d-sm-inline-block'
 				outline
-				color='primary'
+				color='info'
 				onClick={() => {
 					router.push(`/headlines/${_id}`);
 				}}
