@@ -42,7 +42,7 @@ const SearchForm = ({
 			case 'MY_BUBBLE':
 				return (
 					<>
-						<p>
+						<p className='ml-3'>
 							<strong>Choose the category that you think best fits your political views.</strong>
 						</p>
 						<CardBody className='bg-white rounded-xl d-flex flex-column flex-md-row justify-content-md-around'>
@@ -54,7 +54,7 @@ const SearchForm = ({
 			case 'BUBBLE_BURST':
 				return (
 					<>
-						<p>
+						<p className='ml-3'>
 							<strong>Choose the category that you think best fits your political views.</strong>
 						</p>
 						<CardBody className='bg-white rounded-xl d-flex flex-column flex-md-row justify-content-md-around'>
@@ -87,7 +87,7 @@ const SearchForm = ({
 			case 'USER_SELECT':
 				return (
 					<>
-						<p>
+						<p className='ml-3'>
 							<strong>Choose up to {MAX_SOURCE_SELECTIONS} sources.</strong>
 						</p>
 						<CardBody className='row bg-white rounded-xl my-3 mx-0'>{sourceCheckboxList}</CardBody>
