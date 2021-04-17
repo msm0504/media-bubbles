@@ -76,7 +76,7 @@ const SearchTabs = ({ curSearchMode, onSearchModeChange }) => {
 			</div>
 			<div className='d-block d-md-none'>
 				<UncontrolledDropdown size='lg'>
-					<DropdownToggle caret block outline size='lg' color='info'>
+					<DropdownToggle caret block size='lg' color='info'>
 						{SEARCH_MODE_MAP[curSearchMode].name}
 					</DropdownToggle>
 					<DropdownMenu className='w-100 text-center'>{tabsAndOptions.optionList}</DropdownMenu>

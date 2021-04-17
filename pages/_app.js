@@ -49,12 +49,9 @@ const App = ({ Component, pageProps }) => {
 			</Head>
 
 			<Provider session={pageProps.session}>
-				<div className='card'>
+				<div className='card' style={{ background: 'transparent' }}>
 					<Header />
-					<div
-						className='card-body p-2 p-md-4'
-						style={{ minHeight: '600px', backgroundColor: 'var(--light)' }}
-					>
+					<div className='card-body p-2 p-md-4' style={{ minHeight: '600px' }}>
 						<Logout />
 						<div className='d-flex justify-content-end mb-3'>
 							<RouteLink buttonText='Home' routePath='/' />

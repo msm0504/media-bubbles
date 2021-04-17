@@ -1,7 +1,8 @@
 import Head from 'next/head';
+import { Card } from 'reactstrap';
 
 const Terms = () => (
-	<>
+	<Card body className='bg-white rounded-xl'>
 		<Head>
 			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/terms`} />
 		</Head>
@@ -301,7 +302,7 @@ const Terms = () => (
 				</a>
 			</li>
 		</ul>
-	</>
+	</Card>
 );
 
 export default Terms;

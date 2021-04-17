@@ -19,6 +19,7 @@ const ColumnHeadingIcon = ({ className, column, isColumnSlant }) => (
 				}}
 			/>
 		)}
+		<span className='sr-only'>{`Search results for ${column.name}`}</span>
 	</div>
 );
 

@@ -1,7 +1,8 @@
 import Head from 'next/head';
+import { Card } from 'reactstrap';
 
 const PrivacyPolicy = () => (
-	<>
+	<Card body className='bg-white rounded-xl'>
 		<Head>
 			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/privacy-policy`} />
 		</Head>
@@ -416,7 +417,7 @@ const PrivacyPolicy = () => (
 				</a>
 			</li>
 		</ul>
-	</>
+	</Card>
 );
 
 export default PrivacyPolicy;
