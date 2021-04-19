@@ -4,7 +4,7 @@ import { Card } from 'reactstrap';
 const Terms = () => (
 	<Card body className='bg-white rounded-xl'>
 		<Head>
-			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/terms`} />
+			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/terms`} key='canonical' />
 		</Head>
 		<h1>Terms and Conditions</h1>
 		<p>Last updated: July 21, 2020</p>

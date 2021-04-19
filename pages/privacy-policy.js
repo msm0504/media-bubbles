@@ -4,7 +4,11 @@ import { Card } from 'reactstrap';
 const PrivacyPolicy = () => (
 	<Card body className='bg-white rounded-xl'>
 		<Head>
-			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/privacy-policy`} />
+			<link
+				rel='canonical'
+				href={`${process.env.NEXT_PUBLIC_API_URL}/privacy-policy`}
+				key='canonical'
+			/>
 		</Head>
 		<h1>Privacy Policy</h1>
 		<p>Last updated: July 21, 2020</p>

@@ -11,7 +11,7 @@ const SearchResults = dynamic(
 const NewSearchResults = () => (
 	<>
 		<Head>
-			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/headlines`} />
+			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/headlines`} key='canonical' />
 		</Head>
 		<SearchResults />
 	</>

@@ -30,7 +30,11 @@ const SavedSearchResults = ({ loadedResult, notFound }) => {
 					content={formatDescription(loadedResult)}
 					key='ogDesc'
 				></meta>
-				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`} />
+				<link
+					rel='canonical'
+					href={`${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`}
+					key='canonical'
+				/>
 			</Head>
 			<SearchResults />
 		</>

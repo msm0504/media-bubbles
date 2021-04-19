@@ -45,7 +45,7 @@ const App = ({ Component, pageProps }) => {
 					content={`${process.env.NEXT_PUBLIC_API_URL}/images/og_image_twitter.png`}
 				></meta>
 				<link rel='icon' href='/favicon.ico' />
-				<link rel='canonical' href={process.env.NEXT_PUBLIC_API_URL} />
+				<link rel='canonical' href={process.env.NEXT_PUBLIC_API_URL} key='canonical' />
 			</Head>
 
 			<Provider session={pageProps.session}>

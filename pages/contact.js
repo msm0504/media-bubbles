@@ -76,7 +76,7 @@ const Feedback = () => {
 	return (
 		<>
 			<Head>
-				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/contact`} />
+				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/contact`} key='canonical' />
 			</Head>
 			<h1 className='text-info'>Contact Us</h1>
 			<SaveableForm

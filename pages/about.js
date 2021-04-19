@@ -4,7 +4,7 @@ import { Card } from 'reactstrap';
 const About = () => (
 	<>
 		<Head>
-			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/about`} />
+			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/about`} key='canonical' />
 		</Head>
 		<h1 className='text-info'>About</h1>
 		<Card body className='bg-white rounded-xl'>

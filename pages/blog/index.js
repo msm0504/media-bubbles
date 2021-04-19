@@ -59,7 +59,7 @@ const BlogPosts = () => {
 	return (
 		<>
 			<Head>
-				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/blog`} />
+				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/blog`} key='canonical' />
 			</Head>
 			<h1 className='text-info d-block d-sm-inline-block'>Blog Posts</h1>
 			{session?.user.isAdmin && (
