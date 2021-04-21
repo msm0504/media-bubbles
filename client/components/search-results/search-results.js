@@ -74,7 +74,7 @@ const SearchResults = ({ onPanelClose, onPanelOpen, searchResultState, sourceLis
 		<>
 			{!resultId && <SaveResults />}
 			{displayShareButtons()}
-			<div className='d-flex flex-wrap flex-column flex-xl-row align-items-stretch align-items-xl-start justify-content-xl-around'>
+			<div className='d-flex flex-column flex-xl-row align-items-stretch align-items-xl-start justify-content-xl-around'>
 				{generateColumns()}
 			</div>
 		</>
