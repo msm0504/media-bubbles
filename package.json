@@ -16,7 +16,7 @@
 		"dset": "^2.0.1",
 		"lodash.debounce": "^4.0.8",
 		"merge": "^1.2.1",
-		"mongodb": "^3.6.4",
+		"mongodb": "^3.6.6",
 		"nanoid": "^3.1.20",
 		"next": "^10.0.8",
 		"next-auth": "^3.13.0",
