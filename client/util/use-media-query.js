@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const SM_MIN_WIDTH = 576;
 export const MD_MIN_WIDTH = 768;
@@ -12,7 +12,7 @@ const useMediaQuery = () => {
 		setScreenSize([window.innerWidth, window.innerHeight]);
 	};
 
-	useLayoutEffect(() => {
+	useEffect(() => {
 		window.addEventListener('resize', updateScreenSize);
 		updateScreenSize();
 		return () => window.removeEventListener('resize', updateScreenSize);
