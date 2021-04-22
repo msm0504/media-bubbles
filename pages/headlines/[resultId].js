@@ -22,6 +22,7 @@ const SavedSearchResults = ({ loadedResult, notFound }) => {
 	) : (
 		<>
 			<Head>
+				<title key='title'>{`Headlines - ${loadedResult.name} - Media Bubbles`}</title>
 				<meta
 					property='og:url'
 					content={`${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`}

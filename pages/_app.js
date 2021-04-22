@@ -24,7 +24,7 @@ const App = ({ Component, pageProps }) => {
 	return (
 		<div className='container-fluid p-0'>
 			<Head>
-				<title>{title}</title>
+				<title key='title'>{title}</title>
 				<meta name='description' content={description}></meta>
 				<meta
 					name='keywords'

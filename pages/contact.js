@@ -76,6 +76,7 @@ const Feedback = () => {
 	return (
 		<>
 			<Head>
+				<title key='title'>Contact Us - Media Bubbles</title>
 				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/contact`} key='canonical' />
 			</Head>
 			<h1 className='text-info'>Contact Us</h1>

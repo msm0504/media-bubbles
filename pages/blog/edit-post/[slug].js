@@ -1,7 +1,16 @@
+import Head from 'next/head';
+
 import AddEditBlogPost from '../../../client/components/blog/add-edit-post';
 import APIService from '../../../client/services/api-service';
 
-const EditPost = ({ post }) => <AddEditBlogPost currentVersion={post} />;
+const EditPost = ({ post }) => (
+	<>
+		<Head>
+			<title key='title'>{`Edit Blog Post ${post.slug} - Media Bubbles`}</title>
+		</Head>
+		<AddEditBlogPost currentVersion={post} />
+	</>
+);
 
 export default EditPost;
 

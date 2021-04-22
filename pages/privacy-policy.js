@@ -4,6 +4,7 @@ import { Card } from 'reactstrap';
 const PrivacyPolicy = () => (
 	<Card body className='bg-white rounded-xl'>
 		<Head>
+			<title key='title'>Privacy Policy - Media Bubbles</title>
 			<link
 				rel='canonical'
 				href={`${process.env.NEXT_PUBLIC_API_URL}/privacy-policy`}

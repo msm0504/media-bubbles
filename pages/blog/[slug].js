@@ -16,6 +16,7 @@ const BlogPost = ({ post, notFound }) => {
 	) : (
 		<>
 			<Head>
+				<title key='title'>{`Blog - ${post.title} - Media Bubbles`}</title>
 				<meta
 					property='og:url'
 					content={`${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`}

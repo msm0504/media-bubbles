@@ -4,6 +4,7 @@ import { Card } from 'reactstrap';
 const Terms = () => (
 	<Card body className='bg-white rounded-xl'>
 		<Head>
+			<title key='title'>Terms and Conditions - Media Bubbles</title>
 			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/terms`} key='canonical' />
 		</Head>
 		<h1>Terms and Conditions</h1>

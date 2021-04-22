@@ -16,11 +16,11 @@ const Header = () => {
 			onClick={headerClicked}
 			onKeyDown={headerClicked}
 		>
-			<h1 className='text-center text-light font-weight-bold display-1 d-flex flex-column flex-md-row align-items-center justify-content-md-around'>
+			<div className='text-center text-light font-weight-bold h1 display-1 d-flex flex-column flex-md-row align-items-center justify-content-md-around'>
 				<div className='header-logo'></div>
 				<div>Media Bubbles</div>
 				<div className='header-logo d-none d-md-flex'></div>
-			</h1>
+			</div>
 		</div>
 	);
 };
