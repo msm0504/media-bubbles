@@ -6,12 +6,13 @@ global.mongo = global.mongo || {};
 
 async function getDbConnection() {
 	if (!global.mongo.client) {
-		global.mongo.client = new MongoClient(MONGODB_URL, {
+		const client = new MongoClient(MONGODB_URL, {
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
 			bufferMaxEntries: 0
 		});
-		await global.mongo.client.connect();
+		await client.connect();
+		global.mongo.client = client;
 	}
 	return global.mongo.client.db(process.env.MONGODB_DBNAME);
 }
