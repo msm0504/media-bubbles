@@ -69,6 +69,7 @@ const SearchTabs = ({ curSearchMode, onSearchModeChange }) => {
 	const tabsAndOptions = getTabsAndOptions();
 	return (
 		<>
+			<h1 className='text-info'>Headlines Search</h1>
 			<div className='d-none d-md-block'>
 				<Nav pills fill>
 					{tabsAndOptions.tabList}

@@ -20,7 +20,7 @@ async function savePost(post) {
 async function createPost(post) {
 	const db = await _collection;
 	const createTs = new Date().toISOString();
-	const slugWithTs = `${createTs.split('T')[0].replace(/-/g, '_')}_${post.slug.toLowerCase()}`;
+	const slugWithTs = `${createTs.split('T')[0]}-${post.slug.toLowerCase()}`;
 	const { insertedId } = await db.insertOne({
 		...post,
 		_id: slugWithTs,

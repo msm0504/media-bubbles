@@ -14,7 +14,7 @@ const blankBlogPostForm = {
 	content: ''
 };
 
-const SLUG_PATTERN = /^[a-z0-9_]+$/;
+const SLUG_PATTERN = /^[a-z0-9-]+$/;
 const MILLISECONDS_IN_MINUTE = 1000 * 60;
 
 const getFieldErrorMessage = (fieldName, value) => {

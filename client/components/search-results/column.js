@@ -21,7 +21,7 @@ const Column = ({ column, articles, isSearchAll, togglePanel, isPanelInOpenList 
 							column={column}
 							isColumnSlant={isSearchAll}
 						/>
-						<h1 className='text-center mb-2 d-none d-xl-block'>{column.name}</h1>
+						<div className='h1 text-center mb-2 d-none d-xl-block'>{column.name}</div>
 						<Button
 							color='link'
 							className='d-xl-none mx-auto'
@@ -29,7 +29,7 @@ const Column = ({ column, articles, isSearchAll, togglePanel, isPanelInOpenList 
 							aria-expanded={isPanelExpanded}
 							aria-controls={collapseId}
 						>
-							<h1 className='text-center my-auto'>{column.name}</h1>
+							<div className='h1 text-center my-auto'>{column.name}</div>
 						</Button>
 					</div>
 				</CardHeader>

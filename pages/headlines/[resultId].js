@@ -22,7 +22,9 @@ const SavedSearchResults = ({ loadedResult, notFound }) => {
 	) : (
 		<>
 			<Head>
-				<title key='title'>{`Headlines - ${loadedResult.name} - Media Bubbles`}</title>
+				<title key='title'>{`Headlines - ${loadedResult.name} ${new Date(
+					loadedResult.createdAt
+				).toLocaleString()} - Media Bubbles`}</title>
 				<meta
 					property='og:url'
 					content={`${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`}
@@ -40,6 +42,7 @@ const SavedSearchResults = ({ loadedResult, notFound }) => {
 					key='canonical'
 				/>
 			</Head>
+			<h1 className='text-info'>{`Saved Result: ${loadedResult.name}`}</h1>
 			<SearchResults />
 		</>
 	);
