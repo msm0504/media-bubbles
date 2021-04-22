@@ -22,7 +22,7 @@ const SavedSearchResults = ({ loadedResult, notFound }) => {
 	) : (
 		<>
 			<Head>
-				<title key='title'>{`Headlines - ${loadedResult.name} ${new Date(
+				<title key='title'>{`Saved Result from ${new Date(
 					loadedResult.createdAt
 				).toLocaleString()} - Media Bubbles`}</title>
 				<meta
