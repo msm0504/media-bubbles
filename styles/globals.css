@@ -1,5 +1,5 @@
-@import url('https://stackpath.bootstrapcdn.com/bootswatch/4.4.0/journal/bootstrap.min.css');
-@import url('https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
+@import url('https://cdn.jsdelivr.net/npm/bootswatch@4.6.0/dist/journal/bootstrap.min.css');
+@import url('https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css');
 
 body {
 	background-image: url('/images/background.png');

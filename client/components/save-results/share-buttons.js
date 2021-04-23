@@ -23,7 +23,7 @@ const ShareButtons = ({ urlToShare = '' }) => {
 	return hasShareApi ? (
 		<Button
 			className='mb-1 ml-3 d-inline-block'
-			color='info'
+			color='primary'
 			onClick={() => {
 				navigator.share({ title: 'Media Bubbles Results', url: urlToShare });
 			}}
