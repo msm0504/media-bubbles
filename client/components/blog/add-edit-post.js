@@ -25,7 +25,7 @@ const getFieldErrorMessage = (fieldName, value) => {
 		case 'slug':
 			if (!value) return getRequiredMessage(fieldName);
 			if (!SLUG_PATTERN.test(value))
-				return 'Slug can only contain lowercase letters, numbers, and underscores.';
+				return 'Slug can only contain lowercase letters, numbers, and dashes.';
 			break;
 		case 'title':
 			if (!value) return getRequiredMessage(fieldName);
@@ -64,7 +64,7 @@ const AddEditBlogPost = ({ currentVersion }) => {
 		{
 			name: 'slug',
 			type: 'text',
-			placeholder: 'important_key_words',
+			placeholder: 'important-key-words',
 			isDisabled: !!currentVersion
 		},
 		{
