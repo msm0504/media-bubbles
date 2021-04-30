@@ -1,5 +1,12 @@
+import Head from 'next/head';
+import { Card } from 'reactstrap';
+
 const Terms = () => (
-	<>
+	<Card body className='bg-white rounded-xl'>
+		<Head>
+			<title key='title'>Terms and Conditions - Media Bubbles</title>
+			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/terms`} key='canonical' />
+		</Head>
 		<h1>Terms and Conditions</h1>
 		<p>Last updated: July 21, 2020</p>
 		<p>Please read these terms and conditions carefully before using Our Service.</p>
@@ -296,7 +303,7 @@ const Terms = () => (
 				</a>
 			</li>
 		</ul>
-	</>
+	</Card>
 );
 
 export default Terms;

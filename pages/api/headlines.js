@@ -1,6 +1,6 @@
 import nc from 'next-connect';
 import { useTestData } from '../../server/constants';
-import { getHeadlines } from '../../server/services/news-api-service';
+import { getHeadlines } from '../../server/services/twitter-news-service';
 
 let testArticleMap;
 if (useTestData) {
@@ -19,6 +19,7 @@ if (useTestData) {
 }
 
 export default nc().get(async function (req, res) {
-	const articleMap = useTestData ? testArticleMap : await getHeadlines(req.query);
-	res.json(articleMap);
+	// const articleMap = useTestData ? testArticleMap : await getHeadlines(req.query);
+	// res.json(articleMap);
+	res.json(await getHeadlines(req.query));
 });

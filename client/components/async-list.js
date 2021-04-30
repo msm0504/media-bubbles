@@ -30,7 +30,7 @@ const AsyncList = ({
 	keyField,
 	ListItemComponent,
 	loginRequired,
-	loginRequiredMessage
+	LoginRequiredComponent
 }) => {
 	const dispatch = useDispatch();
 	const [session] = useSession();
@@ -53,8 +53,8 @@ const AsyncList = ({
 
 	if (loginRequired && !session)
 		return (
-			<CardBody className='text-info'>
-				{loginRequiredMessage || 'Log in to view this page'}
+			<CardBody className='text-primary bg-white rounded-xl mt-4'>
+				{LoginRequiredComponent ? <LoginRequiredComponent /> : 'Log in to view this page'}
 			</CardBody>
 		);
 
@@ -148,15 +148,30 @@ const AsyncList = ({
 			<ListGroup>
 				{items && items.length ? (
 					items.map((item, index) => (
-						<ListGroupItem key={item[keyField]} color={index % 2 === 0 ? '' : 'secondary'}>
+						<ListGroupItem
+							key={item[keyField]}
+							color={index % 2 === 0 ? '' : 'secondary'}
+							className={
+								index === 0
+									? 'rounded-top-xl'
+									: index === items.length - 1
+									? 'rounded-bottom-xl'
+									: ''
+							}
+						>
 							<ListItemComponent {...item} fnDeleteItem={deleteItem} />
 						</ListGroupItem>
 					))
 				) : (
-					<CardBody className='text-info'>{`No ${camelCaseToWords(apiListName)} found`}</CardBody>
+					<CardBody className='text-primary bg-white rounded-xl'>{`No ${camelCaseToWords(
+						apiListName
+					)} found`}</CardBody>
 				)}
 				{pageCount ? (
-					<Pagination listClassName='float-right' aria-label='change list page being displayed'>
+					<Pagination
+						listClassName='float-right mt-1'
+						aria-label='change list page being displayed'
+					>
 						<PaginationItem disabled={page.current <= 1}>
 							<PaginationLink first onClick={() => handleLoadPage(1)} />
 						</PaginationItem>
@@ -189,7 +204,7 @@ AsyncList.propTypes = {
 	keyField: PropTypes.string.isRequired,
 	ListItemComponent: PropTypes.elementType.isRequired,
 	loginRequired: PropTypes.bool,
-	loginRequiredMessage: PropTypes.string
+	LoginRequiredComponent: PropTypes.elementType
 };
 
 AsyncList.defaultProps = {

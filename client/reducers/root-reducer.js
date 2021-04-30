@@ -2,7 +2,6 @@ import { combineReducers } from 'redux';
 import { HYDRATE } from 'next-redux-wrapper';
 import delve from 'dlv';
 import dset from 'dset';
-import isEmpty from 'is-empty';
 import merge from 'merge';
 
 import alertReducer from './alert-reducer';
@@ -25,7 +24,7 @@ const rootReducer = (state, action) => {
 
 		serverStoreKeys.forEach(key => {
 			const serverData = delve(action.payload, key);
-			if (!isEmpty(serverData)) dset(changedState, key, serverData);
+			if (Object.keys(serverData).length) dset(changedState, key, serverData);
 		});
 
 		return merge.recursive(true, state, changedState);

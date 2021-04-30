@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 const Footer = () => (
-	<div className='card-footer text-muted'>
+	<div className='card-footer bg-white text-muted'>
 		<p className='d-inline-block'>
 			<Link href='/privacy-policy' target='_blank'>
 				<a>Privacy Policy</a>
@@ -13,8 +13,8 @@ const Footer = () => (
 			<br />
 		</p>
 		<p className='d-inline-block ml-sm-5'>
-			<a href='https://newsapi.org/' target='_blank' rel='noreferrer'>
-				Headline Searches Powered By NewsAPI.org
+			<a href='https://twitter.com/' target='_blank' rel='noreferrer'>
+				Headline Searches Powered By Twitter
 			</a>
 			<br />
 			<a href='https://www.allsides.com/bias/bias-ratings' target='_blank' rel='noreferrer'>

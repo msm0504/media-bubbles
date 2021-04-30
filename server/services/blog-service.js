@@ -7,7 +7,7 @@ const _collection = getCollection(COLLECTION_NAME);
 
 const formatExcerpt = content => {
 	const MAX_LENGTH = 350;
-	const lastSentenceEnd = content.substring(0, MAX_LENGTH).search(/[.?!][^.?!]*$/);
+	const lastSentenceEnd = content.substring(0, MAX_LENGTH).search(/[,.?!:]\s(?!.*[,.?!:]\s)/);
 	return `${content.substring(0, lastSentenceEnd)}...`;
 };
 
@@ -20,7 +20,7 @@ async function savePost(post) {
 async function createPost(post) {
 	const db = await _collection;
 	const createTs = new Date().toISOString();
-	const slugWithTs = `${createTs.split('T')[0].replace(/-/g, '_')}_${post.slug.toLowerCase()}`;
+	const slugWithTs = `${createTs.split('T')[0]}-${post.slug.toLowerCase()}`;
 	const { insertedId } = await db.insertOne({
 		...post,
 		_id: slugWithTs,

@@ -37,9 +37,7 @@ function* getArticleLists(action) {
 			sources: sourceListToSearch.map(source => source.id),
 			spectrumSearchAll: formData.spectrumSearchAll,
 			keyword: formData.keyword,
-			onlySearchTitles: formData.onlySearchTitles,
-			previousDays: formData.previousDays,
-			sortBy: formData.sortBy
+			previousDays: formData.previousDays
 		};
 		const articleMap = yield call(
 			[APIService, APIService.callApi],

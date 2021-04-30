@@ -1,12 +1,21 @@
-import AddEditBlogPost from '../../../client/components/blog/add-edit-post';
-import APIService from '../../../client/services/api-service';
+import Head from 'next/head';
 
-const EditPost = ({ post }) => <AddEditBlogPost currentVersion={post} />;
+import AddEditBlogPost from '../../../client/components/blog/add-edit-post';
+import { getPost } from '../../../server/services/blog-service';
+
+const EditPost = ({ post }) => (
+	<>
+		<Head>
+			<title key='title'>{`Edit Blog Post ${post.slug} - Media Bubbles`}</title>
+		</Head>
+		<AddEditBlogPost currentVersion={post} />
+	</>
+);
 
 export default EditPost;
 
 export async function getServerSideProps({ params: { slug } }) {
-	const post = await APIService.callApi('get', `blog-posts/${slug}`);
+	const post = (await getPost(slug)) || {};
 	return {
 		props: {
 			post

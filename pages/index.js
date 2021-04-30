@@ -26,12 +26,14 @@ const mapDispatchToProps = {
 
 const SearchTabs = ({ curSearchMode, onSearchModeChange }) => {
 	const generateTab = searchMode => {
+		const isActive = curSearchMode === searchMode.id;
 		return (
 			<NavItem key={searchMode.id + 'Tab'}>
 				<NavLink
-					active={curSearchMode === searchMode.id}
+					active={isActive}
 					onClick={() => onSearchModeChange('searchMode', searchMode.id)}
 					href='#'
+					className={isActive ? 'bg-info' : 'text-info'}
 				>
 					<strong>{searchMode.name}</strong>
 				</NavLink>
@@ -66,13 +68,16 @@ const SearchTabs = ({ curSearchMode, onSearchModeChange }) => {
 
 	const tabsAndOptions = getTabsAndOptions();
 	return (
-		<div className='container-fluid'>
+		<>
+			<h1 className='text-info'>Headlines Search</h1>
 			<div className='d-none d-md-block'>
-				<Nav tabs>{tabsAndOptions.tabList}</Nav>
+				<Nav pills fill>
+					{tabsAndOptions.tabList}
+				</Nav>
 			</div>
 			<div className='d-block d-md-none'>
 				<UncontrolledDropdown size='lg'>
-					<DropdownToggle caret block outline size='lg' color='primary'>
+					<DropdownToggle caret block size='lg' color='info'>
 						{SEARCH_MODE_MAP[curSearchMode].name}
 					</DropdownToggle>
 					<DropdownMenu className='w-100 text-center'>{tabsAndOptions.optionList}</DropdownMenu>
@@ -88,7 +93,7 @@ const SearchTabs = ({ curSearchMode, onSearchModeChange }) => {
 					<SearchForm />
 				</>
 			)}
-		</div>
+		</>
 	);
 };
 

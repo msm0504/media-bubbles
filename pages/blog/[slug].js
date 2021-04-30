@@ -16,16 +16,26 @@ const BlogPost = ({ post, notFound }) => {
 	) : (
 		<>
 			<Head>
+				<title key='title'>{`Blog - ${post.title} - Media Bubbles`}</title>
 				<meta
 					property='og:url'
 					content={`${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`}
 					key='ogUrl'
 				></meta>
-				<meta property='og:title' content={post.title}></meta>
-				<meta property='og:description' content={post.excerpt}></meta>
+				<meta property='og:title' content={post.title} key='ogTitle'></meta>
+				<meta
+					property='og:description'
+					content={post.excerpt.replace(/[*_#>]/g, '')}
+					key='ogDesc'
+				></meta>
 				<meta property='og:type' content='article'></meta>
 				<meta property='article:published_time' content={post.updatedAt}></meta>
-				<meta property='article:tag' content={post.slug.split('_').slice(3).join(' ')}></meta>
+				<meta property='article:tag' content={post.slug.split('-').slice(3).join(' ')}></meta>
+				<link
+					rel='canonical'
+					href={`${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`}
+					key='canonical'
+				/>
 			</Head>
 			<BlogPostTemplate content={post.content} date={post.updatedAt} title={post.title} />
 		</>

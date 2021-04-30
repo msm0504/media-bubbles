@@ -2,7 +2,7 @@ const { nanoid } = require('nanoid');
 const { getCollection } = require('./db-connection');
 
 const COLLECTION_NAME = 'saved_results';
-const PAGE_SIZE = 25;
+const PAGE_SIZE = 10;
 
 const _collection = getCollection(COLLECTION_NAME);
 

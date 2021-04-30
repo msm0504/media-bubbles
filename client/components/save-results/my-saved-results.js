@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { Button } from 'reactstrap';
 
 import AsyncList from '../async-list';
+import Login from '../login/login';
 
 const SavedResultItem = ({ _id, name, createdAt, fnDeleteItem }) => {
 	const router = useRouter();
@@ -28,7 +29,7 @@ const SavedResultItem = ({ _id, name, createdAt, fnDeleteItem }) => {
 			<Button
 				className='float-right d-block d-sm-inline-block'
 				outline
-				color='primary'
+				color='info'
 				onClick={() => {
 					router.push(`/headlines/${_id}`);
 				}}
@@ -39,6 +40,14 @@ const SavedResultItem = ({ _id, name, createdAt, fnDeleteItem }) => {
 	);
 };
 
+const LoginRequiredComponent = () => (
+	<>
+		<p>Any search results you save while logged in will be shown here.</p>
+		<p>Log in to view your saved search results:</p>
+		<Login />
+	</>
+);
+
 const MySavedResults = () => (
 	<AsyncList
 		apiListName='savedResults'
@@ -46,7 +55,7 @@ const MySavedResults = () => (
 		keyField='_id'
 		ListItemComponent={SavedResultItem}
 		loginRequired
-		loginRequiredMessage='Log in to view your saved search results'
+		LoginRequiredComponent={LoginRequiredComponent}
 	/>
 );
 

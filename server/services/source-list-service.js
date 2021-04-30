@@ -1,5 +1,6 @@
-const formatGetQuery = require('../util/format-get-query');
+const { getTwitterHandle } = require('./twitter-user-service');
 const { MILLISECONDS_IN_DAY, useTestData } = require('../constants');
+const SOURCE_INCLUDE_LIST = require('../source-include-list.json');
 
 const headers = { Accept: 'application/json' };
 
@@ -11,7 +12,6 @@ const ALL_SIDES_RATINGS_TO_INT = {
 	Right: 4
 };
 const CENTER = 2;
-const ALLOWED_SOURCE_TYPES = ['general', 'business'];
 
 global.sources = global.sources || { lastUpdate: 0 };
 const resetSourceLists = () => {
@@ -20,22 +20,9 @@ const resetSourceLists = () => {
 	global.sources.biasRatings = {};
 };
 
-let testSourceData;
 let testBiasRatings;
 if (useTestData) {
-	testSourceData = require('../test-data/source-data.json');
 	testBiasRatings = require('../test-data/allsides_pub_data.json');
-}
-
-async function getSources() {
-	const url = `${process.env.NEWS_API_URL}/sources`;
-	const params = { language: 'en' };
-	const requestOptions = {
-		method: 'GET',
-		headers: { ...headers, 'X-Api-Key': process.env.NEWS_API_KEY }
-	};
-	const response = await fetch(`${url}${formatGetQuery(params)}`, requestOptions);
-	return response.json();
 }
 
 async function getBiasRatings() {
@@ -44,106 +31,82 @@ async function getBiasRatings() {
 	return response.json();
 }
 
-async function setFilteredBiasRatings() {
-	if (global.sources.biasRatings && Object.keys(global.sources.biasRatings).length) {
-		return;
-	}
-
+async function setSourcesAndBiasRatings() {
 	const biasRatingsResponse = useTestData ? testBiasRatings : await getBiasRatings();
 	const biasRatings =
 		biasRatingsResponse?.allsides_media_bias_ratings.map(({ publication }) => publication) || [];
-	global.sources.biasRatings = biasRatings.reduce((acc, { source_name, media_bias_rating }) => {
-		const biasRating = ALL_SIDES_RATINGS_TO_INT[media_bias_rating];
-		if (biasRating === null || typeof biasRating === 'undefined') return acc;
+	await Promise.all(
+		biasRatings.map(async ({ source_name, source_url, media_bias_rating }) => {
+			const biasRating = ALL_SIDES_RATINGS_TO_INT[media_bias_rating];
+			if (biasRating === null || typeof biasRating === 'undefined') return 0;
 
-		const sourceId = source_name
-			.toLowerCase()
-			.replace(/\(.*\)/, '') // ignore part of name in ()
-			.replace(/^the\s/, '') // ignore 'the ' at start of name
-			.replace('opinion', '') // ignore 'opinion' and 'editorial'
-			.replace('editorial', '')
-			.replace(/\s-\snews$/, '') // ignore '- news' at end of name
-			.replace(/\s+-?\s*/g, '-')
-			.replace(/-$/, '');
+			const modifiedName = source_name
+				.replace(/\(.*\)/, '') // ignore part of name in ()
+				.replace(/\s-\s\S+$/, '') // ignore dash suffix
+				.trim();
 
-		// If multiple matches, use more extreme rating. Search results could include opinion pieces
-		if (!acc[sourceId] || Math.abs(biasRating - CENTER) > Math.abs(acc[sourceId] - CENTER)) {
-			acc[sourceId] = biasRating;
-		}
-		return acc;
-	}, {});
+			if (!SOURCE_INCLUDE_LIST[modifiedName] === true) return 0;
+
+			const twitterHandle = await getTwitterHandle(modifiedName);
+			if (!twitterHandle) return 0;
+			if (twitterHandle.toLowerCase() === 'oann') {
+				source_url = 'https://www.oann.com/';
+			}
+			if (!Object.prototype.hasOwnProperty.call(global.sources.biasRatings, twitterHandle)) {
+				const formattedUrl = source_url.replace(/(?<!\/)\/[^/]+/g, ''); // remove subdomains
+				global.sources.app.push({ id: twitterHandle, name: modifiedName, url: formattedUrl });
+			}
+			if (
+				!Object.prototype.hasOwnProperty.call(global.sources.biasRatings, twitterHandle) ||
+				Math.abs(biasRating - CENTER) > Math.abs(global.sources.biasRatings[twitterHandle] - CENTER)
+			) {
+				global.sources.biasRatings[twitterHandle] = biasRating;
+			}
+			return 0;
+		})
+	);
 }
 
-const oddMappings = {
-	time: 'time-magazine',
-	'nbc-news': 'nbcnews.com',
-	'huffington-post': 'huffpost',
-	'vice-news': 'vice'
-};
-
-const excludeSources = {
-	'google-news': true
-};
-
-const getBiasRatingByNewsApiId = newsApiId => {
-	const key = newsApiId.replace('the-', '').replace('-english', ''); // '-english' is end of Al Jazeera NewsAPI id
-
-	if (excludeSources[key]) return;
-
-	return typeof global.sources.biasRatings[key] === 'number'
-		? global.sources.biasRatings[key]
-		: global.sources.biasRatings[oddMappings[key]];
-};
-
-const formatUrl = sourceUrl => {
-	let formattedUrl = sourceUrl;
-
-	const pathIndex = formattedUrl.search(/[A-Za-z]\/[A-Za-z1-9].*$/);
-	if (pathIndex > -1) {
-		formattedUrl = formattedUrl.substring(0, pathIndex + 1);
-	}
-
-	const protocolIndex = formattedUrl.indexOf('//');
-	formattedUrl = formattedUrl.substring(protocolIndex + 2);
-
-	return formattedUrl;
-};
-
 async function populateSourceLists() {
-	console.log('Generating new source lists');
 	resetSourceLists();
 
-	const sourceResponse = useTestData ? testSourceData : await getSources();
-	const searchableSources = sourceResponse.status === 'ok' ? sourceResponse.sources : [];
+	await setSourcesAndBiasRatings();
 
-	await setFilteredBiasRatings();
+	global.sources.app.sort((source1, source2) => {
+		const name1 = source1.name.toLowerCase();
+		const name2 = source2.name.toLowerCase();
 
-	searchableSources.forEach(source => {
-		if (!ALLOWED_SOURCE_TYPES.includes(source.category)) return;
-
-		const sourceSlant = getBiasRatingByNewsApiId(source.id);
-		if (typeof sourceSlant === 'number') {
-			if (!global.sources.bySlant[sourceSlant]) {
-				global.sources.bySlant[sourceSlant] = [];
-			}
-			source.url = formatUrl(source.url);
-			global.sources.app.push(source);
-			global.sources.bySlant[sourceSlant].push(source);
+		if (name1 < name2) {
+			return -1;
 		}
+		if (name1 > name2) {
+			return 1;
+		}
+		return 0;
+	});
+
+	global.sources.app.forEach(source => {
+		const sourceSlant = global.sources.biasRatings[source.id];
+		if (!global.sources.bySlant[sourceSlant]) {
+			global.sources.bySlant[sourceSlant] = [];
+		}
+		global.sources.bySlant[sourceSlant].push(source);
 	});
 
 	global.sources.lastUpdate = Date.now();
 }
 
 async function getSourceLists() {
-	const sourceListsAreOld = Date.now() - MILLISECONDS_IN_DAY * 7 > global.sources.lastUpdate;
+	const sourceListsAreOld = Date.now() - MILLISECONDS_IN_DAY > global.sources.lastUpdate;
 	if (!(global.sources.app && global.sources.app.length) || sourceListsAreOld) {
 		await populateSourceLists();
 	}
 	return { appSourceList: global.sources.app, sourceListBySlant: global.sources.bySlant };
 }
 
+const getBiasRatingBySourceId = sourceId => global.sources.biasRatings[sourceId];
+
 module.exports = {
-	getBiasRatingByNewsApiId,
+	getBiasRatingBySourceId,
 	getSourceLists
 };

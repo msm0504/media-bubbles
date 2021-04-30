@@ -2,24 +2,29 @@ const { MongoClient } = require('mongodb');
 
 const { MONGODB_URL } = require('../constants');
 
-global.mongo = global.mongo || {};
+global.mongo = global.mongo || { db: null, promise: null };
 
 async function getDbConnection() {
-	if (!global.mongo.client) {
-		global.mongo.client = new MongoClient(MONGODB_URL, {
+	if (global.mongo.db) {
+		return global.mongo.db;
+	}
+
+	if (!global.mongo.promise) {
+		const client = new MongoClient(MONGODB_URL, {
 			useNewUrlParser: true,
 			useUnifiedTopology: true,
 			bufferMaxEntries: 0
 		});
-		await global.mongo.client.connect();
+		global.mongo.promise = client.connect().then(client => client.db(process.env.MONGODB_DBNAME));
 	}
-	return global.mongo.client.db(process.env.MONGODB_DBNAME);
+	global.mongo.db = await global.mongo.promise;
+	return global.mongo.db;
 }
 
-const getCollection = collectionName =>
-	new Promise(resolve => {
-		getDbConnection().then(db => resolve(db.collection(collectionName)));
-	});
+async function getCollection(collectionName) {
+	const db = await getDbConnection();
+	return db.collection(collectionName);
+}
 
 module.exports = {
 	getCollection
