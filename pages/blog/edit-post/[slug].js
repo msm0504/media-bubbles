@@ -1,7 +1,7 @@
 import Head from 'next/head';
 
 import AddEditBlogPost from '../../../client/components/blog/add-edit-post';
-import APIService from '../../../client/services/api-service';
+import { getPost } from '../../../server/services/blog-service';
 
 const EditPost = ({ post }) => (
 	<>
@@ -15,7 +15,7 @@ const EditPost = ({ post }) => (
 export default EditPost;
 
 export async function getServerSideProps({ params: { slug } }) {
-	const post = await APIService.callApi('get', `blog-posts/${slug}`);
+	const post = (await getPost(slug)) || {};
 	return {
 		props: {
 			post

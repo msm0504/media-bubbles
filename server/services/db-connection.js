@@ -21,10 +21,10 @@ async function getDbConnection() {
 	return global.mongo.db;
 }
 
-const getCollection = collectionName =>
-	new Promise(resolve => {
-		getDbConnection().then(db => resolve(db.collection(collectionName)));
-	});
+async function getCollection(collectionName) {
+	const db = await getDbConnection();
+	return db.collection(collectionName);
+}
 
 module.exports = {
 	getCollection
