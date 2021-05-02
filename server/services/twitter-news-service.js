@@ -19,7 +19,7 @@ const filterDupeTweets = data => {
 		const { text } = data[i];
 		const linkIndex = text.indexOf('http');
 		if (linkIndex > -1) {
-			const withoutLinks = text.substring(0, linkIndex).trim();
+			const withoutLinks = text.substring(0, linkIndex).trim().replace(/\s+/g, ' ').toLowerCase();
 			if (!uniqueTweets[withoutLinks]) {
 				uniqueTweets[withoutLinks] = data[i];
 				uniqueCount++;
