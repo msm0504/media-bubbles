@@ -4,13 +4,11 @@ import delve from 'dlv';
 import dset from 'dset';
 import merge from 'merge';
 
-import alertReducer from './alert-reducer';
 import formDataReducer from './form-data-reducer';
 import searchResultReducer from './search-result-reducer';
 import sourceReducer from './source-reducer';
 
 const combinedReducer = combineReducers({
-	alertState: alertReducer,
 	formDataState: formDataReducer,
 	searchResultState: searchResultReducer,
 	sourceState: sourceReducer

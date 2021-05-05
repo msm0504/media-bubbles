@@ -35,31 +35,6 @@ class UIActions {
 		};
 	}
 
-	showAlert(level, message) {
-		return {
-			type: UIActionTypes.SHOW_ALERT,
-			payload: {
-				level,
-				message
-			}
-		};
-	}
-
-	hideAlert(alertId) {
-		return {
-			type: UIActionTypes.HIDE_ALERT,
-			payload: {
-				alertId
-			}
-		};
-	}
-
-	clearAlerts() {
-		return {
-			type: UIActionTypes.CLEAR_ALERTS
-		};
-	}
-
 	searchFormSubmit(formData) {
 		return {
 			type: UIActionTypes.SEARCH_FORM_SUBMIT,

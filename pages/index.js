@@ -1,4 +1,4 @@
-import { connect } from 'react-redux';
+import { useState, useEffect } from 'react';
 import {
 	DropdownItem,
 	DropdownMenu,
@@ -9,29 +9,35 @@ import {
 	UncontrolledDropdown
 } from 'reactstrap';
 
-import UIActions from '../client/actions/ui-actions';
 import SearchForm from '../client/components/search-form/search-form';
 import MySavedResults from '../client/components/save-results/my-saved-results';
 import SEARCH_MODE, { SEARCH_MODE_MAP } from '../client/constants/search-mode';
+import getStateFromStorage from '../client/util/get-state-from-storage';
 
-const mapStateToProps = state => {
-	return {
-		curSearchMode: state.formDataState.searchMode
+const SEARCH_MODE_KEY = 'searchMode';
+
+const SearchTabs = () => {
+	const [curSearchMode, setSearchMode] = useState(SEARCH_MODE[0].id);
+
+	useEffect(() => {
+		const storedValue = getStateFromStorage([{ key: SEARCH_MODE_KEY }]);
+		if (storedValue[SEARCH_MODE_KEY]) {
+			setSearchMode(storedValue[SEARCH_MODE_KEY]);
+		}
+	}, []);
+
+	const onSearchModeChange = searchModeId => {
+		localStorage.setItem(SEARCH_MODE_KEY, searchModeId);
+		setSearchMode(searchModeId);
 	};
-};
 
-const mapDispatchToProps = {
-	onSearchModeChange: UIActions.formFieldChanged
-};
-
-const SearchTabs = ({ curSearchMode, onSearchModeChange }) => {
 	const generateTab = searchMode => {
 		const isActive = curSearchMode === searchMode.id;
 		return (
 			<NavItem key={searchMode.id + 'Tab'}>
 				<NavLink
 					active={isActive}
-					onClick={() => onSearchModeChange('searchMode', searchMode.id)}
+					onClick={() => onSearchModeChange(searchMode.id)}
 					href='#'
 					className={isActive ? 'bg-info' : 'text-info'}
 				>
@@ -45,7 +51,7 @@ const SearchTabs = ({ curSearchMode, onSearchModeChange }) => {
 		return (
 			<DropdownItem
 				key={searchMode.id + 'Option'}
-				onClick={() => onSearchModeChange('searchMode', searchMode.id)}
+				onClick={() => onSearchModeChange(searchMode.id)}
 			>
 				{searchMode.name}
 			</DropdownItem>
@@ -90,11 +96,11 @@ const SearchTabs = ({ curSearchMode, onSearchModeChange }) => {
 					<p className='mt-3 ml-3'>
 						<strong>{`Results shown will be from ${getCurrentSearchModeInfo()}.`}</strong>
 					</p>
-					<SearchForm />
+					<SearchForm searchMode={curSearchMode} />
 				</>
 			)}
 		</>
 	);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchTabs);
+export default SearchTabs;

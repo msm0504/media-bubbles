@@ -58,36 +58,6 @@ class APIActions {
 			}
 		};
 	}
-
-	setFbInitComplete() {
-		return {
-			type: APIActionTypes.FB_INIT_COMPLETE
-		};
-	}
-
-	fbUserChanged(userId) {
-		return {
-			type: APIActionTypes.FB_USER_CHANGED,
-			payload: {
-				userId
-			}
-		};
-	}
-
-	setFbUserData(userData) {
-		return {
-			type: APIActionTypes.SET_FB_USER_DATA,
-			payload: {
-				userData
-			}
-		};
-	}
-
-	clearFbUserData() {
-		return {
-			type: APIActionTypes.CLEAR_FB_USER_DATA
-		};
-	}
 }
 
 export default new APIActions();
