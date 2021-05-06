@@ -1,9 +1,11 @@
-import { useDispatch } from 'react-redux';
+import { useContext } from 'react';
 import { useSession } from 'next-auth/client';
 import Head from 'next/head';
 
 import SaveableForm, { getRequiredMessage } from '../client/components/saveable-form';
-import UIActions from '../client/actions/ui-actions';
+import ALERT_LEVEL from '../client/constants/alert-level';
+import { AlertsDispatch } from '../client/contexts/alerts-context';
+import { callApi } from '../client/services/api-service';
 
 const REASON_OPTIONS = [
 	{ value: 'Feedback', label: 'Give Feedback' },
@@ -39,8 +41,17 @@ const getFieldErrorMessage = (fieldName, value) => {
 	return '';
 };
 
+async function submitFeedback(feedbackData, showAlert) {
+	const { feedbackSent } = await callApi('post', 'feedback', feedbackData);
+	if (feedbackSent !== true) {
+		showAlert(ALERT_LEVEL.danger, 'Sending this message failed. Please try again later.');
+	} else {
+		showAlert(ALERT_LEVEL.success, 'Message sent successfully.');
+	}
+}
+
 const Feedback = () => {
-	const dispatch = useDispatch();
+	const showAlert = useContext(AlertsDispatch);
 	const [session] = useSession();
 
 	const initialData = {
@@ -85,7 +96,7 @@ const Feedback = () => {
 				fieldValidateFn={getFieldErrorMessage}
 				formName='feedback'
 				initialData={initialData}
-				submitFn={feedbackData => dispatch(UIActions.submitFeedback(feedbackData))}
+				submitFn={feedbackData => submitFeedback(feedbackData, showAlert)}
 				submitLabel='Send Message'
 			/>
 		</>

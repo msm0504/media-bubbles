@@ -2,7 +2,7 @@ import { Button, Card, CardHeader, Collapse } from 'reactstrap';
 
 import ColumnArticles from './column-articles';
 import ColumnHeadingIcon from './column-heading-icon';
-import useMediaQuery, { XL_MIN_WIDTH } from '../../util/use-media-query';
+import useMediaQuery, { XL_MIN_WIDTH } from '../../hooks/use-media-query';
 
 const Column = ({ column, articles, isSearchAll, togglePanel, isPanelInOpenList }) => {
 	const headingId = `${isSearchAll ? column.name.toLowerCase() : column.id}-heading`;
@@ -17,7 +17,7 @@ const Column = ({ column, articles, isSearchAll, togglePanel, isPanelInOpenList 
 				<CardHeader id={headingId} className='p-0 w-100 mx-auto'>
 					<div className='d-flex flex-row flex-xl-column'>
 						<ColumnHeadingIcon
-							className='d-none d-md-block m-2'
+							className='d-block m-2'
 							column={column}
 							isColumnSlant={isSearchAll}
 						/>

@@ -1,67 +1,48 @@
-import { useEffect } from 'react';
-import { connect } from 'react-redux';
+import { useReducer, useContext, useEffect } from 'react';
 import { Button, CardBody, Form, FormGroup, Input, Label, UncontrolledTooltip } from 'reactstrap';
 
-import MAX_SOURCE_SELECTIONS from '../../constants/max-source-selections';
-import { SOURCE_SLANT } from '../../constants/source-slant';
-import UIActions from '../../actions/ui-actions';
-import APIActions from '../../actions/api-actions';
+import searchFormReducer, { ACTION_TYPES, initialState } from './search-form-reducer';
+import SlantRadioButtons from './slant-radio-buttons';
+import SourceCheckboxes from './source-checkboxes';
+import { AlertsDispatch } from '../../contexts/alerts-context';
+import { SearchResultContext } from '../../contexts/search-result-context';
+import performSearch from '../../util/perform-search';
 
-const mapStateToProps = state => {
-	return {
-		sourceState: state.sourceState,
-		formState: state.formDataState
-	};
-};
+const SearchForm = ({ searchMode, appSourceList, sourceListBySlant }) => {
+	const [formData, dispatch] = useReducer(searchFormReducer, initialState);
+	// eslint-disable-next-line no-unused-vars
+	const [context, setContext] = useContext(SearchResultContext);
+	const showAlert = useContext(AlertsDispatch);
 
-const mapDispatchToProps = {
-	getSourceLists: APIActions.getSourceLists,
-	onFormFieldChange: UIActions.formFieldChanged,
-	onSourceSelect: UIActions.sourceSelected,
-	onSourceUnselect: UIActions.sourceUnselected,
-	submitForm: UIActions.searchFormSubmit
-};
-
-const SearchForm = ({
-	formState,
-	getSourceLists,
-	onFormFieldChange,
-	onSourceSelect,
-	onSourceUnselect,
-	sourceState,
-	submitForm
-}) => {
 	useEffect(() => {
-		if (!(sourceState.appSourceList.length && sourceState.sourceListBySlant.length)) {
-			getSourceLists();
-		}
+		dispatch({ type: ACTION_TYPES.LOAD_LOCAL_STORAGE });
 	}, []);
 
-	const generateFormBySearchMode = () => {
-		switch (formState.searchMode) {
-			case 'MY_BUBBLE':
-				return (
-					<>
-						<p className='ml-3'>
-							<strong>Choose the category that you think best fits your political views.</strong>
-						</p>
-						<CardBody className='bg-white rounded-xl d-flex flex-column flex-md-row justify-content-md-around'>
-							{sourceSlantRadioList}
-						</CardBody>
-					</>
-				);
+	const onFormFieldChange = (fieldName, value) =>
+		dispatch({ type: ACTION_TYPES.FORM_FIELD_CHANGED, payload: { fieldName, value } });
 
+	const checkboxChanged = (event, sourceId) => {
+		if (event.target.checked) {
+			dispatch({ type: ACTION_TYPES.SOURCE_SELECTED, payload: { sourceId } });
+		} else {
+			dispatch({ type: ACTION_TYPES.SOURCE_UNSELECTED, payload: { sourceId } });
+		}
+	};
+
+	const searchTriggered = () =>
+		performSearch(
+			{ ...formData, searchMode },
+			appSourceList,
+			sourceListBySlant,
+			setContext,
+			showAlert
+		);
+
+	const generateFormBySearchMode = () => {
+		switch (searchMode) {
+			case 'MY_BUBBLE':
 			case 'BUBBLE_BURST':
-				return (
-					<>
-						<p className='ml-3'>
-							<strong>Choose the category that you think best fits your political views.</strong>
-						</p>
-						<CardBody className='bg-white rounded-xl d-flex flex-column flex-md-row justify-content-md-around'>
-							{sourceSlantRadioList}
-						</CardBody>
-					</>
-				);
+				return <SlantRadioButtons selection={formData.sourceSlant} onChange={onFormFieldChange} />;
 
 			case 'FULL_SPECTRUM':
 				return (
@@ -72,13 +53,13 @@ const SearchForm = ({
 								name='spectrumSearchAll'
 								id='spectrumSearchAll'
 								className='switch'
-								checked={formState.spectrumSearchAll === 'Y'}
+								checked={formData.spectrumSearchAll === 'Y'}
 								onChange={event =>
 									onFormFieldChange(event.target.name, event.target.checked ? 'Y' : 'N')
 								}
 							/>
 							<Label for='spectrumSearchAll' className='col-lg-6'>
-								<strong className='ml-2'>Include Multiple Sources In Each Category</strong>
+								<strong className='ms-2'>Include Multiple Sources In Each Category</strong>
 							</Label>
 						</FormGroup>
 					</CardBody>
@@ -86,64 +67,15 @@ const SearchForm = ({
 
 			case 'USER_SELECT':
 				return (
-					<>
-						<p className='ml-3'>
-							<strong>Choose up to {MAX_SOURCE_SELECTIONS} sources.</strong>
-						</p>
-						<CardBody className='row bg-white rounded-xl my-3 mx-0'>{sourceCheckboxList}</CardBody>
-					</>
+					<SourceCheckboxes
+						sourceList={appSourceList}
+						selections={formData.selectedSourceIds}
+						onChange={checkboxChanged}
+					/>
 				);
 
 			default:
 				return <div></div>;
-		}
-	};
-
-	const sourceSlantRadioList = SOURCE_SLANT.map(sourceSlant => {
-		return (
-			<FormGroup key={'sourceSlant' + sourceSlant.id} className='col-xs-1 col-md-2 m-0'>
-				<Input
-					type='radio'
-					value={sourceSlant.id}
-					name='sourceSlant'
-					id={'sourceSlant' + sourceSlant.id}
-					checked={sourceSlant.id === formState.sourceSlant}
-					onChange={event => onFormFieldChange(event.target.name, sourceSlant.id)}
-				/>
-				<Label for={'sourceSlant' + sourceSlant.id}>
-					<strong>{sourceSlant.name}</strong>
-				</Label>
-			</FormGroup>
-		);
-	});
-
-	const sourceCheckboxList = sourceState.appSourceList.map(source => {
-		return (
-			<FormGroup key={source.id + 'Checkbox'} className='col-xs-1 col-md-2'>
-				<Input
-					type='checkbox'
-					value={source.id}
-					name={source.id + 'Checkbox'}
-					id={source.id + 'Checkbox'}
-					checked={formState.selectedSourceIds.indexOf(source.id) > -1}
-					disabled={
-						formState.selectedSourceIds.indexOf(source.id) === -1 &&
-						formState.selectedSourceIds.length === MAX_SOURCE_SELECTIONS
-					}
-					onChange={event => checkboxChanged(event, source.id)}
-				/>
-				<Label for={source.id + 'Checkbox'}>
-					<strong>{source.name}</strong>
-				</Label>
-			</FormGroup>
-		);
-	});
-
-	const checkboxChanged = (event, sourceId) => {
-		if (event.target.checked) {
-			onSourceSelect(sourceId);
-		} else {
-			onSourceUnselect(sourceId);
 		}
 	};
 
@@ -171,15 +103,15 @@ const SearchForm = ({
 							type='text'
 							name='keyword'
 							id='keyword'
-							value={formState.keyword}
+							value={formData.keyword}
 							onChange={event => onFormFieldChange(event.target.name, event.target.value)}
 						/>
 					</div>
 				</FormGroup>
-				{formState.keyword && (
+				{formData.keyword && (
 					<FormGroup className='row mx-0'>
 						<Label for='previousDays' className='col-sm-6 col-md-4 col-lg-2'>
-							<strong>Search Past {formState.previousDays} Day(s)</strong>
+							<strong>Search Past {formData.previousDays} Day(s)</strong>
 						</Label>
 						<input
 							type='range'
@@ -189,7 +121,7 @@ const SearchForm = ({
 							min='1'
 							max='7'
 							step='1'
-							value={formState.previousDays}
+							value={formData.previousDays}
 							onChange={event => onFormFieldChange(event.target.name, event.target.value)}
 						/>
 					</FormGroup>
@@ -202,7 +134,7 @@ const SearchForm = ({
 					size='lg'
 					name='getHeadlines'
 					id='getHeadlines'
-					onClick={() => submitForm(formState)}
+					onClick={searchTriggered}
 				>
 					<strong>Get Headlines</strong>
 				</Button>
@@ -211,4 +143,4 @@ const SearchForm = ({
 	);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchForm);
+export default SearchForm;

@@ -13,7 +13,12 @@ import {
 	Row
 } from 'reactstrap';
 
-import useInterval from '../util/use-interval';
+import useInterval from '../hooks/use-interval';
+import {
+	getItemFromStorage,
+	setItemInStorage,
+	removeItemsFromStorage
+} from '../util/local-storage-util';
 
 const capitalize = str => `${str.charAt(0).toUpperCase()}${str.substring(1)}`;
 const kebabCaseToTitleCase = str => str.split('-').map(capitalize).join(' ');
@@ -37,7 +42,7 @@ const SaveableForm = ({
 
 	useEffect(() => {
 		if (localStorageInterval && localStorageInterval > 0) {
-			const storedFormData = JSON.parse(localStorage.getItem(formName));
+			const storedFormData = getItemFromStorage({ key: formName, type: 'json' });
 			if (storedFormData) {
 				setFormData(storedFormData);
 			}
@@ -45,7 +50,7 @@ const SaveableForm = ({
 	}, []);
 
 	useInterval(
-		() => localStorage.setItem(formName, JSON.stringify(formData)),
+		() => setItemInStorage({ key: formName, value: formData }),
 		// stop local storage backup when form has been submitted
 		submit ? -1 : localStorageInterval
 	);
@@ -53,7 +58,7 @@ const SaveableForm = ({
 	useEffect(() => {
 		if (submit && !Object.keys(errors).length) {
 			if (localStorageInterval && localStorageInterval > 0) {
-				localStorage.removeItem(formName);
+				removeItemsFromStorage([formName]);
 			}
 			submitFn(formData);
 		}
@@ -167,7 +172,7 @@ const SaveableForm = ({
 					<Row className='m-0'>
 						<Col xs={12} className='m-0'>
 							<Button
-								className='float-right d-inline-block'
+								className='float-end d-inline-block'
 								outline
 								color='info'
 								onClick={() => setPreview(true)}

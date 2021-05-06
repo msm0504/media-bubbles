@@ -1,9 +1,6 @@
-import { UIActionTypes } from '../actions/action-types';
-import SEARCH_MODE from '../constants/search-mode';
-import getStateFromStorage from '../util/get-state-from-storage';
+import { getItemsFromStorage, setItemInStorage } from '../../util/local-storage-util';
 
-const initialState = {
-	searchMode: SEARCH_MODE[0].id,
+export const initialState = {
 	keyword: '',
 	previousDays: 5,
 	sourceSlant: '',
@@ -12,7 +9,6 @@ const initialState = {
 };
 
 const storageKeys = [
-	{ key: 'searchMode' },
 	{ key: 'keyword' },
 	{ key: 'previousDays', type: 'number' },
 	{ key: 'sourceSlant' },
@@ -20,31 +16,38 @@ const storageKeys = [
 	{ key: 'selectedSourceIds', type: 'json' }
 ];
 
-const formDataReducer = (state = initialState, action) => {
+export const ACTION_TYPES = {
+	LOAD_LOCAL_STORAGE: 'LOAD_LOCAL_STORAGE',
+	FORM_FIELD_CHANGED: 'FORM_FIELD_CHANGED',
+	SOURCE_SELECTED: 'SOURCE_SELECTED',
+	SOURCE_UNSELECTED: 'SOURCE_UNSELECTED'
+};
+
+const searchFormReducer = (state = initialState, action) => {
 	let selectedSourceIds;
 
 	switch (action.type) {
-		case UIActionTypes.LOAD_LOCAL_STORAGE:
+		case ACTION_TYPES.LOAD_LOCAL_STORAGE:
 			return {
 				...state,
-				...getStateFromStorage(storageKeys)
+				...getItemsFromStorage(storageKeys)
 			};
 
-		case UIActionTypes.FORM_FIELD_CHANGED: {
+		case ACTION_TYPES.FORM_FIELD_CHANGED: {
 			const { fieldName, value } = action.payload;
-			localStorage.setItem(fieldName, value);
+			setItemInStorage({ key: fieldName, value });
 			return { ...state, [fieldName]: value };
 		}
 
-		case UIActionTypes.SOURCE_SELECTED:
+		case ACTION_TYPES.SOURCE_SELECTED:
 			selectedSourceIds = [...state.selectedSourceIds, action.payload.sourceId];
-			localStorage.setItem('selectedSourceIds', JSON.stringify(selectedSourceIds));
+			setItemInStorage({ key: 'selectedSourceIds', value: selectedSourceIds });
 			return { ...state, selectedSourceIds };
 
-		case UIActionTypes.SOURCE_UNSELECTED:
+		case ACTION_TYPES.SOURCE_UNSELECTED:
 			selectedSourceIds = [...state.selectedSourceIds];
 			selectedSourceIds.splice(state.selectedSourceIds.indexOf(action.payload.sourceId), 1);
-			localStorage.setItem('selectedSourceIds', JSON.stringify(selectedSourceIds));
+			setItemInStorage({ key: 'selectedSourceIds', value: selectedSourceIds });
 			return { ...state, selectedSourceIds };
 
 		default:
@@ -52,4 +55,4 @@ const formDataReducer = (state = initialState, action) => {
 	}
 };
 
-export default formDataReducer;
+export default searchFormReducer;

@@ -1,4 +1,3 @@
-import { connect } from 'react-redux';
 import {
 	DropdownItem,
 	DropdownMenu,
@@ -9,29 +8,28 @@ import {
 	UncontrolledDropdown
 } from 'reactstrap';
 
-import UIActions from '../client/actions/ui-actions';
 import SearchForm from '../client/components/search-form/search-form';
 import MySavedResults from '../client/components/save-results/my-saved-results';
 import SEARCH_MODE, { SEARCH_MODE_MAP } from '../client/constants/search-mode';
+import useLocalStorage from '../client/hooks/use-local-storage';
+import { getSourceLists } from '../server/services/source-list-service';
 
-const mapStateToProps = state => {
-	return {
-		curSearchMode: state.formDataState.searchMode
+const SECONDS_IN_WEEK = 60 * 60 * 24 * 7;
+
+const SearchTabs = ({ appSourceList, sourceListBySlant }) => {
+	const [curSearchMode, setSearchMode] = useLocalStorage('searchMode', SEARCH_MODE[0].id);
+
+	const onSearchModeChange = searchModeId => {
+		setSearchMode(searchModeId);
 	};
-};
 
-const mapDispatchToProps = {
-	onSearchModeChange: UIActions.formFieldChanged
-};
-
-const SearchTabs = ({ curSearchMode, onSearchModeChange }) => {
 	const generateTab = searchMode => {
 		const isActive = curSearchMode === searchMode.id;
 		return (
 			<NavItem key={searchMode.id + 'Tab'}>
 				<NavLink
 					active={isActive}
-					onClick={() => onSearchModeChange('searchMode', searchMode.id)}
+					onClick={() => onSearchModeChange(searchMode.id)}
 					href='#'
 					className={isActive ? 'bg-info' : 'text-info'}
 				>
@@ -45,7 +43,7 @@ const SearchTabs = ({ curSearchMode, onSearchModeChange }) => {
 		return (
 			<DropdownItem
 				key={searchMode.id + 'Option'}
-				onClick={() => onSearchModeChange('searchMode', searchMode.id)}
+				onClick={() => onSearchModeChange(searchMode.id)}
 			>
 				{searchMode.name}
 			</DropdownItem>
@@ -87,14 +85,29 @@ const SearchTabs = ({ curSearchMode, onSearchModeChange }) => {
 				<MySavedResults />
 			) : (
 				<>
-					<p className='mt-3 ml-3'>
+					<p className='mt-3 ms-3'>
 						<strong>{`Results shown will be from ${getCurrentSearchModeInfo()}.`}</strong>
 					</p>
-					<SearchForm />
+					<SearchForm
+						searchMode={curSearchMode}
+						appSourceList={appSourceList}
+						sourceListBySlant={sourceListBySlant}
+					/>
 				</>
 			)}
 		</>
 	);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchTabs);
+export default SearchTabs;
+
+export async function getStaticProps() {
+	const { appSourceList, sourceListBySlant } = await getSourceLists();
+	return {
+		props: {
+			appSourceList,
+			sourceListBySlant
+		},
+		revalidate: SECONDS_IN_WEEK
+	};
+}

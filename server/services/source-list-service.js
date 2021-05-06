@@ -97,7 +97,7 @@ async function populateSourceLists() {
 }
 
 async function getSourceLists() {
-	const sourceListsAreOld = Date.now() - MILLISECONDS_IN_DAY > global.sources.lastUpdate;
+	const sourceListsAreOld = Date.now() - MILLISECONDS_IN_DAY * 7 > global.sources.lastUpdate;
 	if (!(global.sources.app && global.sources.app.length) || sourceListsAreOld) {
 		await populateSourceLists();
 	}

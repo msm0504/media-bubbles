@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
 	CardBody,
@@ -17,9 +16,9 @@ import {
 import { useSession } from 'next-auth/client';
 import debounce from 'lodash.debounce';
 
-import UIActions from '../actions/ui-actions';
 import ALERT_LEVEL from '../constants/alert-level';
-import APIService from '../services/api-service';
+import { AlertsDispatch } from '../contexts/alerts-context';
+import { callApi } from '../services/api-service';
 import camelCaseToWords from '../util/camel-case-to-words';
 
 const CACHE_SIZE = 10;
@@ -32,7 +31,7 @@ const AsyncList = ({
 	loginRequired,
 	LoginRequiredComponent
 }) => {
-	const dispatch = useDispatch();
+	const showAlert = useContext(AlertsDispatch);
 	const [session] = useSession();
 	const [items, setItems] = useState([]);
 	const [pageCount, setPageCount] = useState(0);
@@ -59,7 +58,7 @@ const AsyncList = ({
 		);
 
 	async function getListItems() {
-		const { [apiListName]: returnedItems, pageCount } = await APIService.callApi('get', apiPath, {
+		const { [apiListName]: returnedItems, pageCount } = await callApi('get', apiPath, {
 			filter: filter.current,
 			page: page.current
 		});
@@ -87,18 +86,14 @@ const AsyncList = ({
 	}
 
 	async function deleteItem(itemId, itemName) {
-		const { itemDeleted } = await APIService.callApi('delete', `${apiPath}/${itemId}`);
+		const { itemDeleted } = await callApi('delete', `${apiPath}/${itemId}`);
 		if (itemDeleted !== true) {
-			dispatch(
-				UIActions.showAlert(
-					ALERT_LEVEL.danger,
-					`Deleting ${itemName || itemId} failed. Please try again later.`
-				)
+			showAlert(
+				ALERT_LEVEL.danger,
+				`Deleting ${itemName || itemId} failed. Please try again later.`
 			);
 		} else {
-			dispatch(
-				UIActions.showAlert(ALERT_LEVEL.success, `${itemName || itemId} deleted successfully.`)
-			);
+			showAlert(ALERT_LEVEL.success, `${itemName || itemId} deleted successfully.`);
 			page.current = 1;
 			cache.current = {};
 			getListItems();
@@ -168,10 +163,7 @@ const AsyncList = ({
 					)} found`}</CardBody>
 				)}
 				{pageCount ? (
-					<Pagination
-						listClassName='float-right mt-1'
-						aria-label='change list page being displayed'
-					>
+					<Pagination listClassName='float-end mt-1' aria-label='change list page being displayed'>
 						<PaginationItem disabled={page.current <= 1}>
 							<PaginationLink first onClick={() => handleLoadPage(1)} />
 						</PaginationItem>
