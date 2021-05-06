@@ -163,10 +163,7 @@ const AsyncList = ({
 					)} found`}</CardBody>
 				)}
 				{pageCount ? (
-					<Pagination
-						listClassName='float-right mt-1'
-						aria-label='change list page being displayed'
-					>
+					<Pagination listClassName='float-end mt-1' aria-label='change list page being displayed'>
 						<PaginationItem disabled={page.current <= 1}>
 							<PaginationLink first onClick={() => handleLoadPage(1)} />
 						</PaginationItem>

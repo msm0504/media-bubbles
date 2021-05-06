@@ -17,7 +17,7 @@ const RouteLink = ({ buttonText, className = '', routePath }) => {
 	};
 
 	return (
-		<Button color='link' className={`p-0 mr-4 ${className}`} onClick={linkClicked}>
+		<Button color='link' className={`p-0 me-4 ${className}`} onClick={linkClicked}>
 			{buttonText}
 		</Button>
 	);

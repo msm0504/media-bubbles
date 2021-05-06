@@ -172,7 +172,7 @@ const SaveableForm = ({
 					<Row className='m-0'>
 						<Col xs={12} className='m-0'>
 							<Button
-								className='float-right d-inline-block'
+								className='float-end d-inline-block'
 								outline
 								color='info'
 								onClick={() => setPreview(true)}

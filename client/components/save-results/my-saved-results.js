@@ -15,7 +15,7 @@ const SavedResultItem = ({ _id, name, createdAt, fnDeleteItem }) => {
 				</p>
 			</div>
 			<Button
-				className='float-right d-block d-sm-inline-block'
+				className='float-end d-block d-sm-inline-block'
 				color='link'
 				onClick={() => fnDeleteItem(_id, name)}
 			>
@@ -27,7 +27,7 @@ const SavedResultItem = ({ _id, name, createdAt, fnDeleteItem }) => {
 				></i>
 			</Button>
 			<Button
-				className='float-right d-block d-sm-inline-block'
+				className='float-end d-block d-sm-inline-block'
 				outline
 				color='info'
 				onClick={() => {

@@ -27,7 +27,7 @@ const PostSummary = ({ title, excerpt, slug, updatedAt: date, fnDeleteItem }) =>
 			{session?.user.isAdmin && (
 				<>
 					<Button
-						className='float-right p-0 d-block d-sm-inline-block'
+						className='float-end p-0 d-block d-sm-inline-block'
 						color='link'
 						onClick={() => fnDeleteItem(slug, title)}
 					>
@@ -40,7 +40,7 @@ const PostSummary = ({ title, excerpt, slug, updatedAt: date, fnDeleteItem }) =>
 					</Button>
 					<RouteLink
 						buttonText={EditPost}
-						className='float-right ml-2 d-block d-sm-inline-block'
+						className='float-end ms-2 d-block d-sm-inline-block'
 						routePath={`/blog/edit-post/${slug}`}
 					/>
 				</>
@@ -66,7 +66,7 @@ const BlogPosts = () => {
 			{session?.user.isAdmin && (
 				<RouteLink
 					buttonText={AddPost}
-					className='float-right d-block d-sm-inline-block'
+					className='float-end d-block d-sm-inline-block'
 					routePath='/blog/add-post'
 				/>
 			)}

@@ -1,5 +1,6 @@
-@import url('https://cdn.jsdelivr.net/npm/bootswatch@4.6.0/dist/journal/bootstrap.min.css');
+@import url('https://cdn.jsdelivr.net/npm/bootswatch@5.0.0/dist/journal/bootstrap.min.css');
 @import url('https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin&display=swap');
 
 body {
 	background-image: url('/images/background.png');
@@ -7,18 +8,21 @@ body {
 	background-size: 100% auto;
 }
 
-.jumbotron {
+body :not(i) {
+	font-family: 'Libre Franklin', sans-serif !important;
+}
+
+#top-banner {
 	background-image: url('/images/banner.png');
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
-	text-shadow: -1px 1px 8px var(--dark), 1px 1px 8px var(--dark), 1px -1px 8px var(--dark),
-		-1px -1px 8px var(--dark);
+	text-shadow: -1px 1px 8px var(--bs-dark), 1px 1px 8px var(--bs-dark), 1px -1px 8px var(--bs-dark),
+		-1px -1px 8px var(--bs-dark);
 }
 
 .header-logo {
 	height: 128px;
 	width: 128px;
-	display: inline-block;
 	border-radius: 50%;
 	background-image: url('/images/slant-bubbles/bubble-center.png');
 	background-position: right bottom;
@@ -51,6 +55,10 @@ img.bubble-img {
 
 .rounded-bottom-xl {
 	border-radius: 0rem 0rem 0.75rem 0.75rem !important;
+}
+
+.form-group {
+	margin-bottom: 1rem;
 }
 
 @import url('./search-form.css');
