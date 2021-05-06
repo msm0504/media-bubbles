@@ -2,8 +2,8 @@ import { useReducer, useContext, useEffect } from 'react';
 import { Button, CardBody, Form, FormGroup, Input, Label, UncontrolledTooltip } from 'reactstrap';
 
 import searchFormReducer, { ACTION_TYPES, initialState } from './search-form-reducer';
-import MAX_SOURCE_SELECTIONS from '../../constants/max-source-selections';
-import { SOURCE_SLANT } from '../../constants/source-slant';
+import SlantRadioButtons from './slant-radio-buttons';
+import SourceCheckboxes from './source-checkboxes';
 import { AlertsDispatch } from '../../contexts/alerts-context';
 import { SearchResultContext } from '../../contexts/search-result-context';
 import performSearch from '../../util/perform-search';
@@ -20,6 +20,7 @@ const SearchForm = ({ searchMode, appSourceList, sourceListBySlant }) => {
 
 	const onFormFieldChange = (fieldName, value) =>
 		dispatch({ type: ACTION_TYPES.FORM_FIELD_CHANGED, payload: { fieldName, value } });
+
 	const checkboxChanged = (event, sourceId) => {
 		if (event.target.checked) {
 			dispatch({ type: ACTION_TYPES.SOURCE_SELECTED, payload: { sourceId } });
@@ -28,31 +29,20 @@ const SearchForm = ({ searchMode, appSourceList, sourceListBySlant }) => {
 		}
 	};
 
+	const searchTriggered = () =>
+		performSearch(
+			{ ...formData, searchMode },
+			appSourceList,
+			sourceListBySlant,
+			setContext,
+			showAlert
+		);
+
 	const generateFormBySearchMode = () => {
 		switch (searchMode) {
 			case 'MY_BUBBLE':
-				return (
-					<>
-						<p className='ml-3'>
-							<strong>Choose the category that you think best fits your political views.</strong>
-						</p>
-						<CardBody className='bg-white rounded-xl d-flex flex-column flex-md-row justify-content-md-around'>
-							{sourceSlantRadioList}
-						</CardBody>
-					</>
-				);
-
 			case 'BUBBLE_BURST':
-				return (
-					<>
-						<p className='ml-3'>
-							<strong>Choose the category that you think best fits your political views.</strong>
-						</p>
-						<CardBody className='bg-white rounded-xl d-flex flex-column flex-md-row justify-content-md-around'>
-							{sourceSlantRadioList}
-						</CardBody>
-					</>
-				);
+				return <SlantRadioButtons selection={formData.sourceSlant} onChange={onFormFieldChange} />;
 
 			case 'FULL_SPECTRUM':
 				return (
@@ -77,58 +67,17 @@ const SearchForm = ({ searchMode, appSourceList, sourceListBySlant }) => {
 
 			case 'USER_SELECT':
 				return (
-					<>
-						<p className='ml-3'>
-							<strong>Choose up to {MAX_SOURCE_SELECTIONS} sources.</strong>
-						</p>
-						<CardBody className='row bg-white rounded-xl my-3 mx-0'>{sourceCheckboxList}</CardBody>
-					</>
+					<SourceCheckboxes
+						sourceList={appSourceList}
+						selections={formData.selectedSourceIds}
+						onChange={checkboxChanged}
+					/>
 				);
 
 			default:
 				return <div></div>;
 		}
 	};
-
-	const sourceSlantRadioList = SOURCE_SLANT.map(sourceSlant => {
-		return (
-			<FormGroup key={'sourceSlant' + sourceSlant.id} className='col-xs-1 col-md-2 m-0'>
-				<Input
-					type='radio'
-					value={sourceSlant.id}
-					name='sourceSlant'
-					id={'sourceSlant' + sourceSlant.id}
-					checked={sourceSlant.id === formData.sourceSlant}
-					onChange={event => onFormFieldChange(event.target.name, sourceSlant.id)}
-				/>
-				<Label for={'sourceSlant' + sourceSlant.id}>
-					<strong>{sourceSlant.name}</strong>
-				</Label>
-			</FormGroup>
-		);
-	});
-
-	const sourceCheckboxList = appSourceList.map(source => {
-		return (
-			<FormGroup key={source.id + 'Checkbox'} className='col-xs-1 col-md-2'>
-				<Input
-					type='checkbox'
-					value={source.id}
-					name={source.id + 'Checkbox'}
-					id={source.id + 'Checkbox'}
-					checked={formData.selectedSourceIds.indexOf(source.id) > -1}
-					disabled={
-						formData.selectedSourceIds.indexOf(source.id) === -1 &&
-						formData.selectedSourceIds.length === MAX_SOURCE_SELECTIONS
-					}
-					onChange={event => checkboxChanged(event, source.id)}
-				/>
-				<Label for={source.id + 'Checkbox'}>
-					<strong>{source.name}</strong>
-				</Label>
-			</FormGroup>
-		);
-	});
 
 	return (
 		<Form>
@@ -185,15 +134,7 @@ const SearchForm = ({ searchMode, appSourceList, sourceListBySlant }) => {
 					size='lg'
 					name='getHeadlines'
 					id='getHeadlines'
-					onClick={() =>
-						performSearch(
-							{ ...formData, searchMode },
-							appSourceList,
-							sourceListBySlant,
-							setContext,
-							showAlert
-						)
-					}
+					onClick={searchTriggered}
 				>
 					<strong>Get Headlines</strong>
 				</Button>

@@ -14,6 +14,11 @@ import {
 } from 'reactstrap';
 
 import useInterval from '../hooks/use-interval';
+import {
+	getItemFromStorage,
+	setItemInStorage,
+	removeItemsFromStorage
+} from '../util/local-storage-util';
 
 const capitalize = str => `${str.charAt(0).toUpperCase()}${str.substring(1)}`;
 const kebabCaseToTitleCase = str => str.split('-').map(capitalize).join(' ');
@@ -37,7 +42,7 @@ const SaveableForm = ({
 
 	useEffect(() => {
 		if (localStorageInterval && localStorageInterval > 0) {
-			const storedFormData = JSON.parse(localStorage.getItem(formName));
+			const storedFormData = getItemFromStorage({ key: formName, type: 'json' });
 			if (storedFormData) {
 				setFormData(storedFormData);
 			}
@@ -45,7 +50,7 @@ const SaveableForm = ({
 	}, []);
 
 	useInterval(
-		() => localStorage.setItem(formName, JSON.stringify(formData)),
+		() => setItemInStorage({ key: formName, value: formData }),
 		// stop local storage backup when form has been submitted
 		submit ? -1 : localStorageInterval
 	);
@@ -53,7 +58,7 @@ const SaveableForm = ({
 	useEffect(() => {
 		if (submit && !Object.keys(errors).length) {
 			if (localStorageInterval && localStorageInterval > 0) {
-				localStorage.removeItem(formName);
+				removeItemsFromStorage([formName]);
 			}
 			submitFn(formData);
 		}

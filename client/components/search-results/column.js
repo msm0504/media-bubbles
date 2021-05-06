@@ -17,7 +17,7 @@ const Column = ({ column, articles, isSearchAll, togglePanel, isPanelInOpenList 
 				<CardHeader id={headingId} className='p-0 w-100 mx-auto'>
 					<div className='d-flex flex-row flex-xl-column'>
 						<ColumnHeadingIcon
-							className='d-none d-md-block m-2'
+							className='d-block m-2'
 							column={column}
 							isColumnSlant={isSearchAll}
 						/>

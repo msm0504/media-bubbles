@@ -42,7 +42,7 @@ const getFieldErrorMessage = (fieldName, value) => {
 };
 
 async function submitFeedback(feedbackData, showAlert) {
-	const { feedbackSent } = await callApi('post', 'blog-posts', feedbackData);
+	const { feedbackSent } = await callApi('post', 'feedback', feedbackData);
 	if (feedbackSent !== true) {
 		showAlert(ALERT_LEVEL.danger, 'Sending this message failed. Please try again later.');
 	} else {

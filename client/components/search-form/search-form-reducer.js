@@ -1,4 +1,4 @@
-import { getItemsFromStorage } from '../../util/local-storage-util';
+import { getItemsFromStorage, setItemInStorage } from '../../util/local-storage-util';
 
 export const initialState = {
 	keyword: '',
@@ -35,19 +35,19 @@ const searchFormReducer = (state = initialState, action) => {
 
 		case ACTION_TYPES.FORM_FIELD_CHANGED: {
 			const { fieldName, value } = action.payload;
-			localStorage.setItem(fieldName, value);
+			setItemInStorage({ key: fieldName, value });
 			return { ...state, [fieldName]: value };
 		}
 
 		case ACTION_TYPES.SOURCE_SELECTED:
 			selectedSourceIds = [...state.selectedSourceIds, action.payload.sourceId];
-			localStorage.setItem('selectedSourceIds', JSON.stringify(selectedSourceIds));
+			setItemInStorage({ key: 'selectedSourceIds', value: selectedSourceIds });
 			return { ...state, selectedSourceIds };
 
 		case ACTION_TYPES.SOURCE_UNSELECTED:
 			selectedSourceIds = [...state.selectedSourceIds];
 			selectedSourceIds.splice(state.selectedSourceIds.indexOf(action.payload.sourceId), 1);
-			localStorage.setItem('selectedSourceIds', JSON.stringify(selectedSourceIds));
+			setItemInStorage({ key: 'selectedSourceIds', value: selectedSourceIds });
 			return { ...state, selectedSourceIds };
 
 		default:

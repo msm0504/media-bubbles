@@ -14,7 +14,7 @@ const App = ({ Component, pageProps }) => {
 
 	return (
 		<html lang='en'>
-			<div className='container-fluid p-0'>
+			<body className='container-fluid p-0'>
 				<Head>
 					<title key='title'>{title}</title>
 					<meta name='description' content={description}></meta>
@@ -58,7 +58,7 @@ const App = ({ Component, pageProps }) => {
 						<Footer />
 					</div>
 				</Provider>
-			</div>
+			</body>
 		</html>
 	);
 };
