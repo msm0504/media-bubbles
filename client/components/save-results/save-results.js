@@ -1,47 +1,43 @@
-import { connect } from 'react-redux';
+import { useContext } from 'react';
 import { Button } from 'reactstrap';
 
-import UIActions from '../../actions/ui-actions';
-import { SEARCH_MODE_MAP } from '../../constants/search-mode';
-import { SOURCE_SLANT_MAP } from '../../constants/source-slant';
+import ALERT_LEVEL from '../../constants/alert-level';
+import { AlertsDispatch } from '../../contexts/alerts-context';
+import { SearchResultContext } from '../../contexts/search-result-context';
+import { callApi } from '../../services/api-service';
 
-const mapStateToProps = state => ({
-	formState: state.formDataState,
-	newSearchState: state.searchResultState.newSearch,
-	sourceState: state.sourceState
-});
+async function saveClicked(context, setContext, showAlert) {
+	const { sourceListToSearch, isSearchAll, articleMap, savedResultName } = context;
+	const { savedResultId } = await callApi('post', 'searchResult', {
+		articleMap,
+		isSearchAll,
+		name: savedResultName,
+		sourceList: sourceListToSearch.map(({ id, name, url }) => ({ id, name, url }))
+	});
 
-const mapDispatchToProps = {
-	saveResult: UIActions.saveResult
-};
+	if (!savedResultId || typeof savedResultId !== 'string') {
+		showAlert(ALERT_LEVEL.danger, 'Saving this search result failed. Please try again later.');
+	} else {
+		showAlert(ALERT_LEVEL.success, 'Search result saved successfully.');
+		setContext({ ...context, savedResultId });
+	}
+}
 
-const SaveResults = ({ formState, newSearchState, saveResult, sourceState }) => {
-	if (newSearchState.savedResultId) return null;
+const SaveResults = () => {
+	const [context, setContext] = useContext(SearchResultContext);
+	const showAlert = useContext(AlertsDispatch);
 
-	const name = `${formState.keyword ? formState.keyword : 'Headlines'} ${
-		SEARCH_MODE_MAP[formState.searchMode].name
-	}${
-		formState.sourceSlant && formState.searchMode.includes('BUBBLE')
-			? ` (${SOURCE_SLANT_MAP[formState.sourceSlant]})`
-			: ''
-	}`;
-
-	const saveClicked = () => {
-		saveResult(
-			name,
-			newSearchState.articleMap,
-			newSearchState.isSearchAll,
-			newSearchState.isSearchAll
-				? []
-				: sourceState.sourceListToSearch.map(({ id, name, url }) => ({ id, name, url }))
-		);
-	};
+	if (context.savedResultId) return null;
 
 	return (
-		<Button className='mb-1 ml-3 d-inline-block' color='primary' onClick={() => saveClicked()}>
+		<Button
+			className='mb-1 ml-3 d-inline-block'
+			color='primary'
+			onClick={() => saveClicked(context, setContext, showAlert)}
+		>
 			<strong>Save Results</strong>
 		</Button>
 	);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SaveResults);
+export default SaveResults;

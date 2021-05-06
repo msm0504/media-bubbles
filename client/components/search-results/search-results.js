@@ -1,58 +1,52 @@
-import { connect } from 'react-redux';
+import { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
 import Column from './column';
-import SaveResults from '../save-results/save-results';
-import UIActions from '../../actions/ui-actions';
 import { SOURCE_SLANT } from '../../constants/source-slant';
+import useLocalStorage from '../../hooks/use-local-storage';
 const ShareButtons = dynamic(() => import('../save-results/share-buttons'), { ssr: false });
 
-const mapStateToProps = state => {
-	return {
-		sourceListToSearch: state.sourceState.sourceListToSearch,
-		searchResultState: state.searchResultState
-	};
-};
-
-const mapDispatchToProps = {
-	onPanelOpen: UIActions.panelOpened,
-	onPanelClose: UIActions.panelClosed
-};
-
-const SearchResults = ({ onPanelClose, onPanelOpen, searchResultState, sourceListToSearch }) => {
+const SearchResults = ({ sourceList, isSearchAll, articleMap, savedResultId }) => {
+	const [openPanels, setOpenPanels] = useLocalStorage(
+		'openPanels',
+		{ id: 'none', list: [] },
+		'json'
+	);
 	const router = useRouter();
 	const { resultId } = router.query;
-	const stateToDisplayName = resultId ? 'loadedResult' : 'newSearch';
-	const stateToDisplay = searchResultState[stateToDisplayName];
-	const { isSearchAll } = stateToDisplay;
 
-	if (resultId && resultId !== stateToDisplay.savedResultId) return null;
+	useEffect(() => {
+		const id = resultId || 'none';
+		if (id !== openPanels.id) {
+			setOpenPanels({ id, list: [] });
+		}
+	}, [resultId]);
+
+	if (resultId && resultId !== savedResultId) return null;
 
 	const togglePanel = columnId => {
-		if (stateToDisplay.openPanels.indexOf(columnId) === -1) {
-			onPanelOpen(columnId, stateToDisplayName);
+		if (openPanels.list.indexOf(columnId) === -1) {
+			setOpenPanels({ ...openPanels, list: [...openPanels.list, columnId] });
 		} else {
-			onPanelClose(columnId, stateToDisplayName);
+			const newOpenPanels = [...openPanels.list];
+			newOpenPanels.splice(openPanels.list.indexOf(columnId), 1);
+			setOpenPanels({ ...openPanels, list: newOpenPanels });
 		}
 	};
 
 	const isPanelInOpenList = columnId => {
-		return stateToDisplay.openPanels.indexOf(columnId) !== -1;
+		return openPanels.list.indexOf(columnId) !== -1;
 	};
 
 	const generateColumns = () => {
-		const columns = isSearchAll
-			? SOURCE_SLANT
-			: resultId
-			? stateToDisplay.sourceList
-			: sourceListToSearch;
+		const columns = isSearchAll ? SOURCE_SLANT : sourceList;
 
 		return columns.map(column => (
 			<Column
 				key={`${column.id}Column`}
 				column={column}
-				articles={stateToDisplay.articleMap[column.id]}
+				articles={articleMap[column.id]}
 				isSearchAll={isSearchAll}
 				togglePanel={togglePanel}
 				isPanelInOpenList={isPanelInOpenList(column.id)}
@@ -64,15 +58,14 @@ const SearchResults = ({ onPanelClose, onPanelOpen, searchResultState, sourceLis
 		const currentUrl = `${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`;
 		const urlToShare = resultId
 			? currentUrl
-			: stateToDisplay.savedResultId
-			? `${currentUrl}/${stateToDisplay.savedResultId}`
+			: savedResultId
+			? `${currentUrl}/${savedResultId}`
 			: '';
 		return <ShareButtons urlToShare={urlToShare} />;
 	};
 
 	return (
 		<>
-			{!resultId && <SaveResults />}
 			{displayShareButtons()}
 			<div className='d-flex flex-column flex-xl-row align-items-stretch align-items-xl-start justify-content-xl-around'>
 				{generateColumns()}
@@ -81,4 +74,4 @@ const SearchResults = ({ onPanelClose, onPanelOpen, searchResultState, sourceLis
 	);
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResults);
+export default SearchResults;

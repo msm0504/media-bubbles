@@ -13,7 +13,7 @@ import {
 	Row
 } from 'reactstrap';
 
-import useInterval from '../util/use-interval';
+import useInterval from '../hooks/use-interval';
 
 const capitalize = str => `${str.charAt(0).toUpperCase()}${str.substring(1)}`;
 const kebabCaseToTitleCase = str => str.split('-').map(capitalize).join(' ');

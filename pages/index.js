@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
 	DropdownItem,
 	DropdownMenu,
@@ -12,22 +11,15 @@ import {
 import SearchForm from '../client/components/search-form/search-form';
 import MySavedResults from '../client/components/save-results/my-saved-results';
 import SEARCH_MODE, { SEARCH_MODE_MAP } from '../client/constants/search-mode';
-import getStateFromStorage from '../client/util/get-state-from-storage';
+import useLocalStorage from '../client/hooks/use-local-storage';
+import { getSourceLists } from '../server/services/source-list-service';
 
-const SEARCH_MODE_KEY = 'searchMode';
+const SECONDS_IN_WEEK = 60 * 60 * 24 * 7;
 
-const SearchTabs = () => {
-	const [curSearchMode, setSearchMode] = useState(SEARCH_MODE[0].id);
-
-	useEffect(() => {
-		const storedValue = getStateFromStorage([{ key: SEARCH_MODE_KEY }]);
-		if (storedValue[SEARCH_MODE_KEY]) {
-			setSearchMode(storedValue[SEARCH_MODE_KEY]);
-		}
-	}, []);
+const SearchTabs = ({ appSourceList, sourceListBySlant }) => {
+	const [curSearchMode, setSearchMode] = useLocalStorage('searchMode', SEARCH_MODE[0].id);
 
 	const onSearchModeChange = searchModeId => {
-		localStorage.setItem(SEARCH_MODE_KEY, searchModeId);
 		setSearchMode(searchModeId);
 	};
 
@@ -96,7 +88,11 @@ const SearchTabs = () => {
 					<p className='mt-3 ml-3'>
 						<strong>{`Results shown will be from ${getCurrentSearchModeInfo()}.`}</strong>
 					</p>
-					<SearchForm searchMode={curSearchMode} />
+					<SearchForm
+						searchMode={curSearchMode}
+						appSourceList={appSourceList}
+						sourceListBySlant={sourceListBySlant}
+					/>
 				</>
 			)}
 		</>
@@ -104,3 +100,14 @@ const SearchTabs = () => {
 };
 
 export default SearchTabs;
+
+export async function getStaticProps() {
+	const { appSourceList, sourceListBySlant } = await getSourceLists();
+	return {
+		props: {
+			appSourceList,
+			sourceListBySlant
+		},
+		revalidate: SECONDS_IN_WEEK
+	};
+}

@@ -2,7 +2,7 @@ import { Button, Card, CardHeader, Collapse } from 'reactstrap';
 
 import ColumnArticles from './column-articles';
 import ColumnHeadingIcon from './column-heading-icon';
-import useMediaQuery, { XL_MIN_WIDTH } from '../../util/use-media-query';
+import useMediaQuery, { XL_MIN_WIDTH } from '../../hooks/use-media-query';
 
 const Column = ({ column, articles, isSearchAll, togglePanel, isPanelInOpenList }) => {
 	const headingId = `${isSearchAll ? column.name.toLowerCase() : column.id}-heading`;

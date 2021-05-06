@@ -1,22 +1,13 @@
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import Head from 'next/head';
 import { Provider } from 'next-auth/client';
 
-import UIActions from '../client/actions/ui-actions';
-import Alerts from '../client/components/alerts';
 import Header from '../client/components/header';
 import Footer from '../client/components/footer';
 import Logout from '../client/components/login/logout';
 import RouteLink from '../client/components/nav/route-link';
-import { wrapper } from '../client/store/store';
+import { AppProviders } from '../client/contexts';
 import '../styles/globals.css';
 const App = ({ Component, pageProps }) => {
-	const dispatch = useDispatch();
-	useEffect(() => {
-		dispatch(UIActions.loadLocalStorage());
-	}, []);
-
 	const title = 'Media Bubbles';
 	const description =
 		'Escape your information bubble and view headlines from sources across the political spectrum.';
@@ -60,8 +51,9 @@ const App = ({ Component, pageProps }) => {
 								<RouteLink buttonText='Blog' routePath='/blog' />
 								<RouteLink buttonText='Contact Us' routePath='/contact' />
 							</div>
-							<Alerts />
-							<Component {...pageProps} />
+							<AppProviders>
+								<Component {...pageProps} />
+							</AppProviders>
 						</div>
 						<Footer />
 					</div>
@@ -71,4 +63,4 @@ const App = ({ Component, pageProps }) => {
 	);
 };
 
-export default wrapper.withRedux(App);
+export default App;

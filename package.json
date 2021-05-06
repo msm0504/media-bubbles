@@ -1,6 +1,6 @@
 {
 	"name": "media-bubbles",
-	"version": "6.0.10",
+	"version": "7.0.0",
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
@@ -22,7 +22,7 @@
 		"nodemailer": "^6.4.11",
 		"oauth-1.0a": "^2.2.6",
 		"react": "^17.0.1",
-		"react-dom": "16.13.1",
+		"react-dom": "^17.0.1",
 		"react-markdown": "^5.0.3",
 		"reactstrap": "^8.6.0",
 		"remark-gfm": "^1.0.0"

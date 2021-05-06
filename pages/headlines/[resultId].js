@@ -2,10 +2,8 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { CardBody } from 'reactstrap';
 
-import APIActions from '../../client/actions/api-actions';
 import Spinner from '../../client/components/spinner';
 import SearchResults from '../../client/components/search-results/search-results';
-import { wrapper } from '../../client/store/store';
 import { getSavedResult, getAllSavedResults } from '../../server/services/saved-results-service';
 
 const formatDescription = ({ createdAt = 0, sourceList = [] }) =>
@@ -43,19 +41,21 @@ const SavedSearchResults = ({ loadedResult, notFound }) => {
 				/>
 			</Head>
 			<h1 className='text-info'>{`Saved Result: ${loadedResult.name}`}</h1>
-			<SearchResults />
+			<SearchResults
+				sourceList={loadedResult.sourceList}
+				isSearchAll={loadedResult.isSearchAll}
+				articleMap={loadedResult.articleMap}
+				savedResultId={loadedResult._id}
+			/>
 		</>
 	);
 };
 
 export default SavedSearchResults;
 
-export const getStaticProps = wrapper.getStaticProps(async ({ params, store }) => {
+export async function getStaticProps({ params }) {
 	const loadedResult = (await getSavedResult(params.resultId)) || {};
 	const resultFound = loadedResult && Object.keys(loadedResult).length;
-	if (resultFound) {
-		store.dispatch(APIActions.resultLoaded(loadedResult));
-	}
 
 	return {
 		props: {
@@ -63,7 +63,7 @@ export const getStaticProps = wrapper.getStaticProps(async ({ params, store }) =
 			notFound: !resultFound
 		}
 	};
-});
+}
 
 export async function getStaticPaths() {
 	const { savedResults } = await getAllSavedResults();

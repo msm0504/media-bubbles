@@ -1,11 +1,13 @@
-import { useDispatch } from 'react-redux';
+import { useContext } from 'react';
 import { CardBody } from 'reactstrap';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
 
 import BlogPostTemplate from './blog-post-template';
 import SaveableForm, { getRequiredMessage } from '../saveable-form';
-import UIActions from '../../actions/ui-actions';
+import ALERT_LEVEL from '../../constants/alert-level';
+import { AlertsDispatch } from '../../contexts/alerts-context';
+import { callApi } from '../../services/api-service';
 
 const blankBlogPostForm = {
 	author: '',
@@ -40,13 +42,22 @@ const getFieldErrorMessage = (fieldName, value) => {
 	return '';
 };
 
+async function submitPost(blogPostData, showAlert) {
+	const { slug } = await callApi('post', 'blog-posts', blogPostData);
+	if (!slug) {
+		showAlert(ALERT_LEVEL.danger, 'Saving blog post failed. Please try again later.');
+	} else {
+		showAlert(ALERT_LEVEL.success, `Blog post ${slug} saved successfully.`);
+	}
+}
+
 const BlogPostPreview = ({ content, title }) => {
 	const currentDate = new Date().toISOString();
 	return <BlogPostTemplate content={content} date={currentDate} title={title} />;
 };
 
 const AddEditBlogPost = ({ currentVersion }) => {
-	const dispatch = useDispatch();
+	const showAlert = useContext(AlertsDispatch);
 	const [session] = useSession();
 
 	if (!session?.user.isAdmin) return <CardBody className='text-info'>You shall not post!</CardBody>;
@@ -81,7 +92,7 @@ const AddEditBlogPost = ({ currentVersion }) => {
 	];
 
 	const submitFn = blogPostData => {
-		dispatch(UIActions.submitBlogPost(blogPostData));
+		submitPost(blogPostData, showAlert);
 		router.push('/blog');
 	};
 
