@@ -26,7 +26,7 @@ const SourceCheckboxes = ({ sourceList, selections, onChange }) => {
 
 	return (
 		<>
-			<p className='ms-3'>
+			<p className='ml-3'>
 				<strong>Choose up to {MAX_SOURCE_SELECTIONS} sources.</strong>
 			</p>
 			<CardBody className='row bg-white rounded-xl my-3 mx-0'>{checkboxes}</CardBody>

@@ -57,7 +57,7 @@ const Terms = () => (
 					the use of the Service. This Terms and Conditions agreement has been created with the help
 					of the
 					<a
-						href='https://www.termsfeed.com/terms-conditions-generator/'
+						href='https://www.termsfeed.com/terml-conditions-generator/'
 						target='_blank'
 						rel='noreferrer'
 					>

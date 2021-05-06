@@ -31,7 +31,7 @@ const SaveResults = () => {
 
 	return (
 		<Button
-			className='mb-1 ms-3 d-inline-block'
+			className='mb-1 ml-3 d-inline-block'
 			color='primary'
 			onClick={() => saveClicked(context, setContext, showAlert)}
 		>

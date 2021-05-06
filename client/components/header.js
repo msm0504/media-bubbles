@@ -10,18 +10,16 @@ const Header = () => {
 
 	return (
 		<div
-			className='p-4 mb-0'
+			className='jumbotron mb-0'
 			id='top-banner'
 			tabIndex='0'
 			role='button'
 			onClick={headerClicked}
 			onKeyDown={headerClicked}
 		>
-			<div className='py-5 text-center d-flex flex-column flex-lg-row align-items-center justify-content-lg-around'>
+			<div className='py-3 text-center d-flex flex-column flex-lg-row align-items-center justify-content-lg-around'>
 				<div className='header-logo'></div>
-				<div className='display-1 fw-bold text-light' style={{ fontSize: '6rem' }}>
-					Media Bubbles
-				</div>
+				<div className='display-1 font-weight-bold text-light'>Media Bubbles</div>
 				<div className='header-logo d-none d-lg-flex'></div>
 			</div>
 		</div>

@@ -59,7 +59,7 @@ const SearchForm = ({ searchMode, appSourceList, sourceListBySlant }) => {
 								}
 							/>
 							<Label for='spectrumSearchAll' className='col-lg-6'>
-								<strong className='ms-2'>Include Multiple Sources In Each Category</strong>
+								<strong className='ml-2'>Include Multiple Sources In Each Category</strong>
 							</Label>
 						</FormGroup>
 					</CardBody>

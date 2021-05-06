@@ -85,7 +85,7 @@ const SearchTabs = ({ appSourceList, sourceListBySlant }) => {
 				<MySavedResults />
 			) : (
 				<>
-					<p className='mt-3 ms-3'>
+					<p className='mt-3 ml-3'>
 						<strong>{`Results shown will be from ${getCurrentSearchModeInfo()}.`}</strong>
 					</p>
 					<SearchForm

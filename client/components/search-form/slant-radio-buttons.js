@@ -23,7 +23,7 @@ const SlantRadioButtons = ({ selection, onChange }) => {
 
 	return (
 		<>
-			<p className='ms-3'>
+			<p className='ml-3'>
 				<strong>Choose the category that you think best fits your political views.</strong>
 			</p>
 			<CardBody className='bg-white rounded-xl d-flex flex-column flex-md-row justify-content-md-around'>

@@ -8,12 +8,12 @@ const Login = () => {
 			<Button
 				color='info'
 				size='sm'
-				className='twitter-btn me-2'
+				className='twitter-btn mr-2'
 				id='twitter-login'
 				disabled={loading}
 				onClick={() => signIn('twitter')}
 			>
-				<i className='fa fa-twitter me-2' aria-hidden='true'></i>
+				<i className='fa fa-twitter mr-2' aria-hidden='true'></i>
 				Log in with Twitter
 			</Button>
 			<Button
@@ -24,7 +24,7 @@ const Login = () => {
 				disabled={loading}
 				onClick={() => signIn('facebook')}
 			>
-				<i className='fa fa-facebook me-2' aria-hidden='true'></i>
+				<i className='fa fa-facebook mr-2' aria-hidden='true'></i>
 				Log in with Facebook
 			</Button>
 		</>

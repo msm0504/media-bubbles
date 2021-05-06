@@ -12,7 +12,7 @@ const Footer = () => (
 			</Link>
 			<br />
 		</p>
-		<p className='d-inline-block ms-sm-5'>
+		<p className='d-inline-block ml-sm-5'>
 			<a href='https://twitter.com/' target='_blank' rel='noreferrer'>
 				Headline Searches Powered By Twitter
 			</a>

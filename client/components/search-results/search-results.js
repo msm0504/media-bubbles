@@ -67,7 +67,7 @@ const SearchResults = ({ sourceList, isSearchAll, articleMap, savedResultId }) =
 	return (
 		<>
 			{displayShareButtons()}
-			<div className='d-flex flex-column flex-xl-row align-items-stretch align-items-xl-start justify-content-xl-around'>
+			<div className='d-flex flex-column flex-xl-row align-iteml-stretch align-iteml-xl-start justify-content-xl-around'>
 				{generateColumns()}
 			</div>
 		</>
