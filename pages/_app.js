@@ -13,7 +13,7 @@ const App = ({ Component, pageProps }) => {
 		'Escape your information bubble and view headlines from sources across the political spectrum.';
 
 	return (
-		<>
+		<div className='container-fluid p-0'>
 			<Head>
 				<title key='title'>{title}</title>
 				<meta name='description' content={description}></meta>
@@ -57,7 +57,7 @@ const App = ({ Component, pageProps }) => {
 					<Footer />
 				</div>
 			</Provider>
-		</>
+		</div>
 	);
 };
 
