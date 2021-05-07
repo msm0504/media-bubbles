@@ -1,8 +1,8 @@
 import Head from 'next/head';
-import { Card } from 'reactstrap';
+import { Card } from 'react-bootstrap';
 
 const Terms = () => (
-	<Card body className='bg-white rounded-xl'>
+	<Card.Body className='bg-white rounded-xl'>
 		<Head>
 			<title key='title'>Terms and Conditions - Media Bubbles</title>
 			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/terms`} key='canonical' />
@@ -57,7 +57,7 @@ const Terms = () => (
 					the use of the Service. This Terms and Conditions agreement has been created with the help
 					of the
 					<a
-						href='https://www.termsfeed.com/terml-conditions-generator/'
+						href='https://www.termsfeed.com/terms-conditions-generator/'
 						target='_blank'
 						rel='noreferrer'
 					>
@@ -303,7 +303,7 @@ const Terms = () => (
 				</a>
 			</li>
 		</ul>
-	</Card>
+	</Card.Body>
 );
 
 export default Terms;

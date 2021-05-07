@@ -1,4 +1,4 @@
-import { Button, Card, CardHeader, Collapse } from 'reactstrap';
+import { Button, Card, Collapse } from 'react-bootstrap';
 
 import ColumnArticles from './column-articles';
 import ColumnHeadingIcon from './column-heading-icon';
@@ -14,7 +14,7 @@ const Column = ({ column, articles, isSearchAll, togglePanel, isPanelInOpenList 
 	return (
 		<div className='d-flex flex-column' style={{ flexBasis: '20%' }}>
 			<Card className='m-1 rounded-xl'>
-				<CardHeader id={headingId} className='p-0 w-100 mx-auto'>
+				<Card.Header id={headingId} className='p-0 w-100 mx-auto'>
 					<div className='d-flex flex-row flex-xl-column'>
 						<ColumnHeadingIcon
 							className='d-block m-2'
@@ -23,7 +23,7 @@ const Column = ({ column, articles, isSearchAll, togglePanel, isPanelInOpenList 
 						/>
 						<div className='h1 text-center mb-2 d-none d-xl-block'>{column.name}</div>
 						<Button
-							color='link'
+							variant='link'
 							className='d-xl-none mx-auto'
 							onClick={() => togglePanel(column.id)}
 							aria-expanded={isPanelExpanded}
@@ -32,9 +32,9 @@ const Column = ({ column, articles, isSearchAll, togglePanel, isPanelInOpenList 
 							<div className='h1 text-center my-auto'>{column.name}</div>
 						</Button>
 					</div>
-				</CardHeader>
+				</Card.Header>
 			</Card>
-			<Collapse id={collapseId} isOpen={isPanelExpanded} aria-labelledby={headingId}>
+			<Collapse id={collapseId} in={isPanelExpanded} aria-labelledby={headingId}>
 				<ColumnArticles articles={articles} columnId={column.id} isSearchAll={isSearchAll} />
 			</Collapse>
 		</div>

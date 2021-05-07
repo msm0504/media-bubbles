@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Card } from 'reactstrap';
+import { Card } from 'react-bootstrap';
 
 const About = () => (
 	<>
@@ -8,7 +8,7 @@ const About = () => (
 			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/about`} key='canonical' />
 		</Head>
 		<h1 className='text-info'>About</h1>
-		<Card body className='bg-white rounded-xl'>
+		<Card.Body className='bg-white rounded-xl'>
 			<p>
 				I’m a center-left Democrat. Let’s just get that out of the way. Like most people who care
 				about politics, I have my own views and biases. I started caring because I opposed the Iraq
@@ -46,7 +46,7 @@ const About = () => (
 				understand the information they consume? That’s my hope for this site: to both highlight how
 				sources express bias and show where different people’s political views come from.
 			</p>
-		</Card>
+		</Card.Body>
 	</>
 );
 

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { CardBody } from 'reactstrap';
+import { Card } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
 
@@ -60,7 +60,8 @@ const AddEditBlogPost = ({ currentVersion }) => {
 	const showAlert = useContext(AlertsDispatch);
 	const [session] = useSession();
 
-	if (!session?.user.isAdmin) return <CardBody className='text-info'>You shall not post!</CardBody>;
+	if (!session?.user.isAdmin)
+		return <Card.Body className='text-info'>You shall not post!</Card.Body>;
 
 	const router = useRouter();
 	const mode = currentVersion ? 'Edit' : 'Add';

@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { CardBody } from 'reactstrap';
+import { Card } from 'react-bootstrap';
 
 import Spinner from '../../client/components/spinner';
 import SearchResults from '../../client/components/search-results/search-results';
@@ -16,7 +16,7 @@ const SavedSearchResults = ({ loadedResult, notFound }) => {
 	return router.isFallback ? (
 		<Spinner />
 	) : notFound ? (
-		<CardBody className='text-info'>{'No saved search result found for this id'}</CardBody>
+		<Card.Body className='text-info'>{'No saved search result found for this id'}</Card.Body>
 	) : (
 		<>
 			<Head>

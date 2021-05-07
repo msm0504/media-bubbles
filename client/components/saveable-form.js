@@ -1,17 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-	Button,
-	Col,
-	Form,
-	FormFeedback,
-	FormGroup,
-	Input,
-	Label,
-	Modal,
-	ModalBody,
-	ModalHeader,
-	Row
-} from 'reactstrap';
+import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 
 import useInterval from '../hooks/use-interval';
 import {
@@ -111,11 +99,11 @@ const SaveableForm = ({
 	};
 
 	const generateTextField = ({ name, placeholder, isDisabled, rows }) => (
-		<FormGroup key={name}>
-			<Label for={`${formName}-${name}`}>
+		<Form.Group key={name}>
+			<Form.Label htmlFor={`${formName}-${name}`}>
 				<strong>{capitalize(name)}</strong>
-			</Label>
-			<Input
+			</Form.Label>
+			<Form.Control
 				type={rows ? 'textarea' : 'text'}
 				rows={rows || null}
 				name={name}
@@ -127,22 +115,22 @@ const SaveableForm = ({
 				onChange={fieldChanged}
 				onBlur={updateFieldError}
 			/>
-			<FormFeedback>{errors[name]}</FormFeedback>
-		</FormGroup>
+			<Form.Feedback>{errors[name]}</Form.Feedback>
+		</Form.Group>
 	);
 
 	const generateButtonGroup = ({ name, options }) => (
-		<FormGroup tag='fieldset' key={name}>
+		<Form.Check tag='fieldset' key={name}>
 			<legend className='col-form-label'>
 				<strong>{capitalize(name)}</strong>
 			</legend>
 			<div className='btn-group btn-group-toggle'>
 				{options.map(({ value, label }) => (
-					<Label
+					<Form.Check.Label
 						key={value}
 						className={`btn btn-outline-info ${value === formData[name] ? 'active' : ''}`}
 					>
-						<Input
+						<Form.Check.Input
 							type='radio'
 							name={name}
 							id={`${formName}-${name}-${value}`}
@@ -151,30 +139,29 @@ const SaveableForm = ({
 							onChange={fieldChanged}
 						/>
 						{label}
-					</Label>
+					</Form.Check.Label>
 				))}
 			</div>
-		</FormGroup>
+		</Form.Check>
 	);
 
 	return (
 		<>
 			{hasPreview && (
 				<>
-					<Modal isOpen={preview} toggle={togglePreview} size='lg'>
-						<ModalHeader toggle={togglePreview} charCode='x'>{`Preview ${kebabCaseToTitleCase(
+					<Modal show={preview} onHide={togglePreview} size='lg'>
+						<Modal.Header onHide={togglePreview} charCode='x'>{`Preview ${kebabCaseToTitleCase(
 							formName
-						)}`}</ModalHeader>
-						<ModalBody>
+						)}`}</Modal.Header>
+						<Modal.Body>
 							<PreviewComponent {...formData} />
-						</ModalBody>
+						</Modal.Body>
 					</Modal>
 					<Row className='m-0'>
 						<Col xs={12} className='m-0'>
 							<Button
-								className='float-right d-inline-block'
-								outline
-								color='info'
+								className='float-end d-inline-block'
+								variant='outline-info'
 								onClick={() => setPreview(true)}
 							>
 								<strong>Preview</strong>
@@ -186,7 +173,7 @@ const SaveableForm = ({
 			<Form>
 				{fieldList.map(generateFormField)}
 				<Button
-					color='primary'
+					variant='primary'
 					size='lg'
 					name={`submit-${formName}`}
 					id={`submit-${formName}`}
