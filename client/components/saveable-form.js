@@ -99,12 +99,12 @@ const SaveableForm = ({
 	};
 
 	const generateTextField = ({ name, placeholder, isDisabled, rows }) => (
-		<Form.Group key={name}>
+		<Form.Group className='mb-3' key={name}>
 			<Form.Label htmlFor={`${formName}-${name}`}>
 				<strong>{capitalize(name)}</strong>
 			</Form.Label>
 			<Form.Control
-				type={rows ? 'textarea' : 'text'}
+				as={rows ? 'textarea' : 'input'}
 				rows={rows || null}
 				name={name}
 				id={`${formName}-${name}`}
@@ -115,16 +115,16 @@ const SaveableForm = ({
 				onChange={fieldChanged}
 				onBlur={updateFieldError}
 			/>
-			<Form.Feedback>{errors[name]}</Form.Feedback>
+			<Form.Control.Feedback>{errors[name]}</Form.Control.Feedback>
 		</Form.Group>
 	);
 
 	const generateButtonGroup = ({ name, options }) => (
-		<Form.Check tag='fieldset' key={name}>
+		<Form.Group className='mb-3' tag='fieldset' key={name}>
 			<legend className='col-form-label'>
 				<strong>{capitalize(name)}</strong>
 			</legend>
-			<div className='btn-group btn-group-toggle'>
+			<div className='btn-group' role='group'>
 				{options.map(({ value, label }) => (
 					<Form.Check.Label
 						key={value}
@@ -142,7 +142,7 @@ const SaveableForm = ({
 					</Form.Check.Label>
 				))}
 			</div>
-		</Form.Check>
+		</Form.Group>
 	);
 
 	return (
@@ -150,9 +150,7 @@ const SaveableForm = ({
 			{hasPreview && (
 				<>
 					<Modal show={preview} onHide={togglePreview} size='lg'>
-						<Modal.Header onHide={togglePreview} charCode='x'>{`Preview ${kebabCaseToTitleCase(
-							formName
-						)}`}</Modal.Header>
+						<Modal.Header closeButton>{`Preview ${kebabCaseToTitleCase(formName)}`}</Modal.Header>
 						<Modal.Body>
 							<PreviewComponent {...formData} />
 						</Modal.Body>

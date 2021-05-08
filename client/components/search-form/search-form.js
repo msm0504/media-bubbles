@@ -82,7 +82,7 @@ const SearchForm = ({ searchMode, appSourceList, sourceListBySlant }) => {
 	return (
 		<Form>
 			<Card.Body className='bg-white rounded-xl mb-3'>
-				<Form.Group className='row my-3 mx-0'>
+				<Form.Group className='row my-3 mx-0 align-items-center'>
 					<Form.Label className='col-sm-2' htmlFor='keyword'>
 						<strong>Key Words:</strong>
 						<OverlayTrigger
@@ -110,7 +110,7 @@ const SearchForm = ({ searchMode, appSourceList, sourceListBySlant }) => {
 					</div>
 				</Form.Group>
 				{formData.keyword && (
-					<Form.Group className='row mx-0'>
+					<Form.Group className='row mx-0 mb-3'>
 						<Form.Label htmlFor='previousDays' className='col-sm-6 col-md-4 col-lg-2'>
 							<strong>Search Past {formData.previousDays} Day(s)</strong>
 						</Form.Label>

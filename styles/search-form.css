@@ -58,7 +58,6 @@ input:focus + label::before {
 
 input[type='range'] {
 	-webkit-appearance: none;
-	width: 100%;
 	height: 1rem;
 	border-radius: 0.75rem;
 	background: var(--bs-info);

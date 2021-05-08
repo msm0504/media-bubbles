@@ -34,8 +34,10 @@ const Column = ({ column, articles, isSearchAll, togglePanel, isPanelInOpenList 
 					</div>
 				</Card.Header>
 			</Card>
-			<Collapse id={collapseId} in={isPanelExpanded} aria-labelledby={headingId}>
-				<ColumnArticles articles={articles} columnId={column.id} isSearchAll={isSearchAll} />
+			<Collapse in={isPanelExpanded}>
+				<div id={collapseId} aria-labelledby={headingId}>
+					<ColumnArticles articles={articles} columnId={column.id} isSearchAll={isSearchAll} />
+				</div>
 			</Collapse>
 		</div>
 	);
