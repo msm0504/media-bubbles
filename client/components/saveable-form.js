@@ -110,12 +110,12 @@ const SaveableForm = ({
 				id={`${formName}-${name}`}
 				placeholder={placeholder}
 				disabled={isDisabled}
-				invalid={!!errors[name]}
+				isInvalid={!!errors[name]}
 				value={formData[name]}
 				onChange={fieldChanged}
 				onBlur={updateFieldError}
 			/>
-			<Form.Control.Feedback>{errors[name]}</Form.Control.Feedback>
+			<Form.Control.Feedback type='invalid'>{errors[name]}</Form.Control.Feedback>
 		</Form.Group>
 	);
 
