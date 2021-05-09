@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button } from 'reactstrap';
+import { Button } from 'react-bootstrap';
 
 const ShareButtons = ({ urlToShare = '' }) => {
 	if (!urlToShare) return null;
@@ -22,8 +22,8 @@ const ShareButtons = ({ urlToShare = '' }) => {
 
 	return hasShareApi ? (
 		<Button
-			className='mb-1 ml-3 d-inline-block'
-			color='primary'
+			className='mb-1 ms-3 d-inline-block'
+			variant='primary'
 			onClick={() => {
 				navigator.share({ title: 'Media Bubbles Results', url: urlToShare });
 			}}
@@ -33,8 +33,8 @@ const ShareButtons = ({ urlToShare = '' }) => {
 	) : (
 		<>
 			<Button
-				color='info'
-				className='facebook-btn d-inline-block mb-1 ml-3 mr-1 rounded'
+				variant='info'
+				className='facebook-btn d-inline-block mb-1 ms-3 me-1 rounded'
 				onClick={() => {
 					window.open(
 						`https://www.facebook.com/sharer/sharer.php?u=${encodeURI(urlToShare)}`,
@@ -46,8 +46,8 @@ const ShareButtons = ({ urlToShare = '' }) => {
 				<span className='sr-only'>{'share on Facebook'}</span>
 			</Button>
 			<Button
-				color='info'
-				className='twitter-btn d-inline-block mb-1 mr-1 rounded'
+				variant='info'
+				className='twitter-btn d-inline-block mb-1 me-1 rounded'
 				onClick={() => {
 					window.open(`https://twitter.com/intent/tweet?url=${encodeURI(urlToShare)}`, '_blank');
 				}}
@@ -56,8 +56,8 @@ const ShareButtons = ({ urlToShare = '' }) => {
 				<span className='sr-only'>{'share on Twitter'}</span>
 			</Button>
 			<Button
-				color='secondary'
-				className='d-inline-block mb-1 mr-1 rounded'
+				variant='secondary'
+				className='d-inline-block mb-1 me-1 rounded'
 				onClick={() => {
 					window.open(
 						`mailto:?subject=${encodeURIComponent('Media Bubbles Results')}
@@ -70,7 +70,11 @@ const ShareButtons = ({ urlToShare = '' }) => {
 				<span className='sr-only'>{'email'}</span>
 			</Button>
 			{document && document.queryCommandSupported('copy') ? (
-				<Button color='secondary' className='d-inline-block mb-1 rounded' onClick={copyToClipboard}>
+				<Button
+					variant='secondary'
+					className='d-inline-block mb-1 rounded'
+					onClick={copyToClipboard}
+				>
 					<i className='fa fa-clipboard fa-lg' aria-hidden='true'></i>
 					<span className='sr-only'>{'copy link'}</span>
 				</Button>

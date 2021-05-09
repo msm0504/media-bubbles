@@ -1,6 +1,6 @@
 import { useSession } from 'next-auth/client';
 import Head from 'next/head';
-import { Button, CardBody, CardTitle, CardText } from 'reactstrap';
+import { Button, Card } from 'react-bootstrap';
 
 import AsyncList from '../../client/components/async-list';
 import RouteLink from '../../client/components/nav/route-link';
@@ -20,15 +20,15 @@ const PostSummary = ({ title, excerpt, slug, updatedAt: date, fnDeleteItem }) =>
 	const [session] = useSession();
 
 	return (
-		<CardBody>
-			<CardTitle>
+		<Card.Body>
+			<Card.Title>
 				<RouteLink buttonText={title} routePath={`/blog/${slug}`} />
-			</CardTitle>
+			</Card.Title>
 			{session?.user.isAdmin && (
 				<>
 					<Button
-						className='float-right p-0 d-block d-sm-inline-block'
-						color='link'
+						className='float-end p-0 d-block d-sm-inline-block'
+						variant='link'
 						onClick={() => fnDeleteItem(slug, title)}
 					>
 						<i
@@ -40,16 +40,16 @@ const PostSummary = ({ title, excerpt, slug, updatedAt: date, fnDeleteItem }) =>
 					</Button>
 					<RouteLink
 						buttonText={EditPost}
-						className='float-right ml-2 d-block d-sm-inline-block'
+						className='float-end ms-2 d-block d-sm-inline-block'
 						routePath={`/blog/edit-post/${slug}`}
 					/>
 				</>
 			)}
 			{markdownToHtml(excerpt, 'card-text')}
-			<CardText>
+			<Card.Text>
 				<small className='text-muted'>{`Last updated at ${new Date(date).toLocaleString()}`}</small>
-			</CardText>
-		</CardBody>
+			</Card.Text>
+		</Card.Body>
 	);
 };
 
@@ -66,7 +66,7 @@ const BlogPosts = () => {
 			{session?.user.isAdmin && (
 				<RouteLink
 					buttonText={AddPost}
-					className='float-right d-block d-sm-inline-block'
+					className='float-end d-block d-sm-inline-block'
 					routePath='/blog/add-post'
 				/>
 			)}

@@ -1,4 +1,4 @@
-import { Button } from 'reactstrap';
+import { Button } from 'react-bootstrap';
 import { signOut, useSession } from 'next-auth/client';
 
 const Logout = () => {
@@ -6,7 +6,7 @@ const Logout = () => {
 	return session ? (
 		<div className='d-flex justify-content-end mb-3'>
 			<Button
-				color='primary'
+				variant='primary'
 				size='sm'
 				id='logout-btn'
 				disabled={loading}

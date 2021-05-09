@@ -1,5 +1,5 @@
 import { useReducer, useContext, useEffect } from 'react';
-import { Button, CardBody, Form, FormGroup, Input, Label, UncontrolledTooltip } from 'reactstrap';
+import { Button, Card, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import searchFormReducer, { ACTION_TYPES, initialState } from './search-form-reducer';
 import SlantRadioButtons from './slant-radio-buttons';
@@ -46,9 +46,9 @@ const SearchForm = ({ searchMode, appSourceList, sourceListBySlant }) => {
 
 			case 'FULL_SPECTRUM':
 				return (
-					<CardBody className='bg-white rounded-xl my-3'>
-						<FormGroup className='row m-0'>
-							<Input
+					<Card.Body className='bg-white rounded-xl my-3'>
+						<Form.Check className='row m-0'>
+							<Form.Check.Input
 								type='checkbox'
 								name='spectrumSearchAll'
 								id='spectrumSearchAll'
@@ -58,11 +58,11 @@ const SearchForm = ({ searchMode, appSourceList, sourceListBySlant }) => {
 									onFormFieldChange(event.target.name, event.target.checked ? 'Y' : 'N')
 								}
 							/>
-							<Label for='spectrumSearchAll' className='col-lg-6'>
-								<strong className='ml-2'>Include Multiple Sources In Each Category</strong>
-							</Label>
-						</FormGroup>
-					</CardBody>
+							<Form.Check.Label htmlFor='spectrumSearchAll' className='col-lg-6'>
+								<strong className='ms-2'>Include Multiple Sources In Each Category</strong>
+							</Form.Check.Label>
+						</Form.Check>
+					</Card.Body>
 				);
 
 			case 'USER_SELECT':
@@ -81,25 +81,26 @@ const SearchForm = ({ searchMode, appSourceList, sourceListBySlant }) => {
 
 	return (
 		<Form>
-			<CardBody className='bg-white rounded-xl mb-3'>
-				<FormGroup className='row mt-3 mx-0'>
-					<Label className='col-sm-2' for='keyword'>
+			<Card.Body className='bg-white rounded-xl mb-3'>
+				<Form.Group className='row my-3 mx-0 align-items-center'>
+					<Form.Label className='col-sm-2' htmlFor='keyword'>
 						<strong>Key Words:</strong>
-						<i
-							className='fa fa-info-circle'
-							id='keyword-tooltip'
-							aria-hidden='true'
-							aria-label='Tooltip'
-						></i>
-						<UncontrolledTooltip placement='top' target='keyword-tooltip'>
-							{'If no key words are entered, top headlines will be returned for each source.'}
-						</UncontrolledTooltip>
+						<OverlayTrigger
+							placement='top'
+							overlay={
+								<Tooltip id='keyword-tooltip'>
+									{'If no key words are entered, top headlines will be returned for each source.'}
+								</Tooltip>
+							}
+						>
+							<i className='fa fa-info-circle' aria-hidden='true' aria-label='keyword tooltip'></i>
+						</OverlayTrigger>
 						<span className='sr-only'>
 							{'If no key words are entered, top headlines will be returned for each source.'}
 						</span>
-					</Label>
+					</Form.Label>
 					<div className='col-sm-8'>
-						<Input
+						<Form.Control
 							type='text'
 							name='keyword'
 							id='keyword'
@@ -107,12 +108,12 @@ const SearchForm = ({ searchMode, appSourceList, sourceListBySlant }) => {
 							onChange={event => onFormFieldChange(event.target.name, event.target.value)}
 						/>
 					</div>
-				</FormGroup>
+				</Form.Group>
 				{formData.keyword && (
-					<FormGroup className='row mx-0'>
-						<Label for='previousDays' className='col-sm-6 col-md-4 col-lg-2'>
+					<Form.Group className='row mx-0 mb-3'>
+						<Form.Label htmlFor='previousDays' className='col-sm-6 col-md-4 col-lg-2'>
 							<strong>Search Past {formData.previousDays} Day(s)</strong>
-						</Label>
+						</Form.Label>
 						<input
 							type='range'
 							id='previousDays'
@@ -124,13 +125,13 @@ const SearchForm = ({ searchMode, appSourceList, sourceListBySlant }) => {
 							value={formData.previousDays}
 							onChange={event => onFormFieldChange(event.target.name, event.target.value)}
 						/>
-					</FormGroup>
+					</Form.Group>
 				)}
-			</CardBody>
+			</Card.Body>
 			{generateFormBySearchMode()}
-			<CardBody>
+			<Card.Body>
 				<Button
-					color='primary'
+					variant='primary'
 					size='lg'
 					name='getHeadlines'
 					id='getHeadlines'
@@ -138,7 +139,7 @@ const SearchForm = ({ searchMode, appSourceList, sourceListBySlant }) => {
 				>
 					<strong>Get Headlines</strong>
 				</Button>
-			</CardBody>
+			</Card.Body>
 		</Form>
 	);
 };

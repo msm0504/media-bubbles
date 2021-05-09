@@ -1,12 +1,12 @@
-import { CardBody, FormGroup, Input, Label } from 'reactstrap';
+import { Card, Form } from 'react-bootstrap';
 
 import MAX_SOURCE_SELECTIONS from '../../constants/max-source-selections';
 
 const SourceCheckboxes = ({ sourceList, selections, onChange }) => {
 	const checkboxes = sourceList.map(source => {
 		return (
-			<FormGroup key={source.id + 'Checkbox'} className='col-xs-1 col-md-2'>
-				<Input
+			<Form.Check key={source.id + 'Checkbox'} className='col-xs-1 col-md-2'>
+				<Form.Check.Input
 					type='checkbox'
 					value={source.id}
 					name={source.id + 'Checkbox'}
@@ -17,19 +17,19 @@ const SourceCheckboxes = ({ sourceList, selections, onChange }) => {
 					}
 					onChange={event => onChange(event, source.id)}
 				/>
-				<Label for={source.id + 'Checkbox'}>
+				<Form.Check.Label htmlFor={source.id + 'Checkbox'}>
 					<strong>{source.name}</strong>
-				</Label>
-			</FormGroup>
+				</Form.Check.Label>
+			</Form.Check>
 		);
 	});
 
 	return (
 		<>
-			<p className='ml-3'>
+			<p className='ms-3'>
 				<strong>Choose up to {MAX_SOURCE_SELECTIONS} sources.</strong>
 			</p>
-			<CardBody className='row bg-white rounded-xl my-3 mx-0'>{checkboxes}</CardBody>
+			<Card.Body className='row bg-white rounded-xl my-3 mx-0'>{checkboxes}</Card.Body>
 		</>
 	);
 };

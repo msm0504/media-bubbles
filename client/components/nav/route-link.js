@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { Button } from 'reactstrap';
+import { Button } from 'react-bootstrap';
 
 const formatRoute = routePath =>
 	routePath.length && routePath.charAt(0) === '/' ? routePath : `/${routePath}`;
@@ -17,7 +17,7 @@ const RouteLink = ({ buttonText, className = '', routePath }) => {
 	};
 
 	return (
-		<Button color='link' className={`p-0 mr-4 ${className}`} onClick={linkClicked}>
+		<Button variant='link' className={`p-0 me-4 ${className}`} onClick={linkClicked}>
 			{buttonText}
 		</Button>
 	);

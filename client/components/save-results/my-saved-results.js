@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { Button } from 'reactstrap';
+import { Button } from 'react-bootstrap';
 
 import AsyncList from '../async-list';
 import Login from '../login/login';
@@ -15,8 +15,8 @@ const SavedResultItem = ({ _id, name, createdAt, fnDeleteItem }) => {
 				</p>
 			</div>
 			<Button
-				className='float-right d-block d-sm-inline-block'
-				color='link'
+				className='float-end d-block d-sm-inline-block'
+				variant='link'
 				onClick={() => fnDeleteItem(_id, name)}
 			>
 				<i
@@ -27,9 +27,8 @@ const SavedResultItem = ({ _id, name, createdAt, fnDeleteItem }) => {
 				></i>
 			</Button>
 			<Button
-				className='float-right d-block d-sm-inline-block'
-				outline
-				color='info'
+				className='float-end d-block d-sm-inline-block'
+				variant='outline-info'
 				onClick={() => {
 					router.push(`/headlines/${_id}`);
 				}}

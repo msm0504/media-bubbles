@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Alert } from 'reactstrap';
+import { Alert } from 'react-bootstrap';
 
 const useAlerts = () => {
 	const [alerts, setAlerts] = useState({});
@@ -29,9 +29,10 @@ const useAlerts = () => {
 				return (
 					<Alert
 						key={alertId}
-						color={alert.level}
-						isOpen={!!alertId}
-						toggle={() => hideAlert(alertId)}
+						variant={alert.level}
+						show={!!alertId}
+						onClose={() => hideAlert(alertId)}
+						dismissible
 					>
 						{alert.message}
 					</Alert>

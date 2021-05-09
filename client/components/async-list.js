@@ -1,18 +1,6 @@
 import { useState, useEffect, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
-import {
-	CardBody,
-	Col,
-	FormGroup,
-	Input,
-	Label,
-	ListGroup,
-	ListGroupItem,
-	Pagination,
-	PaginationItem,
-	PaginationLink,
-	Row
-} from 'reactstrap';
+import { Card, Col, Form, ListGroup, Pagination, Row } from 'react-bootstrap';
 import { useSession } from 'next-auth/client';
 import debounce from 'lodash.debounce';
 
@@ -52,9 +40,9 @@ const AsyncList = ({
 
 	if (loginRequired && !session)
 		return (
-			<CardBody className='text-primary bg-white rounded-xl mt-4'>
+			<Card.Body className='text-primary bg-white rounded-xl mt-4'>
 				{LoginRequiredComponent ? <LoginRequiredComponent /> : 'Log in to view this page'}
-			</CardBody>
+			</Card.Body>
 		);
 
 	async function getListItems() {
@@ -124,28 +112,31 @@ const AsyncList = ({
 	return (
 		<>
 			<Row className='mt-4'>
-				<Col xs={12} md={{ size: 8, offset: 2 }} lg={{ size: 6, offset: 3 }}>
-					<FormGroup className='row'>
-						<Label xs={3} sm={2} for={`${apiListName}-filter`}>
-							Filter:
-						</Label>
-						<Col xs={9} sm={10}>
-							<Input
+				<Col xs={{ size: 10, offset: 1 }} lg={{ size: 8, offset: 2 }}>
+					<Form.Group className='row mb-3 align-items-center'>
+						<Col xs={2} sm={1} lg={2}>
+							<Form.Label className='float-end text-center' htmlFor={`${apiListName}-filter`}>
+								Filter:
+							</Form.Label>
+						</Col>
+						<Col xs={8} sm={9} lg={6}>
+							<Form.Control
 								type='text'
 								name='filter'
 								id={`${apiListName}-filter`}
 								onChange={event => debouncedSearch(event.target.value)}
 							/>
 						</Col>
-					</FormGroup>
+					</Form.Group>
 				</Col>
 			</Row>
-			<ListGroup>
+			<ListGroup as='ul'>
 				{items && items.length ? (
 					items.map((item, index) => (
-						<ListGroupItem
+						<ListGroup.Item
 							key={item[keyField]}
-							color={index % 2 === 0 ? '' : 'secondary'}
+							as='li'
+							variant={index % 2 === 0 ? '' : 'secondary'}
 							className={
 								index === 0
 									? 'rounded-top-xl'
@@ -155,40 +146,40 @@ const AsyncList = ({
 							}
 						>
 							<ListItemComponent {...item} fnDeleteItem={deleteItem} />
-						</ListGroupItem>
+						</ListGroup.Item>
 					))
 				) : (
-					<CardBody className='text-primary bg-white rounded-xl'>{`No ${camelCaseToWords(
+					<Card.Body className='text-primary bg-white rounded-xl'>{`No ${camelCaseToWords(
 						apiListName
-					)} found`}</CardBody>
+					)} found`}</Card.Body>
 				)}
-				{pageCount ? (
-					<Pagination
-						listClassName='float-right mt-1'
-						aria-label='change list page being displayed'
-					>
-						<PaginationItem disabled={page.current <= 1}>
-							<PaginationLink first onClick={() => handleLoadPage(1)} />
-						</PaginationItem>
-						<PaginationItem disabled={page.current <= 1}>
-							<PaginationLink previous onClick={() => handleLoadPage(page.current - 1)} />
-						</PaginationItem>
-						{new Array(pageCount).fill(1).map((_, index) => (
-							<PaginationItem key={`page${index + 1}`} active={index + 1 === page.current}>
-								<PaginationLink onClick={() => handleLoadPage(index + 1)}>
-									{index + 1}
-								</PaginationLink>
-							</PaginationItem>
-						))}
-						<PaginationItem disabled={page.current >= pageCount}>
-							<PaginationLink next onClick={() => handleLoadPage(page.current + 1)} />
-						</PaginationItem>
-						<PaginationItem disabled={page.current >= pageCount}>
-							<PaginationLink last onClick={() => handleLoadPage(pageCount)} />
-						</PaginationItem>
-					</Pagination>
-				) : null}
 			</ListGroup>
+			{pageCount ? (
+				<Pagination className='float-end mt-1' aria-label='change list page being displayed'>
+					<Pagination.First disabled={page.current <= 1} onClick={() => handleLoadPage(1)} />
+					<Pagination.Prev
+						disabled={page.current <= 1}
+						onClick={() => handleLoadPage(page.current - 1)}
+					/>
+					{new Array(pageCount).fill(1).map((_, index) => (
+						<Pagination.Item
+							key={`page${index + 1}`}
+							active={index + 1 === page.current}
+							onClick={() => handleLoadPage(index + 1)}
+						>
+							{index + 1}
+						</Pagination.Item>
+					))}
+					<Pagination.Next
+						disabled={page.current >= pageCount}
+						onClick={() => handleLoadPage(page.current + 1)}
+					/>
+					<Pagination.Last
+						disabled={page.current >= pageCount}
+						onClick={() => handleLoadPage(pageCount)}
+					/>
+				</Pagination>
+			) : null}
 		</>
 	);
 };

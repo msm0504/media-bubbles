@@ -1,12 +1,4 @@
-import {
-	DropdownItem,
-	DropdownMenu,
-	DropdownToggle,
-	Nav,
-	NavItem,
-	NavLink,
-	UncontrolledDropdown
-} from 'reactstrap';
+import { Dropdown, Nav } from 'react-bootstrap';
 
 import SearchForm from '../client/components/search-form/search-form';
 import MySavedResults from '../client/components/save-results/my-saved-results';
@@ -26,27 +18,28 @@ const SearchTabs = ({ appSourceList, sourceListBySlant }) => {
 	const generateTab = searchMode => {
 		const isActive = curSearchMode === searchMode.id;
 		return (
-			<NavItem key={searchMode.id + 'Tab'}>
-				<NavLink
+			<Nav.Item key={searchMode.id + 'Tab'}>
+				<Nav.Link
 					active={isActive}
-					onClick={() => onSearchModeChange(searchMode.id)}
+					onSelect={() => onSearchModeChange(searchMode.id)}
 					href='#'
 					className={isActive ? 'bg-info' : 'text-info'}
 				>
 					<strong>{searchMode.name}</strong>
-				</NavLink>
-			</NavItem>
+				</Nav.Link>
+			</Nav.Item>
 		);
 	};
 
 	const generateOption = searchMode => {
 		return (
-			<DropdownItem
+			<Dropdown.Item
 				key={searchMode.id + 'Option'}
+				className='text-center'
 				onClick={() => onSearchModeChange(searchMode.id)}
 			>
 				{searchMode.name}
-			</DropdownItem>
+			</Dropdown.Item>
 		);
 	};
 
@@ -69,23 +62,23 @@ const SearchTabs = ({ appSourceList, sourceListBySlant }) => {
 		<>
 			<h1 className='text-info'>Headlines Search</h1>
 			<div className='d-none d-md-block'>
-				<Nav pills fill>
+				<Nav variant='pills' fill>
 					{tabsAndOptions.tabList}
 				</Nav>
 			</div>
 			<div className='d-block d-md-none'>
-				<UncontrolledDropdown size='lg'>
-					<DropdownToggle caret block size='lg' color='info'>
+				<Dropdown>
+					<Dropdown.Toggle className='w-100' id='search-mode-select' size='lg' variant='info'>
 						{SEARCH_MODE_MAP[curSearchMode].name}
-					</DropdownToggle>
-					<DropdownMenu className='w-100 text-center'>{tabsAndOptions.optionList}</DropdownMenu>
-				</UncontrolledDropdown>
+					</Dropdown.Toggle>
+					<Dropdown.Menu className='w-100'>{tabsAndOptions.optionList}</Dropdown.Menu>
+				</Dropdown>
 			</div>
 			{curSearchMode === 'SAVED_RESULTS' ? (
 				<MySavedResults />
 			) : (
 				<>
-					<p className='mt-3 ml-3'>
+					<p className='mt-3 ms-3'>
 						<strong>{`Results shown will be from ${getCurrentSearchModeInfo()}.`}</strong>
 					</p>
 					<SearchForm

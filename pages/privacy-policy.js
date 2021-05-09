@@ -1,8 +1,8 @@
 import Head from 'next/head';
-import { Card } from 'reactstrap';
+import { Card } from 'react-bootstrap';
 
 const PrivacyPolicy = () => (
-	<Card body className='bg-white rounded-xl'>
+	<Card.Body className='bg-white rounded-xl'>
 		<Head>
 			<title key='title'>Privacy Policy - Media Bubbles</title>
 			<link
@@ -422,7 +422,7 @@ const PrivacyPolicy = () => (
 				</a>
 			</li>
 		</ul>
-	</Card>
+	</Card.Body>
 );
 
 export default PrivacyPolicy;

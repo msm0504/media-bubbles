@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { CardBody } from 'reactstrap';
+import { Card } from 'react-bootstrap';
 
 import Spinner from '../../client/components/spinner';
 import BlogPostTemplate from '../../client/components/blog/blog-post-template';
@@ -12,7 +12,7 @@ const BlogPost = ({ post, notFound }) => {
 	return router.isFallback ? (
 		<Spinner />
 	) : notFound ? (
-		<CardBody className='text-info'>{'No blog post found for this slug'}</CardBody>
+		<Card.Body className='text-info'>{'No blog post found for this slug'}</Card.Body>
 	) : (
 		<>
 			<Head>

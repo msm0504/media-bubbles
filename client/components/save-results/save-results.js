@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Button } from 'reactstrap';
+import { Button } from 'react-bootstrap';
 
 import ALERT_LEVEL from '../../constants/alert-level';
 import { AlertsDispatch } from '../../contexts/alerts-context';
@@ -31,8 +31,8 @@ const SaveResults = () => {
 
 	return (
 		<Button
-			className='mb-1 ml-3 d-inline-block'
-			color='primary'
+			className='mb-1 ms-3 d-inline-block'
+			variant='primary'
 			onClick={() => saveClicked(context, setContext, showAlert)}
 		>
 			<strong>Save Results</strong>

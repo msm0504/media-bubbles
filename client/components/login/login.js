@@ -1,4 +1,4 @@
-import { Button } from 'reactstrap';
+import { Button } from 'react-bootstrap';
 import { signIn, useSession } from 'next-auth/client';
 
 const Login = () => {
@@ -6,25 +6,25 @@ const Login = () => {
 	return !session ? (
 		<>
 			<Button
-				color='info'
+				variant='info'
 				size='sm'
-				className='twitter-btn mr-2'
+				className='twitter-btn me-2'
 				id='twitter-login'
 				disabled={loading}
 				onClick={() => signIn('twitter')}
 			>
-				<i className='fa fa-twitter mr-2' aria-hidden='true'></i>
+				<i className='fa fa-twitter me-2' aria-hidden='true'></i>
 				Log in with Twitter
 			</Button>
 			<Button
-				color='info'
+				variant='info'
 				size='sm'
 				className='facebook-btn'
 				id='fb-login'
 				disabled={loading}
 				onClick={() => signIn('facebook')}
 			>
-				<i className='fa fa-facebook mr-2' aria-hidden='true'></i>
+				<i className='fa fa-facebook me-2' aria-hidden='true'></i>
 				Log in with Facebook
 			</Button>
 		</>

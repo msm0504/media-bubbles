@@ -1,6 +1,6 @@
-@import url('https://cdn.jsdelivr.net/npm/bootswatch@4.6.0/dist/journal/bootstrap.min.css');
+@import url('https://cdn.jsdelivr.net/npm/bootswatch@5.0.0/dist/journal/bootstrap.min.css');
 @import url('https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css');
-@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap');
 
 body {
 	background-image: url('/images/background.png');
@@ -9,15 +9,15 @@ body {
 }
 
 body :not(i) {
-	font-family: 'Libre Franklin', sans-serif !important;
+	font-family: 'Roboto Slab', serif !important;
 }
 
 #top-banner {
 	background-image: url('/images/banner.png');
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
-	text-shadow: -1px 1px 8px var(--dark), 1px 1px 8px var(--dark), 1px -1px 8px var(--dark),
-		-1px -1px 8px var(--dark);
+	text-shadow: -1px 1px 8px var(--bs-dark), 1px 1px 8px var(--bs-dark), 1px -1px 8px var(--bs-dark),
+		-1px -1px 8px var(--bs-dark);
 }
 
 .header-logo {
