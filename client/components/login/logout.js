@@ -1,21 +1,15 @@
-import { Button } from 'react-bootstrap';
-import { signOut, useSession } from 'next-auth/client';
+import { Nav } from 'react-bootstrap';
+import { signOut } from 'next-auth/client';
 
-const Logout = () => {
-	const [session, loading] = useSession();
-	return session ? (
-		<div className='d-flex justify-content-end mb-3'>
-			<Button
-				variant='primary'
-				size='sm'
-				id='logout-btn'
-				disabled={loading}
-				onClick={() => signOut({ redirect: false })}
-			>
-				Log out
-			</Button>
-		</div>
-	) : null;
-};
+const Logout = ({ sessionLoading }) => (
+	<Nav.Link
+		className='me-md-4'
+		href='#'
+		disabled={sessionLoading}
+		onSelect={() => signOut({ redirect: false })}
+	>
+		Log out
+	</Nav.Link>
+);
 
 export default Logout;

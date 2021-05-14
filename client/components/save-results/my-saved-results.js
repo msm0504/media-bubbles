@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 import { Button } from 'react-bootstrap';
 
 import AsyncList from '../async-list';
-import Login from '../login/login';
 
 const SavedResultItem = ({ _id, name, createdAt, fnDeleteItem }) => {
 	const router = useRouter();
@@ -42,8 +41,7 @@ const SavedResultItem = ({ _id, name, createdAt, fnDeleteItem }) => {
 const LoginRequiredComponent = () => (
 	<>
 		<p>Any search results you save while logged in will be shown here.</p>
-		<p>Log in to view your saved search results:</p>
-		<Login />
+		<p>Log in to view your saved search results.</p>
 	</>
 );
 

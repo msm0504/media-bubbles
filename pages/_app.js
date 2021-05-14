@@ -1,19 +1,22 @@
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import { Provider } from 'next-auth/client';
 
 import Header from '../client/components/header';
 import Footer from '../client/components/footer';
-import Logout from '../client/components/login/logout';
-import RouteLink from '../client/components/nav/route-link';
+import TopNavbar from '../client/components/nav/top-navbar';
 import { AppProviders } from '../client/contexts';
 import '../styles/globals.css';
 const App = ({ Component, pageProps }) => {
+	const router = useRouter();
+	const isHome = router.pathname === '/';
+
 	const title = 'Media Bubbles';
 	const description =
 		'Escape your information bubble and view headlines from sources across the political spectrum.';
 
 	return (
-		<div className='container-fluid p-0'>
+		<>
 			<Head>
 				<title key='title'>{title}</title>
 				<meta name='description' content={description}></meta>
@@ -40,24 +43,26 @@ const App = ({ Component, pageProps }) => {
 			</Head>
 
 			<Provider session={pageProps.session}>
-				<div className='card' style={{ background: 'transparent' }}>
-					<Header />
-					<div className='card-body p-2 p-md-4' style={{ minHeight: '600px' }}>
-						<Logout />
-						<div className='d-flex justify-content-end mb-3'>
-							<RouteLink buttonText='Home' routePath='/' />
-							<RouteLink buttonText='About' routePath='/about' />
-							<RouteLink buttonText='Blog' routePath='/blog' />
-							<RouteLink buttonText='Contact Us' routePath='/contact' />
-						</div>
-						<AppProviders>
+				<TopNavbar />
+				<div className={`container-fluid p-0${isHome ? ' home-bg' : ' page-bg'}`}>
+					<div className='card border-0' style={{ background: 'transparent' }}>
+						{isHome ? (
 							<Component {...pageProps} />
-						</AppProviders>
+						) : (
+							<>
+								<Header />
+								<div className='card-body p-2 p-md-4' style={{ minHeight: '600px' }}>
+									<AppProviders>
+										<Component {...pageProps} />
+									</AppProviders>
+								</div>
+							</>
+						)}
+						<Footer />
 					</div>
-					<Footer />
 				</div>
 			</Provider>
-		</div>
+		</>
 	);
 };
 
