@@ -18,11 +18,7 @@ const Header = () => {
 			onKeyDown={headerClicked}
 		>
 			<div className='py-4 text-center d-flex flex-column flex-lg-row align-items-center justify-content-lg-around'>
-				<div className='header-logo'></div>
-				<div className='display-1 fw-bold text-light' style={{ fontSize: '6rem' }}>
-					Media Bubbles
-				</div>
-				<div className='header-logo d-none d-lg-flex'></div>
+				<div className='heading-text display-1 fw-bold text-light'>Media Bubbles</div>
 			</div>
 		</div>
 	);

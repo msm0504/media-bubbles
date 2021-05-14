@@ -1,11 +1,11 @@
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types';
-import { Button } from 'react-bootstrap';
+import { Button, Nav } from 'react-bootstrap';
 
 const formatRoute = routePath =>
 	routePath.length && routePath.charAt(0) === '/' ? routePath : `/${routePath}`;
 
-const RouteLink = ({ buttonText, className = '', routePath }) => {
+const RouteLink = ({ buttonText, className = '', routePath, isNav = false }) => {
 	if (!buttonText) return null;
 
 	const router = useRouter();
@@ -16,7 +16,11 @@ const RouteLink = ({ buttonText, className = '', routePath }) => {
 		}
 	};
 
-	return (
+	return isNav ? (
+		<Nav.Link className='me-md-4' href='#' eventKey={formatRoute(routePath)} onSelect={linkClicked}>
+			{buttonText}
+		</Nav.Link>
+	) : (
 		<Button variant='link' className={`p-0 me-4 ${className}`} onClick={linkClicked}>
 			{buttonText}
 		</Button>
