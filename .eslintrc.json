@@ -4,6 +4,8 @@
 		"plugin:import/errors",
 		"plugin:react/recommended",
 		"plugin:jsx-a11y/recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:import/typescript",
 		"prettier",
 		"prettier/react"
 	],
@@ -13,7 +15,6 @@
 		"no-import-assign": 2,
 		"no-return-await": 2,
 		"no-template-curly-in-string": 1,
-		"no-unused-vars": ["error", { "ignoreRestSiblings": true }],
 		"array-callback-return": 1,
 		"block-scoped-var": 2,
 		"complexity": ["error", 10],
@@ -23,9 +24,11 @@
 		"no-path-concat": 2,
 		"prefer-const": 2,
 		"react/react-in-jsx-scope": 0,
-		"jsx-a11y/anchor-is-valid": 0
+		"jsx-a11y/anchor-is-valid": 0,
+		"@typescript-eslint/no-empty-function": 0
 	},
-	"plugins": ["react", "import", "jsx-a11y"],
+	"parser": "@typescript-eslint/parser",
+	"plugins": ["react", "import", "jsx-a11y", "@typescript-eslint"],
 	"parserOptions": {
 		"ecmaVersion": 2020,
 		"sourceType": "module",
