@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import { Card } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
@@ -23,6 +23,31 @@ const blankBlogPostForm = {
 
 const SLUG_PATTERN = /^[a-z0-9-]+$/;
 const MILLISECONDS_IN_MINUTE = 1000 * 60;
+
+export const fieldList: FieldSetting[] = [
+	{
+		name: 'author',
+		type: 'text',
+		placeholder: 'Some Guy',
+		isDisabled: true
+	},
+	{
+		name: 'slug',
+		type: 'text',
+		placeholder: 'important-key-words'
+	},
+	{
+		name: 'title',
+		type: 'text',
+		placeholder: 'Everyone Will Want to Read This!'
+	},
+	{
+		name: 'content',
+		type: 'text',
+		placeholder: 'Very profound observations...blah...blah...blah...',
+		rows: 15
+	}
+];
 
 const getFieldErrorMessage = (fieldName: string, value: string | undefined) => {
 	switch (fieldName) {
@@ -69,37 +94,19 @@ const AddEditBlogPost: React.FC<AddEditPostProps> = ({ currentVersion }) => {
 	const showAlert = useContext(AlertsDispatch);
 	const [session] = useSession();
 
+	useEffect(() => {
+		const slugField = fieldList.find(field => field.name === 'slug');
+		if (slugField) {
+			slugField.isDisabled = !!currentVersion;
+		}
+	}, [currentVersion]);
+
 	if (!session?.user.isAdmin)
 		return <Card.Body className='text-info'>You shall not post!</Card.Body>;
 
 	const router = useRouter();
 	const mode = currentVersion ? 'Edit' : 'Add';
 	const initialData = currentVersion || { ...blankBlogPostForm, author: session.user.name };
-	const fieldList: FieldSetting[] = [
-		{
-			name: 'author',
-			type: 'text',
-			placeholder: 'Some Guy',
-			isDisabled: true
-		},
-		{
-			name: 'slug',
-			type: 'text',
-			placeholder: 'important-key-words',
-			isDisabled: !!currentVersion
-		},
-		{
-			name: 'title',
-			type: 'text',
-			placeholder: 'Everyone Will Want to Read This!'
-		},
-		{
-			name: 'content',
-			type: 'text',
-			placeholder: 'Very profound observations...blah...blah...blah...',
-			rows: 15
-		}
-	];
 
 	const submitFn = (blogPostData: BlogPost) => {
 		submitPost(blogPostData, showAlert);

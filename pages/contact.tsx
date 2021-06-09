@@ -23,6 +23,30 @@ const blankFeedbackForm = {
 
 const EMAIL_PATTERN = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 
+export const fieldList: FieldSetting[] = [
+	{
+		name: 'name',
+		type: 'text',
+		placeholder: 'John Doe'
+	},
+	{
+		name: 'email',
+		type: 'text',
+		placeholder: 'johndoe@domain.com'
+	},
+	{
+		name: 'reason',
+		type: 'buttonGroup',
+		options: REASON_OPTIONS
+	},
+	{
+		name: 'message',
+		type: 'text',
+		placeholder: 'This site is amazing!',
+		rows: 8
+	}
+];
+
 const getFieldErrorMessage = (fieldName: string, value: string | undefined) => {
 	switch (fieldName) {
 		case 'name':
@@ -64,30 +88,6 @@ const Feedback: React.FC = () => {
 		name: session?.user.name || '',
 		email: session?.user.email || ''
 	};
-
-	const fieldList: FieldSetting[] = [
-		{
-			name: 'name',
-			type: 'text',
-			placeholder: 'John Doe'
-		},
-		{
-			name: 'email',
-			type: 'text',
-			placeholder: 'johndoe@domain.com'
-		},
-		{
-			name: 'reason',
-			type: 'buttonGroup',
-			options: REASON_OPTIONS
-		},
-		{
-			name: 'message',
-			type: 'text',
-			placeholder: 'This site is amazing!',
-			rows: 8
-		}
-	];
 
 	return (
 		<>

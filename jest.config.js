@@ -10,5 +10,6 @@ module.exports = {
 		'\\.(css|less|sass|scss)$': 'identity-obj-proxy'
 	},
 	testEnvironment: 'jsdom',
-	setupFilesAfterEnv: ['<rootDir>/test-utils/setup-tests.ts']
+	setupFilesAfterEnv: ['<rootDir>/test-utils/setup-tests.ts'],
+	collectCoverageFrom: ['**/client/**/*.{ts,tsx}', '**/pages/**/*.{ts,tsx}', '**/server/**/*.ts']
 };
