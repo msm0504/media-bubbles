@@ -11,5 +11,6 @@ module.exports = {
 	},
 	testEnvironment: 'jsdom',
 	setupFilesAfterEnv: ['<rootDir>/test-utils/setup-tests.ts'],
-	collectCoverageFrom: ['**/client/**/*.{ts,tsx}', '**/pages/**/*.{ts,tsx}', '**/server/**/*.ts']
+	collectCoverageFrom: ['**/client/**/*.{ts,tsx}', '**/pages/**/*.{ts,tsx}', '**/server/**/*.ts'],
+	globalSetup: '<rootDir>/jest.setup.js'
 };

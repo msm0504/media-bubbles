@@ -1,3 +1,5 @@
+import { findBestMatch } from 'string-similarity';
+
 import { MILLISECONDS_IN_DAY } from '../constants';
 import formatGetQuery from '../util/format-get-query';
 import { getBiasRatingBySourceId, getSourceLists } from './source-list-service';
@@ -27,6 +29,7 @@ type QuerySources = QuerySource[];
 
 const MAX_TWITTER_RESULTS = 100;
 const MAX_SHOW_PER_CATEGORY = 10;
+const MAX_TWEET_SIMILARITY_SCORE = 0.9;
 const headers = {
 	Accept: 'application/json',
 	Authorization: `Bearer ${process.env.TWITTER_APP_BEARER}`
@@ -36,20 +39,23 @@ const defaultOperators = 'has:links -is:retweet';
 const DEFAULT_PREVIOUS_DAYS = 5;
 
 const filterDupeTweets = (data: TwitterArticle[]): TwitterArticle[] => {
-	const uniqueTweets: { [name: string]: TwitterArticle } = {};
-	let uniqueCount = 0;
-	for (let i = 0; i < data.length && uniqueCount < MAX_SHOW_PER_CATEGORY; i++) {
+	const uniqueTexts: string[] = [];
+	const uniqueTweets: TwitterArticle[] = [];
+	for (let i = 0; i < data.length && uniqueTweets.length < MAX_SHOW_PER_CATEGORY; i++) {
 		const { text } = data[i];
 		const linkIndex = text.indexOf('http');
 		if (linkIndex > -1) {
-			const withoutLinks = text.substring(0, linkIndex).trim().replace(/\s+/g, ' ').toLowerCase();
-			if (!uniqueTweets[withoutLinks]) {
-				uniqueTweets[withoutLinks] = data[i];
-				uniqueCount++;
+			const withoutLinks = text.substring(0, linkIndex);
+			if (
+				!uniqueTexts.length ||
+				findBestMatch(withoutLinks, uniqueTexts).bestMatch.rating < MAX_TWEET_SIMILARITY_SCORE
+			) {
+				uniqueTexts.push(withoutLinks);
+				uniqueTweets.push(data[i]);
 			}
 		}
 	}
-	return Object.values(uniqueTweets);
+	return uniqueTweets;
 };
 
 const addAnchorsToText = (text: string) =>

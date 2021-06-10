@@ -3,14 +3,15 @@ import '@testing-library/jest-dom/extend-expect';
 import { Session } from 'next-auth';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/client';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import AddEditBlogPost, { fieldList } from '../add-edit-post';
 import { AppProviders } from '../../../contexts';
-import { callApi } from '../../../services/api-service';
 
 jest.mock('next/router');
 jest.mock('next-auth/client');
-jest.mock('../../../services/api-service');
+const server = setupServer();
 
 const mockUser: Session = {
 	user: {
@@ -33,9 +34,15 @@ const mockAdmin: Session = {
 beforeAll(() => {
 	Element.prototype.scrollIntoView = jest.fn();
 	(useRouter as jest.Mock).mockReturnValue({ push: jest.fn() });
+	server.listen();
 });
 
-afterEach(cleanup);
+afterEach(() => {
+	cleanup();
+	server.resetHandlers();
+});
+
+afterAll(server.close);
 
 test('blocks access if not logged in', () => {
 	(useSession as jest.Mock).mockReturnValue([null, false]);
@@ -87,7 +94,9 @@ test('renders preview modal after button click', () => {
 test('displays success alert after successful submit', async () => {
 	const mockItemId = 'item123';
 	(useSession as jest.Mock).mockReturnValue([mockAdmin, false]);
-	(callApi as jest.Mock).mockReturnValue(new Promise(resolve => resolve({ itemId: mockItemId })));
+	server.use(
+		rest.post('/api/blog-posts', (_req, res, ctx) => res(ctx.json({ itemId: mockItemId })))
+	);
 	render(
 		<AppProviders>
 			<AddEditBlogPost />
@@ -105,7 +114,7 @@ test('displays success alert after successful submit', async () => {
 
 test('displays error alert after failed submit', async () => {
 	(useSession as jest.Mock).mockReturnValue([mockAdmin, false]);
-	(callApi as jest.Mock).mockReturnValue(new Promise(resolve => resolve({})));
+	server.use(rest.post('/api/blog-posts', (_req, res, ctx) => res(ctx.json({}))));
 	render(
 		<AppProviders>
 			<AddEditBlogPost />

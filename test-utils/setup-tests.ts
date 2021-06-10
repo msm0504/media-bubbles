@@ -1,3 +1,5 @@
+import 'whatwg-fetch';
+
 const localStorageMock = {
 	getItem: jest.fn(() => null),
 	setItem: jest.fn(),
@@ -15,5 +17,3 @@ if (typeof global.localStorage !== 'undefined') {
 } else {
 	global.localStorage = localStorageMock;
 }
-
-export {};

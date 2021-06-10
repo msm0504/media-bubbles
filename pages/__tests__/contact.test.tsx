@@ -2,13 +2,14 @@ import { cleanup, render, fireEvent, screen, waitFor } from '@testing-library/re
 import '@testing-library/jest-dom/extend-expect';
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/client';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import Feedback, { fieldList } from '../contact';
 import { AppProviders } from '../../client/contexts';
-import { callApi } from '../../client/services/api-service';
 
 jest.mock('next-auth/client');
-jest.mock('../../client/services/api-service');
+const server = setupServer();
 
 const mockUser: Session = {
 	user: {
@@ -21,9 +22,15 @@ const mockUser: Session = {
 
 beforeAll(() => {
 	Element.prototype.scrollIntoView = jest.fn();
+	server.listen();
 });
 
-afterEach(cleanup);
+afterEach(() => {
+	cleanup();
+	server.resetHandlers();
+});
+
+afterAll(server.close);
 
 test('renders correct input fields', () => {
 	(useSession as jest.Mock).mockReturnValue([null, false]);
@@ -54,7 +61,7 @@ test('displays correct error messages for invalid input', () => {
 
 test('displays success alert after successful submit', async () => {
 	(useSession as jest.Mock).mockReturnValue([mockUser, false]);
-	(callApi as jest.Mock).mockReturnValue(new Promise(resolve => resolve({ feedbackSent: true })));
+	server.use(rest.post('/api/feedback', (_req, res, ctx) => res(ctx.json({ feedbackSent: true }))));
 	render(
 		<AppProviders>
 			<Feedback />
@@ -72,7 +79,9 @@ test('displays success alert after successful submit', async () => {
 
 test('displays error alert after failed submit', async () => {
 	(useSession as jest.Mock).mockReturnValue([mockUser, false]);
-	(callApi as jest.Mock).mockReturnValue(new Promise(resolve => resolve({ feedbackSent: false })));
+	server.use(
+		rest.post('/api/feedback', (_req, res, ctx) => res(ctx.json({ feedbackSent: false })))
+	);
 	render(
 		<AppProviders>
 			<Feedback />
