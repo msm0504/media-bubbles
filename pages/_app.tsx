@@ -41,6 +41,25 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 				></meta>
 				<link rel='icon' href='/favicon.ico' />
 				<link rel='canonical' href={process.env.NEXT_PUBLIC_API_URL} key='canonical' />
+				{process.env.NEXT_PUBLIC_GA_ID ? (
+					/* Global Site Tag (gtag.js) - Google Analytics */
+					<>
+						<script
+							async
+							src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+						/>
+						<script
+							dangerouslySetInnerHTML={{
+								__html: `
+									window.dataLayer = window.dataLayer || [];
+									function gtag(){dataLayer.push(arguments);}
+									gtag('js', new Date());
+									gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+								`
+							}}
+						/>
+					</>
+				) : null}
 			</Head>
 
 			<Provider session={pageProps.session}>
