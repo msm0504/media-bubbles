@@ -5,8 +5,8 @@ import { useSession } from 'next-auth/client';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
-import Feedback, { fieldList } from '../contact';
-import { AppProviders } from '../../client/contexts';
+import Feedback, { fieldList } from '../pages/contact';
+import { AppProviders } from '../client/contexts';
 
 jest.mock('next-auth/client');
 const server = setupServer();
