@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -7,10 +8,22 @@ import Header from '../client/components/header';
 import Footer from '../client/components/footer';
 import TopNavbar from '../client/components/nav/top-navbar';
 import { AppProviders } from '../client/contexts';
+import { pageview } from '../lib/gtag';
 import '../styles/globals.css';
+
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 	const router = useRouter();
 	const isHome = router.pathname === '/';
+
+	useEffect(() => {
+		const handleRouteChange = (url: URL) => {
+			pageview(url);
+		};
+		router.events.on('routeChangeComplete', handleRouteChange);
+		return () => {
+			router.events.off('routeChangeComplete', handleRouteChange);
+		};
+	}, [router.events]);
 
 	const title = 'Media Bubbles';
 	const description =
@@ -41,25 +54,6 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 				></meta>
 				<link rel='icon' href='/favicon.ico' />
 				<link rel='canonical' href={process.env.NEXT_PUBLIC_API_URL} key='canonical' />
-				{process.env.NEXT_PUBLIC_GA_ID ? (
-					/* Global Site Tag (gtag.js) - Google Analytics */
-					<>
-						<script
-							async
-							src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-						/>
-						<script
-							dangerouslySetInnerHTML={{
-								__html: `
-									window.dataLayer = window.dataLayer || [];
-									function gtag(){dataLayer.push(arguments);}
-									gtag('js', new Date());
-									gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
-								`
-							}}
-						/>
-					</>
-				) : null}
 			</Head>
 
 			<Provider session={pageProps.session}>

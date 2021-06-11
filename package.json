@@ -1,6 +1,6 @@
 {
 	"name": "media-bubbles",
-	"version": "6.5.2",
+	"version": "6.5.3",
 	"private": true,
 	"scripts": {
 		"build": "next build",
@@ -34,6 +34,7 @@
 	"devDependencies": {
 		"@testing-library/jest-dom": "^5.13.0",
 		"@testing-library/react": "^11.2.7",
+		"@types/gtag.js": "^0.0.5",
 		"@types/jest": "^26.0.23",
 		"@types/lodash.debounce": "^4.0.6",
 		"@types/mongodb": "^3.6.14",
