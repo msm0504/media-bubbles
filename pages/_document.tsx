@@ -7,7 +7,7 @@ class MyDocument extends Document {
 		return (
 			<Html lang='en'>
 				<Head>
-					{process.env.NODE_ENV === 'production' ? (
+					{GA_TRACKING_ID ? (
 						/* Global Site Tag (gtag.js) - Google Analytics */
 						<>
 							<script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_TRACKING_ID}`} />
