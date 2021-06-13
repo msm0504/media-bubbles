@@ -3,12 +3,12 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Provider } from 'next-auth/client';
+import { init, trackPages } from 'insights-js';
 
 import Header from '../client/components/header';
 import Footer from '../client/components/footer';
 import TopNavbar from '../client/components/nav/top-navbar';
 import { AppProviders } from '../client/contexts';
-import { pageview } from '../lib/gtag';
 import '../styles/globals.css';
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
@@ -16,14 +16,12 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 	const isHome = router.pathname === '/';
 
 	useEffect(() => {
-		const handleRouteChange = (url: URL) => {
-			pageview(url);
-		};
-		router.events.on('routeChangeComplete', handleRouteChange);
-		return () => {
-			router.events.off('routeChangeComplete', handleRouteChange);
-		};
-	}, [router.events]);
+		if (process.env.NEXT_PUBLIC_INSIGHTS_ID) {
+			init(process.env.NEXT_PUBLIC_INSIGHTS_ID);
+			const { stop } = trackPages();
+			return () => stop();
+		}
+	}, []);
 
 	const title = 'Media Bubbles';
 	const description =
