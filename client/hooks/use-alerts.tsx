@@ -46,7 +46,11 @@ const useAlerts = (): UseAlerts => {
 			});
 		};
 
-		return <div ref={alertRef}>{formatAlerts()}</div>;
+		return (
+			<div style={{ scrollMarginTop: '5rem' }} ref={alertRef}>
+				{formatAlerts()}
+			</div>
+		);
 	};
 
 	return [Alerts, showAlert];
