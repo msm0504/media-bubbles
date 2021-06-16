@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button } from 'react-bootstrap';
 
 import ALERT_LEVEL from '../../constants/alert-level';
@@ -16,8 +16,10 @@ import {
 async function saveClicked(
 	context: SearchResult,
 	setContext: SetResultContextFn,
-	showAlert: ShowAlertFn
+	showAlert: ShowAlertFn,
+	setSaving: React.Dispatch<React.SetStateAction<boolean>>
 ) {
+	setSaving(true);
 	const { sourceListToSearch, isSearchAll, articleMap, savedResultName } = context;
 	const { itemId: savedResultId } = await callApi<ItemSavedResponse, SavedResult>(
 		'post',
@@ -36,9 +38,11 @@ async function saveClicked(
 		showAlert(ALERT_LEVEL.success, 'Search result saved successfully.');
 		setContext({ ...context, savedResultId } as SearchResult);
 	}
+	setSaving(false);
 }
 
 const SaveResults: React.FC = () => {
+	const [isSaving, setSaving] = useState<boolean>(false);
 	const [context, setContext] = useContext(SearchResultContext);
 	const showAlert = useContext(AlertsDispatch);
 
@@ -48,9 +52,11 @@ const SaveResults: React.FC = () => {
 		<Button
 			className='mb-1 ms-3 d-inline-block'
 			variant='primary'
-			onClick={() => saveClicked(context, setContext, showAlert)}
+			disabled={isSaving}
+			onClick={() => saveClicked(context, setContext, showAlert, setSaving)}
 		>
 			<strong>Save Results</strong>
+			{isSaving && <i className='fa fa-spinner fa-pulse ms-2' aria-hidden='true'></i>}
 		</Button>
 	);
 };

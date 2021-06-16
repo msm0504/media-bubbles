@@ -28,7 +28,7 @@ interface SaveableFormProps<T> {
 	initialData: SaveFormData<T>;
 	localStorageInterval?: number;
 	PreviewComponent?: React.FC<SaveFormData<T>>;
-	submitFn: (formData: SaveFormData<T>) => void;
+	submitFn: (formData: SaveFormData<T>) => Promise<void>;
 	submitLabel: string;
 }
 
@@ -51,6 +51,7 @@ const SaveableForm = <T,>({
 	const [formData, setFormData] = useState<SaveFormData<T>>(initialData);
 	const [errors, setErrors] = useState<Record<string, string>>({});
 	const [submit, setSubmit] = useState(false);
+	const [isProcessing, setProcessing] = useState<boolean>(false);
 	const [preview, setPreview] = useState(false);
 
 	useEffect(() => {
@@ -73,7 +74,8 @@ const SaveableForm = <T,>({
 			if (localStorageInterval && localStorageInterval > 0) {
 				removeItemsFromStorage([formName]);
 			}
-			submitFn(formData);
+			setProcessing(true);
+			submitFn(formData).then(() => setProcessing(false));
 		}
 		setSubmit(false);
 	}, [errors]);
@@ -204,9 +206,11 @@ const SaveableForm = <T,>({
 					size='lg'
 					name={`submit-${formName}`}
 					id={`submit-${formName}`}
+					disabled={isProcessing}
 					onClick={submitClicked}
 				>
 					<strong>{submitLabel}</strong>
+					{isProcessing && <i className='fa fa-spinner fa-pulse ms-2' aria-hidden='true'></i>}
 				</Button>
 			</Form>
 		</>

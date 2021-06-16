@@ -21,12 +21,14 @@ async function performSearch(
 	appSourceList: Source[],
 	sourceListBySlant: Source[][],
 	setContext: SetResultContextFn,
-	showAlert: ShowAlertFn
+	showAlert: ShowAlertFn,
+	setSearching: React.Dispatch<React.SetStateAction<boolean>>
 ): Promise<void> {
 	const errorMessage = getFormErrorMessage(formData);
 	if (errorMessage) {
 		showAlert(ALERT_LEVEL.danger, errorMessage);
 	} else {
+		setSearching(true);
 		const isSearchAll =
 			formData.searchMode === 'FULL_SPECTRUM' && formData.spectrumSearchAll === 'Y';
 		const sourceListToSearch = isSearchAll
@@ -53,6 +55,7 @@ async function performSearch(
 		]);
 
 		Router.push('/headlines');
+		setSearching(false);
 	}
 }
 

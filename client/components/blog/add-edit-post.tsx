@@ -108,10 +108,10 @@ const AddEditBlogPost: React.FC<AddEditPostProps> = ({ currentVersion }) => {
 	const mode = currentVersion ? 'Edit' : 'Add';
 	const initialData = currentVersion || { ...blankBlogPostForm, author: session.user.name };
 
-	const submitFn = (blogPostData: BlogPost) => {
-		submitPost(blogPostData, showAlert);
+	async function submitFn(blogPostData: BlogPost) {
+		await submitPost(blogPostData, showAlert);
 		router.push('/blog');
-	};
+	}
 
 	return (
 		<>

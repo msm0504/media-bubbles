@@ -1,4 +1,4 @@
-import { useReducer, useContext, useEffect, ChangeEvent } from 'react';
+import { useState, useReducer, useContext, useEffect, ChangeEvent } from 'react';
 import { Button, Card, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import * as ACTION_TYPES from './action-types';
@@ -23,6 +23,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
 	sourceListBySlant
 }) => {
 	const [formData, dispatch] = useReducer(searchFormReducer, initialState);
+	const [isSearching, setSearching] = useState<boolean>(false);
 	const [context, setContext] = useContext(SearchResultContext);
 	const showAlert = useContext(AlertsDispatch);
 
@@ -47,7 +48,8 @@ const SearchForm: React.FC<SearchFormProps> = ({
 			appSourceList,
 			sourceListBySlant,
 			setContext,
-			showAlert
+			showAlert,
+			setSearching
 		);
 
 	const generateFormBySearchMode = () => {
@@ -147,9 +149,11 @@ const SearchForm: React.FC<SearchFormProps> = ({
 					size='lg'
 					name='getHeadlines'
 					id='getHeadlines'
+					disabled={isSearching}
 					onClick={searchTriggered}
 				>
 					<strong>Get Headlines</strong>
+					{isSearching && <i className='fa fa-spinner fa-pulse ms-2' aria-hidden='true'></i>}
 				</Button>
 			</Card.Body>
 		</Form>
