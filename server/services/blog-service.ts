@@ -18,7 +18,7 @@ const formatExcerpt = (content: string) => {
 	return `${content.substring(0, lastSentenceEnd)}...`;
 };
 
-const SLUG_WITH_TS_PATTERN = /^\d{4}_\d{2}_\d{2}_/;
+const SLUG_WITH_TS_PATTERN = /^\d{4}-\d{2}-\d{2}-/;
 
 export async function savePost(post: BlogPost): Promise<ItemSavedResponse> {
 	return SLUG_WITH_TS_PATTERN.test(post.slug) ? updatePost(post) : createPost(post);
