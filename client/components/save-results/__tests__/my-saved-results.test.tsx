@@ -1,4 +1,11 @@
-import { cleanup, render, fireEvent, screen, waitFor } from '@testing-library/react';
+import {
+	cleanup,
+	render,
+	fireEvent,
+	screen,
+	waitFor,
+	waitForElementToBeRemoved
+} from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Session } from 'next-auth';
 import { useRouter } from 'next/router';
@@ -30,10 +37,17 @@ const mockResponse: ListResponse<SavedResultSummary> = {
 			_id: 'abc123',
 			name: 'Headlines Across the Spectrum',
 			createdAt: new Date().toISOString()
+		},
+		{
+			_id: 'xyz789',
+			name: 'Some Keyword Stay in My Bubble (Left)',
+			createdAt: new Date().toISOString()
 		}
 	],
 	pageCount: 1
 };
+const mockFilter1 = 'Keyword';
+const mockFilter2 = 'Head';
 
 const mockEmptyResponse: ListResponse<SavedResultSummary> = { items: [], pageCount: 0 };
 
@@ -73,24 +87,36 @@ test('makes initial API call and displays message if no results', async () => {
 test('caches results returned from API', async () => {
 	const apiSpy = jest.spyOn(apiService, 'callApi');
 	(useSession as jest.Mock).mockReturnValue([mockUser, false]);
-	server.use(rest.get('/api/searchResult', (_req, res, ctx) => res(ctx.json(mockResponse))));
+	server.use(
+		rest.get('/api/searchResult', (req, res, ctx) => {
+			const filter = req.url.searchParams.get('filter');
+			return filter
+				? res(
+						ctx.json({
+							...mockEmptyResponse,
+							items: mockResponse.items.filter(({ name }) => name.includes(filter))
+						})
+				  )
+				: res(ctx.json(mockResponse));
+		})
+	);
 	render(<MySavedResults />);
 
+	await screen.findByText('Headlines Across the Spectrum');
 	expect(apiSpy).toHaveBeenCalledTimes(1);
 	const filterInput = screen.getByLabelText(/^Filter.*/);
 
-	fireEvent.change(filterInput, { target: { value: 'test' } });
-	await waitFor(() => new Promise(resolve => setTimeout(resolve, 500)));
+	fireEvent.change(filterInput, { target: { value: mockFilter1 } });
+	await waitForElementToBeRemoved(() => screen.queryByText('Headlines Across the Spectrum'));
 	expect(apiSpy).toHaveBeenCalledTimes(2);
 
-	fireEvent.change(filterInput, { target: { value: 'test123' } });
-	await waitFor(() => new Promise(resolve => setTimeout(resolve, 500)));
+	fireEvent.change(filterInput, { target: { value: mockFilter2 } });
+	await screen.findByText('Headlines Across the Spectrum');
 	expect(apiSpy).toHaveBeenCalledTimes(3);
 
-	fireEvent.change(filterInput, { target: { value: 'test' } });
-	await waitFor(() => new Promise(resolve => setTimeout(resolve, 500)));
+	fireEvent.change(filterInput, { target: { value: mockFilter1 } });
+	await screen.findByText('Some Keyword Stay in My Bubble (Left)');
 	expect(apiSpy).toHaveBeenCalledTimes(3);
-	expect(await screen.findByText('Headlines Across the Spectrum')).toBeInTheDocument();
 });
 
 test('displays success alert after successful item delete', async () => {

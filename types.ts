@@ -31,7 +31,7 @@ export type NewsApiArticle = {
 	description: string;
 	url: string;
 	publishedAt: string;
-	author?: string;
+	author?: string | null;
 	urlToImage?: string;
 	content?: string;
 };
