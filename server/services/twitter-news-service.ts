@@ -101,7 +101,7 @@ export async function getHeadlines(params: SearchRequest): Promise<ArticleMap> {
 			acc[key] = [];
 		}
 		return acc;
-	}, new Promise(resolve => resolve({})));
+	}, Promise.resolve({}));
 }
 
 async function getRecentTweets(sources: Source[] | string, keyword: string, previousDays: number) {

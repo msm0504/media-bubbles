@@ -62,13 +62,13 @@ async function performSearch(
 const getFormErrorMessage = (formData: SearchFormWithMode) => {
 	switch (formData.searchMode) {
 		case 'MY_BUBBLE':
-			if (!formData.sourceSlant) {
+			if (formData.sourceSlant === null || typeof formData.sourceSlant === 'undefined') {
 				return 'A Political Category Must Be Selected.';
 			}
 			return '';
 
 		case 'BUBBLE_BURST':
-			if (!formData.sourceSlant) {
+			if (formData.sourceSlant === null || typeof formData.sourceSlant === 'undefined') {
 				return 'A Political Category Must Be Selected.';
 			}
 			return '';

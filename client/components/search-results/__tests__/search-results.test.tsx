@@ -8,7 +8,6 @@ import * as allSourcesMock from '../__mocks__/search-all-sources.json';
 import * as singleSourcesMock from '../__mocks__/single-sources.json';
 import { SOURCE_SLANT_MAP } from '../../../constants/source-slant';
 import useMediaQuery, { XL_MIN_WIDTH } from '../../../hooks/use-media-query';
-import IconUtil from '../../../util/icon-util';
 
 jest.mock('next/router');
 jest.mock('../../../hooks/use-media-query');

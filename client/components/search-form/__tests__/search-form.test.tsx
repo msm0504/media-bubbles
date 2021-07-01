@@ -1,10 +1,20 @@
-import { cleanup, render, fireEvent, screen } from '@testing-library/react';
+import Router from 'next/router';
+import { cleanup, render, fireEvent, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 import SearchForm from '../search-form';
 import { SearchMode } from '../../../constants/search-mode';
 import MAX_SOURCE_SELECTIONS from '../../../constants/max-source-selections';
+import { AppProviders } from '../../../contexts';
+import * as apiService from '../../../services/api-service';
 import { appSourceList, sourceListBySlant } from '../../../../test-utils/source-lists.json';
+
+jest.mock('next/router', () => ({
+	push: jest.fn()
+}));
+const server = setupServer();
 
 const renderForm = (searchMode: SearchMode) =>
 	render(
@@ -15,7 +25,28 @@ const renderForm = (searchMode: SearchMode) =>
 		/>
 	);
 
-afterEach(cleanup);
+const renderFormWithContext = (searchMode: SearchMode) =>
+	render(
+		<AppProviders>
+			<SearchForm
+				searchMode={searchMode}
+				appSourceList={appSourceList}
+				sourceListBySlant={sourceListBySlant}
+			/>
+		</AppProviders>
+	);
+
+beforeAll(() => {
+	Element.prototype.scrollIntoView = jest.fn();
+	server.listen();
+});
+
+afterEach(() => {
+	cleanup();
+	server.resetHandlers();
+});
+
+afterAll(server.close);
 
 test('renders the component', () => {
 	renderForm('MY_BUBBLE');
@@ -56,4 +87,37 @@ test('gives more options if keyword entered', () => {
 	const keywordInput = screen.getByLabelText('Key Words', { exact: false });
 	fireEvent.change(keywordInput, { target: { value: 'truth' } });
 	expect(screen.queryByLabelText('Search Past 5 Day(s)')).toBeInTheDocument();
+});
+
+test('displays error alert if slant has not been selected for my bubble search', async () => {
+	renderFormWithContext('MY_BUBBLE');
+	fireEvent.click(screen.getByText('Get Headlines'));
+	await waitFor(() => screen.getByRole('alert'));
+	expect(screen.queryByText('A Political Category Must Be Selected.')).toBeInTheDocument();
+});
+
+test('displays error alert if slant has not been selected for bubble burst search', async () => {
+	renderFormWithContext('BUBBLE_BURST');
+	fireEvent.click(screen.getByText('Get Headlines'));
+	await waitFor(() => screen.getByRole('alert'));
+	expect(screen.queryByText('A Political Category Must Be Selected.')).toBeInTheDocument();
+});
+
+test('displays error alert if no sources have been selected for user select search', async () => {
+	renderFormWithContext('USER_SELECT');
+	fireEvent.click(screen.getByText('Get Headlines'));
+	await waitFor(() => screen.getByRole('alert'));
+	expect(screen.queryByText('At Least 1 Source Must Be Selected.')).toBeInTheDocument();
+});
+
+test('get headlines call is made if form is valid', async () => {
+	const apiSpy = jest.spyOn(apiService, 'callApi');
+	const routerSpy = jest.spyOn(Router, 'push');
+	server.use(rest.get('/api/headlines', (_req, res, ctx) => res(ctx.json({}))));
+	renderFormWithContext('MY_BUBBLE');
+	fireEvent.click(screen.getByLabelText('Center-Left'));
+	fireEvent.click(screen.getByText('Get Headlines'));
+	expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+	expect(apiSpy).toHaveBeenCalledTimes(1);
+	await waitFor(() => expect(routerSpy).toHaveBeenCalledWith('/headlines'));
 });

@@ -3,7 +3,7 @@ import { createContext, useState, useEffect } from 'react';
 import { getItemsFromStorage, StorageKey } from '../util/local-storage-util';
 import { ResultContextType, SearchResult } from '../../types';
 
-const initialState = {
+export const initialState = {
 	sourceListToSearch: [],
 	isSearchAll: false,
 	articleMap: {},
