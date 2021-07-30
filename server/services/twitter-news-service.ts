@@ -29,7 +29,7 @@ type QuerySources = QuerySource[];
 
 const MAX_TWITTER_RESULTS = 100;
 const MAX_SHOW_PER_CATEGORY = 10;
-const MAX_TWEET_SIMILARITY_SCORE = 0.9;
+const MAX_TWEET_SIMILARITY_SCORE = 0.8;
 const headers = {
 	Accept: 'application/json',
 	Authorization: `Bearer ${process.env.TWITTER_APP_BEARER}`
