@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import formatGetQuery from '../util/format-get-query';
 
 const headers = { Accept: 'application/json' };
-const defaultParams = { count: 1, include_entities: false };
+const defaultParams = { count: 2, include_entities: false };
 
 const oauth = new OAuth({
 	consumer: {
@@ -37,6 +37,9 @@ async function searchUser(source: string) {
 export async function getTwitterHandle(source: string): Promise<string> {
 	const foundUsers = await searchUser(source);
 	return foundUsers && foundUsers.length && foundUsers[0].verified
-		? foundUsers[0].screen_name
+		? // Bloomberg is not the first Twitter user result
+		  source.toLowerCase().includes('bloomberg')
+			? foundUsers[1].screen_name
+			: foundUsers[0].screen_name
 		: null;
 }
