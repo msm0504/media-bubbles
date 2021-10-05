@@ -68,7 +68,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
 								id='spectrumSearchAll'
 								className='switch'
 								checked={formData.spectrumSearchAll === 'Y'}
-								onChange={event =>
+								onChange={(event: ChangeEvent<HTMLInputElement>) =>
 									onFormFieldChange(event.target.name, event.target.checked ? 'Y' : 'N')
 								}
 							/>

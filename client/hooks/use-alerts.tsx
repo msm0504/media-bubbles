@@ -4,8 +4,8 @@ import { Alert } from 'react-bootstrap';
 import { ShowAlertFn } from '../../types';
 
 type UseAlerts = [React.FC, ShowAlertFn];
-type Alert = { level: string; message: string };
-type Alerts = { [key: number]: Alert };
+type AlertInfo = { level: string; message: string };
+type Alerts = { [key: number]: AlertInfo };
 
 const useAlerts = (): UseAlerts => {
 	const [alerts, setAlerts] = useState<Alerts>({});

@@ -1,6 +1,6 @@
 {
 	"name": "media-bubbles",
-	"version": "6.5.7",
+	"version": "6.5.8",
 	"private": true,
 	"scripts": {
 		"build": "next build",
@@ -19,8 +19,8 @@
 		"lodash.debounce": "^4.0.8",
 		"mongodb": "^3.6.6",
 		"nanoid": "^3.1.20",
-		"next": "^10.0.8",
-		"next-auth": "^3.23.0",
+		"next": "^11.1.2",
+		"next-auth": "^3.29.0",
 		"next-connect": "^0.9.0",
 		"next-sitemap": "^1.6.25",
 		"nodemailer": "^6.4.11",
@@ -55,7 +55,7 @@
 		"jest": "^27.0.4",
 		"msw": "^0.29.0",
 		"prettier": "^2.1.2",
-		"typescript": "^4.2.4",
+		"typescript": "^4.4.3",
 		"whatwg-fetch": "^3.6.2"
 	}
 }

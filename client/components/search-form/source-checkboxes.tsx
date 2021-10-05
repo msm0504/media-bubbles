@@ -27,7 +27,7 @@ const SourceCheckboxes: React.FC<SourceCheckboxesProps> = ({
 					disabled={
 						selections.indexOf(source.id) === -1 && selections.length === MAX_SOURCE_SELECTIONS
 					}
-					onChange={event => onChange(event, source.id)}
+					onChange={(event: ChangeEvent<HTMLInputElement>) => onChange(event, source.id)}
 				/>
 				<Form.Check.Label htmlFor={source.id + 'Checkbox'}>
 					<strong>{source.name}</strong>

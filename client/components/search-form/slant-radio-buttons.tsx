@@ -1,3 +1,4 @@
+import { ChangeEvent } from 'react';
 import { Card, Form } from 'react-bootstrap';
 
 import { SOURCE_SLANT_MAP, SourceSlant } from '../../constants/source-slant';
@@ -18,7 +19,9 @@ const SlantRadioButtons: React.FC<SlantRadioButtonsProps> = ({ selection, onChan
 					name='sourceSlant'
 					id={'sourceSlant' + sourceSlant}
 					checked={sourceSlant === selection}
-					onChange={event => onChange(event.target.name, sourceSlant)}
+					onChange={(event: ChangeEvent<HTMLInputElement>) =>
+						onChange(event.target.name, sourceSlant)
+					}
 				/>
 				<Form.Check.Label htmlFor={'sourceSlant' + sourceSlant}>
 					<strong>{SOURCE_SLANT_MAP[sourceSlant]}</strong>
