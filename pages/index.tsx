@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap';
 import HomePageLink from '../client/components/nav/home-page-link';
 import { getLatestPostSlug } from '../server/services/blog-service';
 
-const SECONDS_IN_WEEK = 60 * 60 * 24 * 7;
+const SECONDS_IN_DAY = 60 * 60 * 24;
 
 type HomeProps = {
 	latestBlogPath: string;
@@ -64,7 +64,7 @@ export const getStaticProps: GetStaticProps = async () => {
 		props: {
 			latestBlogPath: `/blog/${latestPostSlug}`
 		},
-		revalidate: SECONDS_IN_WEEK / 2
+		revalidate: SECONDS_IN_DAY
 	};
 };
 
