@@ -2,6 +2,7 @@ import { useState, useReducer, useContext, useEffect, ChangeEvent } from 'react'
 import { Button, Card, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import * as ACTION_TYPES from './action-types';
+import SearchInstructions from './instructions';
 import searchFormReducer, { initialState, FieldValue } from './search-form-reducer';
 import SlantRadioButtons from './slant-radio-buttons';
 import SourceCheckboxes from './source-checkboxes';
@@ -73,7 +74,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
 								}
 							/>
 							<Form.Check.Label htmlFor='spectrumSearchAll' className='col-lg-6'>
-								<strong className='ms-2'>Include Multiple Sources In Each Category</strong>
+								<strong className='ms-2'>Include Multiple Sources in Each Category</strong>
 							</Form.Check.Label>
 						</Form.Check>
 					</Card.Body>
@@ -94,69 +95,76 @@ const SearchForm: React.FC<SearchFormProps> = ({
 	};
 
 	return (
-		<Form>
-			<Card.Body className='bg-white rounded-xl mb-3'>
-				<Form.Group className='row my-3 mx-0 align-items-center'>
-					<Form.Label className='col-sm-2' htmlFor='keyword'>
-						<strong>Key Words:</strong>
-						<OverlayTrigger
-							placement='top'
-							overlay={
-								<Tooltip id='keyword-tooltip'>
-									{'If no key words are entered, top headlines will be returned for each source.'}
-								</Tooltip>
-							}
-						>
-							<i className='fa fa-info-circle' aria-hidden='true' aria-label='keyword tooltip'></i>
-						</OverlayTrigger>
-						<span className='sr-only'>
-							{'If no key words are entered, top headlines will be returned for each source.'}
-						</span>
-					</Form.Label>
-					<div className='col-sm-8'>
-						<Form.Control
-							type='text'
-							name='keyword'
-							id='keyword'
-							value={formData.keyword}
-							onChange={event => onFormFieldChange(event.target.name, event.target.value)}
-						/>
-					</div>
-				</Form.Group>
-				{formData.keyword && (
-					<Form.Group className='row mx-0 mb-3'>
-						<Form.Label htmlFor='previousDays' className='col-sm-6 col-md-4 col-lg-2'>
-							<strong>Search Past {formData.previousDays} Day(s)</strong>
+		<>
+			<Form>
+				<Card.Body className='bg-white rounded-xl mb-3'>
+					<Form.Group className='row my-3 mx-0 align-items-center'>
+						<Form.Label className='col-sm-2' htmlFor='keyword'>
+							<strong>Key Words:</strong>
+							<OverlayTrigger
+								placement='top'
+								overlay={
+									<Tooltip id='keyword-tooltip'>
+										{'If no key words are entered, top headlines will be returned for each source.'}
+									</Tooltip>
+								}
+							>
+								<i
+									className='fa fa-info-circle'
+									aria-hidden='true'
+									aria-label='keyword tooltip'
+								></i>
+							</OverlayTrigger>
+							<span className='sr-only'>
+								{'If no key words are entered, top headlines will be returned for each source.'}
+							</span>
 						</Form.Label>
-						<input
-							type='range'
-							id='previousDays'
-							name='previousDays'
-							className='col-sm-6 col-lg-4 mt-1'
-							min='1'
-							max='7'
-							step='1'
-							value={formData.previousDays}
-							onChange={event => onFormFieldChange(event.target.name, event.target.value)}
-						/>
+						<div className='col-sm-8'>
+							<Form.Control
+								type='text'
+								name='keyword'
+								id='keyword'
+								value={formData.keyword}
+								onChange={event => onFormFieldChange(event.target.name, event.target.value)}
+							/>
+						</div>
 					</Form.Group>
-				)}
-			</Card.Body>
-			{generateFormBySearchMode()}
-			<Card.Body>
-				<Button
-					variant='primary'
-					size='lg'
-					name='getHeadlines'
-					id='getHeadlines'
-					disabled={isSearching}
-					onClick={searchTriggered}
-				>
-					<strong>Get Headlines</strong>
-					{isSearching && <i className='fa fa-spinner fa-pulse ms-2' aria-hidden='true'></i>}
-				</Button>
-			</Card.Body>
-		</Form>
+					{formData.keyword && (
+						<Form.Group className='row mx-0 mb-3'>
+							<Form.Label htmlFor='previousDays' className='col-sm-6 col-md-4 col-lg-2'>
+								<strong>Search Past {formData.previousDays} Day(s)</strong>
+							</Form.Label>
+							<input
+								type='range'
+								id='previousDays'
+								name='previousDays'
+								className='col-sm-6 col-lg-4 mt-1'
+								min='1'
+								max='7'
+								step='1'
+								value={formData.previousDays}
+								onChange={event => onFormFieldChange(event.target.name, event.target.value)}
+							/>
+						</Form.Group>
+					)}
+				</Card.Body>
+				{generateFormBySearchMode()}
+				<Card.Body>
+					<Button
+						variant='primary'
+						size='lg'
+						name='getHeadlines'
+						id='getHeadlines'
+						disabled={isSearching}
+						onClick={searchTriggered}
+					>
+						<strong>Get Headlines</strong>
+						{isSearching && <i className='fa fa-spinner fa-pulse ms-2' aria-hidden='true'></i>}
+					</Button>
+				</Card.Body>
+			</Form>
+			<SearchInstructions />
+		</>
 	);
 };
 

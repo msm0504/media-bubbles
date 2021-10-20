@@ -67,10 +67,10 @@ const addAnchorsToText = (text: string) =>
 const getSourceName = (
 	tweet: TwitterArticle,
 	users: UserExpansion[],
-	appSourceList: Source[]
+	appSourcesById: { [name: string]: Source }
 ): string => {
-	const twitterHandle = users.find(({ id }) => id === tweet.author_id)?.username;
-	return appSourceList.find(({ id }) => id === twitterHandle)?.name ?? '';
+	const twitterHandle = users.find(({ id }) => id === tweet.author_id)?.username ?? '';
+	return appSourcesById[twitterHandle]?.name ?? '';
 };
 
 export async function getHeadlines(params: SearchRequest): Promise<ArticleMap> {
@@ -78,6 +78,10 @@ export async function getHeadlines(params: SearchRequest): Promise<ArticleMap> {
 		return {};
 	}
 	const { appSourceList, sourceListBySlant } = await getSourceLists();
+	const appSourcesById = appSourceList.reduce((acc: { [name: string]: Source }, appSource) => {
+		acc[appSource.id] = appSource;
+		return acc;
+	}, {});
 	const isSpectrumSearch = !params.sources && params.spectrumSearchAll === 'Y';
 	const sources: QuerySources = isSpectrumSearch ? sourceListBySlant : params.sources.split(',');
 
@@ -94,7 +98,7 @@ export async function getHeadlines(params: SearchRequest): Promise<ArticleMap> {
 			acc[key] = filterDupeTweets(data).map(tweet => ({
 				...tweet,
 				text: addAnchorsToText(tweet.text),
-				sourceName: getSourceName(tweet, users, appSourceList)
+				sourceName: getSourceName(tweet, users, appSourcesById)
 			}));
 		} else {
 			const key = Array.isArray(sources) ? getBiasRatingBySourceId(sources[0].id) : sources;
