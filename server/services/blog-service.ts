@@ -58,6 +58,17 @@ export async function getAllPostSlugs(): Promise<string[]> {
 		.toArray();
 }
 
+export async function getLatestPostSlug(): Promise<string> {
+	const db = await _collection;
+	return db
+		.find()
+		.sort({ updatedAt: -1 })
+		.limit(1)
+		.map(({ slug }) => slug)
+		.toArray()
+		.then(([latest]) => latest);
+}
+
 export async function getPost(slug: string): Promise<BlogPost> {
 	const db = await _collection;
 	return db.findOne({ _id: slug });

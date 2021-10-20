@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import { Card } from 'react-bootstrap';
 
 const About: React.FC = () => (
@@ -9,42 +10,47 @@ const About: React.FC = () => (
 		</Head>
 		<h1 className='text-info'>About</h1>
 		<Card.Body className='bg-white rounded-xl'>
+			<h2 className='h3'>Our Mission</h2>
 			<p>
-				I’m a center-left Democrat. Let’s just get that out of the way. Like most people who care
-				about politics, I have my own views and biases. I started caring because I opposed the Iraq
-				War. I will always view it as a mistake. I enjoyed The Daily Show and The Colbert Report,
-				and after years of watching them point out the absurdity of Fox News, will never be able to
-				watch it. I still enjoy shows that are a mix of comedy and political analysis, e.g. The Late
-				Show, Last Week Tonight, and Real Time. I also check headlines and read articles on CNN’s
-				website. Recently, I started listening to Pod Save America. There’s a lot more time to
-				listen to things while sitting at home during a lockdown. Overall, these sources inform my
-				view of the world.
+				{`An accepted truth: contemporary society is increasingly polarized. The common explanation is
+				the media people consume is biased. However, we believe media bias has existed since the
+				media’s inception. The difference today is how people consume media. Prior to cable and the
+				internet, people read newspapers while eating breakfast at their kitchen tables. They
+				watched a handful of broadcast television stations while lounging in their living rooms.
+				Although people within a certain city or town could have different political views, they
+				most likely read and heard similar news. In today’s world, with cable news and social media,
+				people living in the same place could consume news from a wide range of sources, all with
+				completely different biases. Instead of disagreeing on how best to respond to current
+				events, people now disagree on the reality of current events themselves. This situation is
+				no accident. Cable news networks and social media companies make money through engagement.
+				People gravitate towards media they agree with; at the same time, it is in a company’s best
+				interest to show its audience news they will agree with.`}
 			</p>
 			<p>
-				In early 2017, I saw a chart being shared on Facebook placing various news sources into
-				categories of political bias. Soon after, of course, other charts were posted showing the
-				“real” way the first chart should have been arranged. Seeing this led me to a question,
-				“What does it mean for a source to be biased?” I feel like I’ve known for a long time that
-				the so-called “mainstream media” is center-left. I know that MSNBC is liberal and Fox News
-				is conservative. But what does that mean in practice? Are sources simply providing differing
-				analysis on the same events? Are they elevating stories that fit with their views and
-				burying or not reporting on others? Are they using different words that are meant to lead
-				their readers to certain conclusions?
+				{`Our goal at Media Bubbles is to afford people the opportunity to see outside of these filter
+				bubbles. Instead of pining for a "simpler time", we believe society will need to adapt to
+				the current media landscape. We provide an easy-to-use search function to sort news
+				headlines from various sources and political biases in one streamlined place. A visual of
+				news "across the spectrum" presents users a better snapshot of events under various filters.
+				Media companies will have to compete with each other instead of isolating their audiences.
+				Try out our `}
+				<Link href='/search'>
+					<a>search tool</a>
+				</Link>
+				{` to see for yourself. We hope this will be the first step towards living in a shared reality.`}
 			</p>
+			<h2 className='h3'>How We Got Started</h2>
 			<p>
-				I created this site in an attempt to answer these questions. I wanted a way to easily
-				compare, side-by-side, what different sources are saying. The sources are categorized
-				according to the ratings on{' '}
-				<a href='https://www.allsides.com' rel='noreferrer' target='_blank'>
-					AllSides.com
-				</a>{' '}
-				(another cool site you should check out). I generally don’t mind staying within my bubble
-				and assume most others don’t either. However, we often hear about how the United States is
-				becoming more polarized. I think that each side having its own sources of information fuels
-				that. It’s easy to be polarized when we only have to watch and listen to our own side. How
-				can we possibly engage with people on the opposite side, whichever it is for us, unless we
-				understand the information they consume? That’s my hope for this site: to both highlight how
-				sources express bias and show where different people’s political views come from.
+				{`Around 2017, we noticed a media bias chart being shared on social media, placing various
+				news sources into categories of political bias. Soon after, of course, other charts were
+				posted showing the "correct" way the first chart should have been arranged. Seeing this led
+				us to a question, "What does it mean for a source to be biased?" By that time, it seemed
+				understood that the major broadcast networks were center-left, MSNBC is liberal, and Fox
+				News is conservative. But what does that mean in practice? Are sources simply providing
+				differing analysis on the same events? Are they elevating stories that fit with their views
+				and burying or not reporting on others? Are they using different words that are meant to
+				lead their readers to certain conclusions? This site was created as a way to compare these
+				various news sources and highlight how they each express bias.`}
 			</p>
 		</Card.Body>
 	</>

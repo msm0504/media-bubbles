@@ -57,7 +57,7 @@ test('renders the component', () => {
 test('renders across the spectrum form', () => {
 	renderForm('FULL_SPECTRUM');
 	expect(screen.queryByText(/^Choose the category.*$/)).not.toBeInTheDocument();
-	expect(screen.queryByLabelText('Include Multiple Sources In Each Category')).toBeInTheDocument();
+	expect(screen.queryByLabelText('Include Multiple Sources in Each Category')).toBeInTheDocument();
 });
 
 test('renders user select form', () => {
@@ -75,7 +75,7 @@ test('has no extra inputs for random search', () => {
 	renderForm('RANDOM');
 	expect(screen.queryByText(/^Choose the category.*$/)).not.toBeInTheDocument();
 	expect(
-		screen.queryByLabelText('Include Multiple Sources In Each Category')
+		screen.queryByLabelText('Include Multiple Sources in Each Category')
 	).not.toBeInTheDocument();
 	expect(
 		screen.queryByText(`Choose up to ${MAX_SOURCE_SELECTIONS} sources.`)

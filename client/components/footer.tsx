@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import React from 'react';
 
 const Footer: React.FC = () => (
 	<div className='card-footer bg-white text-muted'>
