@@ -6,30 +6,28 @@ const SearchInstructions: React.FC = () => (
 		<p className='m-3'>
 			<strong>How to Use This Search:</strong>
 		</p>
-		<p className='m-3'>
-			We offer several different ways to view the latest news:
-			<ul>
-				<li>
-					{`Across the Spectrum: This will return results from a sources with various biases. If
+		<p className='m-0'>We offer several different ways to view the latest news:</p>
+		<ul className='m-3'>
+			<li>
+				{`Across the Spectrum: This will return results from a sources with various biases. If
 					"Include Multiple Sources in Each Category" is selected, results will be organized
 					according to political bias (left, center-left, center, center-right, right), with
 					multiple sources included under each. Otherwise, results will include news from 5 sources,
 					1 from each category.`}
-				</li>
-				<li>
-					{`Stay in My Bubble / Burst My Bubble: These searches will show results from 5 sources all
+			</li>
+			<li>
+				{`Stay in My Bubble / Burst My Bubble: These searches will show results from 5 sources all
 					with the same political bias. "Stay" will pick sources that match the bias you select;
 					"Burst" will pick sources that have the opposite.`}
-				</li>
-				<li>
-					{`Random: This one picks 5 random sources to include in results, which can give some very
+			</li>
+			<li>
+				{`Random: This one picks 5 random sources to include in results, which can give some very
 					different combinations than any of the others.`}
-				</li>
-				<li>
-					{`I Want to Pick: You pick up to 5 sources from our list to include in the search results.`}
-				</li>
-			</ul>
-		</p>
+			</li>
+			<li>
+				{`I Want to Pick: You pick up to 5 sources from our list to include in the search results.`}
+			</li>
+		</ul>
 		<p className='m-3'>
 			{`With any of these search types, you can either enter a keyword, which limits results to those
 			about that topic, or get whatever the latest news is from these various sources. All search

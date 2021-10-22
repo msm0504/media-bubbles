@@ -8,6 +8,6 @@ jest.mock('next/router');
 afterAll(cleanup);
 
 test('home page renders', () => {
-	render(<Home />);
+	render(<Home latestBlogPath='' />);
 	expect(screen.queryByText('Media Bubbles', { selector: 'h1' })).toBeInTheDocument();
 });

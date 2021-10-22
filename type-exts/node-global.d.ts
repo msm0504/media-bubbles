@@ -13,7 +13,7 @@ declare global {
 				lastUpdate: number;
 				app: Source[];
 				bySlant: Source[][];
-				biasRatings: { [name: string]: SourceSlant };
+				biasRatings: Record<string, SourceSlant>;
 			};
 		}
 	}

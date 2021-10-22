@@ -67,7 +67,7 @@ const addAnchorsToText = (text: string) =>
 const getSourceName = (
 	tweet: TwitterArticle,
 	users: UserExpansion[],
-	appSourcesById: { [name: string]: Source }
+	appSourcesById: Record<string, Source>
 ): string => {
 	const twitterHandle = users.find(({ id }) => id === tweet.author_id)?.username ?? '';
 	return appSourcesById[twitterHandle]?.name ?? '';
@@ -78,7 +78,7 @@ export async function getHeadlines(params: SearchRequest): Promise<ArticleMap> {
 		return {};
 	}
 	const { appSourceList, sourceListBySlant } = await getSourceLists();
-	const appSourcesById = appSourceList.reduce((acc: { [name: string]: Source }, appSource) => {
+	const appSourcesById = appSourceList.reduce((acc: Record<string, Source>, appSource) => {
 		acc[appSource.id] = appSource;
 		return acc;
 	}, {});
