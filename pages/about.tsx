@@ -6,7 +6,7 @@ const About: React.FC = () => (
 	<>
 		<Head>
 			<title key='title'>About - Media Bubbles</title>
-			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/about`} key='canonical' />
+			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_URL}/about`} key='canonical' />
 		</Head>
 		<h1 className='text-info'>About</h1>
 		<Card.Body className='bg-white rounded-xl'>

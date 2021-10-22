@@ -93,7 +93,7 @@ const Feedback: React.FC = () => {
 		<>
 			<Head>
 				<title key='title'>Contact Us - Media Bubbles</title>
-				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/contact`} key='canonical' />
+				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_URL}/contact`} key='canonical' />
 			</Head>
 			<h1 className='text-info'>Contact Us</h1>
 			<SaveableForm<FeedbackMessage>

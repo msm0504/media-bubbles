@@ -23,6 +23,15 @@ export async function saveSearchResult(result: SavedResult): Promise<ItemSavedRe
 	return { itemId: insertedId };
 }
 
+export async function setSearchResultImagePath(
+	savedResultId: string,
+	imagePath: string
+): Promise<ItemSavedResponse> {
+	const db = await _collection;
+	const { modifiedCount } = await db.updateOne({ _id: savedResultId }, { $set: { imagePath } });
+	return { itemId: modifiedCount === 1 ? savedResultId : '' };
+}
+
 export async function getSavedResults(
 	filter = '',
 	page = 1,

@@ -37,6 +37,7 @@ yarn-error.log*
 *.db
 docs/*
 server/blog-posts
+public/images/saved-results
 
 robots.txt
 sitemap.xml

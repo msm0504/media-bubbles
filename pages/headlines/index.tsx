@@ -19,11 +19,7 @@ const NewSearchResults: React.FC = () => {
 		<>
 			<Head>
 				<title key='title'>Headlines - Media Bubbles</title>
-				<link
-					rel='canonical'
-					href={`${process.env.NEXT_PUBLIC_API_URL}/headlines`}
-					key='canonical'
-				/>
+				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_URL}/headlines`} key='canonical' />
 			</Head>
 			<h1 className='text-info'>Search Results</h1>
 			<SaveResults />

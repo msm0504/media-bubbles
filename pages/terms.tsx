@@ -5,7 +5,7 @@ const Terms: React.FC = () => (
 	<Card.Body className='bg-white rounded-xl'>
 		<Head>
 			<title key='title'>Terms and Conditions - Media Bubbles</title>
-			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/terms`} key='canonical' />
+			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_URL}/terms`} key='canonical' />
 		</Head>
 		<h1>Terms and Conditions</h1>
 		<p>Last updated: July 21, 2020</p>
@@ -297,11 +297,11 @@ const Terms: React.FC = () => (
 			<li>
 				By visiting this page on our website:
 				<a
-					href={`${process.env.NEXT_PUBLIC_API_URL}/contact`}
+					href={`${process.env.NEXT_PUBLIC_URL}/contact`}
 					rel='external nofollow noopener noreferrer'
 					target='_blank'
 				>
-					{`${process.env.NEXT_PUBLIC_API_URL}/contact`}
+					{`${process.env.NEXT_PUBLIC_URL}/contact`}
 				</a>
 			</li>
 		</ul>

@@ -75,7 +75,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 	};
 
 	const displayShareButtons = () => {
-		const currentUrl = `${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`;
+		const currentUrl = `${process.env.NEXT_PUBLIC_URL}${router.asPath}`;
 		const urlToShare = resultId
 			? currentUrl
 			: savedResultId

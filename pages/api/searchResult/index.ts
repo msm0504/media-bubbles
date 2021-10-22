@@ -1,7 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 import { getSession } from 'next-auth/client';
-import { getSavedResults, saveSearchResult } from '../../../server/services/saved-results-service';
+import { takeResultScreenshot } from '../../../server/services/result-screenshot-service';
+import {
+	getSavedResults,
+	saveSearchResult,
+	setSearchResultImagePath
+} from '../../../server/services/saved-results-service';
 
 export default nc()
 	.get(async (req: NextApiRequest, res: NextApiResponse) => {
@@ -20,5 +25,15 @@ export default nc()
 		if (session?.user.id) {
 			resultToSave.userId = session.user.id;
 		}
-		res.json(await saveSearchResult(resultToSave));
+		const saveResponse = await saveSearchResult(resultToSave);
+		if (saveResponse.itemId) {
+			const imagePath = await takeResultScreenshot(saveResponse.itemId, req.body);
+			if (imagePath) {
+				res.json(await setSearchResultImagePath(saveResponse.itemId, imagePath));
+			} else {
+				res.json(saveResponse);
+			}
+		} else {
+			res.json(saveResponse);
+		}
 	});

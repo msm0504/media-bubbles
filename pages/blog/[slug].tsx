@@ -27,7 +27,7 @@ const BlogPostComp: React.FC<BlogPostProps> = ({ post, notFound }) => {
 				<title key='title'>{`Blog - ${post.title} - Media Bubbles`}</title>
 				<meta
 					property='og:url'
-					content={`${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`}
+					content={`${process.env.NEXT_PUBLIC_URL}${router.asPath}`}
 					key='ogUrl'
 				></meta>
 				<meta property='og:title' content={post.title} key='ogTitle'></meta>
@@ -41,7 +41,7 @@ const BlogPostComp: React.FC<BlogPostProps> = ({ post, notFound }) => {
 				<meta property='article:tag' content={post.slug.split('-').slice(3).join(' ')}></meta>
 				<link
 					rel='canonical'
-					href={`${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`}
+					href={`${process.env.NEXT_PUBLIC_URL}${router.asPath}`}
 					key='canonical'
 				/>
 			</Head>

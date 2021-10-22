@@ -38,20 +38,20 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 				></meta>
 				<meta property='og:title' content={title} key='ogTitle'></meta>
 				<meta property='og:description' content={description} key='ogDesc'></meta>
-				<meta property='og:url' content={process.env.NEXT_PUBLIC_API_URL} key='ogUrl'></meta>
+				<meta property='og:url' content={process.env.NEXT_PUBLIC_URL} key='ogUrl'></meta>
 				<meta
 					property='og:image'
-					content={`${process.env.NEXT_PUBLIC_API_URL}/images/og_image.png`}
+					content={`${process.env.NEXT_PUBLIC_URL}/images/og_image.png`}
 					key='ogImage'
 				></meta>
 				<meta property='fb:app_id' content='2356113588028211'></meta>
 				<meta name='twitter:card' content='summary'></meta>
 				<meta
 					name='twitter:image'
-					content={`${process.env.NEXT_PUBLIC_API_URL}/images/og_image_twitter.png`}
+					content={`${process.env.NEXT_PUBLIC_URL}/images/og_image_twitter.png`}
 				></meta>
 				<link rel='icon' href='/favicon.ico' />
-				<link rel='canonical' href={process.env.NEXT_PUBLIC_API_URL} key='canonical' />
+				<link rel='canonical' href={process.env.NEXT_PUBLIC_URL} key='canonical' />
 			</Head>
 
 			<Provider session={pageProps.session}>
