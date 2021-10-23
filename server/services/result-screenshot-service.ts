@@ -1,7 +1,21 @@
 import chromium from 'chrome-aws-lambda';
-import { Browser, Page } from 'puppeteer-core';
+import {
+	Browser,
+	BrowserConnectOptions,
+	BrowserLaunchArgumentOptions,
+	LaunchOptions,
+	Page,
+	Product
+} from 'puppeteer-core';
 import { S3Client, PutObjectCommand, PutObjectCommandInput } from '@aws-sdk/client-s3';
 import { SavedResult } from '../../types';
+
+type PuppeteerLaunchOptions = LaunchOptions &
+	BrowserLaunchArgumentOptions &
+	BrowserConnectOptions & {
+		product?: Product;
+		extraPrefsFirefox?: Record<string, unknown>;
+	};
 
 global.processingShots = global.processingShots || {};
 
@@ -12,33 +26,31 @@ const exePath =
 		? '/usr/bin/google-chrome'
 		: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 
-async function getBrowserInstance(): Promise<Browser> {
-	if (!process.env.VERCEL) {
-		const puppeteer = await import('puppeteer');
-		return (puppeteer.launch({
-			args: [],
-			executablePath: exePath,
-			headless: true,
-			defaultViewport: {
-				width: 1280,
-				height: 720
-			},
-			ignoreHTTPSErrors: true
-		}) as unknown) as Promise<Browser>;
-	}
-	return chromium.puppeteer.launch({
-		args: chromium.args,
-		executablePath: await chromium.executablePath,
-		headless: true,
-		defaultViewport: {
-			width: 1280,
-			height: 720
-		},
-		ignoreHTTPSErrors: true
-	});
+async function getBrowserOptions(): Promise<PuppeteerLaunchOptions> {
+	return !process.env.VERCEL
+		? {
+				args: [],
+				executablePath: exePath,
+				headless: true,
+				defaultViewport: {
+					width: 1280,
+					height: 720
+				},
+				ignoreHTTPSErrors: true
+		  }
+		: {
+				args: chromium.args,
+				executablePath: await chromium.executablePath,
+				headless: true,
+				defaultViewport: {
+					width: 1280,
+					height: 720
+				},
+				ignoreHTTPSErrors: true
+		  };
 }
 
-async function getImageBufferFromPage(browser: Browser, page: Page, pageToCapture: string) {
+async function getImageBufferFromPage(page: Page, pageToCapture: string) {
 	await page.goto(pageToCapture);
 	await page.waitForSelector('#search-results');
 	const results = await page.$('#search-results');
@@ -90,9 +102,9 @@ export async function takeResultScreenshot(
 	let browser: Browser | null = null;
 	let page: Page | null = null;
 	try {
-		browser = await getBrowserInstance();
+		browser = await chromium.puppeteer.launch(await getBrowserOptions());
 		page = await browser.newPage();
-		const imageBuffer = await getImageBufferFromPage(browser, page, pageToCapture);
+		const imageBuffer = await getImageBufferFromPage(page, pageToCapture);
 		await sendImagetoAws(imageKey, imageBuffer as Buffer);
 		imageUrl = `http://s3-${process.env.AWS_S3_REGION}.amazonaws.com/${process.env.AWS_S3_BUCKET}/${imageKey}`;
 	} catch (error) {
