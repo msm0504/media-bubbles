@@ -60,6 +60,7 @@ export type SavedResult = {
 	sourceList: Source[];
 	userId?: string;
 	createdAt?: string;
+	imagePath?: string;
 };
 
 export type SavedResultSummary = {

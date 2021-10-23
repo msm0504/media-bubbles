@@ -27,13 +27,11 @@ export default nc()
 		}
 		const saveResponse = await saveSearchResult(resultToSave);
 		if (saveResponse.itemId) {
-			const imagePath = await takeResultScreenshot(saveResponse.itemId, req.body);
-			if (imagePath) {
-				res.json(await setSearchResultImagePath(saveResponse.itemId, imagePath));
-			} else {
-				res.json(saveResponse);
-			}
-		} else {
-			res.json(saveResponse);
+			takeResultScreenshot(saveResponse.itemId, req.body).then(imagePath => {
+				if (imagePath) {
+					setSearchResultImagePath(saveResponse.itemId || '', imagePath);
+				}
+			});
 		}
+		res.json(saveResponse);
 	});

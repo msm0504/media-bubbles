@@ -5,7 +5,12 @@ import { Card } from 'react-bootstrap';
 
 import Spinner from '../../client/components/spinner';
 import SearchResults from '../../client/components/search-results/search-results';
-import { getSavedResult, getAllSavedResults } from '../../server/services/saved-results-service';
+import { takeResultScreenshot } from '../../server/services/result-screenshot-service';
+import {
+	getSavedResult,
+	getAllSavedResults,
+	setSearchResultImagePath
+} from '../../server/services/saved-results-service';
 import { SavedResult } from '../../types';
 
 type SavedSearchResultProps = {
@@ -63,6 +68,14 @@ export default SavedSearchResult;
 export const getStaticProps: GetStaticProps = async ({ params }) => {
 	const loadedResult = (await getSavedResult(params?.resultId as string)) || {};
 	const resultFound = loadedResult && Object.keys(loadedResult).length;
+
+	if (resultFound && !loadedResult.imagePath) {
+		takeResultScreenshot(loadedResult?._id || '', loadedResult).then(imagePath => {
+			if (imagePath) {
+				setSearchResultImagePath(loadedResult._id || '', imagePath);
+			}
+		});
+	}
 
 	return {
 		props: {

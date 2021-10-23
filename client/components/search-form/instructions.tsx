@@ -6,8 +6,8 @@ const SearchInstructions: React.FC = () => (
 		<p className='m-3'>
 			<strong>How to Use This Search:</strong>
 		</p>
-		<p className='m-0'>We offer several different ways to view the latest news:</p>
-		<ul className='m-3'>
+		<p className='mx-3 mt-3 mb-0'>We offer several different ways to view the latest news:</p>
+		<ul className='mx-3 my-0'>
 			<li>
 				{`Across the Spectrum: This will return results from a sources with various biases. If
 					"Include Multiple Sources in Each Category" is selected, results will be organized

@@ -15,6 +15,7 @@ declare global {
 				bySlant: Source[][];
 				biasRatings: Record<string, SourceSlant>;
 			};
+			processingShots: Record<string, boolean>;
 		}
 	}
 }

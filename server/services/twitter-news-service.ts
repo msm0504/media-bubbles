@@ -59,10 +59,10 @@ const filterDupeTweets = (data: TwitterArticle[]): TwitterArticle[] => {
 };
 
 const addAnchorsToText = (text: string) =>
-	text.replace(
-		/(http?s:\/\/\S+)/g,
-		'<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
-	);
+	text
+		.replace(/(http?s:\/\/\S+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
+		// 10/22/21: Found Newsmax tweets with no space before the links. Messed up spacing on results screen.
+		.replace(/(\S)(?=<a)/g, '$1 ');
 
 const getSourceName = (
 	tweet: TwitterArticle,

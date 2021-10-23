@@ -87,7 +87,10 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 	return (
 		<>
 			{displayShareButtons()}
-			<div className='d-flex flex-column flex-xl-row align-items-stretch align-items-xl-start justify-content-xl-around'>
+			<div
+				id='search-results'
+				className='d-flex flex-column flex-xl-row align-items-stretch align-items-xl-start justify-content-xl-around'
+			>
 				{generateColumns()}
 			</div>
 		</>
