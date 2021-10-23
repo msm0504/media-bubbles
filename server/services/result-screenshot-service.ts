@@ -1,21 +1,7 @@
 import chromium from 'chrome-aws-lambda';
-import puppeteer, {
-	Browser,
-	BrowserConnectOptions,
-	BrowserLaunchArgumentOptions,
-	LaunchOptions,
-	Page,
-	Product
-} from 'puppeteer-core';
+import { Browser, Page } from 'puppeteer-core';
 import { S3Client, PutObjectCommand, PutObjectCommandInput } from '@aws-sdk/client-s3';
 import { SavedResult } from '../../types';
-
-type PuppeteerLaunchOptions = LaunchOptions &
-	BrowserLaunchArgumentOptions &
-	BrowserConnectOptions & {
-		product?: Product;
-		extraPrefsFirefox?: Record<string, unknown>;
-	};
 
 global.processingShots = global.processingShots || {};
 
@@ -26,28 +12,30 @@ const exePath =
 		? '/usr/bin/google-chrome'
 		: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 
-async function getBrowserOptions(): Promise<PuppeteerLaunchOptions> {
-	return !process.env.VERCEL
-		? {
-				args: [],
-				executablePath: exePath,
-				headless: true,
-				defaultViewport: {
-					width: 1280,
-					height: 720
-				},
-				ignoreHTTPSErrors: true
-		  }
-		: {
-				args: chromium.args,
-				executablePath: await chromium.executablePath,
-				headless: true,
-				defaultViewport: {
-					width: 1280,
-					height: 720
-				},
-				ignoreHTTPSErrors: true
-		  };
+async function getBrowserInstance(): Promise<Browser> {
+	if (!process.env.VERCEL) {
+		const puppeteer = await import('puppeteer');
+		return (puppeteer.launch({
+			args: [],
+			executablePath: exePath,
+			headless: true,
+			defaultViewport: {
+				width: 1280,
+				height: 720
+			},
+			ignoreHTTPSErrors: true
+		}) as unknown) as Promise<Browser>;
+	}
+	return chromium.puppeteer.launch({
+		args: chromium.args,
+		executablePath: await chromium.executablePath,
+		headless: true,
+		defaultViewport: {
+			width: 1280,
+			height: 720
+		},
+		ignoreHTTPSErrors: true
+	});
 }
 
 async function getImageBufferFromPage(browser: Browser, page: Page, pageToCapture: string) {
@@ -102,7 +90,7 @@ export async function takeResultScreenshot(
 	let browser: Browser | null = null;
 	let page: Page | null = null;
 	try {
-		browser = await puppeteer.launch(await getBrowserOptions());
+		browser = await getBrowserInstance();
 		page = await browser.newPage();
 		const imageBuffer = await getImageBufferFromPage(browser, page, pageToCapture);
 		await sendImagetoAws(imageKey, imageBuffer as Buffer);

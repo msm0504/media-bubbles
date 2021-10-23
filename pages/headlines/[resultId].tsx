@@ -5,6 +5,7 @@ import { Card } from 'react-bootstrap';
 
 import Spinner from '../../client/components/spinner';
 import SearchResults from '../../client/components/search-results/search-results';
+import { takeResultScreenshot } from '../../server/services/result-screenshot-service';
 import {
 	getSavedResult,
 	getAllSavedResults,
@@ -69,12 +70,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 	const resultFound = loadedResult && Object.keys(loadedResult).length;
 
 	if (resultFound && !loadedResult.imagePath) {
-		import('../../server/services/result-screenshot-service').then(({ takeResultScreenshot }) => {
-			takeResultScreenshot(loadedResult?._id || '', loadedResult).then(imagePath => {
-				if (imagePath) {
-					setSearchResultImagePath(loadedResult._id || '', imagePath);
-				}
-			});
+		takeResultScreenshot(loadedResult?._id || '', loadedResult).then(imagePath => {
+			if (imagePath) {
+				setSearchResultImagePath(loadedResult._id || '', imagePath);
+			}
 		});
 	}
 
