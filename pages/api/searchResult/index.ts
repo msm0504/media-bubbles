@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
 import { getSession } from 'next-auth/client';
-import { takeResultScreenshot } from '../../../server/services/result-screenshot-service';
 import {
 	getSavedResults,
 	saveSearchResult,
@@ -27,11 +26,15 @@ export default nc()
 		}
 		const saveResponse = await saveSearchResult(resultToSave);
 		if (saveResponse.itemId) {
-			takeResultScreenshot(saveResponse.itemId, req.body).then(imagePath => {
-				if (imagePath) {
-					setSearchResultImagePath(saveResponse.itemId || '', imagePath);
+			import('../../../server/services/result-screenshot-service').then(
+				({ takeResultScreenshot }) => {
+					takeResultScreenshot(saveResponse.itemId || '', req.body).then(imagePath => {
+						if (imagePath) {
+							setSearchResultImagePath(saveResponse.itemId || '', imagePath);
+						}
+					});
 				}
-			});
+			);
 		}
 		res.json(saveResponse);
 	});
