@@ -44,6 +44,8 @@ const SavedSearchResult: React.FC<SavedSearchResultProps> = ({ loadedResult, not
 				{loadedResult.imagePath && (
 					<>
 						<meta property='og:image' content={loadedResult.imagePath} key='ogImage'></meta>
+						<meta property='og:image:width' content='1200'></meta>
+						<meta property='og:image:height' content='630'></meta>
 						<meta name='twitter:card' content='summary_large_image' key='twitterCard'></meta>
 						<meta name='twitter:image' content={loadedResult.imagePath} key='twitterImage'></meta>
 					</>
