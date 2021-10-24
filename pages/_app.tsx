@@ -49,7 +49,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 				<meta
 					name='twitter:image'
 					content={`${process.env.NEXT_PUBLIC_URL}/images/og_image_twitter.png`}
-					key='twitter:image'
+					key='twitterImage'
 				></meta>
 				<link rel='icon' href='/favicon.ico' />
 				<link rel='canonical' href={process.env.NEXT_PUBLIC_URL} key='canonical' />
