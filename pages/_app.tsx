@@ -45,10 +45,11 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 					key='ogImage'
 				></meta>
 				<meta property='fb:app_id' content='2356113588028211'></meta>
-				<meta name='twitter:card' content='summary'></meta>
+				<meta name='twitter:card' content='summary' key='twitterCard'></meta>
 				<meta
 					name='twitter:image'
 					content={`${process.env.NEXT_PUBLIC_URL}/images/og_image_twitter.png`}
+					key='twitter:image'
 				></meta>
 				<link rel='icon' href='/favicon.ico' />
 				<link rel='canonical' href={process.env.NEXT_PUBLIC_URL} key='canonical' />
