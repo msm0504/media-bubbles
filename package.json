@@ -1,6 +1,6 @@
 {
 	"name": "media-bubbles",
-	"version": "6.6.2",
+	"version": "6.6.3",
 	"private": true,
 	"scripts": {
 		"build": "next build",
@@ -52,7 +52,7 @@
 		"eslint-plugin-jsx-a11y": "^6.3.1",
 		"eslint-plugin-react": "^7.20.6",
 		"identity-obj-proxy": "^3.0.0",
-		"jest": "^27.0.4",
+		"jest": "^27.3.1",
 		"msw": "^0.29.0",
 		"prettier": "^2.1.2",
 		"typescript": "^4.4.3",

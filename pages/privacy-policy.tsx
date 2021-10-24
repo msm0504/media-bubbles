@@ -7,7 +7,7 @@ const PrivacyPolicy: React.FC = () => (
 			<title key='title'>Privacy Policy - Media Bubbles</title>
 			<link
 				rel='canonical'
-				href={`${process.env.NEXT_PUBLIC_API_URL}/privacy-policy`}
+				href={`${process.env.NEXT_PUBLIC_URL}/privacy-policy`}
 				key='canonical'
 			/>
 		</Head>
@@ -414,11 +414,11 @@ const PrivacyPolicy: React.FC = () => (
 			<li>
 				By visiting this page on our website:
 				<a
-					href={`${process.env.NEXT_PUBLIC_API_URL}/contact`}
+					href={`${process.env.NEXT_PUBLIC_URL}/contact`}
 					rel='external nofollow noopener noreferrer'
 					target='_blank'
 				>
-					{`${process.env.NEXT_PUBLIC_API_URL}/contact`}
+					{`${process.env.NEXT_PUBLIC_URL}/contact`}
 				</a>
 			</li>
 		</ul>

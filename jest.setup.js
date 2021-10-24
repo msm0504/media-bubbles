@@ -2,5 +2,5 @@
 const { loadEnvConfig } = require('@next/env');
 
 module.exports = async () => {
-	loadEnvConfig(process.env.PWD);
+	loadEnvConfig(process.env.PWD || process.cwd());
 };

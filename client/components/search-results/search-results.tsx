@@ -75,7 +75,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 	};
 
 	const displayShareButtons = () => {
-		const currentUrl = `${process.env.NEXT_PUBLIC_API_URL}${router.asPath}`;
+		const currentUrl = `${process.env.NEXT_PUBLIC_URL}${router.asPath}`;
 		const urlToShare = resultId
 			? currentUrl
 			: savedResultId
@@ -87,7 +87,10 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 	return (
 		<>
 			{displayShareButtons()}
-			<div className='d-flex flex-column flex-xl-row align-items-stretch align-items-xl-start justify-content-xl-around'>
+			<div
+				id='search-results'
+				className='d-flex flex-column flex-xl-row align-items-stretch align-items-xl-start justify-content-xl-around'
+			>
 				{generateColumns()}
 			</div>
 		</>

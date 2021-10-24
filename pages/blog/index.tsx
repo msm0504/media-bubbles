@@ -69,7 +69,7 @@ const BlogPosts: React.FC = () => {
 		<>
 			<Head>
 				<title key='title'>Blog - Media Bubbles</title>
-				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_API_URL}/blog`} key='canonical' />
+				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_URL}/blog`} key='canonical' />
 			</Head>
 			<h1 className='text-info d-block d-sm-inline-block'>Blog Posts</h1>
 			{session?.user.isAdmin && (

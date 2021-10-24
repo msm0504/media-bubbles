@@ -8,7 +8,7 @@ const headers = {
 	Accept: 'application/json',
 	'Content-Type': 'application/json'
 };
-const path = `${process.env.NEXT_PUBLIC_API_URL}/api`;
+const path = `${process.env.NEXT_PUBLIC_URL}/api`;
 
 export const callApi = <T, U = undefined>(
 	method: string,
