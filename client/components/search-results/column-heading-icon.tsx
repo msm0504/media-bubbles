@@ -1,6 +1,3 @@
-import { InvalidEvent } from 'react';
-
-import IconUtil from '../../util/icon-util';
 import { Source } from '../../../types';
 
 type ColumnHeadingIconProps = {
@@ -23,11 +20,8 @@ const ColumnHeadingIcon: React.FC<ColumnHeadingIconProps> = ({
 			/>
 		) : (
 			<img
-				src={IconUtil.getIconUrl(column.url)}
+				src={`${process.env.NEXT_PUBLIC_URL}/api/source-logo?id=${column.id}&url=${column.url}`}
 				alt={`Logo for ${column.name}`}
-				onError={(event: InvalidEvent<HTMLImageElement>) => {
-					event.target.src = IconUtil.getIconUrlSecondTry(column.url);
-				}}
 			/>
 		)}
 		<span className='sr-only'>{`Search results for ${column.name}`}</span>

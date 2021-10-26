@@ -1,4 +1,5 @@
 import { Db } from 'mongodb';
+import { S3Client } from '@aws-sdk/client-s3';
 import { Source } from '../types';
 import { SourceSlant } from '../client/constants/source-slant';
 
@@ -15,6 +16,7 @@ declare global {
 				bySlant: Source[][];
 				biasRatings: Record<string, SourceSlant>;
 			};
+			s3Client: S3Client;
 		}
 	}
 }
