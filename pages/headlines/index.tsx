@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 
@@ -14,6 +14,7 @@ const SearchResults = dynamic(
 
 const NewSearchResults: React.FC = () => {
 	const [context] = useContext(SearchResultContext);
+	const elResults = useRef(null);
 
 	return (
 		<>
@@ -22,13 +23,15 @@ const NewSearchResults: React.FC = () => {
 				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_URL}/headlines`} key='canonical' />
 			</Head>
 			<h1 className='text-info'>Search Results</h1>
-			<SaveResults />
-			<SearchResults
-				sourceList={context.sourceListToSearch}
-				isSearchAll={context.isSearchAll}
-				articleMap={context.articleMap}
-				savedResultId={context.savedResultId}
-			/>
+			<SaveResults container={elResults} />
+			<div ref={elResults}>
+				<SearchResults
+					sourceList={context.sourceListToSearch}
+					isSearchAll={context.isSearchAll}
+					articleMap={context.articleMap}
+					savedResultId={context.savedResultId}
+				/>
+			</div>
 		</>
 	);
 };

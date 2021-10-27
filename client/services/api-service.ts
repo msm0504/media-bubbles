@@ -1,3 +1,4 @@
+import FormData from 'form-data';
 import formatGetQuery from '../../server/util/format-get-query';
 
 type RequestData<T> = {
@@ -24,6 +25,20 @@ export const callApi = <T, U = undefined>(
 			url = `${url}${formatGetQuery(data)}`;
 		}
 	}
+	return fetch(url, params).then(response => {
+		if (response.ok) {
+			return response.json();
+		}
+	});
+};
+
+export const callApiMultipart = <T>(endpoint: string, data: FormData): Promise<T> => {
+	const url = `${path}/${endpoint}`;
+	const params: Record<string, unknown> = {
+		method: 'post',
+		headers: { Accept: 'application/json' },
+		body: data
+	};
 	return fetch(url, params).then(response => {
 		if (response.ok) {
 			return response.json();
