@@ -56,4 +56,8 @@ img.bubble-img {
 	border-radius: 0rem 0rem 0.75rem 0.75rem !important;
 }
 
+.text-purple {
+	color: var(--bs-purple);
+}
+
 @import url('./search-form.css');
