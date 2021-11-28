@@ -19,16 +19,16 @@ const RouteLink: React.FC<RouteLinkProps> = ({
 }) => {
 	if (!buttonText) return null;
 
+	const formattedRoute = formatRoute(routePath);
 	const router = useRouter();
 	const linkClicked = () => {
-		const formattedRoute = formatRoute(routePath);
 		if (router.pathname !== formattedRoute) {
 			router.push(formattedRoute);
 		}
 	};
 
 	return isNav ? (
-		<Nav.Link className='me-md-4' href='#' eventKey={formatRoute(routePath)} onSelect={linkClicked}>
+		<Nav.Link className='me-md-4' href='#' eventKey={formatRoute(routePath)} onClick={linkClicked}>
 			{buttonText}
 		</Nav.Link>
 	) : (

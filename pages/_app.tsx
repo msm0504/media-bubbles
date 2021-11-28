@@ -4,6 +4,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Provider } from 'next-auth/client';
 import { init, trackPages } from 'insights-js';
+import SSRProvider from 'react-bootstrap/SSRProvider';
 
 import Header from '../client/components/header';
 import Footer from '../client/components/footer';
@@ -56,24 +57,26 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 			</Head>
 
 			<Provider session={pageProps.session}>
-				<TopNavbar />
-				<div className={`container-fluid p-0${isHome ? ' home-bg' : ' page-bg'}`}>
-					<div className='card border-0' style={{ background: 'transparent' }}>
-						{isHome ? (
-							<Component {...pageProps} />
-						) : (
-							<>
-								<Header />
-								<div className='card-body p-2 p-md-4' style={{ minHeight: '600px' }}>
-									<AppProviders>
-										<Component {...pageProps} />
-									</AppProviders>
-								</div>
-							</>
-						)}
-						<Footer />
+				<SSRProvider>
+					<TopNavbar />
+					<div className={`container-fluid p-0${isHome ? ' home-bg' : ' page-bg'}`}>
+						<div className='card border-0' style={{ background: 'transparent' }}>
+							{isHome ? (
+								<Component {...pageProps} />
+							) : (
+								<>
+									<Header />
+									<div className='card-body p-2 p-md-4' style={{ minHeight: '600px' }}>
+										<AppProviders>
+											<Component {...pageProps} />
+										</AppProviders>
+									</div>
+								</>
+							)}
+							<Footer />
+						</div>
 					</div>
-				</div>
+				</SSRProvider>
 			</Provider>
 		</>
 	);
