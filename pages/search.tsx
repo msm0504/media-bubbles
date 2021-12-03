@@ -33,7 +33,7 @@ const SearchTabs: React.FC<SearchTabsProps> = ({ appSourceList, sourceListBySlan
 			<Nav.Item key={id + 'Tab'}>
 				<Nav.Link
 					active={isActive}
-					onSelect={() => onSearchModeChange(id)}
+					onClick={() => onSearchModeChange(id)}
 					href='#'
 					className={isActive ? 'bg-info' : 'text-info'}
 				>

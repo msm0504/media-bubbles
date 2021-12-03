@@ -10,7 +10,7 @@ const Logout: React.FC<LogoutProps> = ({ sessionLoading }) => (
 		className='me-md-4'
 		href='#'
 		disabled={sessionLoading}
-		onSelect={() => signOut({ redirect: false })}
+		onClick={() => signOut({ redirect: false })}
 	>
 		Log out
 	</Nav.Link>
