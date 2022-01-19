@@ -1,35 +1,45 @@
-import nodemailer from 'nodemailer';
+import FormData from 'form-data';
 import { FeedbackMessage, FeedbackSentResponse } from '../../types';
 
-const SUPPORT_ADDRESS = 'support@mediabubbles.net';
+const headers = {
+	Authorization:
+		'Basic ' +
+		Buffer.from(
+			`${process.env.MAILGUN_USERNAME}:${process.env.MAILGUN_API_KEY}`,
+			'binary'
+		).toString('base64')
+};
 
-const transporter = nodemailer.createTransport({
-	host: process.env.SMTP_SERVER,
-	port: Number(process.env.SMTP_PORT),
-	auth: {
-		user: process.env.EMAIL_USERNAME,
-		pass: process.env.EMAIL_PASSWORD
-	}
-});
+const SUPPORT_ADDRESS = 'support@mediabubbles.net';
+const TO_ADDRESS = 'mark.monday0504@gmail.com';
 
 export async function sendSupportEmail(
 	feedbackData: FeedbackMessage
 ): Promise<FeedbackSentResponse> {
-	try {
-		await transporter.sendMail({
-			from: SUPPORT_ADDRESS,
-			to: SUPPORT_ADDRESS,
-			cc: feedbackData.email,
-			subject: `Media Bubbles ${feedbackData.reason}`,
-			text: `
+	const formdata = new FormData();
+	formdata.append('from', SUPPORT_ADDRESS);
+	formdata.append('to', TO_ADDRESS);
+	formdata.append('subject', `Media Bubbles ${feedbackData.reason}`);
+	formdata.append(
+		'text',
+		`
 ${feedbackData.message}
 
 ${feedbackData.name}
 ${feedbackData.email}
-      `
-		});
-		return { feedbackSent: true };
-	} catch (error) {
+	`
+	);
+
+	const requestOptions: Record<string, unknown> = {
+		method: 'POST',
+		body: formdata,
+		headers
+	};
+
+	if (!process.env.MAILGUN_API_URL) {
 		return { feedbackSent: false };
 	}
+
+	const response = await fetch(process.env.MAILGUN_API_URL, requestOptions);
+	return { feedbackSent: response.ok };
 }
