@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef, useContext, ReactElement } from 'react';
-import { Card, Col, Form, ListGroup, Pagination, Row } from 'react-bootstrap';
+import { useState, useEffect, useRef, useContext, ReactElement } from 'react';
+import { Card, Col, Form, ListGroup, Row } from 'react-bootstrap';
 import { useSession } from 'next-auth/client';
 import debounce from 'lodash.debounce';
 
+import ListPagination from './list-pagination';
 import ALERT_LEVEL from '../constants/alert-level';
 import { AlertsDispatch } from '../contexts/alerts-context';
 import { callApi } from '../services/api-service';
@@ -34,6 +35,7 @@ type GetParams = {
 };
 
 const CACHE_SIZE = 10;
+const MAX_PAGES = 5;
 
 const AsyncList = <T,>({
 	apiListName,
@@ -182,32 +184,12 @@ const AsyncList = <T,>({
 					)} found`}</Card.Body>
 				)}
 			</ListGroup>
-			{pageCount ? (
-				<Pagination className='float-end mt-1' aria-label='change list page being displayed'>
-					<Pagination.First disabled={page.current <= 1} onClick={() => handleLoadPage(1)} />
-					<Pagination.Prev
-						disabled={page.current <= 1}
-						onClick={() => handleLoadPage(page.current - 1)}
-					/>
-					{new Array(pageCount).fill(1).map((_, index) => (
-						<Pagination.Item
-							key={`page${index + 1}`}
-							active={index + 1 === page.current}
-							onClick={() => handleLoadPage(index + 1)}
-						>
-							{index + 1}
-						</Pagination.Item>
-					))}
-					<Pagination.Next
-						disabled={page.current >= pageCount}
-						onClick={() => handleLoadPage(page.current + 1)}
-					/>
-					<Pagination.Last
-						disabled={page.current >= pageCount}
-						onClick={() => handleLoadPage(pageCount)}
-					/>
-				</Pagination>
-			) : null}
+			<ListPagination
+				currentPage={page.current}
+				totalPages={pageCount}
+				maxPagesToShow={MAX_PAGES}
+				pageSelectFn={handleLoadPage}
+			/>
 		</>
 	);
 };

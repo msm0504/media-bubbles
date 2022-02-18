@@ -1,4 +1,4 @@
-import React, { useState, useContext, MutableRefObject } from 'react';
+import { useState, useContext, MutableRefObject } from 'react';
 import { Button } from 'react-bootstrap';
 import html2canvas from 'html2canvas';
 import FormData from 'form-data';
