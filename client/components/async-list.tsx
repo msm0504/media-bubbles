@@ -35,7 +35,7 @@ type GetParams = {
 };
 
 const CACHE_SIZE = 10;
-const MAX_PAGES = 5;
+const MAX_PAGES = 3;
 
 const AsyncList = <T,>({
 	apiListName,
