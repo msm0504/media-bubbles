@@ -29,7 +29,6 @@ const TopNavbar: React.FC = () => {
 					<RouteLink buttonText='Home' routePath='/' isNav />
 					<RouteLink buttonText='Search' routePath='/search' isNav />
 					<RouteLink buttonText='About' routePath='/about' isNav />
-					<RouteLink buttonText='Blog' routePath='/blog' isNav />
 					<RouteLink buttonText='Contact Us' routePath='/contact' isNav />
 					<LoginNavItem />
 				</Nav>
