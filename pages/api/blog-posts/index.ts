@@ -5,7 +5,7 @@ import { getPostSummaries, savePost } from '../../../server/services/blog-servic
 
 export default nc()
 	.get(async (req: NextApiRequest, res: NextApiResponse) => {
-		res.json(await getPostSummaries(req.query.filter.toString(), +req.query.page));
+		res.json(await getPostSummaries(req.query.filter?.toString(), +(req.query.page || 1)));
 	})
 	.post(async (req: NextApiRequest, res: NextApiResponse) => {
 		const session = await getSession({ req });

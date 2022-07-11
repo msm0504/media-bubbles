@@ -22,7 +22,7 @@ export default nc()
 			res.json({ savedResults: [], pageCount: 0 });
 		} else {
 			res.json(
-				await getSavedResults(req.query.filter.toString(), +req.query.page, session.user.id)
+				await getSavedResults(req.query.filter?.toString(), +(req.query.page || 1), session.user.id)
 			);
 		}
 	})
