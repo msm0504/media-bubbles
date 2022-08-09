@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useContext, ReactElement } from 'react';
 import { Card, Col, Form, ListGroup, Row } from 'react-bootstrap';
-import { useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import debounce from 'lodash.debounce';
 
 import ListPagination from './list-pagination';
@@ -46,7 +46,7 @@ const AsyncList = <T,>({
 	LoginRequiredComponent
 }: AsyncListProps<T>): ReactElement => {
 	const showAlert = useContext(AlertsDispatch);
-	const [session] = useSession();
+	const { data: session } = useSession();
 	const [items, setItems] = useState<ListItem<T>[]>([]);
 	const [pageCount, setPageCount] = useState(0);
 	const filter = useRef('');

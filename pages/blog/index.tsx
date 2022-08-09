@@ -1,4 +1,4 @@
-import { useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { Button, Card } from 'react-bootstrap';
 
@@ -26,7 +26,7 @@ const PostSummary: React.FC<PostSummaryProps> = ({
 	item: { title, excerpt, slug, updatedAt: date },
 	fnDeleteItem
 }) => {
-	const [session] = useSession();
+	const { data: session } = useSession();
 
 	return (
 		<Card.Body>
@@ -63,7 +63,7 @@ const PostSummary: React.FC<PostSummaryProps> = ({
 };
 
 const BlogPosts: React.FC = () => {
-	const [session] = useSession();
+	const { data: session } = useSession();
 
 	return (
 		<>

@@ -1,23 +1,20 @@
-import { useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import { Dropdown, NavItem, NavLink } from 'react-bootstrap';
 
 import { FacebookLogin, TwitterLogin } from './login';
 import Logout from './logout';
 
 const LoginNavItem: React.FC = () => {
-	const [session, loading] = useSession();
+	const { data: session, status } = useSession();
+	const loading = status === 'loading';
 	return session ? (
 		<Logout sessionLoading={loading} />
 	) : (
 		<Dropdown className='me-md-4' as={NavItem}>
 			<Dropdown.Toggle as={NavLink}>Log in</Dropdown.Toggle>
 			<Dropdown.Menu align='end'>
-				<Dropdown.Item>
-					<TwitterLogin sessionLoading={loading} />
-				</Dropdown.Item>
-				<Dropdown.Item>
-					<FacebookLogin sessionLoading={loading} />
-				</Dropdown.Item>
+				<TwitterLogin sessionLoading={loading} />
+				<FacebookLogin sessionLoading={loading} />
 			</Dropdown.Menu>
 		</Dropdown>
 	);

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { Provider } from 'next-auth/client';
+import { SessionProvider } from 'next-auth/react';
 import { init, trackPages } from 'insights-js';
 import SSRProvider from 'react-bootstrap/SSRProvider';
 
@@ -56,7 +56,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 				<link rel='canonical' href={process.env.NEXT_PUBLIC_URL} key='canonical' />
 			</Head>
 
-			<Provider session={pageProps.session}>
+			<SessionProvider session={pageProps.session}>
 				<SSRProvider>
 					<TopNavbar />
 					<div className={`container-fluid p-0${isHome ? ' home-bg' : ' page-bg'}`}>
@@ -77,7 +77,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 						</div>
 					</div>
 				</SSRProvider>
-			</Provider>
+			</SessionProvider>
 		</>
 	);
 };

@@ -2,7 +2,7 @@ import { cleanup, render, fireEvent, screen, waitFor } from '@testing-library/re
 import '@testing-library/jest-dom/extend-expect';
 import { useRouter } from 'next/router';
 import { Session } from 'next-auth';
-import { useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -10,8 +10,11 @@ import AddEditBlogPost, { fieldList } from '../add-edit-post';
 import { AppProviders } from '../../../contexts';
 
 jest.mock('next/router');
-jest.mock('next-auth/client');
+jest.mock('next-auth/react');
 const server = setupServer();
+
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
 
 const mockUser: Session = {
 	user: {
@@ -19,7 +22,8 @@ const mockUser: Session = {
 		isAdmin: false,
 		name: 'Some Guy',
 		email: 'some.guy@test.com'
-	}
+	},
+	expires: tomorrow.toDateString()
 };
 
 const mockAdmin: Session = {
@@ -28,7 +32,8 @@ const mockAdmin: Session = {
 		isAdmin: true,
 		name: 'John Doe',
 		email: 'john.doe@test.com'
-	}
+	},
+	expires: tomorrow.toDateString()
 };
 
 beforeAll(() => {
@@ -45,19 +50,19 @@ afterEach(() => {
 afterAll(server.close);
 
 test('blocks access if not logged in', () => {
-	(useSession as jest.Mock).mockReturnValue([null, false]);
+	(useSession as jest.Mock).mockReturnValue({ data: null, status: 'unauthenticated' });
 	render(<AddEditBlogPost />);
 	expect(screen.queryByText('You shall not post!')).toBeInTheDocument();
 });
 
 test('blocks access if not user is not admin', () => {
-	(useSession as jest.Mock).mockReturnValue([mockUser, false]);
+	(useSession as jest.Mock).mockReturnValue({ data: mockUser, status: 'authenticated' });
 	render(<AddEditBlogPost />);
 	expect(screen.queryByText('You shall not post!')).toBeInTheDocument();
 });
 
 test('renders correct input fields', () => {
-	(useSession as jest.Mock).mockReturnValue([mockAdmin, false]);
+	(useSession as jest.Mock).mockReturnValue({ data: mockAdmin, status: 'authenticated' });
 	render(<AddEditBlogPost />);
 	fieldList.forEach(field =>
 		expect(screen.queryByLabelText(new RegExp(`^${field.name}$`, 'i'))).toBeInTheDocument()
@@ -65,7 +70,7 @@ test('renders correct input fields', () => {
 });
 
 test('displays correct error messages for invalid input', () => {
-	(useSession as jest.Mock).mockReturnValue([mockAdmin, false]);
+	(useSession as jest.Mock).mockReturnValue({ data: mockAdmin, status: 'authenticated' });
 	render(<AddEditBlogPost />);
 	const slugInput = screen.getByLabelText('Slug');
 
@@ -84,7 +89,7 @@ test('displays correct error messages for invalid input', () => {
 });
 
 test('renders preview modal after button click', () => {
-	(useSession as jest.Mock).mockReturnValue([mockAdmin, false]);
+	(useSession as jest.Mock).mockReturnValue({ data: mockAdmin, status: 'authenticated' });
 	render(<AddEditBlogPost />);
 	expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 	fireEvent.click(screen.getByText('Preview'));
@@ -93,7 +98,7 @@ test('renders preview modal after button click', () => {
 
 test('displays success alert after successful submit', async () => {
 	const mockItemId = 'item123';
-	(useSession as jest.Mock).mockReturnValue([mockAdmin, false]);
+	(useSession as jest.Mock).mockReturnValue({ data: mockAdmin, status: 'authenticated' });
 	server.use(
 		rest.post('/api/blog-posts', (_req, res, ctx) => res(ctx.json({ itemId: mockItemId })))
 	);
@@ -113,7 +118,7 @@ test('displays success alert after successful submit', async () => {
 });
 
 test('displays error alert after failed submit', async () => {
-	(useSession as jest.Mock).mockReturnValue([mockAdmin, false]);
+	(useSession as jest.Mock).mockReturnValue({ data: mockAdmin, status: 'authenticated' });
 	server.use(rest.post('/api/blog-posts', (_req, res, ctx) => res(ctx.json({}))));
 	render(
 		<AppProviders>

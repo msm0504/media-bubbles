@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
-import { getSession } from 'next-auth/client';
+import { getSession } from 'next-auth/react';
 import { getPostSummaries, savePost } from '../../../server/services/blog-service';
 
 export default nc()

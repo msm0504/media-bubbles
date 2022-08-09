@@ -1,15 +1,18 @@
 import { cleanup, render, fireEvent, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Session } from 'next-auth';
-import { useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
 import Feedback, { fieldList } from '../pages/contact';
 import { AppProviders } from '../client/contexts';
 
-jest.mock('next-auth/client');
+jest.mock('next-auth/react');
 const server = setupServer();
+
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
 
 const mockUser: Session = {
 	user: {
@@ -17,7 +20,8 @@ const mockUser: Session = {
 		isAdmin: false,
 		name: 'Some Guy',
 		email: 'some.guy@test.com'
-	}
+	},
+	expires: tomorrow.toDateString()
 };
 
 beforeAll(() => {
@@ -33,7 +37,7 @@ afterEach(() => {
 afterAll(server.close);
 
 test('renders correct input fields', () => {
-	(useSession as jest.Mock).mockReturnValue([null, false]);
+	(useSession as jest.Mock).mockReturnValue({ data: null, status: 'unauthorized' });
 	render(<Feedback />);
 	fieldList.forEach(field =>
 		field.type === 'text'
@@ -43,7 +47,7 @@ test('renders correct input fields', () => {
 });
 
 test('displays correct error messages for invalid input', () => {
-	(useSession as jest.Mock).mockReturnValue([null, false]);
+	(useSession as jest.Mock).mockReturnValue({ data: null, status: 'unauthorized' });
 	render(<Feedback />);
 	const emailInput = screen.getByLabelText('Email');
 
@@ -60,7 +64,7 @@ test('displays correct error messages for invalid input', () => {
 });
 
 test('displays success alert after successful submit', async () => {
-	(useSession as jest.Mock).mockReturnValue([mockUser, false]);
+	(useSession as jest.Mock).mockReturnValue({ data: mockUser, status: 'authorized' });
 	server.use(rest.post('/api/feedback', (_req, res, ctx) => res(ctx.json({ feedbackSent: true }))));
 	render(
 		<AppProviders>
@@ -78,7 +82,7 @@ test('displays success alert after successful submit', async () => {
 });
 
 test('displays error alert after failed submit', async () => {
-	(useSession as jest.Mock).mockReturnValue([mockUser, false]);
+	(useSession as jest.Mock).mockReturnValue({ data: mockUser, status: 'authorized' });
 	server.use(
 		rest.post('/api/feedback', (_req, res, ctx) => res(ctx.json({ feedbackSent: false })))
 	);

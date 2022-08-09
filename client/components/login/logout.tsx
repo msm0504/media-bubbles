@@ -1,5 +1,5 @@
 import { Nav } from 'react-bootstrap';
-import { signOut } from 'next-auth/client';
+import { signOut } from 'next-auth/react';
 
 type LogoutProps = {
 	sessionLoading: boolean;

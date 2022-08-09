@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { getCollection } from './db-connection';
 import {
 	BlogPost,
@@ -30,13 +31,13 @@ async function createPost(post: BlogPost) {
 	const slugWithTs = `${createTs.split('T')[0]}-${post.slug.toLowerCase()}`;
 	const { insertedId } = await db.insertOne({
 		...post,
-		_id: slugWithTs,
+		_id: (slugWithTs as unknown) as ObjectId,
 		slug: slugWithTs,
 		excerpt: formatExcerpt(post.content),
 		createdAt: createTs,
 		updatedAt: createTs
 	});
-	return { itemId: insertedId };
+	return { itemId: insertedId.toString() };
 }
 
 async function updatePost(post: BlogPost) {
@@ -46,7 +47,7 @@ async function updatePost(post: BlogPost) {
 		{ _id: post.slug },
 		{ $set: { ...post, excerpt: formatExcerpt(post.content), updatedAt: updateTs } }
 	);
-	return { itemId: modifiedCount === 1 && post.slug };
+	return { itemId: modifiedCount === 1 ? post.slug : '' };
 }
 
 export async function getAllPostSlugs(): Promise<string[]> {
@@ -71,7 +72,7 @@ export async function getLatestPostSlug(): Promise<string> {
 
 export async function getPost(slug: string): Promise<BlogPost> {
 	const db = await _collection;
-	return db.findOne({ _id: slug });
+	return (db.findOne({ _id: slug }) as unknown) as BlogPost;
 }
 
 export async function getPostSummaries(
@@ -79,15 +80,14 @@ export async function getPostSummaries(
 	page = 1
 ): Promise<ListResponse<BlogPostSummary>> {
 	const db = await _collection;
-	const count = await db
-		.find({
-			$or: [
-				{ slug: { $regex: `^.*${filter}.*$`, $options: 'i' } },
-				{ title: { $regex: `^.*${filter}.*$`, $options: 'i' } }
-			]
-		})
-		.count();
-	const postSummaries = await db
+	const count = await db.countDocuments({
+		$or: [
+			{ slug: { $regex: `^.*${filter}.*$`, $options: 'i' } },
+			{ title: { $regex: `^.*${filter}.*$`, $options: 'i' } }
+		]
+	});
+
+	const postSummaries = ((await db
 		.find({
 			$or: [
 				{ slug: { $regex: `^.*${filter}.*$`, $options: 'i' } },
@@ -98,7 +98,7 @@ export async function getPostSummaries(
 		.skip(PAGE_SIZE * (page - 1))
 		.limit(PAGE_SIZE)
 		.map(({ content, ...metaData }) => metaData)
-		.toArray();
+		.toArray()) as unknown) as BlogPostSummary[];
 
 	return {
 		items: postSummaries,

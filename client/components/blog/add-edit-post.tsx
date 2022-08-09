@@ -1,7 +1,7 @@
 import { useEffect, useContext } from 'react';
 import { Card } from 'react-bootstrap';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 
 import BlogPostTemplate from './blog-post-template';
 import SaveableForm, { getRequiredMessage, FieldSetting } from '../saveable-form';
@@ -92,7 +92,7 @@ const BlogPostPreview = ({ content, title }: BlogPost) => {
 
 const AddEditBlogPost: React.FC<AddEditPostProps> = ({ currentVersion }) => {
 	const showAlert = useContext(AlertsDispatch);
-	const [session] = useSession();
+	const { data: session } = useSession();
 
 	useEffect(() => {
 		const slugField = fieldList.find(field => field.name === 'slug');

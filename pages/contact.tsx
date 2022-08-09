@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 
 import { FeedbackMessage, FeedbackSentResponse, ShowAlertFn } from '../types';
@@ -81,7 +81,7 @@ async function submitFeedback(feedbackData: FeedbackMessage, showAlert: ShowAler
 
 const Feedback: React.FC = () => {
 	const showAlert = useContext(AlertsDispatch);
-	const [session] = useSession();
+	const { data: session } = useSession();
 
 	const initialData = {
 		...blankFeedbackForm,

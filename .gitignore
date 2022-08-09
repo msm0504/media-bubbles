@@ -40,3 +40,5 @@ server/blog-posts
 
 robots.txt
 sitemap.xml
+
+*.tsbuildinfo

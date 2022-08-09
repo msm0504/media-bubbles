@@ -1,38 +1,39 @@
 import NextAuth from 'next-auth';
-import Providers from 'next-auth/providers';
-import { ObjectId, ObjectID } from 'mongodb';
+import FacebookProvider from 'next-auth/providers/facebook';
+import TwitterProvider from 'next-auth/providers/twitter';
+import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 
-import { MONGODB_URL } from '../../../server/constants';
+import { getMongoClient } from '../../../server/services/db-connection';
 
 export default NextAuth({
 	session: {
-		jwt: true
+		strategy: 'jwt'
 	},
 	jwt: {
 		secret: process.env.JWT_SECRET
 	},
 	providers: [
-		Providers.Facebook({
-			clientId: process.env.FACEBOOK_APP_ID,
-			clientSecret: process.env.FACEBOOK_APP_SECRET
+		FacebookProvider({
+			clientId: process.env.FACEBOOK_APP_ID || '',
+			clientSecret: process.env.FACEBOOK_APP_SECRET || ''
 		}),
-		Providers.Twitter({
-			clientId: process.env.TWITTER_APP_KEY,
-			clientSecret: process.env.TWITTER_APP_SECRET
+		TwitterProvider({
+			clientId: process.env.TWITTER_APP_KEY || '',
+			clientSecret: process.env.TWITTER_APP_SECRET || ''
 		})
 	],
-	database: MONGODB_URL,
+	adapter: MongoDBAdapter(getMongoClient()),
 	callbacks: {
-		async session(session, user) {
+		async session({ session, token }) {
 			if (session) {
-				session.user.id = '' + user.id;
-				session.user.isAdmin = user.id === process.env.ADMIN_ID;
+				session.user.id = '' + token.id;
+				session.user.isAdmin = token.id === process.env.ADMIN_ID;
 			}
 			return session;
 		},
-		async jwt(token, user) {
+		async jwt({ token, user }) {
 			if (token && user) {
-				return { ...token, id: new ObjectID(user.id as ObjectId).toString() };
+				return { ...token, id: user.id };
 			}
 			return token;
 		}

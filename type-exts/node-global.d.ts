@@ -1,4 +1,4 @@
-import { Db } from 'mongodb';
+import { Db, MongoClient } from 'mongodb';
 import { S3Client } from '@aws-sdk/client-s3';
 import { Source } from '../types';
 import { SourceSlant } from '../client/constants/source-slant';
@@ -7,8 +7,8 @@ declare global {
 	namespace NodeJS {
 		interface Global {
 			mongo: {
+				clientPromise: Promise<MongoClient>;
 				db: Db;
-				promise: Promise<Db>;
 			};
 			sources: {
 				lastUpdate: number;

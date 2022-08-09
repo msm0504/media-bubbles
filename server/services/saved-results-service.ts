@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { nanoid } from 'nanoid';
 import { getCollection } from './db-connection';
 import {
@@ -16,11 +17,11 @@ const _collection = getCollection(COLLECTION_NAME);
 export async function saveSearchResult(result: SavedResult): Promise<ItemSavedResponse> {
 	const db = await _collection;
 	const { insertedId } = await db.insertOne({
-		_id: nanoid(16),
 		...result,
+		_id: (nanoid(16) as unknown) as ObjectId,
 		createdAt: new Date().toISOString()
 	});
-	return { itemId: insertedId };
+	return { itemId: insertedId.toString() };
 }
 
 export async function getSavedResults(
@@ -29,16 +30,17 @@ export async function getSavedResults(
 	userId: string
 ): Promise<ListResponse<SavedResultSummary>> {
 	const db = await _collection;
-	const count = await db
-		.find({ name: { $regex: `^.*${filter}.*$`, $options: 'i' }, userId: userId })
-		.count();
-	const savedResults = await db
+	const count = await db.countDocuments({
+		name: { $regex: `^.*${filter}.*$`, $options: 'i' },
+		userId: userId
+	});
+	const savedResults = ((await db
 		.find({ name: { $regex: `^.*${filter}.*$`, $options: 'i' }, userId: userId })
 		.sort({ createdAt: -1 })
 		.skip(PAGE_SIZE * (page - 1))
 		.limit(PAGE_SIZE)
 		.map(({ _id, name, createdAt }) => ({ _id, name, createdAt }))
-		.toArray();
+		.toArray()) as unknown) as SavedResultSummary[];
 
 	return {
 		items: savedResults,
@@ -51,14 +53,14 @@ export async function getAllSavedResults(
 	page = 1
 ): Promise<ListResponse<SavedResultSummary>> {
 	const db = await _collection;
-	const count = await db.find({ name: { $regex: `^.*${filter}.*$`, $options: 'i' } }).count();
-	const savedResults = await db
+	const count = await db.countDocuments({ name: { $regex: `^.*${filter}.*$`, $options: 'i' } });
+	const savedResults = ((await db
 		.find({ name: { $regex: `^.*${filter}.*$`, $options: 'i' } })
 		.sort({ createdAt: -1 })
 		.skip(PAGE_SIZE * (page - 1))
 		.limit(PAGE_SIZE)
 		.map(({ _id, name, createdAt }) => ({ _id, name, createdAt }))
-		.toArray();
+		.toArray()) as unknown) as SavedResultSummary[];
 
 	return {
 		items: savedResults,
@@ -66,9 +68,9 @@ export async function getAllSavedResults(
 	};
 }
 
-export async function getSavedResult(id: string): Promise<SavedResult> {
+export async function getSavedResult(id: string): Promise<SavedResult | null> {
 	const db = await _collection;
-	return db.findOne({ _id: id });
+	return (db.findOne({ _id: id }) as unknown) as SavedResult;
 }
 
 export async function deleteSavedResult(id: string, userId?: string): Promise<ItemDeletedResponse> {
