@@ -36,12 +36,20 @@ img.bubble-img {
 	border-radius: 50%;
 }
 
-.fa-facebook {
+.fa-facebook.brand-color {
 	color: #4267b2;
 }
 
-.fa-twitter {
+.facebook-btn:not(:hover) {
+	background: #4267b2;
+}
+
+.fa-twitter.brand-color {
 	color: #1da1f2;
+}
+
+.twitter-btn:not(:hover) {
+	background: #1da1f2;
 }
 
 .rounded-xl {
