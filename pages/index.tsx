@@ -1,17 +1,9 @@
-import { GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { Button } from 'react-bootstrap';
 
 import HomePageLink from '../client/components/nav/home-page-link';
-import { getLatestPostSlug } from '../server/services/blog-service';
 
-const SECONDS_IN_DAY = 60 * 60 * 24;
-
-type HomeProps = {
-	latestBlogPath: string;
-};
-
-const Home: React.FC<HomeProps> = ({ latestBlogPath }) => {
+const Home: React.FC = () => {
 	const router = useRouter();
 
 	return (
@@ -44,11 +36,6 @@ const Home: React.FC<HomeProps> = ({ latestBlogPath }) => {
 					srText='go to About page'
 				/>
 				<HomePageLink
-					message='Check out our latest blog post discussing recent media coverage.'
-					routePath={latestBlogPath}
-					srText='go to latest blog post'
-				/>
-				<HomePageLink
 					message='Have a suggestion or question for us? Send us a message.'
 					routePath='/contact'
 					srText='go to Contact Us page'
@@ -56,16 +43,6 @@ const Home: React.FC<HomeProps> = ({ latestBlogPath }) => {
 			</div>
 		</>
 	);
-};
-
-export const getStaticProps: GetStaticProps = async () => {
-	const latestPostSlug = await getLatestPostSlug();
-	return {
-		props: {
-			latestBlogPath: `/blog/${latestPostSlug}`
-		},
-		revalidate: SECONDS_IN_DAY
-	};
 };
 
 export default Home;
