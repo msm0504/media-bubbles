@@ -1,3 +1,9 @@
+.icon::before {
+	display: inline-block;
+	text-rendering: auto;
+	-webkit-font-smoothing: antialiased;
+}
+
 input[type='radio'],
 input[type='checkbox'] {
 	position: absolute;
@@ -6,45 +12,59 @@ input[type='checkbox'] {
 
 input[type='radio'] + label::before,
 input[type='checkbox'] + label::before {
-	font-family: FontAwesome;
-	font-size: 2rem;
 	display: inline-block;
 	letter-spacing: 0.25rem;
 }
 
 input[type='radio']:not(:checked) + label::before {
-	content: '\f10c';
+	font: var(--fa-font-regular);
+	font-size: 1.5rem;
+	content: '\f111';
 	color: var(--bs-secondary);
 }
 input[type='radio']:checked + label::before {
+	font: var(--fa-font-regular);
+	font-size: 1.5rem;
 	content: '\f192';
-	color: var(--bs-info);
+	color: var(--bs-primary);
 }
 
 input[type='checkbox']:not(:checked):enabled + label::before {
-	content: '\f096';
+	font: var(--fa-font-regular);
+	font-size: 2rem;
+	content: '\f0c8';
 	color: var(--bs-secondary);
 }
 input[type='checkbox']:checked:enabled + label::before {
-	content: '\f046';
-	color: var(--bs-info);
+	font: var(--fa-font-regular);
+	font-size: 2rem;
+	content: '\f14a';
+	color: var(--bs-primary);
 }
 input[type='checkbox']:not(:checked):disabled + label::before {
+	font: var(--fa-font-solid);
+	font-size: 2rem;
 	content: '\f0c8';
 	color: var(--bs-secondary);
 }
 input[type='checkbox']:checked:disabled + label::before {
+	font: var(--fa-font-solid);
+	font-size: 2rem;
 	content: '\f14a';
 	color: var(--bs-secondary);
 }
 
 input[type='checkbox']:not(:checked).switch + label::before {
+	font: var(--fa-font-solid);
+	font-size: 2rem;
 	content: '\f204';
 	color: var(--bs-secondary);
 }
 input[type='checkbox']:checked.switch + label::before {
+	font: var(--fa-font-solid);
+	font-size: 2rem;
 	content: '\f205';
-	color: var(--bs-info);
+	color: var(--bs-primary);
 }
 
 .form-group:hover input[type='checkbox']:not(:checked):enabled + label::before,
@@ -53,7 +73,7 @@ input[type='checkbox']:checked.switch + label::before {
 }
 
 input:focus + label::before {
-	outline: var(--bs-info) auto 5px;
+	outline: var(--bs-primary) auto 5px;
 }
 
 input[type='range'] {

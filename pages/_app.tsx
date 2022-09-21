@@ -10,6 +10,7 @@ import Header from '../client/components/header';
 import Footer from '../client/components/footer';
 import TopNavbar from '../client/components/nav/top-navbar';
 import { AppProviders } from '../client/contexts';
+import '../styles/custom-theme.scss';
 import '../styles/globals.css';
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {

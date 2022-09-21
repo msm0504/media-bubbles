@@ -210,7 +210,7 @@ const SaveableForm = <T,>({
 					onClick={submitClicked}
 				>
 					<strong>{submitLabel}</strong>
-					{isProcessing && <i className='fa fa-spinner fa-pulse ms-2' aria-hidden='true'></i>}
+					{isProcessing && <i className='fa-solid fa-spinner fa-pulse ms-2' aria-hidden='true'></i>}
 				</Button>
 			</Form>
 		</>

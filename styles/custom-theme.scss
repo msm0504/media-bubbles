@@ -1,0 +1,17 @@
+@import '../node_modules/bootstrap/scss/functions';
+@import '../node_modules/bootswatch/dist/journal/variables';
+
+/**
+  * Based off of https://www.colourlovers.com/palette/55400/Neon_Virus
+  * Started with purple #ba01ff
+  * Picked darker shade #a800e6 in Adobe color wheel
+  * Used double split complementary fn to generate rest of palette
+  */
+$primary: #e60b76;
+$info: #340be6;
+$warning: #a800e6;
+$danger: #e6ce17;
+$success: #17e618;
+
+@import '../node_modules/bootstrap/scss/bootstrap';
+@import '../node_modules/bootswatch/dist/journal/bootswatch';

@@ -159,7 +159,9 @@ const SearchForm: React.FC<SearchFormProps> = ({
 						onClick={searchTriggered}
 					>
 						<strong>Get Headlines</strong>
-						{isSearching && <i className='fa fa-spinner fa-pulse ms-2' aria-hidden='true'></i>}
+						{isSearching && (
+							<i className='fa-solid fa-spinner fa-pulse ms-2' aria-hidden='true'></i>
+						)}
 					</Button>
 				</Card.Body>
 			</Form>

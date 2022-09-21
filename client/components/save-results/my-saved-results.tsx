@@ -28,7 +28,7 @@ const SavedResultItem: React.FC<SavedResultItemProps> = ({
 				onClick={() => fnDeleteItem(_id, name)}
 			>
 				<i
-					className='fa fa-lg fa-trash-o'
+					className='fa-regular fa-lg fa-trash-can'
 					id={`delete-${_id}-icon`}
 					aria-hidden='true'
 					aria-label={`Delete saved result ${name}`}

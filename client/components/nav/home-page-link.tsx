@@ -22,7 +22,7 @@ const HomePageLink: React.FC<HomePageLinkProps> = ({
 		>
 			<Card.Text className='fw-bold m-0'>{message}</Card.Text>
 			<Button className='float-end' variant='light' onClick={() => router.push(routePath)}>
-				<i className='fa fa-lg fa-arrow-right' aria-hidden='true'></i>
+				<i className='fa-solid fa-lg fa-arrow-right' aria-hidden='true'></i>
 				<span className='sr-only'>{srText}</span>
 			</Button>
 		</Card.Body>

@@ -14,12 +14,12 @@ type PostSummaryProps = {
 
 const AddPost = (
 	<span>
-		Add Post <i className='fa fa-lg fa-plus' aria-hidden='true' aria-label='Add Post'></i>
+		Add Post <i className='fa-solid fa-lg fa-plus' aria-hidden='true' aria-label='Add Post'></i>
 	</span>
 );
 
 const EditPost = (
-	<i className='fa fa-lg fa-pencil-square-o' aria-hidden='true' aria-label='Edit post'></i>
+	<i className='fa-solid fa-lg fa-pen-to-square' aria-hidden='true' aria-label='Edit post'></i>
 );
 
 const PostSummary: React.FC<PostSummaryProps> = ({
@@ -41,7 +41,7 @@ const PostSummary: React.FC<PostSummaryProps> = ({
 						onClick={() => fnDeleteItem(slug, title)}
 					>
 						<i
-							className='fa fa-lg fa-trash-o'
+							className='fa-regular fa-lg fa-trash-can'
 							id={`delete-${slug}-icon`}
 							aria-hidden='true'
 							aria-label={`Delete post ${slug}`}

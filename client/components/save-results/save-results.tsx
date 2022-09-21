@@ -73,7 +73,7 @@ const SaveResults: React.FC<SaveResultsProps> = ({ container }) => {
 			}
 		>
 			<strong>Save Results</strong>
-			{isSaving && <i className='fa fa-spinner fa-pulse ms-2' aria-hidden='true'></i>}
+			{isSaving && <i className='fa-solid fa-spinner fa-pulse ms-2' aria-hidden='true'></i>}
 		</Button>
 	);
 };

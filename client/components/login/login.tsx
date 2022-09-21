@@ -11,7 +11,7 @@ export const FacebookLogin: React.FC<LoginProps> = ({ sessionLoading }) => (
 		onClick={() => signIn('facebook')}
 		disabled={sessionLoading}
 	>
-		<i className='fa fa-facebook brand-color me-2' aria-hidden='true'></i>
+		<i className='fa-brands fa-facebook-f brand-color me-2' aria-hidden='true'></i>
 		Log in with Facebook
 	</Dropdown.Item>
 );
@@ -22,7 +22,7 @@ export const TwitterLogin: React.FC<LoginProps> = ({ sessionLoading }) => (
 		onClick={() => signIn('twitter')}
 		disabled={sessionLoading}
 	>
-		<i className='fa fa-twitter brand-color me-2' aria-hidden='true'></i>
+		<i className='fa-brands fa-twitter brand-color me-2' aria-hidden='true'></i>
 		Log in with Twitter
 	</Dropdown.Item>
 );

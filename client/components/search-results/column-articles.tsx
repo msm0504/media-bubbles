@@ -10,7 +10,7 @@ type ColumnArticlesProps = {
 
 const CENTER = Math.floor(Object.keys(SOURCE_SLANT_MAP).length / 2);
 const getTextClassBySlant = (slant: string) =>
-	+slant > CENTER ? 'text-primary' : +slant < CENTER ? 'text-info' : 'text-purple';
+	+slant > CENTER ? 'text-primary' : +slant < CENTER ? 'text-info' : 'text-warning';
 
 const NOT_FOUND_MESSAGE = (
 	<Card body className='rounded-xl m-1 text-center text-primary'>
