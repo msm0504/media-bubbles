@@ -57,7 +57,7 @@ const LoginRequiredComponent: React.FC = () => (
 const MySavedResults: React.FC = () => (
 	<AsyncList<SavedResultSummary>
 		apiListName='savedResults'
-		apiPath='searchResult'
+		apiPath='search-result'
 		keyField='_id'
 		ListItemComponent={SavedResultItem}
 		loginRequired

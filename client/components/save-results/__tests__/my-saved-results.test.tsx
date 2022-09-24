@@ -8,7 +8,6 @@ import {
 } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import { Session } from 'next-auth';
-import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
@@ -18,7 +17,9 @@ import { AppProviders } from '../../../contexts';
 import * as apiService from '../../../services/api-service';
 import { ListResponse, SavedResultSummary } from '../../../../types';
 
-jest.mock('next/router');
+jest.mock('next/router', () => ({
+	useRouter: () => ({ push: jest.fn() })
+}));
 jest.mock('next-auth/react');
 const server = setupServer();
 
@@ -57,7 +58,6 @@ const mockEmptyResponse: ListResponse<SavedResultSummary> = { items: [], pageCou
 
 beforeAll(() => {
 	Element.prototype.scrollIntoView = jest.fn();
-	(useRouter as jest.Mock).mockReturnValue({ push: jest.fn() });
 	server.listen();
 });
 
@@ -76,14 +76,14 @@ test('blocks access if not logged in', () => {
 
 test('makes initial API call and renders results', async () => {
 	(useSession as jest.Mock).mockReturnValue({ data: mockUser, status: 'authenticated' });
-	server.use(rest.get('/api/searchResult', (_req, res, ctx) => res(ctx.json(mockResponse))));
+	server.use(rest.get('/api/search-result', (_req, res, ctx) => res(ctx.json(mockResponse))));
 	render(<MySavedResults />);
 	expect(await screen.findByText('Headlines Across the Spectrum')).toBeInTheDocument();
 });
 
 test('makes initial API call and displays message if no results', async () => {
 	(useSession as jest.Mock).mockReturnValue({ data: mockUser, status: 'authenticated' });
-	server.use(rest.get('/api/searchResult', (_req, res, ctx) => res(ctx.json(mockEmptyResponse))));
+	server.use(rest.get('/api/search-result', (_req, res, ctx) => res(ctx.json(mockEmptyResponse))));
 	render(<MySavedResults />);
 	expect(await screen.findByText('No saved results found')).toBeInTheDocument();
 });
@@ -92,7 +92,7 @@ test('caches results returned from API', async () => {
 	const apiSpy = jest.spyOn(apiService, 'callApi');
 	(useSession as jest.Mock).mockReturnValue({ data: mockUser, status: 'authenticated' });
 	server.use(
-		rest.get('/api/searchResult', (req, res, ctx) => {
+		rest.get('/api/search-result', (req, res, ctx) => {
 			const filter = req.url.searchParams.get('filter');
 			return filter
 				? res(
@@ -125,11 +125,16 @@ test('caches results returned from API', async () => {
 
 test('displays success alert after successful item delete', async () => {
 	(useSession as jest.Mock).mockReturnValue({ data: mockUser, status: 'authenticated' });
-	server.use(rest.get('/api/searchResult', (_req, res, ctx) => res(ctx.json(mockResponse))));
+	const mockRespCopy: ListResponse<SavedResultSummary> = {
+		items: [...mockResponse.items],
+		pageCount: 1
+	};
+	server.use(rest.get('/api/search-result', (_req, res, ctx) => res(ctx.json(mockRespCopy))));
 	server.use(
-		rest.delete(`/api/searchResult/${mockResponse.items[0]._id}`, (_req, res, ctx) =>
-			res(ctx.json({ itemDeleted: true }))
-		)
+		rest.delete(`/api/search-result/${mockRespCopy.items[0]._id}`, (_req, res, ctx) => {
+			mockRespCopy.items.splice(0, 1);
+			return res(ctx.json({ itemDeleted: true }));
+		})
 	);
 	render(
 		<AppProviders>
@@ -142,13 +147,15 @@ test('displays success alert after successful item delete', async () => {
 	fireEvent.click(screen.getByLabelText(`Delete saved result ${itemName}`));
 	await waitFor(() => screen.getByRole('alert'));
 	expect(screen.queryByText(`${itemName} deleted successfully.`)).toBeInTheDocument();
+	await waitForElementToBeRemoved(() => screen.queryByText('Loading...'));
+	expect(screen.queryByText('Headlines Across the Spectrum')).not.toBeInTheDocument();
 });
 
 test('displays error alert after failed item delete', async () => {
 	(useSession as jest.Mock).mockReturnValue({ data: mockUser, status: 'authenticated' });
-	server.use(rest.get('/api/searchResult', (_req, res, ctx) => res(ctx.json(mockResponse))));
+	server.use(rest.get('/api/search-result', (_req, res, ctx) => res(ctx.json(mockResponse))));
 	server.use(
-		rest.delete(`/api/searchResult/${mockResponse.items[0]._id}`, (_req, res, ctx) =>
+		rest.delete(`/api/search-result/${mockResponse.items[0]._id}`, (_req, res, ctx) =>
 			res(ctx.json({ itemDeleted: false }))
 		)
 	);

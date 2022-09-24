@@ -36,8 +36,8 @@ test('locks log in buttons if auth library is loading session', async () => {
 	(useSession as jest.Mock).mockReturnValue({ data: null, status: 'loading' });
 	render(<LoginNavItem />);
 	fireEvent.click(screen.getByText('Log in'));
-	expect(await screen.findByText('Log in with Facebook', { exact: false })).toBeDisabled();
-	expect(await screen.findByText('Log in with Twitter', { exact: false })).toBeDisabled();
+	expect(await screen.findByText('Log in with Facebook', { exact: false })).toHaveClass('disabled');
+	expect(await screen.findByText('Log in with Twitter', { exact: false })).toHaveClass('disabled');
 });
 
 test('displays log out button if there is a session', () => {

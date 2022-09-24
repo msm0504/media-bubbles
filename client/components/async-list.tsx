@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import debounce from 'lodash.debounce';
 
 import ListPagination from './list-pagination';
+import Spinner from './spinner';
 import ALERT_LEVEL from '../constants/alert-level';
 import { AlertsDispatch } from '../contexts/alerts-context';
 import { callApi } from '../services/api-service';
@@ -49,6 +50,7 @@ const AsyncList = <T,>({
 	const { data: session } = useSession();
 	const [items, setItems] = useState<ListItem<T>[]>([]);
 	const [pageCount, setPageCount] = useState(0);
+	const [loading, setLoading] = useState(false);
 	const filter = useRef('');
 	const page = useRef(1);
 	const cache = useRef<Cache<T>>({});
@@ -72,6 +74,7 @@ const AsyncList = <T,>({
 		);
 
 	async function getListItems() {
+		setLoading(true);
 		const { items: returnedItems, pageCount } = await callApi<ListResponse<T>, GetParams>(
 			'get',
 			apiPath,
@@ -101,6 +104,7 @@ const AsyncList = <T,>({
 		if (Object.keys(cache.current).length > CACHE_SIZE)
 			delete cache.current[Object.keys(cache.current)[0]];
 		setPageCount(pageCount);
+		setLoading(false);
 	}
 
 	async function deleteItem(itemId: string, itemName: string) {
@@ -118,7 +122,7 @@ const AsyncList = <T,>({
 		}
 	}
 
-	const getOptionsFromCache = () => {
+	const getItemsFromCache = () => {
 		if (cache.current[filter.current]?.items[page.current]) {
 			setItems(cache.current[filter.current].items[page.current]);
 			setPageCount(cache.current[filter.current].pageCount);
@@ -130,13 +134,13 @@ const AsyncList = <T,>({
 	const handleSearch = (query: string) => {
 		filter.current = query;
 		page.current = 1;
-		if (!getOptionsFromCache()) getListItems();
+		if (!getItemsFromCache()) getListItems();
 	};
 	const debouncedSearch = debounce(handleSearch, 300);
 
 	const handleLoadPage = (selectedPage: number) => {
 		page.current = selectedPage;
-		if (!getOptionsFromCache()) getListItems();
+		if (!getItemsFromCache()) getListItems();
 	};
 
 	return (
@@ -160,30 +164,34 @@ const AsyncList = <T,>({
 					</Form.Group>
 				</Col>
 			</Row>
-			<ListGroup as='ul'>
-				{items && items.length ? (
-					items.map((item, index) => (
-						<ListGroup.Item
-							key={item[keyField as keyof T]}
-							as='li'
-							variant={index % 2 === 0 ? '' : 'secondary'}
-							className={
-								index === 0
-									? 'rounded-top-xl'
-									: index === items.length - 1
-									? 'rounded-bottom-xl'
-									: ''
-							}
-						>
-							<ListItemComponent item={item} fnDeleteItem={deleteItem} />
-						</ListGroup.Item>
-					))
-				) : (
-					<Card.Body className='text-primary bg-white rounded-xl'>{`No ${camelCaseToWords(
-						apiListName
-					)} found`}</Card.Body>
-				)}
-			</ListGroup>
+			{loading ? (
+				<Spinner />
+			) : (
+				<ListGroup as='ul'>
+					{items && items.length ? (
+						items.map((item, index) => (
+							<ListGroup.Item
+								key={item[keyField as keyof T]}
+								as='li'
+								variant={index % 2 === 0 ? '' : 'secondary'}
+								className={
+									index === 0
+										? 'rounded-top-xl'
+										: index === items.length - 1
+										? 'rounded-bottom-xl'
+										: ''
+								}
+							>
+								<ListItemComponent item={item} fnDeleteItem={deleteItem} />
+							</ListGroup.Item>
+						))
+					) : (
+						<Card.Body className='text-primary bg-white rounded-xl'>{`No ${camelCaseToWords(
+							apiListName
+						)} found`}</Card.Body>
+					)}
+				</ListGroup>
+			)}
 			<ListPagination
 				currentPage={page.current}
 				totalPages={pageCount}

@@ -1,6 +1,5 @@
 import { cleanup, render, fireEvent, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
-import { useRouter } from 'next/router';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -11,12 +10,13 @@ import * as singleSourcesMock from '../__mocks__/single-sources.json';
 import { SOURCE_SLANT_MAP } from '../../../constants/source-slant';
 import useMediaQuery, { XL_MIN_WIDTH } from '../../../hooks/use-media-query';
 
-jest.mock('next/router');
+jest.mock('next/router', () => ({
+	useRouter: () => ({ query: '' })
+}));
 jest.mock('../../../hooks/use-media-query');
 const server = setupServer();
 
 beforeAll(() => {
-	(useRouter as jest.Mock).mockReturnValue({ query: '' });
 	server.listen();
 	server.use(rest.get('/api/source-logo', (_req, res, ctx) => res(ctx.body(Buffer.from('')))));
 });

@@ -1,13 +1,14 @@
+import { Col, Row } from 'react-bootstrap';
+
 const Spinner: React.FC = () => (
-	<div className='row'>
-		<div className='col-md-12' style={{ minHeight: '200px' }}></div>
-		<div className='col-md-4 offset-md-4 text-center'>
+	<Row className='pt-3'>
+		<Col className='text-center' md={{ span: 4, offset: 4 }}>
 			<i className='fa-solid fa-spinner fa-pulse fa-4x fa-fw text-primary' aria-hidden='true'></i>
-			<div className='text-info'>
+			<div className='pt-1 text-info'>
 				<strong>Loading...</strong>
 			</div>
-		</div>
-	</div>
+		</Col>
+	</Row>
 );
 
 export default Spinner;
