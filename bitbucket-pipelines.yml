@@ -1,0 +1,28 @@
+#  Template NodeJS build
+
+#  This template allows you to validate your NodeJS code.
+#  The workflow allows running tests and code linting on the default branch.
+
+image: node:16
+
+pipelines:
+  default:
+    - step:
+        name: Install
+        caches:
+          - node
+        script:
+          - npm install
+    - step:
+        name: Code linting
+        caches:
+          - node
+        script:
+          - npm run check-types
+          - npm run lint
+    - step:
+        name: Unit testing
+        script:
+          - npm test
+        caches:
+          - node
