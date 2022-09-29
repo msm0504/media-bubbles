@@ -1,14 +1,13 @@
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
+
 import { getBiasRatingBySourceId, getSourceLists } from '../source-list-service';
 import { getTwitterHandle } from '../twitter-user-service';
 import allsidesRespMock from '../__mocks__/allsides-resp.json';
 import { Source } from '../../../types';
 
-const fetchMock = jest.fn(() =>
-	Promise.resolve({
-		json: () => Promise.resolve(allsidesRespMock)
-	})
-);
 jest.mock('../twitter-user-service');
+const server = setupServer();
 
 const cnnSourceObj: Source = {
 	id: 'CNN',
@@ -22,11 +21,19 @@ const wsjSourceObj: Source = {
 };
 
 beforeAll(() => {
-	global.fetch = fetchMock as any;
 	(getTwitterHandle as jest.Mock).mockImplementation((source: string) =>
 		Promise.resolve(source === 'CNN' ? 'CNN' : source === 'Wall Street Journal' ? 'WSJ' : '')
 	);
+	server.listen();
+	server.use(
+		rest.get(
+			'https://www.allsides.com/media-bias/json/noncommercial/publications',
+			(_req, res, ctx) => res(ctx.json(allsidesRespMock))
+		)
+	);
 });
+
+afterAll(server.close);
 
 test('generates and returns source lists', async () => {
 	const { appSourceList, sourceListBySlant } = await getSourceLists();

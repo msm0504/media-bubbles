@@ -36,10 +36,9 @@ async function searchUser(source: string) {
 
 export async function getTwitterHandle(source: string): Promise<string> {
 	const foundUsers = await searchUser(source);
-	return foundUsers && foundUsers.length && foundUsers[0].verified
-		? // Bloomberg is not the first Twitter user result
-		  source.toLowerCase().includes('bloomberg')
-			? foundUsers[1].screen_name
-			: foundUsers[0].screen_name
+	// Bloomberg is not the first Twitter user result
+	const respIndex = source.toLowerCase().includes('bloomberg') ? 1 : 0;
+	return foundUsers && foundUsers.length && foundUsers[respIndex].verified
+		? foundUsers[respIndex].screen_name
 		: null;
 }

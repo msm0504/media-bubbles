@@ -38,12 +38,9 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 		<>
 			<Button
 				variant='info'
-				className='facebook-btn d-inline-block mb-1 ms-3 me-1 rounded'
+				className='twitter-btn d-inline-block mb-1 ms-3 me-1 rounded'
 				onClick={() => {
-					window.open(
-						`https://www.facebook.com/sharer/sharer.php?u=${encodeURI(urlToShare)}`,
-						'_blank'
-					);
+					window.open(`https://twitter.com/intent/tweet?url=${encodeURI(urlToShare)}`, '_blank');
 				}}
 			>
 				<i className='fa-brands fa-lg fa-facebook-f' aria-hidden='true'></i>
@@ -51,9 +48,12 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 			</Button>
 			<Button
 				variant='info'
-				className='twitter-btn d-inline-block mb-1 me-1 rounded'
+				className='facebook-btn d-inline-block mb-1 me-1 rounded'
 				onClick={() => {
-					window.open(`https://twitter.com/intent/tweet?url=${encodeURI(urlToShare)}`, '_blank');
+					window.open(
+						`https://www.facebook.com/sharer/sharer.php?u=${encodeURI(urlToShare)}`,
+						'_blank'
+					);
 				}}
 			>
 				<i className='fa-brands fa-lg fa-twitter' aria-hidden='true'></i>

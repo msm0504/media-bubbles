@@ -34,8 +34,8 @@ const headers = {
 	Accept: 'application/json',
 	Authorization: `Bearer ${process.env.TWITTER_APP_BEARER}`
 };
-const defaultParams = { max_results: MAX_TWITTER_RESULTS, expansions: 'author_id' };
-const defaultOperators = 'has:links -is:retweet';
+const DEFAULT_PARAMS = { max_results: MAX_TWITTER_RESULTS, expansions: 'author_id' };
+const DEFAULT_OPERATORS = 'has:links -is:retweet';
 const DEFAULT_PREVIOUS_DAYS = 5;
 
 const filterDupeTweets = (data: TwitterArticle[]): TwitterArticle[] => {
@@ -112,8 +112,8 @@ async function getRecentTweets(sources: Source[] | string, keyword: string, prev
 	const fromFilters = Array.isArray(sources)
 		? `(${sources.map(({ id }) => `from:${id}`).join(' OR ')})`
 		: `from:${sources}`;
-	const query = `${keyword ? `${keyword} ` : ''}${fromFilters} ${defaultOperators}`;
-	const params: Record<string, string | number> = { query, ...defaultParams };
+	const query = `${keyword ? `${keyword} ` : ''}${fromFilters} ${DEFAULT_OPERATORS}`;
+	const params: Record<string, string | number> = { query, ...DEFAULT_PARAMS };
 
 	if (keyword) {
 		const fromDate = new Date(
