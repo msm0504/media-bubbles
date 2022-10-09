@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { brands, regular } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 type ShareButtonsProps = {
 	urlToShare?: string;
@@ -7,11 +8,6 @@ type ShareButtonsProps = {
 
 const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 	if (!urlToShare) return null;
-
-	const [hasShareApi, setHasShareApi] = useState(false);
-	useEffect(() => {
-		if (typeof navigator?.share === 'function') setHasShareApi(true);
-	}, []);
 
 	const copyToClipboard = () => {
 		const el = document.createElement('textarea');
@@ -24,17 +20,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 		document.body.removeChild(el);
 	};
 
-	return hasShareApi ? (
-		<Button
-			className='mb-1 ms-3 d-inline-block'
-			variant='primary'
-			onClick={() => {
-				navigator.share({ title: 'Media Bubbles Results', url: urlToShare });
-			}}
-		>
-			<strong>Share</strong>
-		</Button>
-	) : (
+	return (
 		<>
 			<Button
 				variant='info'
@@ -43,8 +29,8 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 					window.open(`https://twitter.com/intent/tweet?url=${encodeURI(urlToShare)}`, '_blank');
 				}}
 			>
-				<i className='fa-brands fa-lg fa-facebook-f' aria-hidden='true'></i>
-				<span className='sr-only'>{'share on Facebook'}</span>
+				<FontAwesomeIcon icon={brands('twitter')} size='lg' />
+				<span className='sr-only'>{'share on Twitter'}</span>
 			</Button>
 			<Button
 				variant='info'
@@ -56,8 +42,8 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 					);
 				}}
 			>
-				<i className='fa-brands fa-lg fa-twitter' aria-hidden='true'></i>
-				<span className='sr-only'>{'share on Twitter'}</span>
+				<FontAwesomeIcon icon={brands('facebook-f')} size='lg' />
+				<span className='sr-only'>{'share on Facebook'}</span>
 			</Button>
 			<Button
 				variant='secondary'
@@ -70,7 +56,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 					);
 				}}
 			>
-				<i className='fa-regular fa-lg fa-envelope' aria-hidden='true'></i>
+				<FontAwesomeIcon icon={regular('envelope')} size='lg' />
 				<span className='sr-only'>{'email'}</span>
 			</Button>
 			{document && document.queryCommandSupported('copy') ? (
@@ -79,7 +65,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 					className='d-inline-block mb-1 rounded'
 					onClick={copyToClipboard}
 				>
-					<i className='fa-regular fa-clipboard fa-lg' aria-hidden='true'></i>
+					<FontAwesomeIcon icon={regular('clipboard')} size='lg' />
 					<span className='sr-only'>{'copy link'}</span>
 				</Button>
 			) : null}

@@ -1,5 +1,6 @@
 @import '../node_modules/bootstrap/scss/functions';
 @import '../node_modules/bootswatch/dist/journal/variables';
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap');
 
 /**
   * Based off of https://www.colourlovers.com/palette/55400/Neon_Virus
@@ -12,6 +13,10 @@ $info: #340be6;
 $warning: #a800e6;
 $danger: #e6ce17;
 $success: #17e618;
+
+$font-family-serif: 'Roboto Slab', serif;
+$font-family-base: $font-family-serif;
+$headings-font-family: $font-family-serif;
 
 @import '../node_modules/bootstrap/scss/bootstrap';
 @import '../node_modules/bootswatch/dist/journal/bootswatch';

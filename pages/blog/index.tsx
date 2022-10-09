@@ -1,6 +1,8 @@
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { Button, Card } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 import AsyncList, { DeleteFnType } from '../../client/components/async-list';
 import RouteLink from '../../client/components/nav/route-link';
@@ -14,13 +16,11 @@ type PostSummaryProps = {
 
 const AddPost = (
 	<span>
-		Add Post <i className='fa-solid fa-lg fa-plus' aria-hidden='true' aria-label='Add Post'></i>
+		Add Post <FontAwesomeIcon icon={solid('plus')} size='lg' aria-label='Add Post' />
 	</span>
 );
 
-const EditPost = (
-	<i className='fa-solid fa-lg fa-pen-to-square' aria-hidden='true' aria-label='Edit post'></i>
-);
+const EditPost = <FontAwesomeIcon icon={solid('pen-to-square')} size='lg' aria-label='Edit Post' />;
 
 const PostSummary: React.FC<PostSummaryProps> = ({
 	item: { title, excerpt, slug, updatedAt: date },
@@ -40,12 +40,12 @@ const PostSummary: React.FC<PostSummaryProps> = ({
 						variant='link'
 						onClick={() => fnDeleteItem(slug, title)}
 					>
-						<i
-							className='fa-regular fa-lg fa-trash-can'
+						<FontAwesomeIcon
 							id={`delete-${slug}-icon`}
-							aria-hidden='true'
+							icon={regular('trash-can')}
+							size='lg'
 							aria-label={`Delete post ${slug}`}
-						></i>
+						/>
 					</Button>
 					<RouteLink
 						buttonText={EditPost}

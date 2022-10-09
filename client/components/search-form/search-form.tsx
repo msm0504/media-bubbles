@@ -1,7 +1,10 @@
 import { useState, useReducer, useContext, useEffect, ChangeEvent } from 'react';
 import { Button, Card, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 import * as ACTION_TYPES from './action-types';
+import FullSpectrum from './full-spectrum';
 import SearchInstructions from './instructions';
 import searchFormReducer, { initialState, FieldValue } from './search-form-reducer';
 import SlantRadioButtons from './slant-radio-buttons';
@@ -11,6 +14,8 @@ import { AlertsDispatch } from '../../contexts/alerts-context';
 import { SearchResultContext } from '../../contexts/search-result-context';
 import performSearch from '../../util/perform-search';
 import { Source } from '../../../types';
+
+import styles from '../../../styles/search-form.module.css';
 
 type SearchFormProps = {
 	searchMode: SearchMode;
@@ -61,23 +66,10 @@ const SearchForm: React.FC<SearchFormProps> = ({
 
 			case 'FULL_SPECTRUM':
 				return (
-					<Card.Body className='bg-white rounded-xl my-3'>
-						<Form.Check className='row m-0'>
-							<Form.Check.Input
-								type='checkbox'
-								name='spectrumSearchAll'
-								id='spectrumSearchAll'
-								className='switch'
-								checked={formData.spectrumSearchAll === 'Y'}
-								onChange={(event: ChangeEvent<HTMLInputElement>) =>
-									onFormFieldChange(event.target.name, event.target.checked ? 'Y' : 'N')
-								}
-							/>
-							<Form.Check.Label htmlFor='spectrumSearchAll' className='col-lg-6'>
-								<strong className='ms-2'>Include Multiple Sources in Each Category</strong>
-							</Form.Check.Label>
-						</Form.Check>
-					</Card.Body>
+					<FullSpectrum
+						spectrumSearchAll={formData.spectrumSearchAll}
+						onChange={onFormFieldChange}
+					/>
 				);
 
 			case 'USER_SELECT':
@@ -109,11 +101,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
 									</Tooltip>
 								}
 							>
-								<i
-									className='fa fa-info-circle'
-									aria-hidden='true'
-									aria-label='keyword tooltip'
-								></i>
+								<FontAwesomeIcon icon={solid('info-circle')} aria-label='keyword tooltip' />
 							</OverlayTrigger>
 							<span className='sr-only'>
 								{'If no key words are entered, top headlines will be returned for each source.'}
@@ -138,7 +126,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
 								type='range'
 								id='previousDays'
 								name='previousDays'
-								className='col-sm-6 col-lg-4 mt-1'
+								className={`${styles.range} col-sm-6 col-lg-4 mt-1`}
 								min='1'
 								max='7'
 								step='1'
@@ -159,9 +147,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
 						onClick={searchTriggered}
 					>
 						<strong>Get Headlines</strong>
-						{isSearching && (
-							<i className='fa-solid fa-spinner fa-pulse ms-2' aria-hidden='true'></i>
-						)}
+						{isSearching && <FontAwesomeIcon className='ms-2' icon={solid('spinner')} pulse />}
 					</Button>
 				</Card.Body>
 			</Form>

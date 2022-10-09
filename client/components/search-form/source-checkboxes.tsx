@@ -1,8 +1,12 @@
 import { ChangeEvent } from 'react';
 import { Card, Form } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 import MAX_SOURCE_SELECTIONS from '../../constants/max-source-selections';
 import { Source } from '../../../types';
+
+import styles from '../../../styles/search-form.module.css';
 
 type SourceCheckboxesProps = {
 	sourceList: Source[];
@@ -16,20 +20,35 @@ const SourceCheckboxes: React.FC<SourceCheckboxesProps> = ({
 	onChange
 }) => {
 	const checkboxes = sourceList.map(source => {
+		const isChecked = selections.indexOf(source.id) > -1;
+		const isDisabled =
+			selections.indexOf(source.id) === -1 && selections.length === MAX_SOURCE_SELECTIONS;
 		return (
 			<Form.Check key={source.id + 'Checkbox'} className='col-xs-1 col-md-2'>
 				<Form.Check.Input
+					className={styles.hiddenInput}
 					type='checkbox'
 					value={source.id}
 					name={source.id + 'Checkbox'}
 					id={source.id + 'Checkbox'}
-					checked={selections.indexOf(source.id) > -1}
-					disabled={
-						selections.indexOf(source.id) === -1 && selections.length === MAX_SOURCE_SELECTIONS
-					}
+					checked={isChecked}
+					disabled={isDisabled}
 					onChange={(event: ChangeEvent<HTMLInputElement>) => onChange(event, source.id)}
 				/>
 				<Form.Check.Label htmlFor={source.id + 'Checkbox'}>
+					{isChecked ? (
+						<FontAwesomeIcon
+							className={`${styles.iconInput} me-1 text-primary`}
+							icon={regular('square-check')}
+							size='2xl'
+						/>
+					) : (
+						<FontAwesomeIcon
+							className={`${styles.iconInput} me-1 text-secondary`}
+							icon={isDisabled ? solid('square') : regular('square')}
+							size='2xl'
+						/>
+					)}
 					<strong>{source.name}</strong>
 				</Form.Check.Label>
 			</Form.Check>

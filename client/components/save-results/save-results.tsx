@@ -1,5 +1,7 @@
 import { useState, useContext, MutableRefObject } from 'react';
 import { Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import html2canvas from 'html2canvas';
 import FormData from 'form-data';
 
@@ -73,7 +75,7 @@ const SaveResults: React.FC<SaveResultsProps> = ({ container }) => {
 			}
 		>
 			<strong>Save Results</strong>
-			{isSaving && <i className='fa-solid fa-spinner fa-pulse ms-2' aria-hidden='true'></i>}
+			{isSaving && <FontAwesomeIcon className='ms-2' icon={solid('spinner')} pulse />}
 		</Button>
 	);
 };

@@ -1,5 +1,7 @@
-import { useState, useEffect, ChangeEvent, FocusEvent, ReactElement } from 'react';
+import { useState, useEffect, ChangeEvent, FocusEvent, Fragment, ReactElement } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 import useInterval from '../hooks/use-interval';
 import {
@@ -154,24 +156,26 @@ const SaveableForm = <T,>({
 				<strong>{capitalize(name)}</strong>
 			</legend>
 			<div className='btn-group' role='group'>
-				{options?.map(({ value, label }) => (
-					<Form.Check.Label
-						key={value}
-						className={`btn btn-outline-info ${
-							value === formData[name as keyof T] ? 'active' : ''
-						}`}
-					>
-						<Form.Check.Input
-							type='radio'
-							name={name}
-							id={`${formName}-${name}-${value}`}
-							value={value}
-							checked={value === formData[name as keyof T]}
-							onChange={fieldChanged}
-						/>
-						{label}
-					</Form.Check.Label>
-				))}
+				{options?.map(({ value, label }) => {
+					const id = `${formName}-${name}-${value}`;
+					return (
+						<Fragment key={value}>
+							<Form.Check.Input
+								className='btn-check'
+								type='radio'
+								name={name}
+								id={id}
+								value={value}
+								checked={value === formData[name as keyof T]}
+								onChange={fieldChanged}
+								autoComplete='off'
+							/>
+							<Form.Check.Label className='btn btn-outline-info' htmlFor={id}>
+								{label}
+							</Form.Check.Label>
+						</Fragment>
+					);
+				})}
 			</div>
 		</Form.Group>
 	);
@@ -210,7 +214,7 @@ const SaveableForm = <T,>({
 					onClick={submitClicked}
 				>
 					<strong>{submitLabel}</strong>
-					{isProcessing && <i className='fa-solid fa-spinner fa-pulse ms-2' aria-hidden='true'></i>}
+					{isProcessing && <FontAwesomeIcon className='ms-2' icon={solid('spinner')} pulse />}
 				</Button>
 			</Form>
 		</>

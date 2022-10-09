@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router';
 import { Button, Card } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 type HomePageLinkProps = {
 	message: string;
@@ -22,7 +24,7 @@ const HomePageLink: React.FC<HomePageLinkProps> = ({
 		>
 			<Card.Text className='fw-bold m-0'>{message}</Card.Text>
 			<Button className='float-end' variant='light' onClick={() => router.push(routePath)}>
-				<i className='fa-solid fa-lg fa-arrow-right' aria-hidden='true'></i>
+				<FontAwesomeIcon icon={solid('arrow-right')} size='lg' />
 				<span className='sr-only'>{srText}</span>
 			</Button>
 		</Card.Body>

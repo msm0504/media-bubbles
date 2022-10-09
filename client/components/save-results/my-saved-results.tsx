@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router';
 import { Button } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { regular } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 import AsyncList, { DeleteFnType } from '../async-list';
 import { SavedResultSummary } from '../../../types';
@@ -27,12 +29,12 @@ const SavedResultItem: React.FC<SavedResultItemProps> = ({
 				variant='link'
 				onClick={() => fnDeleteItem(_id, name)}
 			>
-				<i
-					className='fa-regular fa-lg fa-trash-can'
+				<FontAwesomeIcon
 					id={`delete-${_id}-icon`}
-					aria-hidden='true'
+					icon={regular('trash-can')}
+					size='lg'
 					aria-label={`Delete saved result ${name}`}
-				></i>
+				/>
 			</Button>
 			<Button
 				className='float-end d-block d-sm-inline-block'

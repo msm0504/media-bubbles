@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import { SessionProvider } from 'next-auth/react';
 import { init, trackPages } from 'insights-js';
 import SSRProvider from 'react-bootstrap/SSRProvider';
+import { config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 
 import Header from '../client/components/header';
 import Footer from '../client/components/footer';
@@ -12,6 +14,8 @@ import TopNavbar from '../client/components/nav/top-navbar';
 import { AppProviders } from '../client/contexts';
 import '../styles/custom-theme.scss';
 import '../styles/globals.css';
+
+config.autoAddCss = false;
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 	const router = useRouter();
