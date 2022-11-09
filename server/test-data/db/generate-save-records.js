@@ -10,7 +10,7 @@ const generateSaveRecords = numRecords => {
 		while (prefix.length < charsInPrefix) prefix += letter;
 
 		setTimeout(() => {
-			fetch('http://localhost:8080/api/searchResult', {
+			fetch('http://localhost:8080/api/search-result', {
 				method: 'POST',
 				headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
 				body: JSON.stringify({

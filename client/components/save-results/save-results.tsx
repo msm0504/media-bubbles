@@ -47,7 +47,10 @@ async function saveClicked(
 		form.append('capture', '');
 	}
 
-	const { itemId: savedResultId } = await callApiMultipart<ItemSavedResponse>('searchResult', form);
+	const { itemId: savedResultId } = await callApiMultipart<ItemSavedResponse>(
+		'search-result',
+		form
+	);
 
 	if (!savedResultId || typeof savedResultId !== 'string') {
 		showAlert(ALERT_LEVEL.danger, 'Saving this search result failed. Please try again later.');
