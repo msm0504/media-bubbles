@@ -28,6 +28,7 @@ const TopNavbar: React.FC = () => {
 				<Nav activeKey={router.pathname} className='ms-auto'>
 					<RouteLink buttonText='Home' routePath='/' isNav />
 					<RouteLink buttonText='Search' routePath='/search' isNav />
+					<RouteLink buttonText='Latest News' routePath='/latest' isNav />
 					<RouteLink buttonText='About' routePath='/about' isNav />
 					<RouteLink buttonText='Contact Us' routePath='/contact' isNav />
 					<LoginNavItem />

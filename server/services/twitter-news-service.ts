@@ -1,6 +1,6 @@
 import { findBestMatch } from 'string-similarity';
 
-import { MILLISECONDS_IN_DAY } from '../constants';
+import { MILLISECONDS_IN_DAY, MILLISECONDS_IN_FIFTEEN_MIN } from '../constants';
 import formatGetQuery from '../util/format-get-query';
 import { getBiasRatingBySourceId, getSourceLists } from './source-list-service';
 import { ArticleMap, Source, SearchRequest, TwitterArticle } from '../../types';
@@ -37,6 +37,8 @@ const headers = {
 const DEFAULT_PARAMS = { max_results: MAX_TWITTER_RESULTS, expansions: 'author_id' };
 const DEFAULT_OPERATORS = 'has:links -is:retweet';
 const DEFAULT_PREVIOUS_DAYS = 5;
+
+global.latest = global.latest || { lastUpdate: 0 };
 
 const filterDupeTweets = (data: TwitterArticle[]): TwitterArticle[] => {
 	const uniqueTexts: string[] = [];
@@ -85,7 +87,10 @@ export async function getHeadlines(params: SearchRequest): Promise<ArticleMap> {
 	const isSpectrumSearch = !params.sources && params.spectrumSearchAll === 'Y';
 	const sources: QuerySources = isSpectrumSearch ? sourceListBySlant : params.sources.split(',');
 
-	return sources.reduce<Promise<ArticleMap>>(async function (memo, sources: QuerySource) {
+	return sources.reduce<Promise<ArticleMap>>(async function (
+		memo: Promise<ArticleMap>,
+		sources: QuerySource
+	) {
 		const { meta, data, includes }: TwitterNewsResponse = await getRecentTweets(
 			sources,
 			params.keyword,
@@ -105,7 +110,8 @@ export async function getHeadlines(params: SearchRequest): Promise<ArticleMap> {
 			acc[key] = [];
 		}
 		return acc;
-	}, Promise.resolve({}));
+	},
+	Promise.resolve({}));
 }
 
 async function getRecentTweets(sources: Source[] | string, keyword: string, previousDays: number) {
@@ -129,4 +135,19 @@ async function getRecentTweets(sources: Source[] | string, keyword: string, prev
 		requestOptions
 	);
 	return response.json();
+}
+
+export async function getLatestHeadlines(): Promise<ArticleMap> {
+	const headlinesAreOld = Date.now() - MILLISECONDS_IN_FIFTEEN_MIN > global.latest.lastUpdate;
+	if (!global.latest.articleMap || headlinesAreOld) {
+		const params: SearchRequest = {
+			sources: '',
+			spectrumSearchAll: 'Y',
+			keyword: '',
+			previousDays: 1
+		};
+		global.latest.articleMap = await getHeadlines(params);
+		global.latest.lastUpdate = Date.now();
+	}
+	return global.latest.articleMap;
 }

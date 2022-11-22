@@ -1,6 +1,6 @@
 import { Db, MongoClient } from 'mongodb';
 import { S3Client } from '@aws-sdk/client-s3';
-import { Source } from '../types';
+import { ArticleMap, Source } from '../types';
 import { SourceSlant } from '../client/constants/source-slant';
 
 declare global {
@@ -15,6 +15,10 @@ declare global {
 				app: Source[];
 				bySlant: Source[][];
 				biasRatings: Record<string, SourceSlant>;
+			};
+			latest: {
+				lastUpdate: number;
+				articleMap: ArticleMap;
 			};
 			s3Client: S3Client;
 		}

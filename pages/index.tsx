@@ -31,6 +31,11 @@ const Home: React.FC = () => {
 			<div className='d-flex flex-column align-items-center'>
 				<HomePageLink
 					className='mt-5'
+					message='See the latest news from sources across the political spectrum.'
+					routePath='/latest'
+					srText='go to Latest News page'
+				/>
+				<HomePageLink
 					message='Learn about our mission and how we got started.'
 					routePath='/about'
 					srText='go to About page'
