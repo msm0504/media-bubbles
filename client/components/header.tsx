@@ -18,7 +18,7 @@ const Header: React.FC = () => {
 			onKeyDown={headerClicked}
 		>
 			<div className='py-4 text-center d-flex flex-column flex-lg-row align-items-center justify-content-lg-around'>
-				<div className='heading-text display-1 fw-bold text-light'>Media Bubbles</div>
+				<h1 className='heading-text display-1 fw-bold text-light'>Media Bubbles</h1>
 			</div>
 		</div>
 	);

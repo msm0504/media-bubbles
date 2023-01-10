@@ -25,7 +25,8 @@
 		"prefer-const": 2,
 		"react/react-in-jsx-scope": 0,
 		"jsx-a11y/anchor-is-valid": 0,
-		"@typescript-eslint/no-empty-function": 0
+		"@typescript-eslint/no-empty-function": 0,
+		"@typescript-eslint/no-unused-vars": ["warn", { "ignoreRestSiblings": true }]
 	},
 	"parser": "@typescript-eslint/parser",
 	"plugins": ["react", "import", "jsx-a11y", "@typescript-eslint"],

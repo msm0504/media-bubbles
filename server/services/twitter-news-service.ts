@@ -125,7 +125,7 @@ async function getRecentTweets(sources: Source[] | string, keyword: string, prev
 		const fromDate = new Date(
 			Date.now() - MILLISECONDS_IN_DAY * ((previousDays || DEFAULT_PREVIOUS_DAYS) - 1)
 		);
-		fromDate.setHours(0, 0, 0);
+		fromDate.setHours(0, 0, 0, 0);
 		params.start_time = fromDate.toISOString();
 	}
 

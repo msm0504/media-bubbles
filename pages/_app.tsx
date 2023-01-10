@@ -17,6 +17,10 @@ import '../styles/globals.css';
 
 config.autoAddCss = false;
 
+const title = 'Media Bubbles';
+const description =
+	'Escape your information bubble and view headlines from sources across the political spectrum.';
+
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 	const router = useRouter();
 	const isHome = router.pathname === '/';
@@ -28,10 +32,6 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 			return () => stop();
 		}
 	}, []);
-
-	const title = 'Media Bubbles';
-	const description =
-		'Escape your information bubble and view headlines from sources across the political spectrum.';
 
 	return (
 		<>
