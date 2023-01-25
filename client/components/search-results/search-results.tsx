@@ -19,7 +19,8 @@ type SearchResultsProps = {
 const SLANT_SOURCE_COLUMNS: Source[] = keys(SOURCE_SLANT_MAP).map((sourceSlant: SourceSlant) => ({
 	id: '' + sourceSlant,
 	name: SOURCE_SLANT_MAP[sourceSlant],
-	url: ''
+	url: '',
+	logoUrl: ''
 }));
 
 const SearchResults: React.FC<SearchResultsProps> = ({

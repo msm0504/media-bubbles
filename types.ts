@@ -5,10 +5,16 @@ import { SourceSlant } from './client/constants/source-slant';
 
 /** Source List Type Definition */
 
+export type TwitterUser = {
+	handle: string;
+	logoUrl: string;
+};
+
 export type Source = {
 	id: string;
 	name: string;
 	url: string;
+	logoUrl: string;
 };
 
 /** Headline Search Request Type Definition */

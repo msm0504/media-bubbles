@@ -5,24 +5,16 @@ import { MILLISECONDS_IN_DAY } from '../constants';
 const MILLISECONDS_IN_MONTH = MILLISECONDS_IN_DAY * 30;
 const s3Client = getS3Client();
 
-const getIconUrl = (siteUrl: string): string => {
+const getLogoUrl = (siteUrl: string): string => {
 	const iconApiUrl = 'https://logo.clearbit.com';
-	if (siteUrl.includes('abcnews') || siteUrl.includes('americanconservative')) {
-		return getIconUrlSecondTry(siteUrl);
-	}
 	siteUrl = siteUrl.replace('huffingtonpost', 'huffpost');
 	return `${iconApiUrl}/${siteUrl}`;
 };
 
-const getIconUrlSecondTry = (siteUrl: string, size?: string): string => {
-	const iconApiUrl2 = 'https://icon-locator.herokuapp.com/icon';
-	const defaultSize = '70..120..200';
-	return `${iconApiUrl2}?url=${siteUrl}&size=${size || defaultSize}`;
-};
-
 export async function getSourceLogo(
 	id: string,
-	url: string
+	url: string,
+	logoUrl = ''
 ): Promise<Buffer | GetObjectCommandOutput['Body'] | null> {
 	const getCommand = new GetObjectCommand({
 		Bucket: process.env.AWS_S3_LOGO_BUCKET,
@@ -39,14 +31,11 @@ export async function getSourceLogo(
 		}
 	}
 
-	const logoResponse = await fetch(getIconUrl(url), {
+	const logoResponse = await fetch(logoUrl || getLogoUrl(url), {
 		method: 'get',
-		headers: { Accept: 'image/png' }
+		headers: { Accept: 'image/png, image/jpg' }
 	});
-	const imageResp =
-		logoResponse ||
-		(await fetch(getIconUrlSecondTry(url), { method: 'get', headers: { Accept: 'image/png' } }));
-	const image = Buffer.from(await imageResp.arrayBuffer());
+	const image = Buffer.from(await logoResponse.arrayBuffer());
 
 	if (!image) return null;
 	const putCommand = new PutObjectCommand({

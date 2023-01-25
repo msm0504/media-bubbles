@@ -5,6 +5,7 @@
 			"name": "ABC News",
 			"description": "Your trusted source for breaking news, analysis, exclusive interviews, headlines, and videos at ABCNews.com.",
 			"url": "abcnews.go.com",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -14,6 +15,7 @@
 			"name": "Al Jazeera English",
 			"description": "News, analysis from the Middle East and worldwide, multimedia and interactives, opinions, documentaries, podcasts, long reads and broadcast schedule.",
 			"url": "www.aljazeera.com",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -23,6 +25,7 @@
 			"name": "Associated Press",
 			"description": "The AP delivers in-depth coverage on the international, politics, lifestyle, business, and entertainment news.",
 			"url": "apnews.com/",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -32,6 +35,7 @@
 			"name": "Axios",
 			"description": "Axios are a new media company delivering vital, trustworthy news and analysis in the most efficient, illuminating and shareable ways possible.",
 			"url": "www.axios.com",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -41,6 +45,7 @@
 			"name": "BBC News",
 			"description": "Use BBC News for up-to-the-minute news, breaking news, video, audio and feature stories. BBC News provides trusted World and UK news as well as local and regional perspectives. Also entertainment, business, science, technology and health news.",
 			"url": "www.bbc.co.uk",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "gb"
@@ -50,6 +55,7 @@
 			"name": "Bloomberg",
 			"description": "Bloomberg delivers business and markets news, data, analysis, and video to the world, featuring stories from Businessweek and Bloomberg News.",
 			"url": "www.bloomberg.com",
+			"logoUrl": "",
 			"category": "business",
 			"language": "en",
 			"country": "us"
@@ -59,6 +65,7 @@
 			"name": "Breitbart News",
 			"description": "Syndicated news and opinion website providing continuously updated headlines to top news and analysis sources.",
 			"url": "www.breitbart.com",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -68,6 +75,7 @@
 			"name": "Business Insider",
 			"description": "Business Insider is a fast-growing business site with deep financial, media, tech, and other industry verticals. Launched in 2007, the site is now the largest business news site on the web.",
 			"url": "www.businessinsider.com",
+			"logoUrl": "",
 			"category": "business",
 			"language": "en",
 			"country": "us"
@@ -77,6 +85,7 @@
 			"name": "CBS News",
 			"description": "CBS News: dedicated to providing the best in journalism under standards it pioneered at the dawn of radio and television and continue in the digital age.",
 			"url": "www.cbsnews.com",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -86,6 +95,7 @@
 			"name": "CNN",
 			"description": "View the latest news and breaking news today for U.S., world, weather, entertainment, politics and health at CNN",
 			"url": "us.cnn.com",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -95,6 +105,7 @@
 			"name": "Fox News",
 			"description": "Breaking News, Latest News and Current News from FOXNews.com. Breaking news and video. Latest Current News: U.S., World, Entertainment, Health, Business, Technology, Politics, Sports.",
 			"url": "www.foxnews.com",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -104,6 +115,7 @@
 			"name": "MSNBC",
 			"description": "Breaking news and in-depth analysis of the headlines, as well as commentary and informed perspectives from The Rachel Maddow Show, Morning Joe & more.",
 			"url": "www.msnbc.com",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -113,6 +125,7 @@
 			"name": "National Review",
 			"description": "National Review: Conservative News, Opinion, Politics, Policy, & Current Events.",
 			"url": "www.nationalreview.com/",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -122,6 +135,7 @@
 			"name": "NBC News",
 			"description": "Breaking news, videos, and the latest top stories in world news, business, politics, health and pop culture.",
 			"url": "www.nbcnews.com",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -131,6 +145,7 @@
 			"name": "Newsweek",
 			"description": "Newsweek provides in-depth analysis, news and opinion about international issues, technology, business, culture and politics.",
 			"url": "www.newsweek.com",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -140,6 +155,7 @@
 			"name": "New York Magazine",
 			"description": "NYMAG and New York magazine cover the new, the undiscovered, the next in politics, culture, food, fashion, and behavior nationally, through a New York lens.",
 			"url": "nymag.com",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -149,6 +165,7 @@
 			"name": "Politico",
 			"description": "Political news about Congress, the White House, campaigns, lobbyists and issues.",
 			"url": "www.politico.com",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -158,6 +175,7 @@
 			"name": "Reuters",
 			"description": "Reuters.com brings you the latest news from around the world, covering breaking news in business, politics, entertainment, technology, video and pictures.",
 			"url": "www.reuters.com",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -167,6 +185,7 @@
 			"name": "The American Conservative",
 			"description": "Realism and reform. A new voice for a new generation of conservatives.",
 			"url": "www.theamericanconservative.com/",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -176,6 +195,7 @@
 			"name": "The Hill",
 			"description": "The Hill is a top US political website, read by the White House and more lawmakers than any other site -- vital for policy, politics and election campaigns.",
 			"url": "thehill.com",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -185,6 +205,7 @@
 			"name": "The Huffington Post",
 			"description": "The Huffington Post is a politically liberal American online news aggregator and blog that has both localized and international editions founded by Arianna Huffington, Kenneth Lerer, Andrew Breitbart, and Jonah Peretti, featuring columnists.",
 			"url": "www.huffingtonpost.com",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -194,6 +215,7 @@
 			"name": "The Wall Street Journal",
 			"description": "WSJ online coverage of breaking news and current headlines from the US and around the world. Top stories, photos, videos, detailed analysis and in-depth reporting.",
 			"url": "www.wsj.com",
+			"logoUrl": "",
 			"category": "business",
 			"language": "en",
 			"country": "us"
@@ -203,6 +225,7 @@
 			"name": "The Washington Post",
 			"description": "Breaking news and analysis on politics, business, world national news, entertainment more. In-depth DC, Virginia, Maryland news coverage including traffic, weather, crime, education, restaurant reviews and more.",
 			"url": "www.washingtonpost.com",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -212,6 +235,7 @@
 			"name": "The Washington Times",
 			"description": "The Washington Times delivers breaking news and commentary on the issues that affect the future of our nation.",
 			"url": "www.washingtontimes.com/",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -221,6 +245,7 @@
 			"name": "Time",
 			"description": "Breaking news and analysis from TIME.com. Politics, world news, photos, video, tech reviews, health, science and entertainment news.",
 			"url": "time.com",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -230,6 +255,7 @@
 			"name": "USA Today",
 			"description": "Get the latest national, international, and political news at USATODAY.com.",
 			"url": "www.usatoday.com",
+			"logoUrl": "",
 			"category": "general",
 			"language": "en",
 			"country": "us"
@@ -242,6 +268,7 @@
 				"name": "CNN",
 				"description": "View the latest news and breaking news today for U.S., world, weather, entertainment, politics and health at CNN",
 				"url": "us.cnn.com",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -251,6 +278,7 @@
 				"name": "MSNBC",
 				"description": "Breaking news and in-depth analysis of the headlines, as well as commentary and informed perspectives from The Rachel Maddow Show, Morning Joe & more.",
 				"url": "www.msnbc.com",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -260,6 +288,7 @@
 				"name": "New York Magazine",
 				"description": "NYMAG and New York magazine cover the new, the undiscovered, the next in politics, culture, food, fashion, and behavior nationally, through a New York lens.",
 				"url": "nymag.com",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -269,6 +298,7 @@
 				"name": "The Huffington Post",
 				"description": "The Huffington Post is a politically liberal American online news aggregator and blog that has both localized and international editions founded by Arianna Huffington, Kenneth Lerer, Andrew Breitbart, and Jonah Peretti, featuring columnists.",
 				"url": "www.huffingtonpost.com",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -280,6 +310,7 @@
 				"name": "ABC News",
 				"description": "Your trusted source for breaking news, analysis, exclusive interviews, headlines, and videos at ABCNews.com.",
 				"url": "abcnews.go.com",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -289,6 +320,7 @@
 				"name": "Al Jazeera English",
 				"description": "News, analysis from the Middle East and worldwide, multimedia and interactives, opinions, documentaries, podcasts, long reads and broadcast schedule.",
 				"url": "www.aljazeera.com",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -298,6 +330,7 @@
 				"name": "CBS News",
 				"description": "CBS News: dedicated to providing the best in journalism under standards it pioneered at the dawn of radio and television and continue in the digital age.",
 				"url": "www.cbsnews.com",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -307,6 +340,7 @@
 				"name": "NBC News",
 				"description": "Breaking news, videos, and the latest top stories in world news, business, politics, health and pop culture.",
 				"url": "www.nbcnews.com",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -316,6 +350,7 @@
 				"name": "Newsweek",
 				"description": "Newsweek provides in-depth analysis, news and opinion about international issues, technology, business, culture and politics.",
 				"url": "www.newsweek.com",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -325,6 +360,7 @@
 				"name": "Politico",
 				"description": "Political news about Congress, the White House, campaigns, lobbyists and issues.",
 				"url": "www.politico.com",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -334,6 +370,7 @@
 				"name": "The Washington Post",
 				"description": "Breaking news and analysis on politics, business, world national news, entertainment more. In-depth DC, Virginia, Maryland news coverage including traffic, weather, crime, education, restaurant reviews and more.",
 				"url": "www.washingtonpost.com",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -343,6 +380,7 @@
 				"name": "Time",
 				"description": "Breaking news and analysis from TIME.com. Politics, world news, photos, video, tech reviews, health, science and entertainment news.",
 				"url": "time.com",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -354,6 +392,7 @@
 				"name": "Associated Press",
 				"description": "The AP delivers in-depth coverage on the international, politics, lifestyle, business, and entertainment news.",
 				"url": "apnews.com/",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -363,6 +402,7 @@
 				"name": "Axios",
 				"description": "Axios are a new media company delivering vital, trustworthy news and analysis in the most efficient, illuminating and shareable ways possible.",
 				"url": "www.axios.com",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -372,6 +412,7 @@
 				"name": "BBC News",
 				"description": "Use BBC News for up-to-the-minute news, breaking news, video, audio and feature stories. BBC News provides trusted World and UK news as well as local and regional perspectives. Also entertainment, business, science, technology and health news.",
 				"url": "www.bbc.co.uk",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "gb"
@@ -381,6 +422,7 @@
 				"name": "Bloomberg",
 				"description": "Bloomberg delivers business and markets news, data, analysis, and video to the world, featuring stories from Businessweek and Bloomberg News.",
 				"url": "www.bloomberg.com",
+				"logoUrl": "",
 				"category": "business",
 				"language": "en",
 				"country": "us"
@@ -390,6 +432,7 @@
 				"name": "Business Insider",
 				"description": "Business Insider is a fast-growing business site with deep financial, media, tech, and other industry verticals. Launched in 2007, the site is now the largest business news site on the web.",
 				"url": "www.businessinsider.com",
+				"logoUrl": "",
 				"category": "business",
 				"language": "en",
 				"country": "us"
@@ -399,6 +442,7 @@
 				"name": "Reuters",
 				"description": "Reuters.com brings you the latest news from around the world, covering breaking news in business, politics, entertainment, technology, video and pictures.",
 				"url": "www.reuters.com",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -408,6 +452,7 @@
 				"name": "The Hill",
 				"description": "The Hill is a top US political website, read by the White House and more lawmakers than any other site -- vital for policy, politics and election campaigns.",
 				"url": "thehill.com",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -417,6 +462,7 @@
 				"name": "USA Today",
 				"description": "Get the latest national, international, and political news at USATODAY.com.",
 				"url": "www.usatoday.com",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -428,6 +474,7 @@
 				"name": "The American Conservative",
 				"description": "Realism and reform. A new voice for a new generation of conservatives.",
 				"url": "www.theamericanconservative.com/",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -437,6 +484,7 @@
 				"name": "The Wall Street Journal",
 				"description": "WSJ online coverage of breaking news and current headlines from the US and around the world. Top stories, photos, videos, detailed analysis and in-depth reporting.",
 				"url": "www.wsj.com",
+				"logoUrl": "",
 				"category": "business",
 				"language": "en",
 				"country": "us"
@@ -446,6 +494,7 @@
 				"name": "The Washington Times",
 				"description": "The Washington Times delivers breaking news and commentary on the issues that affect the future of our nation.",
 				"url": "www.washingtontimes.com/",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -457,6 +506,7 @@
 				"name": "Breitbart News",
 				"description": "Syndicated news and opinion website providing continuously updated headlines to top news and analysis sources.",
 				"url": "www.breitbart.com",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -466,6 +516,7 @@
 				"name": "Fox News",
 				"description": "Breaking News, Latest News and Current News from FOXNews.com. Breaking news and video. Latest Current News: U.S., World, Entertainment, Health, Business, Technology, Politics, Sports.",
 				"url": "www.foxnews.com",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"
@@ -475,6 +526,7 @@
 				"name": "National Review",
 				"description": "National Review: Conservative News, Opinion, Politics, Policy, & Current Events.",
 				"url": "www.nationalreview.com/",
+				"logoUrl": "",
 				"category": "general",
 				"language": "en",
 				"country": "us"

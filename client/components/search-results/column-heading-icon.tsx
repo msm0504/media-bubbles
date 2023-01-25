@@ -20,7 +20,10 @@ const ColumnHeadingIcon: React.FC<ColumnHeadingIconProps> = ({
 			/>
 		) : (
 			<img
-				src={`${process.env.NEXT_PUBLIC_URL}/api/source-logo?id=${column.id}&url=${column.url}`}
+				className='source-logo'
+				src={`${process.env.NEXT_PUBLIC_URL}/api/source-logo?id=${column.id}&url=${
+					column.url
+				}&logoUrl=${column.logoUrl || ''}`}
 				alt={`Logo for ${column.name}`}
 			/>
 		)}

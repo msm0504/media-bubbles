@@ -22,9 +22,14 @@ div.page-bg {
 		-1px -1px 8px var(--bs-dark);
 }
 
+img.source-logo {
+	height: 100px;
+	width: 100px;
+}
+
 img.bubble-img {
-	height: 128px;
-	width: 128px;
+	height: 100px;
+	width: 100px;
 	border-radius: 50%;
 }
 

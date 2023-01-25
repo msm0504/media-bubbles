@@ -177,27 +177,32 @@
 		{
 			"id": "NPR",
 			"name": "NPR",
-			"url": "https://www.npr.org/"
+			"url": "https://www.npr.org/",
+			"logoUrl": ""
 		},
 		{
 			"id": "Bloomberg",
 			"name": "Bloomberg",
-			"url": "http://www.bloomberg.com/"
+			"url": "http://www.bloomberg.com/",
+			"logoUrl": ""
 		},
 		{
 			"id": "ABC",
 			"name": "ABC News",
-			"url": "http://abcnews.go.com/"
+			"url": "http://abcnews.go.com/",
+			"logoUrl": ""
 		},
 		{
 			"id": "Slate",
 			"name": "Slate",
-			"url": "https://slate.com/"
+			"url": "https://slate.com/",
+			"logoUrl": ""
 		},
 		{
 			"id": "HuffPost",
 			"name": "HuffPost",
-			"url": "https://www.huffpost.com/"
+			"url": "https://www.huffpost.com/",
+			"logoUrl": ""
 		}
 	]
 }

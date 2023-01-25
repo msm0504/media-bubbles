@@ -1,6 +1,7 @@
 import OAuth from 'oauth-1.0a';
 import crypto from 'crypto';
 import formatGetQuery from '../util/format-get-query';
+import { TwitterUser } from '../../types';
 
 const headers = { Accept: 'application/json' };
 const defaultParams = { count: 2, include_entities: false };
@@ -34,11 +35,14 @@ async function searchUser(source: string) {
 	return response.json();
 }
 
-export async function getTwitterHandle(source: string): Promise<string> {
+export async function getTwitterUser(source: string): Promise<TwitterUser | null> {
 	const foundUsers = await searchUser(source);
 	// Bloomberg is not the first Twitter user result
 	const respIndex = source.toLowerCase().includes('bloomberg') ? 1 : 0;
 	return foundUsers && foundUsers.length && foundUsers[respIndex].verified
-		? foundUsers[respIndex].screen_name
+		? {
+				handle: foundUsers[respIndex].screen_name,
+				logoUrl: foundUsers[respIndex].profile_image_url_https
+		  }
 		: null;
 }

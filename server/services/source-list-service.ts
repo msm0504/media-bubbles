@@ -1,4 +1,4 @@
-import { getTwitterHandle } from './twitter-user-service';
+import { getTwitterUser } from './twitter-user-service';
 import { MILLISECONDS_IN_DAY, useTestData } from '../constants';
 import SOURCE_INCLUDE_LIST from '../source-include-list.json';
 import { Source } from '../../types';
@@ -63,14 +63,20 @@ async function setSourcesAndBiasRatings() {
 
 			if (!SOURCE_INCLUDE_LIST[modifiedName as SourceIncludeListKey] === true) return 0;
 
-			const twitterHandle = await getTwitterHandle(modifiedName);
-			if (!twitterHandle) return 0;
+			const twitterUser = await getTwitterUser(modifiedName);
+			if (!twitterUser) return 0;
+			const { handle: twitterHandle, logoUrl } = twitterUser;
 			if (twitterHandle.toLowerCase() === 'oann') {
-				source_url = 'oann.com';
+				source_url = 'https://oann.com';
 			}
 			if (!Object.prototype.hasOwnProperty.call(global.sources.biasRatings, twitterHandle)) {
-				const formattedUrl = source_url.replace(/(?<!\/)\/[^/]+/g, ''); // remove subdomains
-				global.sources.app.push({ id: twitterHandle, name: modifiedName, url: formattedUrl });
+				const formattedUrl = new URL(source_url).hostname.replace(/www\./, '');
+				global.sources.app.push({
+					id: twitterHandle,
+					name: modifiedName,
+					url: formattedUrl,
+					logoUrl: logoUrl.replace('_normal', '_bigger')
+				});
 			}
 			if (
 				!Object.prototype.hasOwnProperty.call(global.sources.biasRatings, twitterHandle) ||

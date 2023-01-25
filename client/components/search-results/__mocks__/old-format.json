@@ -497,27 +497,32 @@
 		{
 			"id": "axios",
 			"name": "Axios",
-			"url": "www.axios.com"
+			"url": "www.axios.com",
+			"logoUrl": ""
 		},
 		{
 			"id": "cnn",
 			"name": "CNN",
-			"url": "us.cnn.com"
+			"url": "us.cnn.com",
+			"logoUrl": ""
 		},
 		{
 			"id": "fox-news",
 			"name": "Fox News",
-			"url": "www.foxnews.com"
+			"url": "www.foxnews.com",
+			"logoUrl": ""
 		},
 		{
 			"id": "newsweek",
 			"name": "Newsweek",
-			"url": "www.newsweek.com"
+			"url": "www.newsweek.com",
+			"logoUrl": ""
 		},
 		{
 			"id": "the-hill",
 			"name": "The Hill",
-			"url": "thehill.com"
+			"url": "thehill.com",
+			"logoUrl": ""
 		}
 	]
 }
