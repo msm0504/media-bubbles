@@ -11,7 +11,7 @@ beforeEach(() => {
 afterAll(cleanup);
 
 test('search page renders', () => {
-	expect(screen.queryByText('Headlines Search', { selector: 'h1' })).toBeInTheDocument();
+	expect(screen.queryByText('Headlines Search', { selector: 'h2' })).toBeInTheDocument();
 	expect(
 		screen.queryByText(`Results shown will be from ${SEARCH_MODE_MAP.FULL_SPECTRUM.description}.`)
 	).toBeInTheDocument();

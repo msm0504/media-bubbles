@@ -7,5 +7,5 @@ afterAll(cleanup);
 
 test('about page renders', () => {
 	render(<About />);
-	expect(screen.queryByText('About', { selector: 'h1' })).toBeInTheDocument();
+	expect(screen.queryByText('About', { selector: 'h2' })).toBeInTheDocument();
 });
