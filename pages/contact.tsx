@@ -95,7 +95,7 @@ const Feedback: React.FC = () => {
 				<title key='title'>Contact Us - Media Bubbles</title>
 				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_URL}/contact`} key='canonical' />
 			</Head>
-			<h1 className='text-info'>Contact Us</h1>
+			<h2 className='text-info h1'>Contact Us</h2>
 			<SaveableForm<FeedbackMessage>
 				fieldList={fieldList}
 				fieldValidateFn={getFieldErrorMessage}

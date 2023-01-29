@@ -71,7 +71,7 @@ const BlogPosts: React.FC = () => {
 				<title key='title'>Blog - Media Bubbles</title>
 				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_URL}/blog`} key='canonical' />
 			</Head>
-			<h1 className='text-info d-block d-sm-inline-block'>Blog Posts</h1>
+			<h2 className='text-info d-block d-sm-inline-block h1'>Blog Posts</h2>
 			{session?.user.isAdmin && (
 				<RouteLink
 					buttonText={AddPost}

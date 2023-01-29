@@ -8,9 +8,9 @@ const About: React.FC = () => (
 			<title key='title'>About - Media Bubbles</title>
 			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_URL}/about`} key='canonical' />
 		</Head>
-		<h1 className='text-info'>About</h1>
+		<h2 className='text-info h1'>About</h2>
 		<Card.Body className='bg-white rounded-xl'>
-			<h2 className='h3'>Our Mission</h2>
+			<h3>Our Mission</h3>
 			<p>
 				{`An accepted truth: contemporary society is increasingly polarized. The common explanation is
 				the media people consume is biased. However, we believe media bias has existed since the
@@ -39,7 +39,7 @@ const About: React.FC = () => (
 				</Link>
 				{` to see for yourself. We hope this will be the first step towards living in a shared reality.`}
 			</p>
-			<h2 className='h3'>How We Got Started</h2>
+			<h3>How We Got Started</h3>
 			<p>
 				{`Around 2017, we noticed a media bias chart being shared on social media, placing various
 				news sources into categories of political bias. Soon after, of course, other charts were

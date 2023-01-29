@@ -115,7 +115,7 @@ const AddEditBlogPost: React.FC<AddEditPostProps> = ({ currentVersion }) => {
 
 	return (
 		<>
-			<h1 className='text-info'>{`${mode} Post`}</h1>
+			<h2 className='text-info h1'>{`${mode} Post`}</h2>
 			<SaveableForm<BlogPost>
 				fieldList={fieldList}
 				fieldValidateFn={getFieldErrorMessage}

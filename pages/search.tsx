@@ -76,7 +76,7 @@ const SearchTabs: React.FC<SearchTabsProps> = ({ appSourceList, sourceListBySlan
 				<title key='title'>Search - Media Bubbles</title>
 				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_URL}/search`} key='canonical' />
 			</Head>
-			<h1 className='text-info'>Headlines Search</h1>
+			<h2 className='text-info h1'>Headlines Search</h2>
 			<div className='d-none d-md-block'>
 				<Nav variant='pills' fill>
 					{tabsAndOptions.tabList}

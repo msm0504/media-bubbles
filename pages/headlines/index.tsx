@@ -22,7 +22,7 @@ const NewSearchResults: React.FC = () => {
 				<title key='title'>Headlines - Media Bubbles</title>
 				<link rel='canonical' href={`${process.env.NEXT_PUBLIC_URL}/headlines`} key='canonical' />
 			</Head>
-			<h1 className='text-info'>Search Results</h1>
+			<h2 className='text-info h1'>Search Results</h2>
 			<SaveResults container={elResults} />
 			<div ref={elResults}>
 				<SearchResults

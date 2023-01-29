@@ -21,7 +21,7 @@ const LatestNews: React.FC<LatestNewsProps> = ({ latestArticleMap }) => (
 			<meta property='og:url' content={`${process.env.NEXT_PUBLIC_URL}/latest`} key='ogUrl'></meta>
 			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_URL}/latest`} key='canonical' />
 		</Head>
-		<h1 className='text-info'>Latest News</h1>
+		<h2 className='text-info h1'>Latest News</h2>
 		<SearchResults sourceList={[]} isSearchAll articleMap={latestArticleMap} />
 	</>
 );

@@ -56,7 +56,7 @@ const SavedSearchResult: React.FC<SavedSearchResultProps> = ({ loadedResult, not
 					key='canonical'
 				/>
 			</Head>
-			<h1 className='text-info'>{`Saved Result: ${loadedResult.name}`}</h1>
+			<h2 className='text-info h1'>{`Saved Result: ${loadedResult.name}`}</h2>
 			<SearchResults
 				sourceList={loadedResult.sourceList}
 				isSearchAll={loadedResult.isSearchAll}

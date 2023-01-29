@@ -9,7 +9,7 @@ type BlogPostTemplateProps = {
 
 const BlogPostTemplate: React.FC<BlogPostTemplateProps> = ({ content, date, title }) => (
 	<>
-		<h1 className='text-info'>{title}</h1>
+		<h2 className='text-info h1'>{title}</h2>
 		<Card.Body className='bg-white rounded-xl'>
 			<small className='text-muted'>{`Last updated at ${new Date(date).toLocaleString()} `}</small>
 			{markdownToHtml(content, 'mt-2')}
