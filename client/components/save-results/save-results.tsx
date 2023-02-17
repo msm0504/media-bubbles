@@ -71,6 +71,7 @@ const SaveResults: React.FC<SaveResultsProps> = ({ container }) => {
 	return (
 		<Button
 			className='mb-1 ms-3 d-inline-block'
+			id='save-results'
 			variant='primary'
 			disabled={isSaving}
 			onClick={() =>

@@ -25,6 +25,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 			<Button
 				variant='info'
 				className='twitter-btn d-inline-block mb-1 ms-3 me-1 rounded'
+				id='share-twitter'
 				onClick={() => {
 					window.open(`https://twitter.com/intent/tweet?url=${encodeURI(urlToShare)}`, '_blank');
 				}}
@@ -35,6 +36,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 			<Button
 				variant='info'
 				className='facebook-btn d-inline-block mb-1 me-1 rounded'
+				id='share-facebook'
 				onClick={() => {
 					window.open(
 						`https://www.facebook.com/sharer/sharer.php?u=${encodeURI(urlToShare)}`,
@@ -48,6 +50,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 			<Button
 				variant='secondary'
 				className='d-inline-block mb-1 me-1 rounded'
+				id='share-email'
 				onClick={() => {
 					window.open(
 						`mailto:?subject=${encodeURIComponent('Media Bubbles Results')}
@@ -63,6 +66,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 				<Button
 					variant='secondary'
 					className='d-inline-block mb-1 rounded'
+					id='share-copy'
 					onClick={copyToClipboard}
 				>
 					<FontAwesomeIcon icon={regular('clipboard')} size='lg' />
