@@ -2,8 +2,8 @@ import { useEffect } from 'react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import Script from 'next/script';
 import { SessionProvider } from 'next-auth/react';
-import { init, trackPages } from 'insights-js';
 import SSRProvider from 'react-bootstrap/SSRProvider';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -12,6 +12,7 @@ import Header from '../client/components/header';
 import Footer from '../client/components/footer';
 import TopNavbar from '../client/components/nav/top-navbar';
 import { AppProviders } from '../client/contexts';
+import * as gtag from '../lib/gtag';
 import '../styles/custom-theme.scss';
 import '../styles/globals.css';
 
@@ -26,12 +27,16 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 	const isHome = router.pathname === '/';
 
 	useEffect(() => {
-		if (process.env.NEXT_PUBLIC_INSIGHTS_ID) {
-			init(process.env.NEXT_PUBLIC_INSIGHTS_ID);
-			const { stop } = trackPages();
-			return () => stop();
+		if (gtag.GA_TRACKING_ID) {
+			const handleRouteChange = (url: URL) => {
+				gtag.pageview(url);
+			};
+			router.events.on('routeChangeComplete', handleRouteChange);
+			return () => {
+				router.events.off('routeChangeComplete', handleRouteChange);
+			};
 		}
-	}, []);
+	}, [router.events]);
 
 	return (
 		<>
@@ -59,8 +64,28 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 				></meta>
 				<link rel='icon' href='/favicon.ico' />
 				<link rel='canonical' href={process.env.NEXT_PUBLIC_URL} key='canonical' />
+				{gtag.GA_TRACKING_ID ? (
+					<script
+						dangerouslySetInnerHTML={{
+							__html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${gtag.GA_TRACKING_ID}', {
+                page_path: window.location.pathname,
+              });
+            `
+						}}
+					/>
+				) : null}
 			</Head>
-
+			{/* Global Site Tag (gtag.js) - Google Analytics */}
+			{gtag.GA_TRACKING_ID ? (
+				<Script
+					strategy='afterInteractive'
+					src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
+				/>
+			) : null}
 			<SessionProvider session={pageProps.session}>
 				<SSRProvider>
 					<TopNavbar />
