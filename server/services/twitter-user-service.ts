@@ -39,7 +39,7 @@ export async function getTwitterUser(source: string): Promise<TwitterUser | null
 	const foundUsers = await searchUser(source);
 	// Bloomberg is not the first Twitter user result
 	const respIndex = source.toLowerCase().includes('bloomberg') ? 1 : 0;
-	return foundUsers && foundUsers.length && foundUsers[respIndex].verified
+	return foundUsers && foundUsers.length
 		? {
 				handle: foundUsers[respIndex].screen_name,
 				logoUrl: foundUsers[respIndex].profile_image_url_https
