@@ -38,7 +38,9 @@ test('returns screen_name of second returned result for Bloomberg', async () => 
 	expect(twitterUser?.handle).toEqual('business');
 });
 
-test('returns null if returned user is unverified', async () => {
+// Some sources now unverified on Twitter (ELON!!!).
+// Therefore, I've removed the condition to only include verified accounts.
+test.skip('returns null if returned user is unverified', async () => {
 	server.use(
 		rest.get('https://api.twitter.com/1.1/users/search.json', (_req, res, ctx) =>
 			res(ctx.json(cnnUnverifiedRespMock))
