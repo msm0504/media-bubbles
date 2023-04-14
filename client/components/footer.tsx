@@ -21,6 +21,10 @@ const Footer: React.FC = () => (
 				Source Media Bias Ratings From AllSides.com
 			</a>
 			<br />
+			<a href='https://clearbit.com' target='_blank' rel='noreferrer'>
+				Logos provided by Clearbit
+			</a>
+			<br />
 		</p>
 	</div>
 );

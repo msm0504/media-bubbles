@@ -7,14 +7,12 @@ const s3Client = getS3Client();
 
 const getLogoUrl = (siteUrl: string): string => {
 	const iconApiUrl = 'https://logo.clearbit.com';
-	siteUrl = siteUrl.replace('huffingtonpost', 'huffpost');
 	return `${iconApiUrl}/${siteUrl}`;
 };
 
 export async function getSourceLogo(
 	id: string,
-	url: string,
-	logoUrl = ''
+	url: string
 ): Promise<Buffer | GetObjectCommandOutput['Body'] | null> {
 	const getCommand = new GetObjectCommand({
 		Bucket: process.env.AWS_S3_LOGO_BUCKET,
@@ -31,7 +29,7 @@ export async function getSourceLogo(
 		}
 	}
 
-	const logoResponse = await fetch(logoUrl || getLogoUrl(url), {
+	const logoResponse = await fetch(getLogoUrl(url), {
 		method: 'get',
 		headers: { Accept: 'image/png, image/jpg' }
 	});
