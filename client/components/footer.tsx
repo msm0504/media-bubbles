@@ -13,8 +13,8 @@ const Footer: React.FC = () => (
 			<br />
 		</p>
 		<p className='d-inline-block ms-sm-5'>
-			<a href='https://twitter.com/' target='_blank' rel='noreferrer'>
-				Headline Searches Powered By Twitter
+			<a href='https://bing.com/' target='_blank' rel='noreferrer'>
+				Headline Searches Powered By Microsoft Bing
 			</a>
 			<br />
 			<a href='https://www.allsides.com/bias/bias-ratings' target='_blank' rel='noreferrer'>

@@ -2,36 +2,23 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
 import { getBiasRatingBySourceId, getSourceLists } from '../source-list-service';
-import { getTwitterUser } from '../twitter-user-service';
 import allsidesRespMock from '../__mocks__/allsides-resp.json';
 import { Source } from '../../../types';
 
-jest.mock('../twitter-user-service');
 const server = setupServer();
 
 const cnnSourceObj: Source = {
-	id: 'CNN',
+	id: 'cnn',
 	name: 'CNN',
-	url: 'cnn.com',
-	logoUrl: ''
+	url: 'cnn.com'
 };
 const wsjSourceObj: Source = {
-	id: 'WSJ',
+	id: 'wall-street-journal',
 	name: 'Wall Street Journal',
-	url: 'online.wsj.com',
-	logoUrl: ''
+	url: 'online.wsj.com'
 };
 
 beforeAll(() => {
-	(getTwitterUser as jest.Mock).mockImplementation((source: string) =>
-		Promise.resolve(
-			source === 'CNN'
-				? { handle: 'CNN', logoUrl: '' }
-				: source === 'Wall Street Journal'
-				? { handle: 'WSJ', logoUrl: '' }
-				: null
-		)
-	);
 	server.listen();
 	server.use(
 		rest.get(
