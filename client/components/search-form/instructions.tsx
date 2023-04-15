@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { Card } from 'react-bootstrap';
 
 const SearchInstructions: React.FC = () => (
@@ -44,11 +43,7 @@ const SearchInstructions: React.FC = () => (
 				here
 			</a>
 			{`. So, other than selecting the source list, we do not want any of our opinions influencing
-			this search tool. If you are interested in knowing those, read our `}
-			<Link href='/blog'>
-				<a>blog</a>
-			</Link>
-			.
+			this search tool.`}
 		</p>
 	</Card.Body>
 );
