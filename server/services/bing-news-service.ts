@@ -86,6 +86,33 @@ const getArticlesToShow = (
 	return articlesToShow;
 };
 
+const sortArticlesFromMultiSources = (articles: NewsArticle[]): NewsArticle[] => {
+	const sourceArticleCounts: Record<string, number> = {};
+	const articlesByCount: NewsArticle[][] = [];
+
+	for (let i = 0; i < articles.length; i++) {
+		const article = articles[i];
+		const domainParts = new URL(article.url || '').hostname.split('.');
+		const rootDomain = `${domainParts[domainParts.length - 2]}.${
+			domainParts[domainParts.length - 1]
+		}`;
+
+		const index = sourceArticleCounts[rootDomain] || 0;
+		if (!sourceArticleCounts[rootDomain]) {
+			sourceArticleCounts[rootDomain] = 1;
+		} else {
+			sourceArticleCounts[rootDomain]++;
+		}
+
+		if (!articlesByCount[index]) {
+			articlesByCount[index] = [];
+		}
+		articlesByCount[index].push(article);
+	}
+
+	return articlesByCount.flat();
+};
+
 export async function getHeadlines(params: SearchRequest): Promise<ArticleMap> {
 	if (!params || (!params.sources && params.spectrumSearchAll !== 'Y')) {
 		return {};
@@ -102,7 +129,7 @@ export async function getHeadlines(params: SearchRequest): Promise<ArticleMap> {
 		memo: Promise<ArticleMap>,
 		sources: QuerySource
 	) {
-		const { value } = await getNewsArticles(
+		let { value } = await getNewsArticles(
 			sources,
 			params.keyword,
 			+params.previousDays,
@@ -111,6 +138,9 @@ export async function getHeadlines(params: SearchRequest): Promise<ArticleMap> {
 		const acc = await memo;
 		const key = Array.isArray(sources) ? getBiasRatingBySourceId(sources[0].id) : sources;
 		if (value.length) {
+			if (isSpectrumSearch) {
+				value = sortArticlesFromMultiSources(value);
+			}
 			acc[key] = getArticlesToShow(value, params.keyword, sources, appSourcesById);
 		} else {
 			acc[key] = [];
