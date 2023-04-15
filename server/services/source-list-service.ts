@@ -52,7 +52,9 @@ async function setSourcesAndBiasRatings() {
 		biasRatingsResponse?.allsides_media_bias_ratings.map(({ publication }) => publication) || [];
 	await Promise.all(
 		biasRatings.map(async ({ source_name, source_url, media_bias_rating }) => {
-			const biasRating = ALL_SIDES_RATINGS_TO_INT[media_bias_rating as AllSidesBiasRating];
+			const biasRating = ALL_SIDES_RATINGS_TO_INT[
+				media_bias_rating as AllSidesBiasRating
+			] as SourceSlant;
 			if (biasRating === null || typeof biasRating === 'undefined') return 0;
 
 			const modifiedName = source_name
@@ -69,14 +71,19 @@ async function setSourcesAndBiasRatings() {
 				global.sources.app.push({
 					id,
 					name: modifiedName,
-					url: formattedUrl
+					url: formattedUrl,
+					slant: biasRating
 				});
 			}
 			if (
 				!Object.prototype.hasOwnProperty.call(global.sources.biasRatings, id) ||
 				Math.abs(biasRating - CENTER) > Math.abs(global.sources.biasRatings[id] - CENTER)
 			) {
-				global.sources.biasRatings[id] = biasRating as SourceSlant;
+				global.sources.biasRatings[id] = biasRating;
+				const prev = global.sources.app.find(source => source.id === id);
+				if (prev) {
+					prev.slant = biasRating;
+				}
 			}
 			return 0;
 		})

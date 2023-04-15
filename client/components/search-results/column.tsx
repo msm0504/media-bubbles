@@ -51,7 +51,12 @@ const Column: React.FC<ColumnProps> = ({
 			</Card>
 			<Collapse in={isPanelExpanded}>
 				<div id={collapseId} aria-labelledby={headingId}>
-					<ColumnArticles articles={articles} columnId={column.id} isSearchAll={isSearchAll} />
+					<ColumnArticles
+						articles={articles}
+						columnId={column.id}
+						isSearchAll={isSearchAll}
+						slant={column.slant}
+					/>
 				</div>
 			</Collapse>
 		</div>

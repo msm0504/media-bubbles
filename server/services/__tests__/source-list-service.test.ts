@@ -10,12 +10,14 @@ const server = setupServer();
 const cnnSourceObj: Source = {
 	id: 'cnn',
 	name: 'CNN',
-	url: 'cnn.com'
+	url: 'cnn.com',
+	slant: 0
 };
 const wsjSourceObj: Source = {
 	id: 'wall-street-journal',
 	name: 'Wall Street Journal',
-	url: 'online.wsj.com'
+	url: 'online.wsj.com',
+	slant: 3
 };
 
 beforeAll(() => {

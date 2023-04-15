@@ -1,16 +1,17 @@
 import { Card } from 'react-bootstrap';
-import { SOURCE_SLANT_MAP } from '../../constants/source-slant';
+import { SOURCE_SLANT_MAP, SourceSlant } from '../../constants/source-slant';
 import { Article, isNewsApiArticle } from '../../../types';
 
 type ColumnArticlesProps = {
 	articles: Article[];
 	columnId: string;
 	isSearchAll: boolean;
+	slant?: SourceSlant;
 };
 
 const CENTER = Math.floor(Object.keys(SOURCE_SLANT_MAP).length / 2);
-const getTextClassBySlant = (slant: string) =>
-	+slant > CENTER ? 'primary' : +slant < CENTER ? 'info' : 'warning';
+const getTextClassBySlant = (slant: number) =>
+	isNaN(slant) || slant > CENTER ? 'primary' : slant < CENTER ? 'info' : 'warning';
 
 const NOT_FOUND_MESSAGE = (
 	<Card body className='rounded-xl m-1 text-center text-primary'>
@@ -18,10 +19,18 @@ const NOT_FOUND_MESSAGE = (
 	</Card>
 );
 
-const ColumnArticles: React.FC<ColumnArticlesProps> = ({ articles, columnId, isSearchAll }) => {
+const ColumnArticles: React.FC<ColumnArticlesProps> = ({
+	articles,
+	columnId,
+	isSearchAll,
+	slant
+}) => {
 	if (!(articles && articles.length)) return NOT_FOUND_MESSAGE;
 
-	const slantClass = getTextClassBySlant(columnId);
+	const slantClass =
+		slant === null || typeof slant === 'undefined'
+			? getTextClassBySlant(Number(columnId))
+			: getTextClassBySlant(slant);
 	return (
 		<>
 			{articles.map(article =>

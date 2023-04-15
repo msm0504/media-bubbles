@@ -9,6 +9,7 @@ export type Source = {
 	id: string;
 	name: string;
 	url: string;
+	slant?: SourceSlant;
 };
 
 /** Headline Search Request Type Definition */
