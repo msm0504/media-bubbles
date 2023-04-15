@@ -24,9 +24,7 @@ export async function getSourceLogo(
 			return cached.Body;
 		}
 	} catch (error) {
-		if (error.message !== 'NoSuchKey') {
-			console.log(error);
-		}
+		null;
 	}
 
 	const logoResponse = await fetch(getLogoUrl(url), {

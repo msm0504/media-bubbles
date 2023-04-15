@@ -14,7 +14,7 @@ const headers = {
 	Accept: 'application/json',
 	'Ocp-Apim-Subscription-Key': process.env.BING_NEWS_API_KEY || ''
 };
-const DEFAULT_PARAMS = { setLang: 'en', sortBy: 'date', count: MAX_BING_RESULTS };
+const DEFAULT_PARAMS = { setLang: 'en', count: MAX_BING_RESULTS };
 const DEFAULT_PREVIOUS_DAYS = 5;
 
 global.latest = global.latest || { lastUpdate: 0 };
