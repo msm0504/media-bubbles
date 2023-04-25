@@ -58,7 +58,7 @@ const getArticlesToShow = (
 	appSourcesById: Record<string, Source>
 ): NewsApiArticle[] => {
 	const articlesToShow: NewsApiArticle[] = [];
-	for (let i = 0; i < articles.length && articlesToShow.length <= MAX_SHOW_PER_CATEGORY; i++) {
+	for (let i = 0; i < articles.length && articlesToShow.length < MAX_SHOW_PER_CATEGORY; i++) {
 		const article = articles[i];
 
 		if (!isArticleOnTopic(article, keyword)) continue;
