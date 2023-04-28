@@ -21,9 +21,7 @@ const ColumnHeadingIcon: React.FC<ColumnHeadingIconProps> = ({
 		) : (
 			<img
 				className='source-logo'
-				src={`${process.env.NEXT_PUBLIC_URL}/api/source-logo?id=${column.id}&url=${
-					column.url
-				}&logoUrl=${column.logoUrl || ''}`}
+				src={`${process.env.NEXT_PUBLIC_URL}/api/source-logo?id=${column.id}&url=${column.url}`}
 				alt={`Logo for ${column.name}`}
 			/>
 		)}

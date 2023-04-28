@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
-import { getHeadlines } from '../../server/services/twitter-news-service';
+import { getHeadlines } from '../../server/services/bing-news-service';
 import { SearchRequest } from '../../types';
 
 export default nc().get(async (req: NextApiRequest, res: NextApiResponse) => {

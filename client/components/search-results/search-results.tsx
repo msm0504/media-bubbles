@@ -20,7 +20,7 @@ const SLANT_SOURCE_COLUMNS: Source[] = keys(SOURCE_SLANT_MAP).map((sourceSlant: 
 	id: '' + sourceSlant,
 	name: SOURCE_SLANT_MAP[sourceSlant],
 	url: '',
-	logoUrl: ''
+	slant: sourceSlant
 }));
 
 const SearchResults: React.FC<SearchResultsProps> = ({

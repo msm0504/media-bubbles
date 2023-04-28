@@ -2,7 +2,7 @@ import { GetServerSideProps } from 'next';
 import Head from 'next/head';
 
 import SearchResults from '../client/components/search-results/search-results';
-import { getLatestHeadlines } from '../server/services/twitter-news-service';
+import { getLatestHeadlines } from '../server/services/bing-news-service';
 import { ArticleMap } from '../types';
 
 type LatestNewsProps = {

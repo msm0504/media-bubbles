@@ -1,4 +1,3 @@
-import { getTwitterUser } from './twitter-user-service';
 import { MILLISECONDS_IN_DAY, useTestData } from '../constants';
 import SOURCE_INCLUDE_LIST from '../source-include-list.json';
 import { Source } from '../../types';
@@ -53,7 +52,9 @@ async function setSourcesAndBiasRatings() {
 		biasRatingsResponse?.allsides_media_bias_ratings.map(({ publication }) => publication) || [];
 	await Promise.all(
 		biasRatings.map(async ({ source_name, source_url, media_bias_rating }) => {
-			const biasRating = ALL_SIDES_RATINGS_TO_INT[media_bias_rating as AllSidesBiasRating];
+			const biasRating = ALL_SIDES_RATINGS_TO_INT[
+				media_bias_rating as AllSidesBiasRating
+			] as SourceSlant;
 			if (biasRating === null || typeof biasRating === 'undefined') return 0;
 
 			const modifiedName = source_name
@@ -61,28 +62,28 @@ async function setSourcesAndBiasRatings() {
 				.replace(/\s-\s\S+$/, '') // ignore dash suffix
 				.trim();
 
-			if (!SOURCE_INCLUDE_LIST[modifiedName as SourceIncludeListKey] === true) return 0;
+			if (!SOURCE_INCLUDE_LIST[modifiedName as SourceIncludeListKey] === true || !source_url)
+				return 0;
 
-			const twitterUser = await getTwitterUser(modifiedName);
-			if (!twitterUser) return 0;
-			const { handle: twitterHandle, logoUrl } = twitterUser;
-			if (twitterHandle.toLowerCase() === 'oann') {
-				source_url = 'https://oann.com';
-			}
-			if (!Object.prototype.hasOwnProperty.call(global.sources.biasRatings, twitterHandle)) {
+			const id = modifiedName.toLowerCase().replace(/\s/g, '-');
+			if (!Object.prototype.hasOwnProperty.call(global.sources.biasRatings, id)) {
 				const formattedUrl = new URL(source_url).hostname.replace(/www\./, '');
 				global.sources.app.push({
-					id: twitterHandle,
+					id,
 					name: modifiedName,
 					url: formattedUrl,
-					logoUrl: logoUrl.replace('_normal', '_bigger')
+					slant: biasRating
 				});
 			}
 			if (
-				!Object.prototype.hasOwnProperty.call(global.sources.biasRatings, twitterHandle) ||
-				Math.abs(biasRating - CENTER) > Math.abs(global.sources.biasRatings[twitterHandle] - CENTER)
+				!Object.prototype.hasOwnProperty.call(global.sources.biasRatings, id) ||
+				Math.abs(biasRating - CENTER) > Math.abs(global.sources.biasRatings[id] - CENTER)
 			) {
-				global.sources.biasRatings[twitterHandle] = biasRating as SourceSlant;
+				global.sources.biasRatings[id] = biasRating;
+				const prev = global.sources.app.find(source => source.id === id);
+				if (prev) {
+					prev.slant = biasRating;
+				}
 			}
 			return 0;
 		})

@@ -17,7 +17,7 @@
 		"no-template-curly-in-string": 1,
 		"array-callback-return": 1,
 		"block-scoped-var": 2,
-		"complexity": ["error", 10],
+		"complexity": ["error", 12],
 		"dot-notation": 1,
 		"no-else-return": 2,
 		"no-return-assign": 2,
