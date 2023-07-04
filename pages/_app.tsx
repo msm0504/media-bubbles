@@ -55,6 +55,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 					content={`${process.env.NEXT_PUBLIC_URL}/images/og_image.png`}
 					key='ogImage'
 				></meta>
+				<meta property='og:type' content='website'></meta>
 				<meta property='fb:app_id' content='2356113588028211'></meta>
 				<meta name='twitter:card' content='summary' key='twitterCard'></meta>
 				<meta

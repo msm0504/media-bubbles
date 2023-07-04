@@ -24,7 +24,8 @@ const Column: React.FC<ColumnProps> = ({
 	const collapseId = `${isSearchAll ? column.name.toLowerCase() : column.id}-collapse`;
 
 	const [width] = useMediaQuery();
-	const isPanelExpanded = width >= XL_MIN_WIDTH || isPanelInOpenList;
+	const isXlScreen = width >= XL_MIN_WIDTH;
+	const isPanelExpanded = isXlScreen || isPanelInOpenList;
 
 	return (
 		<div className='d-flex flex-column' style={{ flexBasis: '20%' }}>
@@ -36,16 +37,19 @@ const Column: React.FC<ColumnProps> = ({
 							column={column}
 							isColumnSlant={isSearchAll}
 						/>
-						<div className='h1 text-center mb-2 d-none d-xl-block'>{column.name}</div>
-						<Button
-							variant='link'
-							className='d-xl-none mx-auto'
-							onClick={() => togglePanel(column.id)}
-							aria-expanded={isPanelExpanded}
-							aria-controls={collapseId}
-						>
-							<div className='h1 text-center my-auto'>{column.name}</div>
-						</Button>
+						{isXlScreen ? (
+							<div className='h1 text-center mb-2'>{column.name}</div>
+						) : (
+							<Button
+								variant='link'
+								className='mx-auto'
+								onClick={() => togglePanel(column.id)}
+								aria-expanded={isPanelExpanded}
+								aria-controls={collapseId}
+							>
+								<div className='h1 text-center my-auto'>{column.name}</div>
+							</Button>
+						)}
 					</div>
 				</Card.Header>
 			</Card>

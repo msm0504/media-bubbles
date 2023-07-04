@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 const Footer: React.FC = () => (
 	<div className='card-footer bg-white text-muted'>
-		<div className='d-flex flex-column flex-md-row justify-content-md-around'>
+		<div className='d-flex flex-column flex-md-row justify-content-md-start'>
 			<p className='d-flex flex-column'>
 				<a href='https://bing.com/news' target='_blank' rel='noreferrer'>
 					Headline Searches Powered By Microsoft Bing
@@ -14,7 +14,7 @@ const Footer: React.FC = () => (
 					Logos provided by Clearbit
 				</a>
 			</p>
-			<p className='d-flex flex-column'>
+			<p className='d-flex flex-column ms-md-4'>
 				<Link href='/privacy-policy'>
 					<a target='_blank'>Privacy Policy</a>
 				</Link>
