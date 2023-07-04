@@ -29,11 +29,11 @@ test('displays results for individual sources', () => {
 	(useMediaQuery as jest.Mock).mockReturnValue([XL_MIN_WIDTH + 1, XL_MIN_WIDTH + 1]);
 	render(<SearchResults {...singleSourcesMock} />);
 
-	expect(screen.queryByText('NPR', { selector: '.d-xl-block' })).toBeInTheDocument();
-	expect(screen.queryByText('Bloomberg', { selector: '.d-xl-block' })).toBeInTheDocument();
-	expect(screen.queryByText('ABC News', { selector: '.d-xl-block' })).toBeInTheDocument();
-	expect(screen.queryByText('Slate', { selector: '.d-xl-block' })).toBeInTheDocument();
-	expect(screen.queryByText('HuffPost', { selector: '.d-xl-block' })).toBeInTheDocument();
+	expect(screen.queryByText('NPR')).toBeInTheDocument();
+	expect(screen.queryByText('Bloomberg')).toBeInTheDocument();
+	expect(screen.queryByText('ABC News')).toBeInTheDocument();
+	expect(screen.queryByText('Slate')).toBeInTheDocument();
+	expect(screen.queryByText('HuffPost')).toBeInTheDocument();
 
 	expect(
 		screen.queryByText('Plenty of research has found COVID vaccines to be safe and effective.', {
@@ -65,7 +65,7 @@ test('displays results for search of all sources', () => {
 	render(<SearchResults {...allSourcesMock} />);
 
 	Object.values(SOURCE_SLANT_MAP).forEach(slantName =>
-		expect(screen.queryByText(slantName, { selector: '.d-xl-block' })).toBeInTheDocument()
+		expect(screen.queryByText(slantName)).toBeInTheDocument()
 	);
 
 	expect(
@@ -107,11 +107,11 @@ test('displays old saved results from News API', () => {
 	(useMediaQuery as jest.Mock).mockReturnValue([XL_MIN_WIDTH + 1, XL_MIN_WIDTH + 1]);
 	render(<SearchResults {...oldFormatMock} />);
 
-	expect(screen.queryByText('Axios', { selector: '.d-xl-block' })).toBeInTheDocument();
-	expect(screen.queryByText('CNN', { selector: '.d-xl-block' })).toBeInTheDocument();
-	expect(screen.queryByText('Fox News', { selector: '.d-xl-block' })).toBeInTheDocument();
-	expect(screen.queryByText('Newsweek', { selector: '.d-xl-block' })).toBeInTheDocument();
-	expect(screen.queryByText('The Hill', { selector: '.d-xl-block' })).toBeInTheDocument();
+	expect(screen.queryByText('Axios')).toBeInTheDocument();
+	expect(screen.queryByText('CNN')).toBeInTheDocument();
+	expect(screen.queryByText('Fox News')).toBeInTheDocument();
+	expect(screen.queryByText('Newsweek')).toBeInTheDocument();
+	expect(screen.queryByText('The Hill')).toBeInTheDocument();
 
 	expect(
 		screen.queryByText('Biden rips Trump over Woodward revelations:', {
@@ -147,9 +147,7 @@ test('uses collapse components to show/hide results on smaller screens', async (
 	(useMediaQuery as jest.Mock).mockReturnValue([XL_MIN_WIDTH - 1, XL_MIN_WIDTH - 1]);
 	render(<SearchResults {...singleSourcesMock} />);
 
-	const columnToggle = screen
-		.queryByText('NPR', { selector: ':not(.d-xl-block)' })
-		?.closest('button');
+	const columnToggle = screen.queryByText('NPR')?.closest('button');
 	expect(columnToggle).toBeInTheDocument();
 
 	const article = screen.queryByText(
