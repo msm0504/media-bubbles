@@ -1,4 +1,5 @@
 import { Source } from '../../../types';
+import styles from '../../../styles/search-results.module.css';
 
 type ColumnHeadingIconProps = {
 	className: string;
@@ -14,13 +15,13 @@ const ColumnHeadingIcon: React.FC<ColumnHeadingIconProps> = ({
 	<div className={`text-center ${className}`}>
 		{isColumnSlant ? (
 			<img
-				className='bubble-img'
+				className={styles.bubbleImg}
 				src={`/images/slant-bubbles/bubble-${column.name.toLowerCase()}.png`}
 				alt={`Icon for ${column.name} slant`}
 			/>
 		) : (
 			<img
-				className='source-logo'
+				className={styles.sourceLogo}
 				src={`${process.env.NEXT_PUBLIC_URL}/api/source-logo?id=${column.id}&url=${column.url}`}
 				alt={`Logo for ${column.name}`}
 			/>

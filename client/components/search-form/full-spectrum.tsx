@@ -13,7 +13,7 @@ type FullSpectrumProps = {
 const FullSpectrum: React.FC<FullSpectrumProps> = ({ spectrumSearchAll, onChange }) => {
 	const isChecked = spectrumSearchAll === 'Y';
 	return (
-		<Card.Body className='bg-white rounded-xl my-3'>
+		<Card.Body className='bg-white rounded-3 my-3'>
 			<Form.Check className='row m-0'>
 				<Form.Check.Input
 					className={styles.hiddenInput}

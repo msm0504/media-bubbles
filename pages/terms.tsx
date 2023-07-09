@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { Card } from 'react-bootstrap';
 
 const Terms: React.FC = () => (
-	<Card.Body className='bg-white rounded-xl'>
+	<Card.Body className='bg-white rounded-3'>
 		<Head>
 			<title key='title'>Terms and Conditions - Media Bubbles</title>
 			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_URL}/terms`} key='canonical' />

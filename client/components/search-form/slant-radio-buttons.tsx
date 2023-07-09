@@ -54,7 +54,7 @@ const SlantRadioButtons: React.FC<SlantRadioButtonsProps> = ({ selection, onChan
 			<p className='ms-3'>
 				<strong>Choose the category that you think best fits your political views.</strong>
 			</p>
-			<Card.Body className='bg-white rounded-xl d-flex flex-column flex-md-row justify-content-md-around'>
+			<Card.Body className='bg-white rounded-3 d-flex flex-column flex-md-row justify-content-md-around'>
 				{radiobuttons}
 			</Card.Body>
 		</>

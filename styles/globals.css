@@ -22,17 +22,6 @@ div.page-bg {
 		-1px -1px 8px var(--bs-dark);
 }
 
-img.source-logo {
-	height: 100px;
-	width: 100px;
-}
-
-img.bubble-img {
-	height: 100px;
-	width: 100px;
-	border-radius: 50%;
-}
-
 .fa-facebook-f.brand-color {
 	color: #4267b2;
 }
@@ -47,16 +36,4 @@ img.bubble-img {
 
 .twitter-btn:not(:hover) {
 	background: #1da1f2;
-}
-
-.rounded-xl {
-	border-radius: 0.75rem !important;
-}
-
-.rounded-top-xl {
-	border-radius: 0.75rem 0.75rem 0rem 0rem !important;
-}
-
-.rounded-bottom-xl {
-	border-radius: 0rem 0rem 0.75rem 0.75rem !important;
 }

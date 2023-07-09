@@ -20,7 +20,7 @@ const HomePageLink: React.FC<HomePageLinkProps> = ({
 
 	return (
 		<Card.Body
-			className={`bg-white rounded-xl mb-3 mx-2 d-inline-flex align-items-center ${className}`}
+			className={`bg-white rounded-3 mb-3 mx-2 d-inline-flex align-items-center ${className}`}
 		>
 			<Card.Text className='fw-bold m-0'>{message}</Card.Text>
 			<Button className='float-end' variant='light' onClick={() => router.push(routePath)}>

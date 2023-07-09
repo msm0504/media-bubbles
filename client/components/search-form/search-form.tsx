@@ -89,7 +89,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
 	return (
 		<>
 			<Form>
-				<Card.Body className='bg-white rounded-xl mb-3'>
+				<Card.Body className='bg-white rounded-3 mb-3'>
 					<Form.Group className='row my-3 mx-0 align-items-center'>
 						<Form.Label className='col-sm-2' htmlFor='keyword'>
 							<strong>Key Words:</strong>

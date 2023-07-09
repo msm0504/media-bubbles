@@ -14,7 +14,7 @@ const getTextClassBySlant = (slant: number) =>
 	isNaN(slant) || slant > CENTER ? 'primary' : slant < CENTER ? 'info' : 'warning';
 
 const NOT_FOUND_MESSAGE = (
-	<Card body className='rounded-xl m-1 text-center text-primary'>
+	<Card body className='rounded-3 m-1 text-center text-primary'>
 		No Headlines Found
 	</Card>
 );
@@ -35,7 +35,7 @@ const ColumnArticles: React.FC<ColumnArticlesProps> = ({
 		<>
 			{articles.map(article =>
 				isNewsApiArticle(article) ? (
-					<Card body className='rounded-xl m-1' key={article.url}>
+					<Card body className='rounded-3 m-1' key={article.url}>
 						{isSearchAll ? (
 							<Card.Title className={`text-${slantClass}`}>{article.source.name}</Card.Title>
 						) : null}
@@ -51,7 +51,7 @@ const ColumnArticles: React.FC<ColumnArticlesProps> = ({
 						<Card.Text dangerouslySetInnerHTML={{ __html: article.description }} />
 					</Card>
 				) : (
-					<Card body className='rounded-xl m-1' key={article.id}>
+					<Card body className='rounded-3 m-1' key={article.id}>
 						{isSearchAll ? (
 							<Card.Title className={`text-${slantClass}`}>{article.sourceName}</Card.Title>
 						) : null}

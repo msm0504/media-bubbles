@@ -68,7 +68,7 @@ const AsyncList = <T,>({
 
 	if (loginRequired && !session)
 		return (
-			<Card.Body className='text-primary bg-white rounded-xl mt-4'>
+			<Card.Body className='text-primary bg-white rounded-3 mt-4'>
 				{LoginRequiredComponent ? <LoginRequiredComponent /> : 'Log in to view this page'}
 			</Card.Body>
 		);
@@ -176,9 +176,9 @@ const AsyncList = <T,>({
 								variant={index % 2 === 0 ? '' : 'secondary'}
 								className={
 									index === 0
-										? 'rounded-top-xl'
+										? 'rounded-top-3'
 										: index === items.length - 1
-										? 'rounded-bottom-xl'
+										? 'rounded-bottom-3'
 										: ''
 								}
 							>
@@ -186,7 +186,7 @@ const AsyncList = <T,>({
 							</ListGroup.Item>
 						))
 					) : (
-						<Card.Body className='text-primary bg-white rounded-xl'>{`No ${camelCaseToWords(
+						<Card.Body className='text-primary bg-white rounded-3'>{`No ${camelCaseToWords(
 							apiListName
 						)} found`}</Card.Body>
 					)}

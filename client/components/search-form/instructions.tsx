@@ -1,7 +1,7 @@
 import { Card } from 'react-bootstrap';
 
 const SearchInstructions: React.FC = () => (
-	<Card.Body className='bg-white rounded-xl my-3'>
+	<Card.Body className='bg-white rounded-3 my-3'>
 		<p className='m-3'>
 			<strong>How to Use This Search:</strong>
 		</p>

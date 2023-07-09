@@ -29,7 +29,7 @@ const Column: React.FC<ColumnProps> = ({
 
 	return (
 		<div className='d-flex flex-column' style={{ flexBasis: '20%' }}>
-			<Card className='m-1 rounded-xl'>
+			<Card className='m-1 rounded-3'>
 				<Card.Header id={headingId} className='p-0 w-100 mx-auto'>
 					<div className='d-flex flex-row flex-xl-column'>
 						<ColumnHeadingIcon

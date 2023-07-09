@@ -13,6 +13,8 @@ $success: #17e618;
 $font-family-serif: 'Roboto Slab', serif;
 $font-family-base: $font-family-serif;
 $headings-font-family: $font-family-serif;
+$border-radius-lg: 0.75rem;
+$web-font-path: null;
 
 @import '../node_modules/bootswatch/dist/journal/variables';
 @import '../node_modules/bootstrap/scss/bootstrap';

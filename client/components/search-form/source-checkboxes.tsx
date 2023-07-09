@@ -60,7 +60,7 @@ const SourceCheckboxes: React.FC<SourceCheckboxesProps> = ({
 			<p className='ms-3'>
 				<strong>Choose up to {MAX_SOURCE_SELECTIONS} sources.</strong>
 			</p>
-			<Card.Body className='row bg-white rounded-xl my-3 mx-0'>{checkboxes}</Card.Body>
+			<Card.Body className='row bg-white rounded-3 my-3 mx-0'>{checkboxes}</Card.Body>
 		</>
 	);
 };

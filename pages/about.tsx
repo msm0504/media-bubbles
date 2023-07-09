@@ -9,7 +9,7 @@ const About: React.FC = () => (
 			<link rel='canonical' href={`${process.env.NEXT_PUBLIC_URL}/about`} key='canonical' />
 		</Head>
 		<h2 className='text-info h1'>About</h2>
-		<Card.Body className='bg-white rounded-xl'>
+		<Card.Body className='bg-white rounded-3'>
 			<h3>Our Mission</h3>
 			<p>
 				{`An accepted truth: contemporary society is increasingly polarized. The common explanation is
