@@ -3,7 +3,7 @@ import { Card, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-import styles from '../../../styles/search-form.module.css';
+import styles from '@/styles/search-form.module.css';
 
 type FullSpectrumProps = {
 	spectrumSearchAll: 'Y' | 'N';

@@ -7,7 +7,8 @@ module.exports = {
 		'^.+\\.(ts|tsx)$': 'babel-jest'
 	},
 	moduleNameMapper: {
-		'\\.(css|less|sass|scss)$': 'identity-obj-proxy'
+		'\\.(css|less|sass|scss)$': 'identity-obj-proxy',
+		'^@/(.*)$': '<rootDir>/$1'
 	},
 	testEnvironment: 'jsdom',
 	setupFilesAfterEnv: ['<rootDir>/test-utils/setup-tests.ts'],

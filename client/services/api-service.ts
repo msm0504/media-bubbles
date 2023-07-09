@@ -1,5 +1,5 @@
 import FormData from 'form-data';
-import formatGetQuery from '../../server/util/format-get-query';
+import formatGetQuery from '@/server/util/format-get-query';
 
 type RequestData<T> = {
 	[prop in keyof T]: unknown;

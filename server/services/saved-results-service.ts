@@ -7,7 +7,7 @@ import {
 	ListResponse,
 	SavedResult,
 	SavedResultSummary
-} from '../../types';
+} from '@/types';
 
 const COLLECTION_NAME = 'saved_results';
 const PAGE_SIZE = 10;

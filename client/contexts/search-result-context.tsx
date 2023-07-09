@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from 'react';
 
 import { getItemsFromStorage, StorageKey } from '../util/local-storage-util';
-import { ResultContextType, SearchResult } from '../../types';
+import { ResultContextType, SearchResult } from '@/types';
 
 export const initialState = {
 	sourceListToSearch: [],

@@ -5,11 +5,11 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
 import SearchForm from '../search-form';
-import { SearchMode } from '../../../constants/search-mode';
-import MAX_SOURCE_SELECTIONS from '../../../constants/max-source-selections';
-import { AppProviders } from '../../../contexts';
-import * as apiService from '../../../services/api-service';
-import { appSourceList, sourceListBySlant } from '../../../../test-utils/source-lists.json';
+import { SearchMode } from '@/client/constants/search-mode';
+import MAX_SOURCE_SELECTIONS from '@/client/constants/max-source-selections';
+import { AppProviders } from '@/client/contexts';
+import * as apiService from '@/client/services/api-service';
+import { appSourceList, sourceListBySlant } from '@/test-utils/source-lists.json';
 
 jest.mock('next/router', () => ({
 	push: jest.fn()

@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 import useAlerts from '../hooks/use-alerts';
-import { ShowAlertFn } from '../../types';
+import { ShowAlertFn } from '@/types';
 
 export const AlertsDispatch = createContext<ShowAlertFn>(() => {});
 

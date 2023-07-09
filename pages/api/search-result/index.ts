@@ -4,8 +4,8 @@ import { getSession } from 'next-auth/react';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import multer from 'multer';
 
-import { getS3Client } from '../../../server/services/s3Client';
-import { getSavedResults, saveSearchResult } from '../../../server/services/saved-results-service';
+import { getS3Client } from '@/server/services/s3Client';
+import { getSavedResults, saveSearchResult } from '@/server/services/saved-results-service';
 
 type MulterRequest = NextApiRequest & {
 	file: Express.Multer.File;

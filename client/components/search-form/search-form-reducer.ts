@@ -1,7 +1,11 @@
 import * as ACTION_TYPES from './action-types';
-import { SourceSlant } from '../../constants/source-slant';
-import { getItemsFromStorage, setItemInStorage, StorageKey } from '../../util/local-storage-util';
-import { SearchFormState } from '../../../types';
+import { SourceSlant } from '@/client/constants/source-slant';
+import {
+	getItemsFromStorage,
+	setItemInStorage,
+	StorageKey
+} from '@/client/util/local-storage-util';
+import { SearchFormState } from '@/types';
 
 type LocalStorageAction = {
 	type: typeof ACTION_TYPES.LOAD_LOCAL_STORAGE;

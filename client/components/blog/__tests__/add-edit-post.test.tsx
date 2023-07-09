@@ -6,7 +6,7 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
 import AddEditBlogPost, { fieldList } from '../add-edit-post';
-import { AppProviders } from '../../../contexts';
+import { AppProviders } from '@/client/contexts';
 
 jest.mock('next/router', () => ({
 	useRouter: () => ({ push: jest.fn() })

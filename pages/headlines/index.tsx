@@ -2,15 +2,12 @@ import { useContext, useRef } from 'react';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 
-import { SearchResultContext } from '../../client/contexts/search-result-context';
-import SaveResults from '../../client/components/save-results/save-results';
+import { SearchResultContext } from '@/client/contexts/search-result-context';
+import SaveResults from '@/client/components/save-results/save-results';
 
-const SearchResults = dynamic(
-	() => import('../../client/components/search-results/search-results'),
-	{
-		ssr: false
-	}
-);
+const SearchResults = dynamic(() => import('@/client/components/search-results/search-results'), {
+	ssr: false
+});
 
 const NewSearchResults: React.FC = () => {
 	const [context] = useContext(SearchResultContext);

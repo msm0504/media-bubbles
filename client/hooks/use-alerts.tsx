@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Alert } from 'react-bootstrap';
 
-import { ShowAlertFn } from '../../types';
+import { ShowAlertFn } from '@/types';
 
 type UseAlerts = [React.FC, ShowAlertFn];
 type AlertInfo = { level: string; message: string };

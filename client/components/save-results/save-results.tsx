@@ -5,11 +5,11 @@ import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 import html2canvas from 'html2canvas';
 import FormData from 'form-data';
 
-import ALERT_LEVEL from '../../constants/alert-level';
-import { AlertsDispatch } from '../../contexts/alerts-context';
-import { SearchResultContext } from '../../contexts/search-result-context';
-import { callApiMultipart } from '../../services/api-service';
-import { ItemSavedResponse, SearchResult, SetResultContextFn, ShowAlertFn } from '../../../types';
+import ALERT_LEVEL from '@/client/constants/alert-level';
+import { AlertsDispatch } from '@/client/contexts/alerts-context';
+import { SearchResultContext } from '@/client/contexts/search-result-context';
+import { callApiMultipart } from '@/client/services/api-service';
+import { ItemSavedResponse, SearchResult, SetResultContextFn, ShowAlertFn } from '@/types';
 
 type SaveResultsProps = {
 	container?: MutableRefObject<HTMLDivElement | null>;

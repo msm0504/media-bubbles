@@ -7,13 +7,13 @@ import SearchResults from '../search-results';
 import * as oldFormatMock from '../__mocks__/old-format.json';
 import * as allSourcesMock from '../__mocks__/search-all-sources.json';
 import * as singleSourcesMock from '../__mocks__/single-sources.json';
-import { SOURCE_SLANT_MAP } from '../../../constants/source-slant';
-import useMediaQuery, { XL_MIN_WIDTH } from '../../../hooks/use-media-query';
+import { SOURCE_SLANT_MAP } from '@/client/constants/source-slant';
+import useMediaQuery, { XL_MIN_WIDTH } from '@/client/hooks/use-media-query';
 
 jest.mock('next/router', () => ({
 	useRouter: () => ({ query: '' })
 }));
-jest.mock('../../../hooks/use-media-query');
+jest.mock('@/client/hooks/use-media-query');
 const server = setupServer();
 
 beforeAll(() => {

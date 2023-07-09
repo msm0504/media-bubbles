@@ -6,7 +6,7 @@ import {
 	ItemDeletedResponse,
 	ItemSavedResponse,
 	ListResponse
-} from '../../types';
+} from '@/types';
 
 const COLLECTION_NAME = 'blog_posts';
 const PAGE_SIZE = 10;

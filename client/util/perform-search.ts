@@ -14,7 +14,7 @@ import {
 	SetResultContextFn,
 	ShowAlertFn,
 	Source
-} from '../../types';
+} from '@/types';
 
 async function performSearch(
 	formData: SearchFormWithMode,

@@ -9,7 +9,7 @@ import ALERT_LEVEL from '../constants/alert-level';
 import { AlertsDispatch } from '../contexts/alerts-context';
 import { callApi } from '../services/api-service';
 import camelCaseToWords from '../util/camel-case-to-words';
-import { ItemDeletedResponse, ListItem, ListResponse } from '../../types';
+import { ItemDeletedResponse, ListItem, ListResponse } from '@/types';
 
 export type DeleteFnType = (itemId: string, itemName: string) => void;
 interface ListItemProps<T> {

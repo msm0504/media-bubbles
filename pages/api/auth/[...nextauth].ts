@@ -3,7 +3,7 @@ import FacebookProvider from 'next-auth/providers/facebook';
 import TwitterProvider from 'next-auth/providers/twitter';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 
-import { getMongoClient } from '../../../server/services/db-connection';
+import { getMongoClient } from '@/server/services/db-connection';
 
 export default NextAuth({
 	session: {

@@ -1,6 +1,6 @@
 import { Card } from 'react-bootstrap';
-import { SOURCE_SLANT_MAP, SourceSlant } from '../../constants/source-slant';
-import { Article, isNewsApiArticle } from '../../../types';
+import { SOURCE_SLANT_MAP, SourceSlant } from '@/client/constants/source-slant';
+import { Article, isNewsApiArticle } from '@/types';
 
 type ColumnArticlesProps = {
 	articles: Article[];

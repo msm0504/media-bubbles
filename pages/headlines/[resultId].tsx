@@ -3,10 +3,10 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Card } from 'react-bootstrap';
 
-import Spinner from '../../client/components/spinner';
-import SearchResults from '../../client/components/search-results/search-results';
-import { getSavedResult, getAllSavedResults } from '../../server/services/saved-results-service';
-import { SavedResult } from '../../types';
+import Spinner from '@/client/components/spinner';
+import SearchResults from '@/client/components/search-results/search-results';
+import { getSavedResult, getAllSavedResults } from '@/server/services/saved-results-service';
+import { SavedResult } from '@/types';
 
 type SavedSearchResultProps = {
 	loadedResult: SavedResult;

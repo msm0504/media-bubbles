@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { regular } from '@fortawesome/fontawesome-svg-core/import.macro';
 
 import AsyncList, { DeleteFnType } from '../async-list';
-import { SavedResultSummary } from '../../../types';
+import { SavedResultSummary } from '@/types';
 
 type SavedResultItemProps = {
 	item: SavedResultSummary;

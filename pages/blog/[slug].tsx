@@ -3,10 +3,10 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { Card } from 'react-bootstrap';
 
-import Spinner from '../../client/components/spinner';
-import BlogPostTemplate from '../../client/components/blog/blog-post-template';
-import { getAllPostSlugs, getPost } from '../../server/services/blog-service';
-import { BlogPost } from '../../types';
+import Spinner from '@/client/components/spinner';
+import BlogPostTemplate from '@/client/components/blog/blog-post-template';
+import { getAllPostSlugs, getPost } from '@/server/services/blog-service';
+import { BlogPost } from '@/types';
 
 type RouteParam = { params: { slug: string } };
 type BlogPostProps = {

@@ -4,8 +4,8 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
 import SaveResults from '../save-results';
-import { AppProviders } from '../../../contexts';
-import { SearchResultContext, initialState } from '../../../contexts/search-result-context';
+import { AppProviders } from '@/client/contexts';
+import { SearchResultContext, initialState } from '@/client/contexts/search-result-context';
 
 const server = setupServer();
 

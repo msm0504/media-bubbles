@@ -3,10 +3,10 @@ import { Card, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { regular } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-import { SOURCE_SLANT_MAP, SourceSlant } from '../../constants/source-slant';
-import { keys } from '../../util/typed-keys';
+import { SOURCE_SLANT_MAP, SourceSlant } from '@/client/constants/source-slant';
+import { keys } from '@/client/util/typed-keys';
 
-import styles from '../../../styles/search-form.module.css';
+import styles from '@/styles/search-form.module.css';
 
 type SlantRadioButtonsProps = {
 	selection?: SourceSlant;

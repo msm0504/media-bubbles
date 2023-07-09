@@ -9,13 +9,13 @@ import SearchInstructions from './instructions';
 import searchFormReducer, { initialState, FieldValue } from './search-form-reducer';
 import SlantRadioButtons from './slant-radio-buttons';
 import SourceCheckboxes from './source-checkboxes';
-import { SearchMode } from '../../constants/search-mode';
-import { AlertsDispatch } from '../../contexts/alerts-context';
-import { SearchResultContext } from '../../contexts/search-result-context';
-import performSearch from '../../util/perform-search';
-import { Source } from '../../../types';
+import { SearchMode } from '@/client/constants/search-mode';
+import { AlertsDispatch } from '@/client/contexts/alerts-context';
+import { SearchResultContext } from '@/client/contexts/search-result-context';
+import performSearch from '@/client/util/perform-search';
+import { Source } from '@/types';
 
-import styles from '../../../styles/search-form.module.css';
+import styles from '@/styles/search-form.module.css';
 
 type SearchFormProps = {
 	searchMode: SearchMode;

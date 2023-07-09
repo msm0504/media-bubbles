@@ -1,6 +1,6 @@
 import MAX_SOURCE_SELECTIONS from '../constants/max-source-selections';
 import { SIMILAR_VIEW_MAP, OPPOSING_VIEW_MAP, SourceSlant } from '../constants/source-slant';
-import { SearchFormWithMode, Source } from '../../types';
+import { SearchFormWithMode, Source } from '@/types';
 
 const getMyBubbleSourceList = (sourceListBySlant: Source[][], sourceSlant: SourceSlant) => {
 	let myBubbleSourceList = selectRandomSourceList(

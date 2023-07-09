@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nc from 'next-connect';
-import { getSourceLogo } from '../../../server/services/source-logo-service';
+import { getSourceLogo } from '@/server/services/source-logo-service';
 
 export default nc().get(async (req: NextApiRequest, res: NextApiResponse) => {
 	const image = await getSourceLogo(req.query.id as string, req.query.url as string);

@@ -1,9 +1,9 @@
 import { getNextSourcesToSearch } from '../source-list-to-search-util';
-import { initialState as blankForm } from '../../components/search-form/search-form-reducer';
-import { SearchMode } from '../../constants/search-mode';
-import MAX_SOURCE_SELECTIONS from '../../constants/max-source-selections';
-import { appSourceList, sourceListBySlant } from '../../../test-utils/source-lists.json';
-import { SearchFormState } from '../../../types';
+import { initialState as blankForm } from '@/client/components/search-form/search-form-reducer';
+import { SearchMode } from '@/client/constants/search-mode';
+import MAX_SOURCE_SELECTIONS from '@/client/constants/max-source-selections';
+import { appSourceList, sourceListBySlant } from '@/test-utils/source-lists.json';
+import { SearchFormState } from '@/types';
 
 const getSourcesToSearch = (searchMode: SearchMode, params: SearchFormState = blankForm) =>
 	getNextSourcesToSearch({ searchMode, ...params }, appSourceList, sourceListBySlant);

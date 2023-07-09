@@ -3,7 +3,7 @@ import { NewsSearchResponse, NewsArticle } from '@azure/cognitiveservices-newsse
 import { MILLISECONDS_IN_FIFTEEN_MIN } from '../constants';
 import formatGetQuery from '../util/format-get-query';
 import { getBiasRatingBySourceId, getSourceLists } from './source-list-service';
-import { ArticleMap, Source, SearchRequest, NewsApiArticle } from '../../types';
+import { ArticleMap, Source, SearchRequest, NewsApiArticle } from '@/types';
 
 type QuerySource = Source[] | string;
 type QuerySources = QuerySource[];

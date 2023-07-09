@@ -3,10 +3,10 @@ import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 
 import Column from './column';
-import { SOURCE_SLANT_MAP, SourceSlant } from '../../constants/source-slant';
-import useLocalStorage from '../../hooks/use-local-storage';
-import { keys } from '../../util/typed-keys';
-import { ArticleMap, Source } from '../../../types';
+import { SOURCE_SLANT_MAP, SourceSlant } from '@/client/constants/source-slant';
+import useLocalStorage from '@/client/hooks/use-local-storage';
+import { keys } from '@/client/util/typed-keys';
+import { ArticleMap, Source } from '@/types';
 const ShareButtons = dynamic(() => import('../save-results/share-buttons'), { ssr: false });
 
 type SearchResultsProps = {

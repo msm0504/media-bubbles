@@ -3,10 +3,10 @@ import { Card, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-import MAX_SOURCE_SELECTIONS from '../../constants/max-source-selections';
-import { Source } from '../../../types';
+import MAX_SOURCE_SELECTIONS from '@/client/constants/max-source-selections';
+import { Source } from '@/types';
 
-import styles from '../../../styles/search-form.module.css';
+import styles from '@/styles/search-form.module.css';
 
 type SourceCheckboxesProps = {
 	sourceList: Source[];

@@ -1,5 +1,5 @@
 import FormData from 'form-data';
-import { FeedbackMessage, FeedbackSentResponse } from '../../types';
+import { FeedbackMessage, FeedbackSentResponse } from '@/types';
 
 const headers = {
 	Authorization:

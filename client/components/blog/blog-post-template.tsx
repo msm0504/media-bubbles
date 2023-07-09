@@ -1,5 +1,5 @@
 import { Card } from 'react-bootstrap';
-import markdownToHtml from '../../util/markdown-to-html';
+import markdownToHtml from '@/client/util/markdown-to-html';
 
 type BlogPostTemplateProps = {
 	content: string;

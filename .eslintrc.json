@@ -45,6 +45,11 @@
 	"settings": {
 		"react": {
 			"version": "detect"
+		},
+		"import/resolver": {
+			"typescript": {
+				"directory": "."
+			}
 		}
 	},
 	"globals": {

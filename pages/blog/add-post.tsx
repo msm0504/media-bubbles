@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-import AddEditBlogPost from '../../client/components/blog/add-edit-post';
+import AddEditBlogPost from '@/client/components/blog/add-edit-post';
 
 const AddPost: React.FC = () => (
 	<>

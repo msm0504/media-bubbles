@@ -13,9 +13,9 @@ import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
 import MySavedResults from '../my-saved-results';
-import { AppProviders } from '../../../contexts';
-import * as apiService from '../../../services/api-service';
-import { ListResponse, SavedResultSummary } from '../../../../types';
+import { AppProviders } from '@/client/contexts';
+import * as apiService from '@/client/services/api-service';
+import { ListResponse, SavedResultSummary } from '@/types';
 
 jest.mock('next/router', () => ({
 	useRouter: () => ({ push: jest.fn() })

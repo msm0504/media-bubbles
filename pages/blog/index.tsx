@@ -4,10 +4,10 @@ import { Button, Card } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
 
-import AsyncList, { DeleteFnType } from '../../client/components/async-list';
-import RouteLink from '../../client/components/nav/route-link';
-import markdownToHtml from '../../client/util/markdown-to-html';
-import { BlogPostSummary } from '../../types';
+import AsyncList, { DeleteFnType } from '@/client/components/async-list';
+import RouteLink from '@/client/components/nav/route-link';
+import markdownToHtml from '@/client/util/markdown-to-html';
+import { BlogPostSummary } from '@/types';
 
 type PostSummaryProps = {
 	item: BlogPostSummary;

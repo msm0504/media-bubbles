@@ -3,7 +3,7 @@ import { setupServer } from 'msw/node';
 
 import { getBiasRatingBySourceId, getSourceLists } from '../source-list-service';
 import allsidesRespMock from '../__mocks__/allsides-resp.json';
-import { Source } from '../../../types';
+import { Source } from '@/types';
 
 const server = setupServer();
 

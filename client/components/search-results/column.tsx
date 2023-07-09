@@ -2,8 +2,8 @@ import { Button, Card, Collapse } from 'react-bootstrap';
 
 import ColumnArticles from './column-articles';
 import ColumnHeadingIcon from './column-heading-icon';
-import useMediaQuery, { XL_MIN_WIDTH } from '../../hooks/use-media-query';
-import { Article, Source } from '../../../types';
+import useMediaQuery, { XL_MIN_WIDTH } from '@/client/hooks/use-media-query';
+import { Article, Source } from '@/types';
 
 type ColumnProps = {
 	column: Source;

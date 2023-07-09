@@ -1,5 +1,5 @@
-import { Source } from '../../../types';
-import styles from '../../../styles/search-results.module.css';
+import { Source } from '@/types';
+import styles from '@/styles/search-results.module.css';
 
 type ColumnHeadingIconProps = {
 	className: string;
