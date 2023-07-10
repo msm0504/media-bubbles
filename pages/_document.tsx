@@ -11,7 +11,7 @@ class MyDocument extends Document {
 					/>
 					<link rel='manifest' href='/pwa/manifest.json' />
 					<link rel='apple-touch-icon' href='/pwa/icon.png'></link>
-					<meta name='theme-color' content='#a800e6' />
+					<meta name='theme-color' content='#222' />
 				</Head>
 				<body>
 					<Main />
