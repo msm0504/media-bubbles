@@ -53,7 +53,7 @@ async function saveClicked(
 	);
 
 	if (!savedResultId || typeof savedResultId !== 'string') {
-		showAlert(ALERT_LEVEL.danger, 'Saving this search result failed. Please try again later.');
+		showAlert(ALERT_LEVEL.warning, 'Saving this search result failed. Please try again later.');
 	} else {
 		showAlert(ALERT_LEVEL.success, 'Search result saved successfully.');
 		setContext({ ...context, savedResultId } as SearchResult);

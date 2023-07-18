@@ -11,7 +11,7 @@ type ColumnArticlesProps = {
 
 const CENTER = Math.floor(Object.keys(SOURCE_SLANT_MAP).length / 2);
 const getTextClassBySlant = (slant: number) =>
-	isNaN(slant) || slant > CENTER ? 'primary' : slant < CENTER ? 'info' : 'warning';
+	isNaN(slant) || slant > CENTER ? 'primary' : slant < CENTER ? 'info' : 'danger';
 
 const NOT_FOUND_MESSAGE = (
 	<Card body className='rounded-3 m-1 text-center text-primary'>

@@ -26,7 +26,7 @@ async function performSearch(
 ): Promise<void> {
 	const errorMessage = getFormErrorMessage(formData);
 	if (errorMessage) {
-		showAlert(ALERT_LEVEL.danger, errorMessage);
+		showAlert(ALERT_LEVEL.warning, errorMessage);
 	} else {
 		setSearching(true);
 		const isSearchAll =

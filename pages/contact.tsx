@@ -73,7 +73,7 @@ async function submitFeedback(feedbackData: FeedbackMessage, showAlert: ShowAler
 		feedbackData
 	);
 	if (feedbackSent !== true) {
-		showAlert(ALERT_LEVEL.danger, 'Sending this message failed. Please try again later.');
+		showAlert(ALERT_LEVEL.warning, 'Sending this message failed. Please try again later.');
 	} else {
 		showAlert(ALERT_LEVEL.success, 'Message sent successfully.');
 	}

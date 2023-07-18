@@ -79,7 +79,7 @@ async function submitPost(blogPostData: BlogPost, showAlert: ShowAlertFn) {
 		blogPostData
 	);
 	if (!slug) {
-		showAlert(ALERT_LEVEL.danger, 'Saving blog post failed. Please try again later.');
+		showAlert(ALERT_LEVEL.warning, 'Saving blog post failed. Please try again later.');
 	} else {
 		showAlert(ALERT_LEVEL.success, `Blog post ${slug} saved successfully.`);
 	}

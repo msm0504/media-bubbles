@@ -111,7 +111,7 @@ const AsyncList = <T,>({
 		const { itemDeleted } = await callApi<ItemDeletedResponse>('delete', `${apiPath}/${itemId}`);
 		if (itemDeleted !== true) {
 			showAlert(
-				ALERT_LEVEL.danger,
+				ALERT_LEVEL.warning,
 				`Deleting ${itemName || itemId} failed. Please try again later.`
 			);
 		} else {
