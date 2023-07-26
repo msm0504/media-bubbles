@@ -2,6 +2,7 @@ import { Button, Card, Collapse } from 'react-bootstrap';
 
 import ColumnArticles from './column-articles';
 import ColumnHeadingIcon from './column-heading-icon';
+import { SOURCE_SLANT_MAP } from '@/client/constants/source-slant';
 import useMediaQuery, { XL_MIN_WIDTH } from '@/client/hooks/use-media-query';
 import { Article, Source } from '@/types';
 
@@ -12,6 +13,10 @@ type ColumnProps = {
 	togglePanel: (columnId: string) => void;
 	isPanelInOpenList: boolean;
 };
+
+const CENTER = Math.floor(Object.keys(SOURCE_SLANT_MAP).length / 2);
+const getTextClassBySlant = (slant: number) =>
+	isNaN(slant) || slant > CENTER ? 'primary' : slant < CENTER ? 'info' : 'danger';
 
 const Column: React.FC<ColumnProps> = ({
 	column,
@@ -26,6 +31,11 @@ const Column: React.FC<ColumnProps> = ({
 	const [width] = useMediaQuery();
 	const isXlScreen = width >= XL_MIN_WIDTH;
 	const isPanelExpanded = isXlScreen || isPanelInOpenList;
+
+	const slantClass =
+		column.slant === null || typeof column.slant === 'undefined'
+			? getTextClassBySlant(Number(column.id))
+			: getTextClassBySlant(column.slant);
 
 	return (
 		<div className='d-flex flex-column' style={{ flexBasis: '20%' }}>
@@ -42,7 +52,7 @@ const Column: React.FC<ColumnProps> = ({
 						) : (
 							<Button
 								variant='link'
-								className='mx-auto'
+								className={`mx-auto link-${slantClass}`}
 								onClick={() => togglePanel(column.id)}
 								aria-expanded={isPanelExpanded}
 								aria-controls={collapseId}
@@ -55,12 +65,7 @@ const Column: React.FC<ColumnProps> = ({
 			</Card>
 			<Collapse in={isPanelExpanded}>
 				<div id={collapseId} aria-labelledby={headingId}>
-					<ColumnArticles
-						articles={articles}
-						columnId={column.id}
-						isSearchAll={isSearchAll}
-						slant={column.slant}
-					/>
+					<ColumnArticles articles={articles} isSearchAll={isSearchAll} slantClass={slantClass} />
 				</div>
 			</Collapse>
 		</div>
