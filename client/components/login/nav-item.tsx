@@ -13,8 +13,8 @@ const LoginNavItem: React.FC = () => {
 		<Dropdown className='me-md-4' as={NavItem}>
 			<Dropdown.Toggle as={NavLink}>Log in</Dropdown.Toggle>
 			<Dropdown.Menu align='end'>
-				<TwitterLogin sessionLoading={loading} />
 				<FacebookLogin sessionLoading={loading} />
+				<TwitterLogin sessionLoading={loading} />
 			</Dropdown.Menu>
 		</Dropdown>
 	);

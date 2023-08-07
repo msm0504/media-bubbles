@@ -29,11 +29,3 @@ div.page-bg {
 .facebook-btn:not(:hover) {
 	background: #4267b2;
 }
-
-.fa-twitter.brand-color {
-	color: #1da1f2;
-}
-
-.twitter-btn:not(:hover) {
-	background: #1da1f2;
-}

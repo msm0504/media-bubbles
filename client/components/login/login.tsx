@@ -24,7 +24,7 @@ export const TwitterLogin: React.FC<LoginProps> = ({ sessionLoading }) => (
 		onClick={() => signIn('twitter')}
 		disabled={sessionLoading}
 	>
-		<FontAwesomeIcon className='brand-color me-2' icon={brands('twitter')} />
+		<FontAwesomeIcon className='me-2' icon={brands('x-twitter')} />
 		Log in with Twitter
 	</Dropdown.Item>
 );

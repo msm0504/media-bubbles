@@ -24,18 +24,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 		<>
 			<Button
 				variant='info'
-				className='twitter-btn d-inline-block mb-1 ms-3 me-1 rounded'
-				id='share-twitter'
-				onClick={() => {
-					window.open(`https://twitter.com/intent/tweet?url=${encodeURI(urlToShare)}`, '_blank');
-				}}
-			>
-				<FontAwesomeIcon icon={brands('twitter')} size='lg' />
-				<span className='sr-only'>{'share on Twitter'}</span>
-			</Button>
-			<Button
-				variant='info'
-				className='facebook-btn d-inline-block mb-1 me-1 rounded'
+				className='facebook-btn d-inline-block mb-1 ms-3 me-1 rounded'
 				id='share-facebook'
 				onClick={() => {
 					window.open(
@@ -46,6 +35,17 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 			>
 				<FontAwesomeIcon icon={brands('facebook-f')} size='lg' />
 				<span className='sr-only'>{'share on Facebook'}</span>
+			</Button>
+			<Button
+				variant='dark'
+				className='d-inline-block mb-1 me-1 rounded'
+				id='share-twitter'
+				onClick={() => {
+					window.open(`https://twitter.com/intent/tweet?url=${encodeURI(urlToShare)}`, '_blank');
+				}}
+			>
+				<FontAwesomeIcon icon={brands('x-twitter')} size='lg' />
+				<span className='sr-only'>{'share on Twitter'}</span>
 			</Button>
 			<Button
 				variant='secondary'
