@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Button, Nav } from 'react-bootstrap';
 
@@ -8,9 +9,6 @@ type RouteLinkProps = {
 	isNav?: boolean;
 };
 
-const formatRoute = (routePath: string) =>
-	routePath.length && routePath.charAt(0) === '/' ? routePath : `/${routePath}`;
-
 const RouteLink: React.FC<RouteLinkProps> = ({
 	buttonText,
 	className = '',
@@ -19,16 +17,15 @@ const RouteLink: React.FC<RouteLinkProps> = ({
 }) => {
 	if (!buttonText) return null;
 
-	const formattedRoute = formatRoute(routePath);
 	const router = useRouter();
 	const linkClicked = () => {
-		if (router.pathname !== formattedRoute) {
-			router.push(formattedRoute);
+		if (router.pathname !== routePath) {
+			router.push(routePath);
 		}
 	};
 
 	return isNav ? (
-		<Nav.Link className='me-md-4' href='#' eventKey={formatRoute(routePath)} onClick={linkClicked}>
+		<Nav.Link as={Link} className='me-md-4' href={routePath} eventKey={routePath}>
 			{buttonText}
 		</Nav.Link>
 	) : (

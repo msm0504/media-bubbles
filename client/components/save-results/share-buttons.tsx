@@ -1,6 +1,9 @@
 import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { brands, regular } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { faFacebookF, faXTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faClipboard, faEnvelope } from '@fortawesome/free-regular-svg-icons';
+
+import styles from '@/styles/styles.module.css';
 
 type ShareButtonsProps = {
 	urlToShare?: string;
@@ -24,7 +27,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 		<>
 			<Button
 				variant='info'
-				className='facebook-btn d-inline-block mb-1 ms-3 me-1 rounded'
+				className={`${styles.facebookBtn} d-inline-block mb-1 ms-3 me-1 rounded`}
 				id='share-facebook'
 				onClick={() => {
 					window.open(
@@ -33,7 +36,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 					);
 				}}
 			>
-				<FontAwesomeIcon icon={brands('facebook-f')} size='lg' />
+				<FontAwesomeIcon icon={faFacebookF} size='lg' />
 				<span className='sr-only'>{'share on Facebook'}</span>
 			</Button>
 			<Button
@@ -44,7 +47,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 					window.open(`https://twitter.com/intent/tweet?url=${encodeURI(urlToShare)}`, '_blank');
 				}}
 			>
-				<FontAwesomeIcon icon={brands('x-twitter')} size='lg' />
+				<FontAwesomeIcon icon={faXTwitter} size='lg' />
 				<span className='sr-only'>{'share on Twitter'}</span>
 			</Button>
 			<Button
@@ -59,7 +62,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 					);
 				}}
 			>
-				<FontAwesomeIcon icon={regular('envelope')} size='lg' />
+				<FontAwesomeIcon icon={faEnvelope} size='lg' />
 				<span className='sr-only'>{'email'}</span>
 			</Button>
 			{document && document.queryCommandSupported('copy') ? (
@@ -69,7 +72,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 					id='share-copy'
 					onClick={copyToClipboard}
 				>
-					<FontAwesomeIcon icon={regular('clipboard')} size='lg' />
+					<FontAwesomeIcon icon={faClipboard} size='lg' />
 					<span className='sr-only'>{'copy link'}</span>
 				</Button>
 			) : null}

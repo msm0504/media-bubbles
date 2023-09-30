@@ -5,7 +5,7 @@ import {
 	setItemInStorage,
 	StorageKey
 } from '@/client/util/local-storage-util';
-import { SearchFormState } from '@/types';
+import type { SearchFormState } from '@/types';
 
 type LocalStorageAction = {
 	type: typeof ACTION_TYPES.LOAD_LOCAL_STORAGE;

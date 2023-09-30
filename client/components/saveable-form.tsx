@@ -1,7 +1,7 @@
 import { useState, useEffect, ChangeEvent, FocusEvent, Fragment, ReactElement } from 'react';
 import { Button, Col, Form, Modal, Row } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import useInterval from '../hooks/use-interval';
 import {
@@ -214,7 +214,7 @@ const SaveableForm = <T,>({
 					onClick={submitClicked}
 				>
 					<strong>{submitLabel}</strong>
-					{isProcessing && <FontAwesomeIcon className='ms-2' icon={solid('spinner')} pulse />}
+					{isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} pulse />}
 				</Button>
 			</Form>
 		</>

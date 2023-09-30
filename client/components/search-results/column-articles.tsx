@@ -1,5 +1,6 @@
 import { Card } from 'react-bootstrap';
-import { Article, isNewsApiArticle } from '@/types';
+import { isNewsApiArticle } from '@/types';
+import type { Article } from '@/types';
 
 type ColumnArticlesProps = {
 	articles: Article[];

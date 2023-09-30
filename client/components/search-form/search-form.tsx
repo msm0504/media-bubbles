@@ -1,7 +1,7 @@
 import { useState, useReducer, useContext, useEffect, ChangeEvent } from 'react';
 import { Button, Card, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { faInfoCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import * as ACTION_TYPES from './action-types';
 import FullSpectrum from './full-spectrum';
@@ -13,7 +13,7 @@ import { SearchMode } from '@/client/constants/search-mode';
 import { AlertsDispatch } from '@/client/contexts/alerts-context';
 import { SearchResultContext } from '@/client/contexts/search-result-context';
 import performSearch from '@/client/util/perform-search';
-import { Source } from '@/types';
+import type { Source } from '@/types';
 
 import styles from '@/styles/search-form.module.css';
 
@@ -101,7 +101,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
 									</Tooltip>
 								}
 							>
-								<FontAwesomeIcon icon={solid('info-circle')} aria-label='keyword tooltip' />
+								<FontAwesomeIcon icon={faInfoCircle} aria-label='keyword tooltip' />
 							</OverlayTrigger>
 							<span className='sr-only'>
 								{'If no key words are entered, top headlines will be returned for each source.'}
@@ -147,7 +147,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
 						onClick={searchTriggered}
 					>
 						<strong>Get Headlines</strong>
-						{isSearching && <FontAwesomeIcon className='ms-2' icon={solid('spinner')} pulse />}
+						{isSearching && <FontAwesomeIcon className='ms-2' icon={faSpinner} pulse />}
 					</Button>
 				</Card.Body>
 			</Form>

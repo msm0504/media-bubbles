@@ -1,7 +1,8 @@
 import Link from 'next/link';
+import { Card } from 'react-bootstrap';
 
 const Footer: React.FC = () => (
-	<div className='card-footer bg-white text-muted'>
+	<Card.Footer className='bg-white text-muted'>
 		<div className='d-flex flex-column flex-md-row justify-content-md-start'>
 			<p className='d-flex flex-column'>
 				<a href='https://bing.com/news' target='_blank' rel='noreferrer'>
@@ -15,15 +16,15 @@ const Footer: React.FC = () => (
 				</a>
 			</p>
 			<p className='d-flex flex-column ms-md-4'>
-				<Link href='/privacy-policy'>
-					<a target='_blank'>Privacy Policy</a>
+				<Link href='/privacy-policy' target='_blank'>
+					Privacy Policy
 				</Link>
-				<Link href='/terms'>
-					<a target='_blank'>Terms and Conditions</a>
+				<Link href='/terms' target='_blank'>
+					Terms and Conditions
 				</Link>
 			</p>
 		</div>
-	</div>
+	</Card.Footer>
 );
 
 export default Footer;

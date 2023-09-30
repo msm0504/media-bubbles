@@ -34,9 +34,7 @@ const About: React.FC = () => (
 				news "across the spectrum" presents users a better snapshot of events under various filters.
 				Media companies will have to compete with each other instead of isolating their audiences.
 				Try out our `}
-				<Link href='/search'>
-					<a>search tool</a>
-				</Link>
+				<Link href='/search'>search tool</Link>
 				{` to see for yourself. We hope this will be the first step towards living in a shared reality.`}
 			</p>
 			<h3>How We Got Started</h3>

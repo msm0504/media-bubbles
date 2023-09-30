@@ -1,5 +1,4 @@
 import { cleanup, render, fireEvent, screen } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 

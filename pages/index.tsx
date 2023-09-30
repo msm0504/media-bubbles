@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import { Button } from 'react-bootstrap';
 
 import HomePageLink from '../client/components/nav/home-page-link';
+import styles from '@/styles/styles.module.css';
 
 const Home: React.FC = () => {
 	const router = useRouter();
@@ -12,7 +13,9 @@ const Home: React.FC = () => {
 				className='d-flex flex-column align-items-center justify-content-end'
 				style={{ minHeight: '500px' }}
 			>
-				<h1 className='heading-text display-1 fw-bold text-light mt-6'>Media Bubbles</h1>
+				<h1 className={`${styles.outlinedText} display-1 fw-bold text-light mt-6`}>
+					Media Bubbles
+				</h1>
 				<p className='px-4 text-center fw-bold text-light' style={{ maxWidth: '42rem' }}>
 					{`
 				In the age of social media and targeted advertising, it's easy to

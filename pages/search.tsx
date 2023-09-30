@@ -8,7 +8,7 @@ import { SEARCH_MODE_MAP, SearchMode } from '../client/constants/search-mode';
 import useLocalStorage from '../client/hooks/use-local-storage';
 import { keys } from '../client/util/typed-keys';
 import { getSourceLists } from '../server/services/source-list-service';
-import { Source } from '../types';
+import type { Source } from '../types';
 
 const SECONDS_IN_WEEK = 60 * 60 * 24 * 7;
 

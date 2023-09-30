@@ -2,12 +2,13 @@ import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { Button, Card } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import { faPenToSquare, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 import AsyncList, { DeleteFnType } from '@/client/components/async-list';
 import RouteLink from '@/client/components/nav/route-link';
 import markdownToHtml from '@/client/util/markdown-to-html';
-import { BlogPostSummary } from '@/types';
+import type { BlogPostSummary } from '@/types';
 
 type PostSummaryProps = {
 	item: BlogPostSummary;
@@ -16,11 +17,11 @@ type PostSummaryProps = {
 
 const AddPost = (
 	<span>
-		Add Post <FontAwesomeIcon icon={solid('plus')} size='lg' aria-label='Add Post' />
+		Add Post <FontAwesomeIcon icon={faPlus} size='lg' aria-label='Add Post' />
 	</span>
 );
 
-const EditPost = <FontAwesomeIcon icon={solid('pen-to-square')} size='lg' aria-label='Edit Post' />;
+const EditPost = <FontAwesomeIcon icon={faPenToSquare} size='lg' aria-label='Edit Post' />;
 
 const PostSummary: React.FC<PostSummaryProps> = ({
 	item: { title, excerpt, slug, updatedAt: date },
@@ -42,7 +43,7 @@ const PostSummary: React.FC<PostSummaryProps> = ({
 					>
 						<FontAwesomeIcon
 							id={`delete-${slug}-icon`}
-							icon={regular('trash-can')}
+							icon={faTrashCan}
 							size='lg'
 							aria-label={`Delete post ${slug}`}
 						/>

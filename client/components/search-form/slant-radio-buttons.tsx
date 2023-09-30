@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react';
 import { Card, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { regular } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { faCircle, faCircleDot } from '@fortawesome/free-regular-svg-icons';
 
 import { SOURCE_SLANT_MAP, SourceSlant } from '@/client/constants/source-slant';
 import { keys } from '@/client/util/typed-keys';
@@ -33,13 +33,13 @@ const SlantRadioButtons: React.FC<SlantRadioButtonsProps> = ({ selection, onChan
 					{isChecked ? (
 						<FontAwesomeIcon
 							className={`${styles.iconInput} me-1 text-primary`}
-							icon={regular('circle-dot')}
+							icon={faCircleDot}
 							size='xl'
 						/>
 					) : (
 						<FontAwesomeIcon
 							className={`${styles.iconInput} me-1 text-secondary`}
-							icon={regular('circle')}
+							icon={faCircle}
 							size='xl'
 						/>
 					)}

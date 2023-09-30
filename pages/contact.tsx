@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 
-import { FeedbackMessage, FeedbackSentResponse, ShowAlertFn } from '../types';
+import type { FeedbackMessage, FeedbackSentResponse, ShowAlertFn } from '../types';
 import SaveableForm, { FieldSetting, getRequiredMessage } from '../client/components/saveable-form';
 import ALERT_LEVEL from '../client/constants/alert-level';
 import { AlertsDispatch } from '../client/contexts/alerts-context';

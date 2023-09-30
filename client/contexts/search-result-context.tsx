@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect } from 'react';
 
 import { getItemsFromStorage, StorageKey } from '../util/local-storage-util';
-import { ResultContextType, SearchResult } from '@/types';
+import type { ResultContextType, ParentCompProps, SearchResult } from '@/types';
 
 export const initialState = {
 	sourceListToSearch: [],
@@ -21,7 +21,7 @@ const storageKeys: StorageKey[] = [
 
 export const SearchResultContext = createContext<ResultContextType>([{}, () => {}]);
 
-export const SearchResultProvider: React.FC = ({ children }) => {
+export const SearchResultProvider: React.FC<ParentCompProps> = ({ children }) => {
 	const [context, setContext] = useState<SearchResult>(initialState);
 
 	useEffect(() => {

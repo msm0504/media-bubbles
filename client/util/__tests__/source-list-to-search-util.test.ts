@@ -3,7 +3,7 @@ import { initialState as blankForm } from '@/client/components/search-form/searc
 import { SearchMode } from '@/client/constants/search-mode';
 import MAX_SOURCE_SELECTIONS from '@/client/constants/max-source-selections';
 import { appSourceList, sourceListBySlant } from '@/test-utils/source-lists.json';
-import { SearchFormState } from '@/types';
+import type { SearchFormState } from '@/types';
 
 const getSourcesToSearch = (searchMode: SearchMode, params: SearchFormState = blankForm) =>
 	getNextSourcesToSearch({ searchMode, ...params }, appSourceList, sourceListBySlant);

@@ -3,7 +3,7 @@ import { setupServer } from 'msw/node';
 
 import { getBiasRatingBySourceId, getSourceLists } from '../source-list-service';
 import allsidesRespMock from '../__mocks__/allsides-resp.json';
-import { Source } from '@/types';
+import type { Source } from '@/types';
 
 const server = setupServer();
 
@@ -30,7 +30,7 @@ beforeAll(() => {
 	);
 });
 
-afterAll(server.close);
+afterAll(() => server.close());
 
 test('generates and returns source lists', async () => {
 	const { appSourceList, sourceListBySlant } = await getSourceLists();

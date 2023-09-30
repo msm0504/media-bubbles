@@ -3,7 +3,7 @@ import Head from 'next/head';
 
 import SearchResults from '../client/components/search-results/search-results';
 import { getLatestHeadlines } from '../server/services/bing-news-service';
-import { ArticleMap } from '../types';
+import type { ArticleMap } from '../types';
 
 type LatestNewsProps = {
 	latestArticleMap: ArticleMap;

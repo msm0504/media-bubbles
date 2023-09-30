@@ -8,7 +8,7 @@ import SaveableForm, { getRequiredMessage, FieldSetting } from '../saveable-form
 import ALERT_LEVEL from '@/client/constants/alert-level';
 import { AlertsDispatch } from '@/client/contexts/alerts-context';
 import { callApi } from '@/client/services/api-service';
-import { BlogPost, ItemSavedResponse, ShowAlertFn } from '@/types';
+import type { BlogPost, ItemSavedResponse, ShowAlertFn } from '@/types';
 
 type AddEditPostProps = {
 	currentVersion?: BlogPost;

@@ -1,21 +1,132 @@
+// Journal 5.3.0
+// Bootswatch
+
+$theme: 'journal' !default;
+
+//
+// Color system
+//
+
+$white: #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #eee !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #aaa !default;
+$gray-600: #777 !default;
+$gray-700: #495057 !default;
+$gray-800: #333 !default;
+$gray-900: #222 !default;
+$black: #000 !default;
+
+$blue: #340be6 !default;
+$indigo: #6610f2 !default;
+$purple: #a800e6 !default;
+$pink: #e83e8c !default;
+$red: #e60b76 !default;
+$orange: #fd7e14 !default;
+$yellow: #e6ce17 !default;
+$green: #17e618 !default;
+$teal: #20c997 !default;
+$cyan: #369 !default;
+
 /**
   * Based off of https://www.colourlovers.com/palette/55400/Neon_Virus
   * Started with purple #ba01ff
   * Picked darker shade #a800e6 in Adobe color wheel
   * Used double split complementary fn to generate rest of palette
   */
-$primary: #e60b76;
-$info: #340be6;
-$warning: #e6ce17;
-$danger: #a800e6;
-$success: #17e618;
+$primary: $red !default;
+$secondary: $gray-500 !default;
+$success: $green !default;
+$info: $blue !default;
+$warning: $yellow !default;
+$danger: $purple !default;
+$light: $gray-100 !default;
+$dark: $gray-900 !default;
 
-$font-family-serif: 'Roboto Slab', serif;
-$font-family-base: $font-family-serif;
-$headings-font-family: $font-family-serif;
+$min-contrast-ratio: 1.28 !default;
 $border-radius-lg: 0.75rem;
-$web-font-path: null;
 
-@import '../node_modules/bootswatch/dist/journal/variables';
+// Fonts
+
+$headings-font-weight: 700 !default;
+$headings-line-height: 1.1 !default;
+
+// Buttons
+
+$input-btn-padding-x: 1rem !default;
+
+// Navbar
+
+$navbar-light-color: rgba($black, 0.7) !default;
+$navbar-light-hover-color: $black !default;
+$navbar-light-active-color: $black !default;
+
+// Pagination
+
+$pagination-hover-color: $white !default;
+$pagination-hover-bg: $primary !default;
+$pagination-hover-border-color: $primary !default;
+
 @import '../node_modules/bootstrap/scss/bootstrap';
-@import '../node_modules/bootswatch/dist/journal/bootswatch';
+
+// Journal 5.3.0
+// Bootswatch
+
+// Variables
+
+:root {
+	color-scheme: light;
+}
+
+// Navbar
+
+.bg-dark {
+	background-color: $black !important;
+}
+
+.bg-light {
+	color: $black;
+	background-color: $white !important;
+	border: 1px solid $gray-200;
+
+	&.navbar-fixed-top {
+		border-width: 0 0 1px;
+	}
+
+	&.navbar-fixed-bottom {
+		border-width: 1px 0 0;
+	}
+}
+
+.navbar {
+	font-size: 18px;
+	font-weight: $headings-font-weight;
+}
+
+.navbar-brand {
+	padding-top: 0.5rem;
+	font-size: inherit;
+	font-weight: $headings-font-weight;
+	text-transform: uppercase;
+}
+
+// Buttons
+
+.btn {
+	font-weight: $headings-font-weight;
+
+	&-secondary,
+	&-warning {
+		color: $white;
+	}
+}
+
+// Navs
+
+.pagination {
+	a:hover {
+		text-decoration: none;
+	}
+}

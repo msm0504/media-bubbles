@@ -154,3 +154,7 @@ export type ItemDeletedResponse = {
 export type FeedbackSentResponse = {
 	feedbackSent: boolean;
 };
+
+export type ParentCompProps = {
+	children?: React.ReactNode;
+};

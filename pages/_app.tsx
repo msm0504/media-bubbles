@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { Roboto_Slab } from 'next/font/google';
 import Script from 'next/script';
 import { SessionProvider } from 'next-auth/react';
-import SSRProvider from 'react-bootstrap/SSRProvider';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 
@@ -13,10 +14,17 @@ import Footer from '../client/components/footer';
 import TopNavbar from '../client/components/nav/top-navbar';
 import { AppProviders } from '../client/contexts';
 import * as gtag from '../lib/gtag';
+import background from '../public/images/background.png';
+import homeBackground from '../public/images/og_image.png';
+import styles from '../styles/styles.module.css';
 import '../styles/custom-theme.scss';
-import '../styles/globals.css';
 
 config.autoAddCss = false;
+
+const robotoSlab = Roboto_Slab({
+	subsets: ['latin'],
+	display: 'swap'
+});
 
 const title = 'Media Bubbles';
 const description =
@@ -88,9 +96,22 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 				/>
 			) : null}
 			<SessionProvider session={pageProps.session}>
-				<SSRProvider>
+				<main className={robotoSlab.className}>
 					<TopNavbar />
-					<div className={`container-fluid p-0${isHome ? ' home-bg' : ' page-bg'}`}>
+					<div className={'container-fluid p-0'}>
+						<div className={styles.bgImgContainer}>
+							<Image
+								alt='background'
+								src={isHome ? homeBackground : background}
+								placeholder='blur'
+								quality={100}
+								fill
+								sizes='100vw'
+								style={{
+									objectFit: 'cover'
+								}}
+							/>
+						</div>
 						<div className='card border-0' style={{ background: 'transparent' }}>
 							{isHome ? (
 								<Component {...pageProps} />
@@ -107,7 +128,7 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
 							<Footer />
 						</div>
 					</div>
-				</SSRProvider>
+				</main>
 			</SessionProvider>
 		</>
 	);

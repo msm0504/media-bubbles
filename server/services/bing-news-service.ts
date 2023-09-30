@@ -3,7 +3,7 @@ import { NewsSearchResponse, NewsArticle } from '@azure/cognitiveservices-newsse
 import { MILLISECONDS_IN_FIFTEEN_MIN } from '../constants';
 import formatGetQuery from '../util/format-get-query';
 import { getBiasRatingBySourceId, getSourceLists } from './source-list-service';
-import { ArticleMap, Source, SearchRequest, NewsApiArticle } from '@/types';
+import type { ArticleMap, Source, SearchRequest, NewsApiArticle } from '@/types';
 
 type QuerySource = Source[] | string;
 type QuerySources = QuerySource[];
@@ -159,7 +159,8 @@ export async function getLatestHeadlines(): Promise<ArticleMap> {
 			keyword: '',
 			previousDays: 1
 		};
-		global.latest.articleMap = await getHeadlines(params);
+		// remove any undefined field values
+		global.latest.articleMap = JSON.parse(JSON.stringify(await getHeadlines(params)));
 		global.latest.lastUpdate = Date.now();
 	}
 	return global.latest.articleMap;

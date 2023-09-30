@@ -3,7 +3,7 @@ import Head from 'next/head';
 
 import AddEditBlogPost from '@/client/components/blog/add-edit-post';
 import { getPost } from '@/server/services/blog-service';
-import { BlogPost } from '@/types';
+import type { BlogPost } from '@/types';
 
 type RouteParam = { params: { slug: string } };
 type EditPostProps = {

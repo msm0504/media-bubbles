@@ -1,7 +1,7 @@
 import { MILLISECONDS_IN_DAY, useTestData } from '../constants';
 import SOURCE_INCLUDE_LIST from '../source-include-list.json';
 import { SourceSlant } from '@/client/constants/source-slant';
-import { Source } from '@/types';
+import type { Source } from '@/types';
 
 type AllSidesRating = {
 	source_name: string;

@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
 import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { regular } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
 import AsyncList, { DeleteFnType } from '../async-list';
-import { SavedResultSummary } from '@/types';
+import type { SavedResultSummary } from '@/types';
 
 type SavedResultItemProps = {
 	item: SavedResultSummary;
@@ -31,7 +31,7 @@ const SavedResultItem: React.FC<SavedResultItemProps> = ({
 			>
 				<FontAwesomeIcon
 					id={`delete-${_id}-icon`}
-					icon={regular('trash-can')}
+					icon={faTrashCan}
 					size='lg'
 					aria-label={`Delete saved result ${name}`}
 				/>

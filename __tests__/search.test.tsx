@@ -1,5 +1,4 @@
 import { cleanup, render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 
 import SearchTabs from '../pages/search';
 import { SEARCH_MODE_MAP } from '../client/constants/search-mode';

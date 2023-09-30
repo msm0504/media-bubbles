@@ -1,10 +1,11 @@
 import { ChangeEvent } from 'react';
 import { Card, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { regular, solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { faSquare, faSquareCheck } from '@fortawesome/free-regular-svg-icons';
+import { faSquare as faSquareSolid } from '@fortawesome/free-solid-svg-icons';
 
 import MAX_SOURCE_SELECTIONS from '@/client/constants/max-source-selections';
-import { Source } from '@/types';
+import type { Source } from '@/types';
 
 import styles from '@/styles/search-form.module.css';
 
@@ -39,13 +40,13 @@ const SourceCheckboxes: React.FC<SourceCheckboxesProps> = ({
 					{isChecked ? (
 						<FontAwesomeIcon
 							className={`${styles.iconInput} me-1 text-primary`}
-							icon={regular('square-check')}
+							icon={faSquareCheck}
 							size='2xl'
 						/>
 					) : (
 						<FontAwesomeIcon
 							className={`${styles.iconInput} me-1 text-secondary`}
-							icon={isDisabled ? solid('square') : regular('square')}
+							icon={isDisabled ? faSquareSolid : faSquare}
 							size='2xl'
 						/>
 					)}

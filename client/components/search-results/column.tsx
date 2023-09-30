@@ -4,7 +4,7 @@ import ColumnArticles from './column-articles';
 import ColumnHeadingIcon from './column-heading-icon';
 import { SOURCE_SLANT_MAP } from '@/client/constants/source-slant';
 import useMediaQuery, { XL_MIN_WIDTH } from '@/client/hooks/use-media-query';
-import { Article, Source } from '@/types';
+import type { Article, Source } from '@/types';
 
 type ColumnProps = {
 	column: Source;

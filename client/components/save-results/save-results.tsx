@@ -1,7 +1,7 @@
 import { useState, useContext, MutableRefObject } from 'react';
 import { Button } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import html2canvas from 'html2canvas';
 import FormData from 'form-data';
 
@@ -9,7 +9,7 @@ import ALERT_LEVEL from '@/client/constants/alert-level';
 import { AlertsDispatch } from '@/client/contexts/alerts-context';
 import { SearchResultContext } from '@/client/contexts/search-result-context';
 import { callApiMultipart } from '@/client/services/api-service';
-import { ItemSavedResponse, SearchResult, SetResultContextFn, ShowAlertFn } from '@/types';
+import type { ItemSavedResponse, SearchResult, SetResultContextFn, ShowAlertFn } from '@/types';
 
 type SaveResultsProps = {
 	container?: MutableRefObject<HTMLDivElement | null>;
@@ -79,7 +79,7 @@ const SaveResults: React.FC<SaveResultsProps> = ({ container }) => {
 			}
 		>
 			<strong>Save Results</strong>
-			{isSaving && <FontAwesomeIcon className='ms-2' icon={solid('spinner')} pulse />}
+			{isSaving && <FontAwesomeIcon className='ms-2' icon={faSpinner} pulse />}
 		</Button>
 	);
 };

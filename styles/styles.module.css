@@ -1,0 +1,32 @@
+.bgImgContainer {
+	position: fixed;
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
+	z-index: -10;
+}
+
+.headerImgContainer {
+	position: relative;
+	overflow: hidden;
+	height: 220px;
+}
+
+.headerImg {
+	background-repeat: no-repeat;
+	background-size: 100% auto;
+	z-index: -1;
+}
+
+.outlinedText {
+	text-shadow: -1px 1px 8px var(--bs-dark), 1px 1px 8px var(--bs-dark), 1px -1px 8px var(--bs-dark),
+		-1px -1px 8px var(--bs-dark);
+}
+
+.fbBrandColor {
+	color: #4267b2;
+}
+
+.facebookBtn:not(:hover) {
+	background: #4267b2;
+}

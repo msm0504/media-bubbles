@@ -1,5 +1,4 @@
 import { cleanup, render, fireEvent, screen, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { rest } from 'msw';
@@ -34,7 +33,7 @@ afterEach(() => {
 	server.resetHandlers();
 });
 
-afterAll(server.close);
+afterAll(() => server.close());
 
 test('renders correct input fields', () => {
 	(useSession as jest.Mock).mockReturnValue({ data: null, status: 'unauthorized' });

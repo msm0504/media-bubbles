@@ -1,6 +1,5 @@
 import Router from 'next/router';
 import { cleanup, render, fireEvent, screen, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -14,6 +13,15 @@ import { appSourceList, sourceListBySlant } from '@/test-utils/source-lists.json
 jest.mock('next/router', () => ({
 	push: jest.fn()
 }));
+// No idea why this is needed, but it is now.
+// https://github.com/swc-project/swc/issues/3843#issuecomment-1058826971
+jest.mock('@/client/services/api-service', () => {
+	const actualModule = jest.requireActual('@/client/services/api-service');
+	return {
+		__esModule: true,
+		...actualModule
+	};
+});
 const server = setupServer();
 
 const renderForm = (searchMode: SearchMode) =>
@@ -46,7 +54,7 @@ afterEach(() => {
 	server.resetHandlers();
 });
 
-afterAll(server.close);
+afterAll(() => server.close());
 
 test('renders the component', () => {
 	renderForm('MY_BUBBLE');

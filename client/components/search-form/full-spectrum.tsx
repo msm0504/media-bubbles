@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react';
 import { Card, Form } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { solid } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
 
 import styles from '@/styles/search-form.module.css';
 
@@ -29,13 +29,13 @@ const FullSpectrum: React.FC<FullSpectrumProps> = ({ spectrumSearchAll, onChange
 					{isChecked ? (
 						<FontAwesomeIcon
 							className={`${styles.iconInput} text-primary`}
-							icon={solid('toggle-on')}
+							icon={faToggleOn}
 							size='2xl'
 						/>
 					) : (
 						<FontAwesomeIcon
 							className={`${styles.iconInput} text-secondary`}
-							icon={solid('toggle-off')}
+							icon={faToggleOff}
 							size='2xl'
 						/>
 					)}

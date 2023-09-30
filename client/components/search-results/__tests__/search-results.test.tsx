@@ -1,5 +1,4 @@
 import { cleanup, render, fireEvent, screen, waitFor } from '@testing-library/react';
-import '@testing-library/jest-dom/extend-expect';
 import { rest } from 'msw';
 import { setupServer } from 'msw/node';
 
@@ -23,7 +22,7 @@ beforeAll(() => {
 
 afterEach(cleanup);
 
-afterAll(server.close);
+afterAll(() => server.close());
 
 test('displays results for individual sources', () => {
 	(useMediaQuery as jest.Mock).mockReturnValue([XL_MIN_WIDTH + 1, XL_MIN_WIDTH + 1]);

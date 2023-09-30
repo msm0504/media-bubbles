@@ -1,4 +1,4 @@
-import { Source } from '@/types';
+import type { Source } from '@/types';
 import styles from '@/styles/search-results.module.css';
 
 type ColumnHeadingIconProps = {
