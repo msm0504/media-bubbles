@@ -355,8 +355,8 @@ const PrivacyPolicy: React.FC = () => (
 		</p>
 		<h2>Deletion of Your Personal Data</h2>
 		<p>
-			Accounts on this site can be anonymized or deleted at the users request. To have your account
-			and personal data deleted, please submit a request through our{' '}
+			Accounts on this site can be anonymized or deleted at the user&apos;s request. To have your
+			account and personal data deleted, please submit a request through our{' '}
 			<a
 				href={`${process.env.NEXT_PUBLIC_URL}/contact`}
 				rel='external nofollow noopener noreferrer'
