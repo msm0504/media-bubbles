@@ -353,6 +353,20 @@ const PrivacyPolicy: React.FC = () => (
 			strive to use commercially acceptable means to protect Your Personal Data, We cannot guarantee
 			its absolute security.
 		</p>
+		<h2>Deletion of Your Personal Data</h2>
+		<p>
+			Accounts on this site can be anonymized or deleted at the users request. To have your account
+			and personal data deleted, please submit a request through our{' '}
+			<a
+				href={`${process.env.NEXT_PUBLIC_URL}/contact`}
+				rel='external nofollow noopener noreferrer'
+				target='_blank'
+			>
+				contact page
+			</a>
+			. Please note, account deletion will lead to the deletion of all personal data and it cannot
+			be recovered.
+		</p>
 		<h1>Your California Privacy Rights (California&apos;s Shine the Light law)</h1>
 		<p>
 			Under California Civil Code Section 1798 (California&apos;s Shine the Light law), California
