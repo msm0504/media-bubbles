@@ -70,11 +70,11 @@ export async function getAllSavedResults(
 
 export async function getSavedResult(id: string): Promise<SavedResult | null> {
 	const db = await _collection;
-	return (db.findOne({ _id: id }) as unknown) as SavedResult;
+	return (db.findOne({ _id: (id as unknown) as ObjectId }) as unknown) as SavedResult;
 }
 
 export async function deleteSavedResult(id: string, userId?: string): Promise<ItemDeletedResponse> {
 	const db = await _collection;
-	const { deletedCount } = await db.deleteOne({ _id: id, userId: userId });
+	const { deletedCount } = await db.deleteOne({ _id: (id as unknown) as ObjectId, userId: userId });
 	return { itemDeleted: deletedCount === 1 };
 }

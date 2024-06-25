@@ -44,7 +44,7 @@ async function updatePost(post: BlogPost) {
 	const db = await _collection;
 	const updateTs = new Date().toISOString();
 	const { modifiedCount } = await db.updateOne(
-		{ _id: post.slug },
+		{ _id: (post.slug as unknown) as ObjectId },
 		{ $set: { ...post, excerpt: formatExcerpt(post.content), updatedAt: updateTs } }
 	);
 	return { itemId: modifiedCount === 1 ? post.slug : '' };
@@ -72,7 +72,7 @@ export async function getLatestPostSlug(): Promise<string> {
 
 export async function getPost(slug: string): Promise<BlogPost> {
 	const db = await _collection;
-	return (db.findOne({ _id: slug }) as unknown) as BlogPost;
+	return (db.findOne({ _id: (slug as unknown) as ObjectId }) as unknown) as BlogPost;
 }
 
 export async function getPostSummaries(
@@ -108,6 +108,6 @@ export async function getPostSummaries(
 
 export async function deletePost(slug: string): Promise<ItemDeletedResponse> {
 	const db = await _collection;
-	const { deletedCount } = await db.deleteOne({ _id: slug });
+	const { deletedCount } = await db.deleteOne({ _id: (slug as unknown) as ObjectId });
 	return { itemDeleted: deletedCount === 1 };
 }

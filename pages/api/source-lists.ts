@@ -1,7 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import nc from 'next-connect';
+import { createRouter } from 'next-connect';
 import { getSourceLists } from '@/server/services/source-list-service';
 
-export default nc().get(async (req: NextApiRequest, res: NextApiResponse) => {
+const router = createRouter<NextApiRequest, NextApiResponse>();
+
+router.get(async (req: NextApiRequest, res: NextApiResponse) => {
 	res.json(await getSourceLists());
 });
+
+export default router.handler();
