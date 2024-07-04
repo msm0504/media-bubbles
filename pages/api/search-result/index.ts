@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import nc from 'next-connect';
-import { getSession } from 'next-auth/react';
+import { createRouter } from 'next-connect';
+import { auth } from '@/auth';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import multer from 'multer';
 
@@ -13,11 +13,12 @@ type MulterRequest = NextApiRequest & {
 
 const upload = multer({ storage: multer.memoryStorage() });
 const s3Client = getS3Client();
+const router = createRouter();
 
-export default nc()
+router
 	.use(upload.single('capture'))
 	.get(async (req: NextApiRequest, res: NextApiResponse) => {
-		const session = await getSession({ req });
+		const session = await auth(req, res);
 		if (!session?.user.id) {
 			res.json({ savedResults: [], pageCount: 0 });
 		} else {
@@ -27,7 +28,7 @@ export default nc()
 		}
 	})
 	.post(async (req: MulterRequest, res: NextApiResponse) => {
-		const session = await getSession({ req });
+		const session = await auth(req, res);
 		const resultToSave = JSON.parse(req.body.result);
 		if (session?.user.id) {
 			resultToSave.userId = session.user.id;
@@ -46,6 +47,8 @@ export default nc()
 		}
 		res.json(await saveSearchResult(resultToSave));
 	});
+
+export default router.handler();
 
 export const config = {
 	api: {

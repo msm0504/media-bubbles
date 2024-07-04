@@ -30,3 +30,14 @@
 .facebookBtn:not(:hover) {
 	background: #4267b2;
 }
+
+.googleBrandColor {
+	background: conic-gradient(
+			from -45deg,
+			#ea4335 110deg,
+			#4285f4 90deg 180deg,
+			#34a853 180deg 270deg,
+			#fbbc05 270deg
+		)
+		73% 55%/150% 150% no-repeat;
+}

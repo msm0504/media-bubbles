@@ -1,27 +1,15 @@
 import NextAuth from 'next-auth';
-import FacebookProvider from 'next-auth/providers/facebook';
+import GoogleProvider from 'next-auth/providers/google';
 import TwitterProvider from 'next-auth/providers/twitter';
-import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
+import { MongoDBAdapter } from '@auth/mongodb-adapter';
 
 import { getMongoClient } from '@/server/services/db-connection';
 
-export default NextAuth({
+export const { auth, handlers, signIn, signOut } = NextAuth({
 	session: {
 		strategy: 'jwt'
 	},
-	jwt: {
-		secret: process.env.JWT_SECRET
-	},
-	providers: [
-		FacebookProvider({
-			clientId: process.env.FACEBOOK_APP_ID || '',
-			clientSecret: process.env.FACEBOOK_APP_SECRET || ''
-		}),
-		TwitterProvider({
-			clientId: process.env.TWITTER_APP_KEY || '',
-			clientSecret: process.env.TWITTER_APP_SECRET || ''
-		})
-	],
+	providers: [GoogleProvider, TwitterProvider],
 	adapter: MongoDBAdapter(getMongoClient()),
 	callbacks: {
 		async session({ session, token }) {
