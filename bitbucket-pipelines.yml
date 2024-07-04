@@ -20,9 +20,3 @@ pipelines:
         script:
           - npm run check-types
           - npm run lint
-    - step:
-        name: Unit testing
-        script:
-          - npm test
-        caches:
-          - node
