@@ -1,5 +1,5 @@
 import NextAuth from 'next-auth';
-import FacebookProvider from 'next-auth/providers/facebook';
+import GoogleProvider from 'next-auth/providers/google';
 import TwitterProvider from 'next-auth/providers/twitter';
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
 
@@ -9,7 +9,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 	session: {
 		strategy: 'jwt'
 	},
-	providers: [FacebookProvider, TwitterProvider],
+	providers: [GoogleProvider, TwitterProvider],
 	adapter: MongoDBAdapter(getMongoClient()),
 	callbacks: {
 		async session({ session, token }) {

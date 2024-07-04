@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react';
 import { Dropdown, NavItem, NavLink } from 'react-bootstrap';
 
-import { FacebookLogin, TwitterLogin } from './login';
+import { GoogleLogin, TwitterLogin } from './login';
 import Logout from './logout';
 
 const LoginNavItem: React.FC = () => {
@@ -13,7 +13,7 @@ const LoginNavItem: React.FC = () => {
 		<Dropdown className='me-md-4' as={NavItem}>
 			<Dropdown.Toggle as={NavLink}>Log in</Dropdown.Toggle>
 			<Dropdown.Menu align='end'>
-				<FacebookLogin sessionLoading={loading} />
+				<GoogleLogin sessionLoading={loading} />
 				<TwitterLogin sessionLoading={loading} />
 			</Dropdown.Menu>
 		</Dropdown>
