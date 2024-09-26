@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createRouter } from 'next-connect';
 import { auth } from '@/auth';
-import { PutObjectCommand } from '@aws-sdk/client-s3';
+import { PutObjectCommand, PutObjectRequest } from '@aws-sdk/client-s3';
 import multer from 'multer';
 
 import { getS3Client } from '@/server/services/s3Client';
@@ -35,7 +35,9 @@ router
 		}
 		if (req.file && req.file.buffer) {
 			const imageKey = `${resultToSave.name.replace(/\s/g, '_')}_${Date.now()}.png`;
-			const params = {
+			const params: PutObjectRequest = {
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				//@ts-ignore
 				Body: req.file.buffer,
 				Key: imageKey,
 				Bucket: process.env.AWS_S3_SCREENSHOT_BUCKET,
