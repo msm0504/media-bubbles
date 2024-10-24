@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/auth';
-import { PutObjectCommand, PutObjectRequest } from '@aws-sdk/client-s3';
+import { PutObjectCommand, type PutObjectCommandInput } from '@aws-sdk/client-s3';
 import { getS3Client } from '@/services/s3Client';
 import { getSavedResults, saveSearchResult } from '@/services/saved-results-service';
 
@@ -25,12 +25,13 @@ export const POST = auth(async request => {
 	if (request.auth?.user.id) {
 		resultToSave.userId = request.auth.user.id;
 	}
-	const screenshot = (formData.get('capture') as Blob) || null;
-	if (screenshot) {
+	const capture = (formData.get('capture') as Blob) || null;
+	if (capture) {
 		const s3Client = getS3Client();
+		const image = Buffer.from(await capture.arrayBuffer());
 		const imageKey = `${resultToSave.name.replace(/\s/g, '_')}_${Date.now()}.png`;
-		const params: PutObjectRequest = {
-			Body: await screenshot.arrayBuffer(),
+		const params: PutObjectCommandInput = {
+			Body: image,
 			Key: imageKey,
 			Bucket: process.env.AWS_S3_SCREENSHOT_BUCKET,
 			ACL: 'public-read',
