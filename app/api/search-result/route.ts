@@ -26,7 +26,7 @@ export const POST = auth(async request => {
 	}
 	if (process.env.AWS_SCREENSHOT_FUNCTION) {
 		const imageKey = `${resultToSave.name.replace(/\s/g, '_')}_${Date.now()}.png`;
-		resultToSave.imagePath = `http://s3-${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_S3_SCREENSHOT_BUCKET}/${imageKey}`;
+		resultToSave.imagePath = `http://s3-${process.env.AWS_MB_REGION}.amazonaws.com/${process.env.AWS_S3_SCREENSHOT_BUCKET}/${imageKey}`;
 	}
 
 	const savedResult = await saveSearchResult(resultToSave);

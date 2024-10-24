@@ -11,7 +11,7 @@ export const getS3Client = (): S3Client => {
 				accessKeyId: process.env.AWS_S3_KEY || '',
 				secretAccessKey: process.env.AWS_S3_SECRET || '',
 			},
-			region: process.env.AWS_REGION,
+			region: process.env.AWS_MB_REGION,
 		});
 	}
 
@@ -25,7 +25,7 @@ export const getLambdaClient = (): LambdaClient => {
 				accessKeyId: process.env.AWS_S3_KEY || '',
 				secretAccessKey: process.env.AWS_S3_SECRET || '',
 			},
-			region: process.env.AWS_REGION,
+			region: process.env.AWS_MB_REGION,
 		});
 	}
 
