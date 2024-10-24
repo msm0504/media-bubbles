@@ -25,12 +25,12 @@ export const POST = auth(async request => {
 	if (request.auth?.user.id) {
 		resultToSave.userId = request.auth.user.id;
 	}
-	const screenshot = (formData.get('capture') as Blob) || null;
+	const screenshot = (formData.get('capture') as File) || null;
 	if (screenshot) {
 		const s3Client = getS3Client();
 		const imageKey = `${resultToSave.name.replace(/\s/g, '_')}_${Date.now()}.png`;
 		const params: PutObjectRequest = {
-			Body: screenshot,
+			Body: screenshot.stream(),
 			Key: imageKey,
 			Bucket: process.env.AWS_S3_SCREENSHOT_BUCKET,
 			ACL: 'public-read',
