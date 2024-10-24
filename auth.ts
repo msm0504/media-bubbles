@@ -3,11 +3,11 @@ import GoogleProvider from 'next-auth/providers/google';
 import TwitterProvider from 'next-auth/providers/twitter';
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
 
-import { getMongoClient } from '@/server/services/db-connection';
+import { getMongoClient } from '@/services/db-connection';
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
 	session: {
-		strategy: 'jwt'
+		strategy: 'jwt',
 	},
 	providers: [GoogleProvider, TwitterProvider],
 	adapter: MongoDBAdapter(getMongoClient()),
@@ -24,6 +24,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 				return { ...token, id: user.id };
 			}
 			return token;
-		}
-	}
+		},
+	},
 });

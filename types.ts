@@ -1,7 +1,7 @@
-import { Dispatch, SetStateAction } from 'react';
-
-import { SearchMode } from './client/constants/search-mode';
-import { SourceSlant } from './client/constants/source-slant';
+import type { Dispatch, SetStateAction } from 'react';
+import type { AlertColor } from '@mui/material';
+import type { SearchMode } from './constants/search-mode';
+import type { SourceSlant } from './constants/source-slant';
 
 /** Source List Type Definition */
 
@@ -104,7 +104,7 @@ export type FeedbackMessage = {
 
 /** Client Context Type Definitions */
 
-export type ShowAlertFn = (level: string, message: string) => void;
+export type ShowAlertFn = (level: AlertColor, message: string) => void;
 
 export type SearchResult =
 	| {
@@ -128,9 +128,9 @@ export type SearchFormState = {
 	selectedSourceIds: string[];
 };
 
-export interface SearchFormWithMode extends SearchFormState {
+export type SearchFormWithMode = SearchFormState & {
 	searchMode: SearchMode;
-}
+};
 
 /** API Responses */
 
@@ -138,10 +138,10 @@ export type ListItem<T> = {
 	[prop in keyof T]: string;
 };
 
-export interface ListResponse<T> {
+export type ListResponse<T> = {
 	items: ListItem<T>[];
 	pageCount: number;
-}
+};
 
 export type ItemSavedResponse = {
 	itemId?: string;
@@ -155,6 +155,6 @@ export type FeedbackSentResponse = {
 	feedbackSent: boolean;
 };
 
-export type ParentCompProps = {
-	children?: React.ReactNode;
-};
+export type ParentCompProps = Readonly<{
+	children: React.ReactNode;
+}>;

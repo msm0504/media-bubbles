@@ -6,14 +6,29 @@ const localStorageMock = {
 	removeItem: jest.fn(),
 	clear: jest.fn(),
 	key: jest.fn(() => ''),
-	length: 0
+	length: 0,
 };
 
 if (typeof global.localStorage !== 'undefined') {
 	Object.defineProperty(global, 'localStorage', {
 		value: localStorageMock,
-		writable: false
+		writable: false,
 	});
 } else {
 	global.localStorage = localStorageMock;
 }
+
+jest.mock('next/navigation', () => ({
+	useRouter: () => ({
+		back: () => null,
+		forward: () => null,
+		prefetch: () => null,
+		push: () => null,
+		refresh: () => null,
+		replace: () => null,
+	}),
+	usePathname: () => '',
+	useSearchParams: () => ({
+		get: () => null,
+	}),
+}));

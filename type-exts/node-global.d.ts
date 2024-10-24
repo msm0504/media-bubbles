@@ -1,26 +1,19 @@
+/* eslint-disable no-var */
 import { Db, MongoClient } from 'mongodb';
 import { S3Client } from '@aws-sdk/client-s3';
-import type { ArticleMap, Source } from '../types';
-import { SourceSlant } from '../client/constants/source-slant';
+import type { Source } from '../types';
+import { SourceSlant } from '../constants/source-slant';
 
 declare global {
-	namespace NodeJS {
-		interface Global {
-			mongo: {
-				clientPromise: Promise<MongoClient>;
-				db: Db;
-			};
-			sources: {
-				lastUpdate: number;
-				app: Source[];
-				bySlant: Source[][];
-				biasRatings: Record<string, SourceSlant>;
-			};
-			latest: {
-				lastUpdate: number;
-				articleMap: ArticleMap;
-			};
-			s3Client: S3Client;
-		}
-	}
+	var mongo: {
+		clientPromise: Promise<MongoClient>;
+		db: Db;
+	};
+	var sources: {
+		lastUpdate: number;
+		app: Source[];
+		bySlant: Source[][];
+		biasRatings: Record<string, SourceSlant>;
+	};
+	var s3Client: S3Client;
 }

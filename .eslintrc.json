@@ -1,58 +1,6 @@
 {
-	"extends": [
-		"eslint:recommended",
-		"plugin:import/errors",
-		"plugin:react/recommended",
-		"plugin:jsx-a11y/recommended",
-		"plugin:@typescript-eslint/recommended",
-		"plugin:import/typescript",
-		"prettier",
-		"prettier/react"
-	],
+	"extends": ["next/core-web-vitals", "next/typescript", "plugin:jsx-a11y/recommended", "prettier"],
 	"rules": {
-		"react/prop-types": 0,
-		"no-console": 1,
-		"no-import-assign": 2,
-		"no-return-await": 2,
-		"no-template-curly-in-string": 1,
-		"array-callback-return": 1,
-		"block-scoped-var": 2,
-		"complexity": ["error", 12],
-		"dot-notation": 1,
-		"no-else-return": 2,
-		"no-return-assign": 2,
-		"no-path-concat": 2,
-		"prefer-const": 2,
-		"react/react-in-jsx-scope": 0,
-		"jsx-a11y/anchor-is-valid": 0,
-		"@typescript-eslint/no-empty-function": 0,
-		"@typescript-eslint/no-unused-vars": ["warn", { "ignoreRestSiblings": true }]
-	},
-	"parser": "@typescript-eslint/parser",
-	"plugins": ["react", "import", "jsx-a11y", "@typescript-eslint"],
-	"parserOptions": {
-		"ecmaVersion": 2020,
-		"sourceType": "module",
-		"ecmaFeatures": {
-			"jsx": true
-		}
-	},
-	"env": {
-		"es6": true,
-		"browser": true,
-		"node": true
-	},
-	"settings": {
-		"react": {
-			"version": "detect"
-		},
-		"import/resolver": {
-			"typescript": {
-				"directory": "."
-			}
-		}
-	},
-	"globals": {
-		"React": "writable"
+		"@typescript-eslint/no-unused-vars": 1
 	}
 }
