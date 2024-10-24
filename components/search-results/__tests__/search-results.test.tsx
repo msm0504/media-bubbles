@@ -10,8 +10,8 @@ import addTestWait from '@/test-utils/add-test-wait';
 
 const server = setupServer();
 
-const createMatchMediaXl = (isXlScreen: boolean) => (): MediaQueryList => ({
-	matches: isXlScreen,
+const createMatchMediaXl = (isLgScreen: boolean) => (): MediaQueryList => ({
+	matches: isLgScreen,
 	media: '',
 	onchange: () => {},
 	addListener: () => {},

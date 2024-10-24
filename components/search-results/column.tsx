@@ -36,8 +36,8 @@ const Column: React.FC<ColumnProps> = ({
 	const collapseId = `${isSearchAll ? column.name.toLowerCase() : column.id}-collapse`;
 
 	const theme = useTheme();
-	const isXlScreen = useMediaQuery(theme.breakpoints.up('xl'));
-	const isPanelExpanded = isXlScreen || isPanelInOpenList;
+	const isLgScreen = useMediaQuery(theme.breakpoints.up('lg'));
+	const isPanelExpanded = isLgScreen || isPanelInOpenList;
 
 	const slantClass =
 		column.slant === null || typeof column.slant === 'undefined'
@@ -53,7 +53,7 @@ const Column: React.FC<ColumnProps> = ({
 					sx={{ flexDirection: { xs: 'row', xl: 'column' } }}
 					avatar={<ColumnHeadingIcon column={column} isColumnSlant={isSearchAll} />}
 					title={
-						isXlScreen ? (
+						isLgScreen ? (
 							<Typography variant='h3' textAlign='center' marginBottom={2}>
 								{column.name}
 							</Typography>

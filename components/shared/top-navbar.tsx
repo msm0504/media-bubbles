@@ -44,7 +44,7 @@ const TopNavbar: React.FC = () => {
 	};
 
 	return (
-		<AppBar color='dark' position='fixed' elevation={0}>
+		<AppBar color='dark' position='sticky' elevation={0}>
 			<Container maxWidth='xl'>
 				<Toolbar disableGutters>
 					<Box sx={{ display: { xs: 'flex', md: 'none' } }}>

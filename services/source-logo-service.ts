@@ -20,9 +20,10 @@ const getLogoUrl = (siteUrl: string): string => {
 };
 
 export async function getSourceLogo(id: string, url: string): Promise<Buffer | null> {
+	const s3Key = id.toLowerCase().replaceAll(/[^A-Za-z0-9]/g, '');
 	const getCommand = new GetObjectCommand({
 		Bucket: process.env.AWS_S3_LOGO_BUCKET,
-		Key: `${id}.png`,
+		Key: `${s3Key}.png`,
 	});
 	try {
 		const cached = await s3Client.send(getCommand);
@@ -42,7 +43,7 @@ export async function getSourceLogo(id: string, url: string): Promise<Buffer | n
 	if (!image) return null;
 	const putCommand = new PutObjectCommand({
 		Bucket: process.env.AWS_S3_LOGO_BUCKET,
-		Key: `${id}.png`,
+		Key: `${s3Key}.png`,
 		Body: image,
 		ACL: 'public-read',
 		Expires: new Date(Date.now() + MILLISECONDS_IN_MONTH),

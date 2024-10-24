@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { Button, ListItem, ListItemText, Typography } from '@mui/material';
+import { Button, IconButton, ListItem, ListItemText, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
@@ -18,33 +18,27 @@ const SavedResultItem: React.FC<SavedResultItemProps> = ({
 }) => {
 	const router = useRouter();
 	return (
-		<ListItem
-			secondaryAction={
-				<>
-					<Button
-						color='info'
-						variant='outlined'
-						onClick={() => {
-							router.push(`/headlines/${_id}`);
-						}}
-					>
-						View
-					</Button>
-					<Button onClick={() => fnDeleteItem(_id, name)}>
-						<FontAwesomeIcon
-							id={`delete-${_id}-icon`}
-							icon={faTrashCan}
-							size='lg'
-							aria-label={`Delete saved result ${name}`}
-						/>
-					</Button>
-				</>
-			}
-		>
+		<ListItem>
 			<ListItemText
 				primary={name}
 				secondary={`Saved at: ${new Date(createdAt).toLocaleString()}`}
 			/>
+			<Button
+				color='info'
+				variant='outlined'
+				onClick={() => {
+					router.push(`/headlines/${_id}`);
+				}}
+			>
+				View
+			</Button>
+			<IconButton
+				aria-label={`Delete saved result ${name}`}
+				color='primary'
+				onClick={() => fnDeleteItem(_id, name)}
+			>
+				<FontAwesomeIcon id={`delete-${_id}-icon`} icon={faTrashCan} />
+			</IconButton>
 		</ListItem>
 	);
 };
