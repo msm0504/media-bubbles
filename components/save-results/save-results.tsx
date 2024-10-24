@@ -41,7 +41,9 @@ const saveClicked = async (
 			windowHeight: 720,
 			height: 630,
 			onclone: (document, element) =>
-				element.querySelectorAll('.collapse').forEach(child => child.classList.remove('collapse')),
+				element
+					.querySelectorAll('.MuiCollapse-hidden')
+					.forEach(child => child.classList.remove('MuiCollapse-hidden')),
 		});
 		form.append('capture', await new Promise(resolve => canvas.toBlob(resolve)));
 	} else {

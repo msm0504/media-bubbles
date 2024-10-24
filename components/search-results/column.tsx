@@ -50,7 +50,7 @@ const Column: React.FC<ColumnProps> = ({
 				<CardHeader
 					disableTypography
 					id={headingId}
-					sx={{ flexDirection: { xs: 'row', xl: 'column' } }}
+					sx={{ flexDirection: { xs: 'row', lg: 'column' } }}
 					avatar={<ColumnHeadingIcon column={column} isColumnSlant={isSearchAll} />}
 					title={
 						isLgScreen ? (

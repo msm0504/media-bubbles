@@ -93,9 +93,9 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 			<Stack
 				id='search-results'
 				spacing={4}
-				direction={{ xs: 'column', xl: 'row' }}
-				justifyContent={{ xl: 'space-around' }}
-				alignItems={{ xs: 'stretch', xl: 'start' }}
+				direction={{ xs: 'column', lg: 'row' }}
+				justifyContent={{ lg: 'space-around' }}
+				alignItems={{ xs: 'stretch', lg: 'start' }}
 			>
 				{generateColumns()}
 			</Stack>

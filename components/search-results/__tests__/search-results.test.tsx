@@ -10,7 +10,7 @@ import addTestWait from '@/test-utils/add-test-wait';
 
 const server = setupServer();
 
-const createMatchMediaXl = (isLgScreen: boolean) => (): MediaQueryList => ({
+const createMatchMediaLg = (isLgScreen: boolean) => (): MediaQueryList => ({
 	matches: isLgScreen,
 	media: '',
 	onchange: () => {},
@@ -20,8 +20,8 @@ const createMatchMediaXl = (isLgScreen: boolean) => (): MediaQueryList => ({
 	removeListener: () => {},
 	removeEventListener: () => {},
 });
-const mockXlScreen = () => createMatchMediaXl(true);
-const mockSmallerScreen = () => createMatchMediaXl(false);
+const mockLgScreen = () => createMatchMediaLg(true);
+const mockSmallerScreen = () => createMatchMediaLg(false);
 
 beforeAll(() => {
 	server.listen();
@@ -33,7 +33,7 @@ afterEach(cleanup);
 afterAll(() => server.close());
 
 test('displays results for individual sources', async () => {
-	window.matchMedia = mockXlScreen();
+	window.matchMedia = mockLgScreen();
 	render(<SearchResults {...singleSourcesMock} />);
 
 	expect(screen.queryByText('NPR')).toBeInTheDocument();
@@ -69,7 +69,7 @@ test('displays results for individual sources', async () => {
 });
 
 test('displays results for search of all sources', async () => {
-	window.matchMedia = mockXlScreen();
+	window.matchMedia = mockLgScreen();
 	render(<SearchResults {...allSourcesMock} />);
 
 	Object.values(SOURCE_SLANT_MAP).forEach(slantName =>
@@ -113,7 +113,7 @@ test('displays results for search of all sources', async () => {
 });
 
 test('displays old saved results from News API', async () => {
-	window.matchMedia = mockXlScreen();
+	window.matchMedia = mockLgScreen();
 	render(<SearchResults {...oldFormatMock} />);
 
 	expect(screen.queryByText('Axios')).toBeInTheDocument();
