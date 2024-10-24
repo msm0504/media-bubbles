@@ -1,6 +1,6 @@
 import type { Readable } from 'stream';
 import { GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
-import { getS3Client } from './s3Client';
+import { getS3Client } from './aws-clients';
 import { MILLISECONDS_IN_DAY } from '../constants/server';
 import formatGetQuery from '@/util/format-get-query';
 

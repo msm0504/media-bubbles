@@ -1,8 +1,9 @@
 /* eslint-disable no-var */
-import { Db, MongoClient } from 'mongodb';
-import { S3Client } from '@aws-sdk/client-s3';
+import type { Db, MongoClient } from 'mongodb';
+import type { S3Client } from '@aws-sdk/client-s3';
+import type { LambdaClient } from '@aws-sdk/client-lambda';
 import type { Source } from '../types';
-import { SourceSlant } from '../constants/source-slant';
+import type { SourceSlant } from '../constants/source-slant';
 
 declare global {
 	var mongo: {
@@ -16,4 +17,5 @@ declare global {
 		biasRatings: Record<string, SourceSlant>;
 	};
 	var s3Client: S3Client;
+	var lambdaClient: LambdaClient;
 }

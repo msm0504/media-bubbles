@@ -1,5 +1,5 @@
 'use client';
-import { useContext, useRef } from 'react';
+import { useContext } from 'react';
 import dynamic from 'next/dynamic';
 import { Box, Stack } from '@mui/material';
 import { SearchResultContext } from '@/contexts/search-result-context';
@@ -11,21 +11,18 @@ const SearchResults = dynamic(() => import('@/components/search-results/search-r
 
 const DynamicResults: React.FC = () => {
 	const [context] = useContext(SearchResultContext);
-	const elResults = useRef(null);
 
 	return (
 		<Stack spacing={4}>
 			<Box>
-				<SaveResults container={elResults} />
+				<SaveResults />
 			</Box>
-			<div ref={elResults}>
-				<SearchResults
-					sourceList={context.sourceListToSearch}
-					isSearchAll={context.isSearchAll}
-					articleMap={context.articleMap}
-					savedResultId={context.savedResultId}
-				/>
-			</div>
+			<SearchResults
+				sourceList={context.sourceListToSearch}
+				isSearchAll={context.isSearchAll}
+				articleMap={context.articleMap}
+				savedResultId={context.savedResultId}
+			/>
 		</Stack>
 	);
 };

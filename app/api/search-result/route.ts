@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@/auth';
-import { PutObjectCommand, type PutObjectCommandInput } from '@aws-sdk/client-s3';
-import { getS3Client } from '@/services/s3Client';
+import { InvokeCommand, type InvokeCommandInput, LogType } from '@aws-sdk/client-lambda';
+import { getLambdaClient } from '@/services/aws-clients';
 import { getSavedResults, saveSearchResult } from '@/services/saved-results-service';
 
 export const GET = auth(async request => {
@@ -20,25 +20,30 @@ export const GET = auth(async request => {
 });
 
 export const POST = auth(async request => {
-	const formData = await request.formData();
-	const resultToSave = JSON.parse(formData.get('result') as string);
+	const resultToSave = await request.json();
 	if (request.auth?.user.id) {
 		resultToSave.userId = request.auth.user.id;
 	}
-	const capture = (formData.get('capture') as Blob) || null;
-	if (capture) {
-		const s3Client = getS3Client();
-		const image = Buffer.from(await capture.arrayBuffer());
+	if (process.env.AWS_SCREENSHOT_FUNCTION) {
 		const imageKey = `${resultToSave.name.replace(/\s/g, '_')}_${Date.now()}.png`;
-		const params: PutObjectCommandInput = {
-			Body: image,
-			Key: imageKey,
-			Bucket: process.env.AWS_S3_SCREENSHOT_BUCKET,
-			ACL: 'public-read',
-		};
-		const commmand = new PutObjectCommand(params);
-		await s3Client.send(commmand);
-		resultToSave.imagePath = `http://s3-${process.env.AWS_S3_REGION}.amazonaws.com/${process.env.AWS_S3_SCREENSHOT_BUCKET}/${imageKey}`;
+		resultToSave.imagePath = `http://s3-${process.env.AWS_REGION}.amazonaws.com/${process.env.AWS_S3_SCREENSHOT_BUCKET}/${imageKey}`;
 	}
-	return NextResponse.json(await saveSearchResult(resultToSave));
+
+	const savedResult = await saveSearchResult(resultToSave);
+
+	if (savedResult.itemId && resultToSave.imageKey) {
+		const lambdaClient = getLambdaClient();
+		const params: InvokeCommandInput = {
+			FunctionName: process.env.AWS_SCREENSHOT_FUNCTION,
+			Payload: JSON.stringify({
+				pageToCapture: `${process.env.NEXT_PUBLIC_URL}/headlines/${savedResult.itemId}`,
+				imageKey: resultToSave.imageKey,
+			}),
+			LogType: LogType.Tail,
+		};
+		const commmand = new InvokeCommand(params);
+		lambdaClient.send(commmand);
+	}
+
+	return NextResponse.json(savedResult);
 });

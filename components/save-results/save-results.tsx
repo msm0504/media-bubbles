@@ -1,58 +1,40 @@
 'use client';
-import { useState, useContext, MutableRefObject } from 'react';
+import { useState, useContext } from 'react';
 import { Button } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-import html2canvas from 'html2canvas';
-import FormData from 'form-data';
 
 import ALERT_LEVEL from '@/constants/alert-level';
 import { AlertsDispatch } from '@/contexts/alerts-context';
 import { SearchResultContext } from '@/contexts/search-result-context';
-import { callApiMultipart } from '@/services/api-service';
-import type { ItemSavedResponse, SearchResult, SetResultContextFn, ShowAlertFn } from '@/types';
-
-type SaveResultsProps = {
-	container?: MutableRefObject<HTMLDivElement | null>;
-};
+import { callApi } from '@/services/api-service';
+import type {
+	ItemSavedResponse,
+	SavedResult,
+	SearchResult,
+	SetResultContextFn,
+	ShowAlertFn,
+} from '@/types';
 
 const saveClicked = async (
 	context: SearchResult,
 	setContext: SetResultContextFn,
 	showAlert: ShowAlertFn,
-	setSaving: React.Dispatch<React.SetStateAction<boolean>>,
-	container: HTMLDivElement | null
+	setSaving: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
 	setSaving(true);
 	const { sourceListToSearch, isSearchAll, articleMap, savedResultName } = context;
-	const form = new FormData();
-	form.append(
-		'result',
-		JSON.stringify({
-			articleMap,
-			isSearchAll,
-			name: savedResultName,
-			sourceList: sourceListToSearch.map(({ id, name, url }) => ({ id, name, url })),
-		})
-	);
-	if (container) {
-		const canvas = await html2canvas(container, {
-			windowWidth: 1200,
-			windowHeight: 720,
-			height: 630,
-			onclone: (document, element) =>
-				element
-					.querySelectorAll('.MuiCollapse-hidden')
-					.forEach(child => child.classList.remove('MuiCollapse-hidden')),
-		});
-		form.append('capture', await new Promise(resolve => canvas.toBlob(resolve)));
-	} else {
-		form.append('capture', '');
-	}
+	const data = {
+		articleMap,
+		isSearchAll,
+		name: savedResultName,
+		sourceList: sourceListToSearch.map(({ id, name, url }) => ({ id, name, url })),
+	};
 
-	const { itemId: savedResultId } = await callApiMultipart<ItemSavedResponse>(
+	const { itemId: savedResultId } = await callApi<ItemSavedResponse, SavedResult>(
+		'post',
 		'search-result',
-		form
+		data
 	);
 
 	if (!savedResultId || typeof savedResultId !== 'string') {
@@ -64,7 +46,7 @@ const saveClicked = async (
 	setSaving(false);
 };
 
-const SaveResults: React.FC<SaveResultsProps> = ({ container }) => {
+const SaveResults: React.FC = () => {
 	const [isSaving, setSaving] = useState<boolean>(false);
 	const [context, setContext] = useContext(SearchResultContext);
 	const showAlert = useContext(AlertsDispatch);
@@ -73,14 +55,11 @@ const SaveResults: React.FC<SaveResultsProps> = ({ container }) => {
 
 	return (
 		<Button
-			// className='mb-1 ms-3 d-inline-block'
 			id='save-results'
 			color='primary'
 			variant='contained'
 			disabled={isSaving}
-			onClick={() =>
-				saveClicked(context, setContext, showAlert, setSaving, container?.current || null)
-			}
+			onClick={() => saveClicked(context, setContext, showAlert, setSaving)}
 			endIcon={isSaving && <FontAwesomeIcon className='ms-2' icon={faSpinner} pulse />}
 		>
 			<strong>Save Results</strong>
