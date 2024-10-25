@@ -21,17 +21,18 @@ export const GET = auth(async request => {
 
 export const POST = auth(async request => {
 	const resultToSave = await request.json();
+	let imageKey = '';
 	if (request.auth?.user.id) {
 		resultToSave.userId = request.auth.user.id;
 	}
 	if (process.env.AWS_SCREENSHOT_FUNCTION) {
-		const imageKey = `${resultToSave.name.replace(/\s/g, '_')}_${Date.now()}.png`;
+		imageKey = `${resultToSave.name.replace(/\s/g, '_')}_${Date.now()}.png`;
 		resultToSave.imagePath = `http://s3-${process.env.AWS_MB_REGION}.amazonaws.com/${process.env.AWS_S3_SCREENSHOT_BUCKET}/${imageKey}`;
 	}
 
 	const savedResult = await saveSearchResult(resultToSave);
 
-	if (savedResult.itemId && resultToSave.imageKey) {
+	if (savedResult.itemId && imageKey) {
 		const lambdaClient = getLambdaClient();
 		const params: InvokeCommandInput = {
 			FunctionName: process.env.AWS_SCREENSHOT_FUNCTION,
