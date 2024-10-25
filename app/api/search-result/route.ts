@@ -38,7 +38,7 @@ export const POST = auth(async request => {
 			FunctionName: process.env.AWS_SCREENSHOT_FUNCTION,
 			Payload: JSON.stringify({
 				pageToCapture: `${process.env.NEXT_PUBLIC_URL}/headlines/${savedResult.itemId}`,
-				imageKey: resultToSave.imageKey,
+				imageKey,
 			}),
 			LogType: LogType.Tail,
 		};
