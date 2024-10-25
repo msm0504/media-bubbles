@@ -43,8 +43,7 @@ export const POST = auth(async request => {
 			LogType: LogType.Tail,
 		};
 		const commmand = new InvokeCommand(params);
-		console.log('Calling AWS Lambda');
-		await lambdaClient.send(commmand);
+		lambdaClient.send(commmand);
 	}
 
 	return NextResponse.json(savedResult);
