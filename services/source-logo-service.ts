@@ -45,7 +45,6 @@ export async function getSourceLogo(id: string, url: string): Promise<Buffer | n
 		Bucket: process.env.AWS_S3_LOGO_BUCKET,
 		Key: `${s3Key}.png`,
 		Body: image,
-		ACL: 'public-read',
 		Expires: new Date(Date.now() + MILLISECONDS_IN_MONTH),
 	});
 	await s3Client.send(putCommand);
