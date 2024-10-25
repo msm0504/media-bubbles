@@ -28,7 +28,7 @@ const saveClicked = async (
 		articleMap,
 		isSearchAll,
 		name: savedResultName,
-		sourceList: sourceListToSearch.map(({ id, name, url }) => ({ id, name, url })),
+		sourceList: sourceListToSearch,
 	};
 
 	const { itemId: savedResultId } = await callApi<ItemSavedResponse, SavedResult>(
