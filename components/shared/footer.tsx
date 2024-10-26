@@ -3,14 +3,7 @@ import { Box, Container, Link as MuiLink, Stack } from '@mui/material';
 
 const Footer: React.FC = () => (
 	<footer>
-		<Box
-			bgcolor='common.white'
-			position='relative'
-			width='100%'
-			padding={3}
-			bottom={0}
-			zIndex='appBar'
-		>
+		<Box bgcolor='common.white' width='100%' padding={3}>
 			<Container maxWidth='xl'>
 				<Stack
 					direction={{ xs: 'column', md: 'row' }}

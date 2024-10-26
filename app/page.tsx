@@ -37,9 +37,9 @@ const Home: React.FC = () => (
 				}}
 			/>
 		</div>
-		<Box height='100vh' sx={{ background: 'transparent' }}>
-			<Container sx={{ height: 'inherit' }} maxWidth='md'>
-				<Stack height='inherit' spacing={4} alignItems='center' justifyContent='center'>
+		<Box sx={{ background: 'transparent' }}>
+			<Container maxWidth='md'>
+				<Stack paddingY={8} spacing={4} alignItems='center' justifyContent='center'>
 					<Typography
 						className={styles.outlinedText}
 						variant='h1'

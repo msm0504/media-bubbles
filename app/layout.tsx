@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Roboto_Slab } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
 import { GoogleTagManager } from '@next/third-parties/google';
-import { ThemeProvider } from '@mui/material';
+import { Box, ThemeProvider } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { ParentCompProps } from '@/types';
@@ -42,9 +42,11 @@ const RootLayout: React.FC<ParentCompProps> = ({ children }) => (
 			<AppRouterCacheProvider>
 				<ThemeProvider theme={theme}>
 					<SessionProvider>
-						<TopNavbar />
-						{children}
-						<Footer />
+						<Box display='flex' flexDirection='column' minHeight='100vh'>
+							<TopNavbar />
+							<Box flexGrow={1}>{children}</Box>
+							<Footer />
+						</Box>
 					</SessionProvider>
 				</ThemeProvider>
 			</AppRouterCacheProvider>
