@@ -15,7 +15,6 @@ type SearchResultsProps = {
 	isSearchAll: boolean;
 	articleMap: ArticleMap;
 	savedResultId?: string;
-	resultId?: string;
 };
 
 const SLANT_SOURCE_COLUMNS: Source[] = keys(SOURCE_SLANT_MAP).map((sourceSlant: SourceSlant) => ({
@@ -30,7 +29,6 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 	isSearchAll,
 	articleMap,
 	savedResultId,
-	resultId,
 }) => {
 	const [openPanels, setOpenPanels] = useLocalStorage<{ id: string; list: string[] }>(
 		'openPanels',
@@ -40,13 +38,11 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 	const pathname = usePathname();
 
 	useEffect(() => {
-		const id = resultId || 'none';
+		const id = savedResultId || 'none';
 		if (id !== openPanels.id) {
 			setOpenPanels({ id, list: [] });
 		}
-	}, [resultId]);
-
-	if (resultId && resultId !== savedResultId) return null;
+	}, [savedResultId]);
 
 	const togglePanel = (columnId: string) => {
 		if (openPanels.list.indexOf(columnId) === -1) {
@@ -79,11 +75,11 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 
 	const displayShareButtons = () => {
 		const currentUrl = `${process.env.NEXT_PUBLIC_URL}${pathname}`;
-		const urlToShare = resultId
-			? currentUrl
-			: savedResultId
-				? `${currentUrl}/${savedResultId}`
-				: '';
+		const urlToShare = savedResultId
+			? currentUrl.endsWith(savedResultId)
+				? currentUrl
+				: `${currentUrl}/${savedResultId}`
+			: '';
 		return <ShareButtons urlToShare={urlToShare} />;
 	};
 
