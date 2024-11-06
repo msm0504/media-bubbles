@@ -1,17 +1,12 @@
 'use client';
 import { useContext } from 'react';
 import { useSession } from 'next-auth/react';
+import FIELD_LIST, { REASON_OPTIONS } from './field-list';
 import type { FeedbackMessage, FeedbackSentResponse, ShowAlertFn } from '@/types';
-import SaveableForm, { FieldSetting, getRequiredMessage } from '@/components/shared/saveable-form';
+import SaveableForm, { getRequiredMessage } from '@/components/shared/saveable-form';
 import ALERT_LEVEL from '@/constants/alert-level';
 import { AlertsDispatch } from '@/contexts/alerts-context';
 import { callApi } from '@/services/api-service';
-
-const REASON_OPTIONS = [
-	{ value: 'Feedback', label: 'Give Feedback' },
-	{ value: 'Question', label: 'Ask a Question' },
-	{ value: 'Issue', label: 'Report an Issue' },
-];
 
 const blankFeedbackForm = {
 	name: '',
@@ -21,30 +16,6 @@ const blankFeedbackForm = {
 };
 
 const EMAIL_PATTERN = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-
-export const fieldList: FieldSetting[] = [
-	{
-		name: 'reason',
-		type: 'buttonGroup',
-		options: REASON_OPTIONS,
-	},
-	{
-		name: 'name',
-		type: 'text',
-		placeholder: 'John Doe',
-	},
-	{
-		name: 'email',
-		type: 'text',
-		placeholder: 'johndoe@domain.com',
-	},
-	{
-		name: 'message',
-		type: 'text',
-		placeholder: 'This site is amazing!',
-		rows: 8,
-	},
-];
 
 const getFieldErrorMessage = (fieldName: string, value: string | undefined) => {
 	switch (fieldName) {
@@ -90,7 +61,7 @@ const Feedback: React.FC = () => {
 
 	return (
 		<SaveableForm<FeedbackMessage>
-			fieldList={fieldList}
+			fieldList={FIELD_LIST}
 			fieldValidateFn={getFieldErrorMessage}
 			formName='feedback'
 			initialData={initialData}

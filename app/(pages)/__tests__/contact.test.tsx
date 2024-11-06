@@ -4,7 +4,8 @@ import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import Feedback, { fieldList } from '../contact/page';
+import FIELD_LIST from '../contact/field-list';
+import Feedback from '../contact/page';
 import { AppProviders } from '@/contexts';
 
 vi.mock('next-auth/react', () => ({
@@ -40,7 +41,7 @@ afterAll(() => server.close());
 test('renders correct input fields', () => {
 	vi.mocked(useSession).mockReturnValue({ data: null, status: 'unauthenticated', update: vi.fn() });
 	render(<Feedback />);
-	fieldList.forEach(field =>
+	FIELD_LIST.forEach(field =>
 		field.type === 'text'
 			? expect(screen.queryByLabelText(new RegExp(`^${field.name}$`, 'i'))).toBeInTheDocument()
 			: expect(screen.queryByText(new RegExp(`^${field.name}$`, 'i'))).toBeInTheDocument()
