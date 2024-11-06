@@ -75,7 +75,7 @@ const AsyncList = <T,>({
 	if (loginRequired && !session)
 		return (
 			<Paper sx={{ marginTop: 4 }}>
-				<Typography color='primary'>
+				<Typography component='div' color='primary'>
 					{LoginRequiredComponent ? <LoginRequiredComponent /> : 'Log in to view this page'}
 				</Typography>
 			</Paper>

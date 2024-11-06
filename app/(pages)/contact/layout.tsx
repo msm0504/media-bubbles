@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 	},
 };
 
-const NewSearchResults: React.FC<ParentCompProps> = ({ children }) => (
+const ContactUs: React.FC<ParentCompProps> = ({ children }) => (
 	<>
 		<Typography component='h2' variant='h3' color='info' marginBottom={2} fontWeight='bold'>
 			Contact Us
@@ -18,4 +18,4 @@ const NewSearchResults: React.FC<ParentCompProps> = ({ children }) => (
 	</>
 );
 
-export default NewSearchResults;
+export default ContactUs;

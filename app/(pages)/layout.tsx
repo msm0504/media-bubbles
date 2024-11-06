@@ -19,7 +19,6 @@ const Header: React.FC = () => (
 		<Image
 			alt='banner background'
 			src={bannerBackground}
-			placeholder='blur'
 			quality={100}
 			fill
 			className={styles.headerImg}
@@ -47,7 +46,6 @@ const NonHomeLayout: React.FC<ParentCompProps> = ({ children }) => (
 			<Image
 				alt='background'
 				src={background}
-				placeholder='blur'
 				quality={100}
 				fill
 				sizes='100vw'

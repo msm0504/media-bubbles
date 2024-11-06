@@ -51,7 +51,7 @@ const Login: React.FC = () => {
 			onClick={() => signOut()}
 			disabled={loading}
 		>
-			Log Out
+			Log out
 		</Button>
 	) : (
 		<>
@@ -65,7 +65,7 @@ const Login: React.FC = () => {
 				aria-haspopup='true'
 				onClick={handleOpenLoginMenu}
 			>
-				Log In
+				Log in
 			</Button>
 			<Menu
 				id='menu-login'

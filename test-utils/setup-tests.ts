@@ -1,11 +1,14 @@
+import { vi } from 'vitest';
+import '@testing-library/jest-dom/vitest';
+import { loadEnvConfig } from '@next/env';
 import 'whatwg-fetch';
 
 const localStorageMock = {
-	getItem: jest.fn(() => null),
-	setItem: jest.fn(),
-	removeItem: jest.fn(),
-	clear: jest.fn(),
-	key: jest.fn(() => ''),
+	getItem: vi.fn(() => null),
+	setItem: vi.fn(),
+	removeItem: vi.fn(),
+	clear: vi.fn(),
+	key: vi.fn(() => ''),
 	length: 0,
 };
 
@@ -18,7 +21,7 @@ if (typeof global.localStorage !== 'undefined') {
 	global.localStorage = localStorageMock;
 }
 
-jest.mock('next/navigation', () => ({
+vi.mock('next/navigation', () => ({
 	useRouter: () => ({
 		back: () => null,
 		forward: () => null,
@@ -32,3 +35,9 @@ jest.mock('next/navigation', () => ({
 		get: () => null,
 	}),
 }));
+
+vi.mock('next/cache', () => ({
+	unstable_cache: (fn: () => Promise<unknown>) => () => fn(),
+}));
+
+loadEnvConfig(process.cwd());

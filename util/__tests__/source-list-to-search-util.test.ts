@@ -1,3 +1,4 @@
+import { expect, test } from 'vitest';
 import { getNextSourcesToSearch } from '../source-list-to-search-util';
 import { initialState as blankForm } from '@/components/search-form/search-form-reducer';
 import { SearchMode } from '@/constants/search-mode';

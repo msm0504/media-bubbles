@@ -28,7 +28,6 @@ const Home: React.FC = () => (
 			<Image
 				alt='background'
 				src={homeBackground}
-				placeholder='blur'
 				quality={100}
 				fill
 				sizes='100vw'

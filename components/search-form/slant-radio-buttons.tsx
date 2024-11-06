@@ -39,7 +39,7 @@ const SlantRadioButtons: React.FC<SlantRadioButtonsProps> = ({ selection, onChan
 					direction={{ xs: 'column', md: 'row' }}
 					justifyContent={{ md: 'space-around' }}
 					name='sourceSlant'
-					value={selection}
+					value={selection || ''}
 					onChange={(event: ChangeEvent<HTMLInputElement>) =>
 						onChange(event.target.name, Number(event.target.value) as SourceSlant)
 					}

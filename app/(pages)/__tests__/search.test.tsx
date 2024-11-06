@@ -1,23 +1,17 @@
+import { afterAll, afterEach, beforeAll, expect, test, vi } from 'vitest';
 import { cleanup, render, screen, fireEvent } from '@testing-library/react';
-import { http, HttpResponse } from 'msw';
-import { setupServer } from 'msw/node';
 import Search from '../search/page';
 import { SEARCH_MODE_MAP } from '@/constants/search-mode';
 
-const server = setupServer();
-
 beforeAll(() => {
-	server.listen();
-	server.use(
-		http.get('/api/source-lists', () =>
-			HttpResponse.json({ appSourceList: [], sourceListBySlant: [] })
-		)
-	);
+	vi.mock('@/services/source-list-service', () => ({
+		getSourceLists: () => ({ appSourceList: [], sourceListBySlant: [] }),
+	}));
 });
 
 afterEach(cleanup);
 
-afterAll(() => server.close());
+afterAll(() => vi.restoreAllMocks());
 
 test('search page renders', async () => {
 	render(await Search({}));
