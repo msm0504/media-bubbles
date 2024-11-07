@@ -29,6 +29,7 @@ const pages: PageLink[] = [
 	{ label: 'Search', route: '/search' },
 	{ label: 'Latest News', route: '/latest' },
 	{ label: 'About', route: '/about' },
+	{ label: 'Blog', route: '/blog' },
 	{ label: 'Contact Us', route: '/contact' },
 ];
 

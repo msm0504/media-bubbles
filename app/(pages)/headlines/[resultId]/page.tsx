@@ -1,10 +1,10 @@
 import type { Metadata } from 'next';
 import { unstable_cache as cache } from 'next/cache';
 import { notFound } from 'next/navigation';
-import { Typography } from '@mui/material';
 import type { SavedResult } from '@/types';
 import { getAllSavedResults, getSavedResult } from '@/services/saved-results-service';
 import SearchResults from '@/components/search-results/search-results';
+import PageHeading from '@/components/shared/page-heading';
 
 type PageParams = {
 	resultId: string;
@@ -69,13 +69,11 @@ const getSearchResult = async (params: PageParams): Promise<SavedResult> => {
 	return loadedResult;
 };
 
-const SavedSearchResult = async ({ params }: { params: { resultId: string } }) => {
+const SavedSearchResult = async ({ params }: { params: PageParams }) => {
 	const loadedResult = await getSearchResult(params);
 	return (
 		<>
-			<Typography component='h2' variant='h3' color='info' marginBottom={2} fontWeight='bold'>
-				{`Saved Result: ${loadedResult.name}`}
-			</Typography>
+			<PageHeading heading={`Saved Result: ${loadedResult.name}`} />
 			<SearchResults
 				sourceList={loadedResult.sourceList}
 				isSearchAll={loadedResult.isSearchAll}

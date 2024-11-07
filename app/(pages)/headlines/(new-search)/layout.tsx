@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
-import { Typography } from '@mui/material';
 import { ParentCompProps } from '@/types';
+import PageHeading from '@/components/shared/page-heading';
 
 export const metadata: Metadata = {
 	title: 'Headlines - Media Bubbles',
@@ -11,9 +11,7 @@ export const metadata: Metadata = {
 
 const NewSearchResults: React.FC<ParentCompProps> = ({ children }) => (
 	<>
-		<Typography component='h2' variant='h3' color='info' marginBottom={2} fontWeight='bold'>
-			Search Results
-		</Typography>
+		<PageHeading heading='Search Results' />
 		{children}
 	</>
 );

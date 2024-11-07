@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Paper, Stack, Typography } from '@mui/material';
+import PageHeading from '@/components/shared/page-heading';
 
 export const metadata: Metadata = {
 	title: 'About - Media Bubbles',
@@ -11,9 +12,7 @@ export const metadata: Metadata = {
 
 const About: React.FC = () => (
 	<>
-		<Typography component='h2' variant='h3' color='info' marginBottom={2} fontWeight='bold'>
-			About
-		</Typography>
+		<PageHeading heading='About' />
 		<Paper>
 			<Stack spacing={4}>
 				<Typography component='h3' variant='h4' fontWeight='bold'>

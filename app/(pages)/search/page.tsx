@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
 import { unstable_cache as cache } from 'next/cache';
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import SearchInstructions from '@/components/search-form/instructions';
 import SearchTabs from '@/components/search-form/tabs';
 import { getSourceLists } from '@/services/source-list-service';
+import PageHeading from '@/components/shared/page-heading';
 
 const SECONDS_IN_WEEK = 60 * 60 * 24 * 7;
 
@@ -23,9 +24,7 @@ const Search: React.FC = async () => {
 
 	return (
 		<>
-			<Typography component='h2' variant='h3' color='info' marginBottom={2} fontWeight='bold'>
-				Headlines Search
-			</Typography>
+			<PageHeading heading='Headlines Search' />
 			<Stack spacing={4}>
 				<SearchTabs appSourceList={appSourceList} sourceListBySlant={sourceListBySlant} />
 				<SearchInstructions />

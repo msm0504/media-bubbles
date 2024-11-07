@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 import { unstable_cache as cache } from 'next/cache';
-import { Typography } from '@mui/material';
 import type { SearchRequest } from '@/types';
 import { getHeadlines } from '@/services/bing-news-service';
 import SearchResults from '@/components/search-results/search-results';
+import PageHeading from '@/components/shared/page-heading';
 
 const SECONDS_IN_FIFTEEN_MIN = 60 * 15;
 
@@ -38,9 +38,7 @@ const LatestNews: React.FC = async () => {
 	const latestArticleMap = await getCachedLatestNews();
 	return (
 		<>
-			<Typography component='h2' variant='h3' color='info' marginBottom={2} fontWeight='bold'>
-				Latest News
-			</Typography>
+			<PageHeading heading='Latest News' />
 			<SearchResults sourceList={[]} isSearchAll articleMap={latestArticleMap} />
 		</>
 	);
