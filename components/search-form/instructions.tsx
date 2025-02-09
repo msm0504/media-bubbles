@@ -38,10 +38,10 @@ const SearchInstructions: React.FC = () => (
 		<Typography>
 			{`With any of these search types, you can either enter a keyword, which limits results to those
 			about that topic, or get whatever the latest news is from these various sources. All search
-			results are from Twitter and will show the contents of the individual tweets along with the
+			results are from Bluesky and will show the contents of the individual posts along with the
 			articles they link to. The results can be saved and shared, and if you are logged in, you can
-			view your past saved results. There are a plethora of media outlets on Twitter, so we pull
-			from between 30 and 40 sources total, with about the same number for each political bias. The
+			view your past saved results. There are a plethora of media outlets on Bluesky, so we pull
+			from around 30 sources total, with about the same number for each political bias. The
 			bias ratings are from AllSides, and their method for determining them can be found `}
 			<Link
 				href='https://www.allsides.com/media-bias/media-bias-ratings'

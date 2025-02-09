@@ -1,6 +1,6 @@
 {
 	"name": "media-bubbles",
-	"version": "7.0.0",
+	"version": "7.1.0",
 	"private": true,
 	"scripts": {
 		"build": "next build",
@@ -14,6 +14,7 @@
 		"test:coverage": "vitest run --coverage"
 	},
 	"dependencies": {
+		"@atproto/api": "^0.13.32",
 		"@auth/mongodb-adapter": "^3.6.0",
 		"@aws-sdk/client-lambda": "^3.679.0",
 		"@aws-sdk/client-s3": "^3.667.0",
@@ -31,13 +32,13 @@
 		"form-data": "^4.0.0",
 		"mongodb": "^6.9.0",
 		"nanoid": "^5.0.7",
-		"next": "14.2.14",
+		"next": "^14.2.23",
 		"next-auth": "^5.0.0-beta.23",
 		"react": "^18",
-		"react-dom": "^18"
+		"react-dom": "^18",
+		"string-similarity": "^4.0.4"
 	},
 	"devDependencies": {
-		"@azure/cognitiveservices-newssearch": "^3.0.1",
 		"@testing-library/jest-dom": "^6.5.0",
 		"@testing-library/react": "^16.0.1",
 		"@testing-library/user-event": "^14.5.2",
@@ -46,6 +47,7 @@
 		"@types/node": "^20",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
+		"@types/string-similarity": "^4.0.2",
 		"@vitejs/plugin-react": "^4.3.3",
 		"@vitest/coverage-v8": "^2.1.4",
 		"eslint": "^8",

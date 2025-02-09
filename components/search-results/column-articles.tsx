@@ -54,6 +54,18 @@ const ColumnArticles: React.FC<ColumnArticlesProps> = ({ articles, isSearchAll, 
 						) : null}
 						<CardContent>
 							<Typography dangerouslySetInnerHTML={{ __html: article.text }} />
+							{article.url ? (
+								<Typography>
+									<Link
+										color={slantClass}
+										href={article.url}
+										target='_blank'
+										rel='noopener noreferrer'
+									>
+										{article.url}
+									</Link>
+								</Typography>
+							) : null}
 						</CardContent>
 					</Card>
 				)

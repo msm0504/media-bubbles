@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { unstable_cache as cache } from 'next/cache';
 import { Typography } from '@mui/material';
 import type { SearchRequest } from '@/types';
-import { getHeadlines } from '@/services/bing-news-service';
+import { getHeadlines } from '@/services/bsky-news-service';
 import SearchResults from '@/components/search-results/search-results';
 
 const SECONDS_IN_FIFTEEN_MIN = 60 * 15;

@@ -1,3 +1,5 @@
+import { synchBskyLists } from './bsky-list-service';
+import { getBskyProfile } from './bsky-news-service';
 import { MILLISECONDS_IN_DAY, useBiasRatingsFile } from '@/constants/server';
 import SOURCE_INCLUDE_LIST from '@/data/source-include-list.json';
 import { SourceSlant } from '@/constants/source-slant';
@@ -50,40 +52,47 @@ async function setSourcesAndBiasRatings() {
 		: getBiasRatings());
 	const biasRatings =
 		biasRatingsResponse?.allsides_media_bias_ratings.map(({ publication }) => publication) || [];
-	await Promise.all(
-		biasRatings.map(async ({ source_name, source_url, media_bias_rating }) => {
-			const biasRating = ALL_SIDES_RATINGS_TO_INT[
-				media_bias_rating as AllSidesBiasRating
-			] as SourceSlant;
-			if (biasRating === null || typeof biasRating === 'undefined') return 0;
+	biasRatings.forEach(({ source_name, source_url, media_bias_rating }) => {
+		const biasRating = ALL_SIDES_RATINGS_TO_INT[
+			media_bias_rating as AllSidesBiasRating
+		] as SourceSlant;
+		if (biasRating === null || typeof biasRating === 'undefined') return 0;
 
-			const modifiedName = source_name
-				.replace(/\(.*\)/, '') // ignore part of name in ()
-				.replace(/\s-\s\S+$/, '') // ignore dash suffix
-				.trim();
+		const modifiedName = source_name
+			.replace(/\(.*\)/, '') // ignore part of name in ()
+			.replace(/\s-\s\S+$/, '') // ignore dash suffix
+			.trim();
 
-			if (!SOURCE_INCLUDE_LIST[modifiedName as SourceIncludeListKey] === true || !source_url)
-				return 0;
+		if (!SOURCE_INCLUDE_LIST[modifiedName as SourceIncludeListKey] === true || !source_url)
+			return 0;
 
-			const id = modifiedName.toLowerCase().replace(/\s/g, '-');
-			if (!Object.prototype.hasOwnProperty.call(global.sources.biasRatings, id)) {
-				const formattedUrl = new URL(source_url).hostname.replace(/www\./, '');
-				global.sources.app.push({
-					id,
-					name: modifiedName,
-					url: formattedUrl,
-					slant: biasRating,
-				});
+		const id = modifiedName.toLowerCase().replace(/\s/g, '-');
+		if (!Object.prototype.hasOwnProperty.call(global.sources.biasRatings, id)) {
+			const formattedUrl = new URL(source_url).hostname.replace(/www\./, '');
+			global.sources.app.push({
+				id,
+				name: modifiedName,
+				url: formattedUrl,
+				slant: biasRating,
+			});
+		}
+		if (
+			!Object.prototype.hasOwnProperty.call(global.sources.biasRatings, id) ||
+			Math.abs(biasRating - CENTER) > Math.abs(global.sources.biasRatings[id] - CENTER)
+		) {
+			global.sources.biasRatings[id] = biasRating;
+			const prev = global.sources.app.find(source => source.id === id);
+			if (prev) {
+				prev.slant = biasRating;
 			}
-			if (
-				!Object.prototype.hasOwnProperty.call(global.sources.biasRatings, id) ||
-				Math.abs(biasRating - CENTER) > Math.abs(global.sources.biasRatings[id] - CENTER)
-			) {
-				global.sources.biasRatings[id] = biasRating;
-				const prev = global.sources.app.find(source => source.id === id);
-				if (prev) {
-					prev.slant = biasRating;
-				}
+		}
+	});
+	await Promise.all(
+		global.sources.app.map(async source => {
+			const profile = await getBskyProfile(source.name, source.url);
+			if (profile.handle) {
+				source.bskyHandle = profile.handle;
+				source.bskyDid = profile.did;
 			}
 			return 0;
 		})
@@ -117,6 +126,7 @@ async function populateSourceLists() {
 	});
 
 	global.sources.lastUpdate = Date.now();
+	synchBskyLists(global.sources.bySlant);
 }
 
 export async function getSourceLists(): Promise<{

@@ -11,8 +11,8 @@ const Footer: React.FC = () => (
 					justifyContent={{ md: 'start' }}
 				>
 					<Stack spacing={2}>
-						<MuiLink href='https://bing.com/news' target='_blank' rel='noreferrer'>
-							Headline Searches Powered By Microsoft Bing
+						<MuiLink href='https://bsky.app' target='_blank' rel='noreferrer'>
+							Headline Searches Powered By Bluesky
 						</MuiLink>
 						<MuiLink
 							href='https://www.allsides.com/bias/bias-ratings'

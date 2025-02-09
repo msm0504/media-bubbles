@@ -1,10 +1,17 @@
-import { afterAll, beforeAll, expect, test } from 'vitest';
+import { afterAll, beforeAll, expect, test, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { getBskyProfile } from '../bsky-news-service';
 import { getBiasRatingBySourceId, getSourceLists } from '../source-list-service';
 import allsidesRespMock from '../__mocks__/allsides-resp.json';
 import type { Source } from '@/types';
 
+vi.mock('../bsky-list-service', () => ({
+	synchBskyLists: vi.fn(),
+}));
+vi.mock('../bsky-news-service', () => ({
+	getBskyProfile: vi.fn(),
+}));
 const server = setupServer();
 
 const cnnSourceObj: Source = {
@@ -12,15 +19,28 @@ const cnnSourceObj: Source = {
 	name: 'CNN',
 	url: 'cnn.com',
 	slant: 0,
+	bskyDid: 'did:1234',
+	bskyHandle: 'cnn.com',
 };
 const wsjSourceObj: Source = {
 	id: 'wall-street-journal',
 	name: 'Wall Street Journal',
 	url: 'online.wsj.com',
 	slant: 3,
+	bskyDid: 'did:2345',
+	bskyHandle: 'wsj.com',
 };
 
 beforeAll(() => {
+	vi.mocked(getBskyProfile).mockImplementation((source: string) =>
+		Promise.resolve(
+			source === 'CNN'
+				? { did: 'did:1234', handle: 'cnn.com' }
+				: source === 'Wall Street Journal'
+					? { did: 'did:2345', handle: 'wsj.com' }
+					: { did: '', handle: '' }
+		)
+	);
 	server.listen();
 	server.use(
 		http.get('https://www.allsides.com/media-bias/json/noncommercial/publications', () =>
