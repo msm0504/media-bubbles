@@ -122,16 +122,26 @@ const getArticlesToShow = ({ posts, source, slantSources }: GetArticlesToShowPar
 			const external = post.embed?.external as ViewExternal;
 			if (!uniqueUrls[external.uri]) {
 				uniqueUrls[external.uri] = true;
-				articlesToShow.push({
-					source: {
-						id: postSource.id,
-						name: postSource.name,
-					},
-					title: external.title || '',
-					description: external.description || '',
-					url: external.uri || '',
-					publishedAt: post.indexedAt || '',
-				});
+				const article = external.title
+					? {
+							source: {
+								id: postSource.id,
+								name: postSource.name,
+							},
+							title: external.title || '',
+							description: external.description || '',
+							url: external.uri || '',
+							publishedAt: post.indexedAt || '',
+						}
+					: (post.record as PostRecord)?.text
+						? {
+								id: post.uri,
+								sourceName: postSource.name,
+								url: external.uri,
+								text: (post.record as PostRecord).text || '',
+							}
+						: null;
+				if (article) articlesToShow.push(article);
 			}
 		} else if ((post.record as PostRecord)?.text) {
 			const textWithUrl = ((post.record as PostRecord).text || '').split(URL_REGEX, 2);
