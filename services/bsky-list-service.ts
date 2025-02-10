@@ -103,6 +103,7 @@ export const synchBskyLists = async (sourceListBySlant: Source[][]) => {
 		Object.values(global.bskyListMap).map(async list => {
 			const existing = bskyLists.find(({ name }) => name === list.name);
 			list.uri = existing ? existing.uri : await createBskyList(list.name);
+			return 0;
 		})
 	);
 
