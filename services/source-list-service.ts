@@ -94,7 +94,6 @@ async function setSourcesAndBiasRatings() {
 				source.bskyHandle = profile.handle;
 				source.bskyDid = profile.did;
 			}
-			return 0;
 		})
 	);
 }
@@ -126,7 +125,7 @@ async function populateSourceLists() {
 	});
 
 	global.sources.lastUpdate = Date.now();
-	synchBskyLists(global.sources.bySlant);
+	await synchBskyLists(global.sources.bySlant);
 }
 
 export async function getSourceLists(): Promise<{

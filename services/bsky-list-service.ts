@@ -102,8 +102,10 @@ export const synchBskyLists = async (sourceListBySlant: Source[][]) => {
 
 	global.bskyListMap = await generateBskyListMap(lists);
 
-	sourceListBySlant.forEach((sources, i) =>
-		synchBskyList(sources, global.bskyListMap[i as SourceSlant].uri)
+	await Promise.all(
+		sourceListBySlant.map((sources, i) =>
+			synchBskyList(sources, global.bskyListMap[i as SourceSlant].uri)
+		)
 	);
 };
 
