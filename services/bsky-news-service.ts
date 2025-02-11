@@ -151,12 +151,15 @@ const getArticlesToShow = ({ posts, source, slantSources }: GetArticlesToShowPar
 				(!uniqueTexts.length ||
 					findBestMatch(text, uniqueTexts).bestMatch.rating < MAX_SIMILARITY_SCORE)
 			) {
+				const url = textWithUrl[1].startsWith('http')
+					? textWithUrl[1]
+					: `https://${textWithUrl[1]}`;
 				uniqueTexts.push(text);
 				articlesToShow.push({
 					id: post.uri,
 					sourceName: postSource.name,
-					url: textWithUrl[1],
 					text,
+					url,
 				});
 			}
 		}
