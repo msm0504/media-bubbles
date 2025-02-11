@@ -1,19 +1,10 @@
 import { AtUri } from '@atproto/api';
+import type { ListView } from '@atproto/api/dist/client/types/app/bsky/graph/defs';
 import type { BskyList, Source } from '@/types';
 import { getBskyAgent } from './bsky-agent';
 import { type SourceSlant, SOURCE_SLANT_MAP } from '@/constants/source-slant';
 
 global.bskyListMap = global.bskyListMap || null;
-
-const initBskyListMap = () =>
-	Object.entries(SOURCE_SLANT_MAP).reduce(
-		(acc, [key, value]) => {
-			const slant = Number(key) as SourceSlant;
-			acc[slant] = { name: `${value} News Sources`, uri: '' };
-			return acc;
-		},
-		{} as Record<SourceSlant, BskyList>
-	);
 
 const createBskyList = async (listName: string) => {
 	const agent = await getBskyAgent();
@@ -32,6 +23,20 @@ const createBskyList = async (listName: string) => {
 	});
 	return resp.data.uri;
 };
+
+const generateBskyListMap = async (bskyLists: ListView[]) =>
+	Object.entries(SOURCE_SLANT_MAP).reduce<Promise<{ [key: number]: BskyList }>>(
+		async (memo: Promise<{ [key: number]: BskyList }>, [key, value]) => {
+			const slant = Number(key) as SourceSlant;
+			const listName = `${value} News Sources`;
+			const existing = bskyLists.find(({ name }) => name === listName);
+			const uri = existing ? existing.uri : await createBskyList(listName);
+			const acc = await memo;
+			acc[slant] = { name: listName, uri };
+			return acc;
+		},
+		Promise.resolve({})
+	);
 
 const createBskyListItem = async (did: string, listUri: string) => {
 	const agent = await getBskyAgent();
@@ -92,20 +97,11 @@ export const synchBskyLists = async (sourceListBySlant: Source[][]) => {
 	const agent = await getBskyAgent();
 	if (!agent.session?.did) return;
 
-	if (!global.bskyListMap) {
-		global.bskyListMap = initBskyListMap();
-	}
-
 	const {
-		data: { lists: bskyLists },
+		data: { lists },
 	} = await agent.app.bsky.graph.getLists({ actor: agent.session?.did });
-	await Promise.all(
-		Object.values(global.bskyListMap).map(async list => {
-			const existing = bskyLists.find(({ name }) => name === list.name);
-			list.uri = existing ? existing.uri : await createBskyList(list.name);
-			return 0;
-		})
-	);
+
+	global.bskyListMap = await generateBskyListMap(lists);
 
 	sourceListBySlant.forEach((sources, i) =>
 		synchBskyList(sources, global.bskyListMap[i as SourceSlant].uri)

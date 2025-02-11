@@ -20,5 +20,5 @@ declare global {
 	var s3Client: S3Client;
 	var lambdaClient: LambdaClient;
 	var bskyAgent: Promise<AtpAgent>;
-	var bskyListMap: Record<SourceSlant, BskyList>;
+	var bskyListMap: { [key: number]: BskyList };
 }
