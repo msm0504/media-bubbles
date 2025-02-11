@@ -27,12 +27,11 @@ const createBskyList = async (listName: string) => {
 const generateBskyListMap = async (bskyLists: ListView[]) =>
 	Object.entries(SOURCE_SLANT_MAP).reduce<Promise<{ [key: number]: BskyList }>>(
 		async (memo: Promise<{ [key: number]: BskyList }>, [key, value]) => {
-			const slant = Number(key) as SourceSlant;
 			const listName = `${value} News Sources`;
 			const existing = bskyLists.find(({ name }) => name === listName);
 			const uri = existing ? existing.uri : await createBskyList(listName);
 			const acc = await memo;
-			acc[slant] = { name: listName, uri };
+			acc[Number(key)] = { name: listName, uri };
 			return acc;
 		},
 		Promise.resolve({})
