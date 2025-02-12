@@ -114,9 +114,10 @@ const getArticlesToShow = ({ posts, source, slantSources }: GetArticlesToShowPar
 	const uniqueUrls: { [name: string]: boolean } = {};
 	for (let i = 0; i < posts.length && articlesToShow.length < MAX_SHOW_PER_CATEGORY; i++) {
 		const post = posts[i];
-
 		const postSource =
 			source || (slantSources?.find(({ bskyDid }) => bskyDid === post.author.did) as Source);
+
+		if (!postSource) continue;
 
 		if ((post.embed?.$type || '') === BSKY_ARTICLE_TYPE) {
 			const external = post.embed?.external as ViewExternal;

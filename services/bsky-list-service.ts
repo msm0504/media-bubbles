@@ -41,7 +41,7 @@ const createBskyListItem = async (did: string, listUri: string) => {
 	const agent = await getBskyAgent();
 	if (!agent.session?.did) return '';
 
-	agent.com.atproto.repo.createRecord({
+	await agent.com.atproto.repo.createRecord({
 		repo: agent.session.did,
 		collection: 'app.bsky.graph.listitem',
 		record: {
@@ -58,7 +58,7 @@ const deleteBskyListItem = async (listItemUri: string) => {
 	if (!agent.session?.did) return '';
 
 	const { collection, rkey } = new AtUri(listItemUri);
-	agent.com.atproto.repo.deleteRecord({ repo: agent.session.did, collection, rkey });
+	await agent.com.atproto.repo.deleteRecord({ repo: agent.session.did, collection, rkey });
 };
 
 const synchBskyList = async (sources: Source[], uri: string) => {
@@ -87,9 +87,8 @@ const synchBskyList = async (sources: Source[], uri: string) => {
 		return acc;
 	}, []);
 
-	didsToAdd.forEach(did => createBskyListItem(did, uri));
-
-	urisToDelete.forEach(deleteBskyListItem);
+	await Promise.all(didsToAdd.map(did => createBskyListItem(did, uri)));
+	await Promise.all(urisToDelete.map(deleteBskyListItem));
 };
 
 export const synchBskyLists = async (sourceListBySlant: Source[][]) => {

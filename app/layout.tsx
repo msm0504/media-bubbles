@@ -37,7 +37,6 @@ const robotoSlab = Roboto_Slab({
 
 const RootLayout: React.FC<ParentCompProps> = ({ children }) => (
 	<html lang='en'>
-		<GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ''} />
 		<body className={robotoSlab.variable}>
 			<AppRouterCacheProvider>
 				<ThemeProvider theme={theme}>
@@ -51,6 +50,7 @@ const RootLayout: React.FC<ParentCompProps> = ({ children }) => (
 				</ThemeProvider>
 			</AppRouterCacheProvider>
 		</body>
+		<GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ''} />
 	</html>
 );
 
