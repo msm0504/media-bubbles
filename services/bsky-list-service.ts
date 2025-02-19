@@ -1,0 +1,111 @@
+import { AtUri } from '@atproto/api';
+import type { ListView } from '@atproto/api/dist/client/types/app/bsky/graph/defs';
+import type { BskyList, Source } from '@/types';
+import { getBskyAgent } from './bsky-agent';
+import { type SourceSlant, SOURCE_SLANT_MAP } from '@/constants/source-slant';
+
+global.bskyListMap = global.bskyListMap || null;
+
+const createBskyList = async (listName: string) => {
+	const agent = await getBskyAgent();
+	if (!agent.session?.did) return '';
+
+	const resp = await agent.com.atproto.repo.createRecord({
+		repo: agent.session.did,
+		collection: 'app.bsky.graph.list',
+		record: {
+			$type: 'app.bsky.graph.list',
+			purpose: 'app.bsky.graph.defs#curatelist',
+			name: listName,
+			description: listName,
+			createdAt: new Date().toISOString(),
+		},
+	});
+	return resp.data.uri;
+};
+
+const generateBskyListMap = async (bskyLists: ListView[]) =>
+	Object.entries(SOURCE_SLANT_MAP).reduce<Promise<{ [key: number]: BskyList }>>(
+		async (memo: Promise<{ [key: number]: BskyList }>, [key, value]) => {
+			const listName = `${value} News Sources`;
+			const existing = bskyLists.find(({ name }) => name === listName);
+			const uri = existing ? existing.uri : await createBskyList(listName);
+			const acc = await memo;
+			acc[Number(key)] = { name: listName, uri };
+			return acc;
+		},
+		Promise.resolve({})
+	);
+
+const createBskyListItem = async (did: string, listUri: string) => {
+	const agent = await getBskyAgent();
+	if (!agent.session?.did) return '';
+
+	await agent.com.atproto.repo.createRecord({
+		repo: agent.session.did,
+		collection: 'app.bsky.graph.listitem',
+		record: {
+			$type: 'app.bsky.graph.listitem',
+			subject: did,
+			list: listUri,
+			createdAt: new Date().toISOString(),
+		},
+	});
+};
+
+const deleteBskyListItem = async (listItemUri: string) => {
+	const agent = await getBskyAgent();
+	if (!agent.session?.did) return '';
+
+	const { collection, rkey } = new AtUri(listItemUri);
+	await agent.com.atproto.repo.deleteRecord({ repo: agent.session.did, collection, rkey });
+};
+
+const synchBskyList = async (sources: Source[], uri: string) => {
+	const agent = await getBskyAgent();
+	if (!agent.session?.did) return;
+
+	const {
+		data: { items },
+	} = await agent.app.bsky.graph.getList({ list: uri });
+
+	const didsToAdd = sources.reduce((acc: string[], { bskyDid }) => {
+		if (bskyDid) {
+			const existing = items.find(item => item.subject.did === bskyDid);
+			if (!existing) {
+				acc.push(bskyDid);
+			}
+		}
+		return acc;
+	}, []);
+
+	const urisToDelete = items.reduce((acc: string[], item) => {
+		const existing = sources.find(source => source.bskyDid === item.subject.did);
+		if (!existing) {
+			acc.push(item.uri);
+		}
+		return acc;
+	}, []);
+
+	await Promise.all(didsToAdd.map(did => createBskyListItem(did, uri)));
+	await Promise.all(urisToDelete.map(deleteBskyListItem));
+};
+
+export const synchBskyLists = async (sourceListBySlant: Source[][]) => {
+	const agent = await getBskyAgent();
+	if (!agent.session?.did) return;
+
+	const {
+		data: { lists },
+	} = await agent.app.bsky.graph.getLists({ actor: agent.session?.did });
+
+	global.bskyListMap = await generateBskyListMap(lists);
+
+	await Promise.all(
+		sourceListBySlant.map((sources, i) =>
+			synchBskyList(sources, global.bskyListMap[i as SourceSlant].uri)
+		)
+	);
+};
+
+export const getBskyListUriForSlant = (slant: SourceSlant) => global.bskyListMap[slant].uri;

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Roboto_Slab } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
-import { GoogleTagManager } from '@next/third-parties/google';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { Box, ThemeProvider } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
 import { config } from '@fortawesome/fontawesome-svg-core';
@@ -37,7 +37,6 @@ const robotoSlab = Roboto_Slab({
 
 const RootLayout: React.FC<ParentCompProps> = ({ children }) => (
 	<html lang='en'>
-		<GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GA_ID || ''} />
 		<body className={robotoSlab.variable}>
 			<AppRouterCacheProvider>
 				<ThemeProvider theme={theme}>
@@ -51,6 +50,7 @@ const RootLayout: React.FC<ParentCompProps> = ({ children }) => (
 				</ThemeProvider>
 			</AppRouterCacheProvider>
 		</body>
+		<GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ''} />
 	</html>
 );
 

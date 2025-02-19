@@ -122,14 +122,14 @@ const theme = createTheme({
 						borderRadius: theme.spacing(3),
 						outline: 'none',
 						opacity: 0.7,
-						'-webkit-transition': '0.2s',
+						WebkitTransition: '0.2s',
 						transition: 'opacity 0.2s',
 						'&:focus, &:hover': {
 							opacity: 1,
 						},
 					},
 					'& .MuiSlider-thumb': {
-						'-webkit-appearance': 'none',
+						WebkitAppearance: 'none',
 						appearance: 'none',
 						width: theme.spacing(6),
 						height: theme.spacing(6),

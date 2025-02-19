@@ -7,7 +7,7 @@ import {
 	waitFor,
 	waitForElementToBeRemoved,
 } from '@testing-library/react';
-import { Session } from 'next-auth';
+import type { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';

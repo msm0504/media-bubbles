@@ -1,4 +1,4 @@
-import { getHeadlines } from '@/services/bing-news-service';
+import { getHeadlines } from '@/services/bsky-news-service';
 import { SearchRequest } from '@/types';
 
 export const GET = async (request: Request) => {

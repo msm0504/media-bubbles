@@ -10,7 +10,11 @@ export type Source = {
 	name: string;
 	url: string;
 	slant?: SourceSlant;
+	bskyDid?: string;
+	bskyHandle?: string;
 };
+
+export type BskyList = { name: string; uri: string };
 
 /** Headline Search Request Type Definition */
 
@@ -38,10 +42,11 @@ export type NewsApiArticle = {
 };
 
 export type TwitterArticle = {
-	author_id: string;
+	author_id?: string;
 	id: string;
 	text: string;
 	sourceName: string;
+	url?: string;
 };
 
 export type Article = NewsApiArticle | TwitterArticle;
