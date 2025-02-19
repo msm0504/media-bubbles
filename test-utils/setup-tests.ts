@@ -48,6 +48,7 @@ vi.mock('@atproto/api', async importOriginal => {
 			login: vi.fn(),
 			searchActorsTypeahead: () => fetch('/bsky/searchActorsTypeahead').then(resp => resp.json()),
 			getAuthorFeed: () => fetch('/bsky/getAuthorFeed').then(resp => resp.json()),
+			session: { did: 'did:user:123' },
 			app: {
 				bsky: {
 					feed: {
@@ -61,10 +62,12 @@ vi.mock('@atproto/api', async importOriginal => {
 				},
 			},
 			com: {
-				proto: {
+				atproto: {
 					repo: {
-						createRecord: () =>
-							fetch('/bsky/createRecord', { method: 'post' }).then(resp => resp.json()),
+						createRecord: (body: unknown) =>
+							fetch('/bsky/createRecord', { method: 'post', body: JSON.stringify(body) }).then(
+								resp => resp.json()
+							),
 						deleteRecord: () =>
 							fetch('/bsky/deleteRecord', { method: 'delete' }).then(resp => resp.json()),
 					},
