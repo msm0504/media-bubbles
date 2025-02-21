@@ -4,6 +4,7 @@ import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
+import { capitalize } from '@mui/material';
 import FIELD_LIST from '../contact/field-list';
 import Feedback from '../contact/page';
 import { AppProviders } from '@/contexts';
@@ -43,26 +44,28 @@ test('renders correct input fields', () => {
 	render(<Feedback />);
 	FIELD_LIST.forEach(field =>
 		field.type === 'text'
-			? expect(screen.queryByLabelText(new RegExp(`^${field.name}$`, 'i'))).toBeInTheDocument()
-			: expect(screen.queryByText(new RegExp(`^${field.name}$`, 'i'))).toBeInTheDocument()
+			? expect(
+					screen.queryByLabelText(capitalize(field.name), { exact: false })
+				).toBeInTheDocument()
+			: expect(screen.queryByText(capitalize(field.name), { exact: false })).toBeInTheDocument()
 	);
 });
 
-test('displays correct error messages for invalid input', () => {
+test('displays correct error messages for invalid input', async () => {
 	vi.mocked(useSession).mockReturnValue({ data: null, status: 'unauthenticated', update: vi.fn() });
 	render(<Feedback />);
-	const emailInput = screen.getByLabelText('Email');
+	const emailInput = screen.getByLabelText('Email', { exact: false });
 
 	fireEvent.blur(emailInput);
-	expect(screen.queryByText('Email is required')).toBeInTheDocument();
+	expect(await screen.findByText('Email is required')).toBeInTheDocument();
 
 	fireEvent.change(emailInput, { target: { value: 'test@gmail.' } });
 	fireEvent.blur(emailInput);
-	expect(screen.queryByText('Invalid email format.')).toBeInTheDocument();
+	expect(await screen.findByText('Invalid email format.')).toBeInTheDocument();
 
 	fireEvent.click(screen.getByText('Send Message'));
-	expect(screen.queryByText('Name is required')).toBeInTheDocument();
-	expect(screen.queryByText('Message is required')).toBeInTheDocument();
+	expect(await screen.findByText('Name is required')).toBeInTheDocument();
+	expect(await screen.findByText('Message is required')).toBeInTheDocument();
 });
 
 test('displays success alert after successful submit', async () => {
@@ -78,7 +81,7 @@ test('displays success alert after successful submit', async () => {
 		</AppProviders>
 	);
 
-	fireEvent.change(screen.getByLabelText('Message'), {
+	fireEvent.change(screen.getByLabelText('Message', { exact: false }), {
 		target: { value: 'This site is amazing!' },
 	});
 
@@ -100,7 +103,7 @@ test('displays error alert after failed submit', async () => {
 		</AppProviders>
 	);
 
-	fireEvent.change(screen.getByLabelText('Message'), {
+	fireEvent.change(screen.getByLabelText('Message', { exact: false }), {
 		target: { value: 'This site is amazing!' },
 	});
 

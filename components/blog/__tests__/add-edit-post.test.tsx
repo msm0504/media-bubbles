@@ -4,7 +4,8 @@ import { Session } from 'next-auth';
 import { useSession } from 'next-auth/react';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import AddEditBlogPost, { fieldList } from '../add-edit-post';
+import AddEditBlogPost from '../add-edit-post';
+import FIELD_LIST from '../field-list';
 import { AppProviders } from '@/contexts';
 
 vi.mock('next-auth/react', () => ({
@@ -70,12 +71,12 @@ test('renders correct input fields', () => {
 		update: vi.fn(),
 	});
 	render(<AddEditBlogPost />);
-	fieldList.forEach(field =>
+	FIELD_LIST.forEach(field =>
 		expect(screen.queryByLabelText(new RegExp(`^${field.name}$`, 'i'))).toBeInTheDocument()
 	);
 });
 
-test('displays correct error messages for invalid input', () => {
+test('displays correct error messages for invalid input', async () => {
 	vi.mocked(useSession).mockReturnValue({
 		data: mockAdmin,
 		status: 'authenticated',
@@ -85,17 +86,17 @@ test('displays correct error messages for invalid input', () => {
 	const slugInput = screen.getByLabelText('Slug');
 
 	fireEvent.blur(slugInput);
-	expect(screen.queryByText('Slug is required')).toBeInTheDocument();
+	expect(await screen.findByText('Slug is required')).toBeInTheDocument();
 
 	fireEvent.change(slugInput, { target: { value: 's$ug' } });
 	fireEvent.blur(slugInput);
 	expect(
-		screen.queryByText('Slug can only contain lowercase letters, numbers, and dashes.')
+		await screen.findByText('Slug can only contain lowercase letters, numbers, and dashes.')
 	).toBeInTheDocument();
 
 	fireEvent.click(screen.getByText('Save Post'));
-	expect(screen.queryByText('Title is required')).toBeInTheDocument();
-	expect(screen.queryByText('Content is required')).toBeInTheDocument();
+	expect(await screen.findByText('Title is required')).toBeInTheDocument();
+	expect(await screen.findByText('Content is required')).toBeInTheDocument();
 });
 
 test('renders preview modal after button click', () => {

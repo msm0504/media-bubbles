@@ -38,6 +38,7 @@
 		"react-dom": "^18",
 		"react-markdown": "^9.0.1",
 		"remark-gfm": "^4.0.0",
+		"react-hook-form": "^7.54.2",
 		"string-similarity": "^4.0.4"
 	},
 	"devDependencies": {
