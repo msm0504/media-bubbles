@@ -1,3 +1,5 @@
+import type { FeedbackMessage } from '@/types';
+import { EMAIL_PATTERN, getRequiredMessage } from '@/util/form-utils';
 import type { FieldSetting } from '@/components/shared/saveable-form';
 
 export const REASON_OPTIONS = [
@@ -6,7 +8,7 @@ export const REASON_OPTIONS = [
 	{ value: 'Issue', label: 'Report an Issue' },
 ];
 
-const FIELD_LIST: FieldSetting[] = [
+const FIELD_LIST: FieldSetting<FeedbackMessage>[] = [
 	{
 		name: 'reason',
 		type: 'buttonGroup',
@@ -16,17 +18,23 @@ const FIELD_LIST: FieldSetting[] = [
 		name: 'name',
 		type: 'text',
 		placeholder: 'John Doe',
+		rules: { required: getRequiredMessage('name') },
 	},
 	{
 		name: 'email',
 		type: 'text',
 		placeholder: 'johndoe@domain.com',
+		rules: {
+			required: getRequiredMessage('email'),
+			pattern: { value: EMAIL_PATTERN, message: 'Invalid email format.' },
+		},
 	},
 	{
 		name: 'message',
 		type: 'text',
 		placeholder: 'This site is amazing!',
 		rows: 8,
+		rules: { required: getRequiredMessage('message') },
 	},
 ];
 
