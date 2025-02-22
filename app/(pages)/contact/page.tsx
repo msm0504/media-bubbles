@@ -3,37 +3,16 @@ import { useContext } from 'react';
 import { useSession } from 'next-auth/react';
 import FIELD_LIST, { REASON_OPTIONS } from './field-list';
 import type { FeedbackMessage, FeedbackSentResponse, ShowAlertFn } from '@/types';
-import SaveableForm, { getRequiredMessage } from '@/components/shared/saveable-form';
+import SaveableForm from '@/components/shared/saveable-form';
 import ALERT_LEVEL from '@/constants/alert-level';
 import { AlertsDispatch } from '@/contexts/alerts-context';
 import { callApi } from '@/services/api-service';
 
-const blankFeedbackForm = {
+const blankFeedbackForm: FeedbackMessage = {
 	name: '',
 	email: '',
 	reason: REASON_OPTIONS[0].value,
 	message: '',
-};
-
-const EMAIL_PATTERN = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-
-const getFieldErrorMessage = (fieldName: string, value: string | undefined) => {
-	switch (fieldName) {
-		case 'name':
-			if (!value) return getRequiredMessage(fieldName);
-			break;
-		case 'email':
-			if (!value) return getRequiredMessage(fieldName);
-			if (!EMAIL_PATTERN.test(value)) return 'Invalid email format.';
-			break;
-		case 'message':
-			if (!value) return getRequiredMessage(fieldName);
-			break;
-		default:
-			return '';
-	}
-
-	return '';
 };
 
 async function submitFeedback(feedbackData: FeedbackMessage, showAlert: ShowAlertFn) {
@@ -62,7 +41,6 @@ const Feedback: React.FC = () => {
 	return (
 		<SaveableForm<FeedbackMessage>
 			fieldList={FIELD_LIST}
-			fieldValidateFn={getFieldErrorMessage}
 			formName='feedback'
 			initialData={initialData}
 			submitFn={feedbackData => submitFeedback(feedbackData, showAlert)}

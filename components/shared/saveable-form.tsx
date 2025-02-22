@@ -1,8 +1,11 @@
 'use client';
-import { useState, useEffect, FocusEvent, ReactElement } from 'react';
+import { useState, useEffect, ReactElement } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import type { DefaultValues, FieldValues, Path, RegisterOptions } from 'react-hook-form';
 import {
 	Box,
 	Button,
+	capitalize,
 	Dialog,
 	DialogContent,
 	DialogTitle,
@@ -24,39 +27,30 @@ import {
 	removeItemsFromStorage,
 } from '@/util/local-storage-util';
 
-type SaveFormData<T> = {
-	[prop in keyof T]: string;
-};
-
-export type FieldSetting = {
-	name: string;
+export type FieldSetting<T extends FieldValues> = {
+	name: Path<T>;
 	type: 'text' | 'buttonGroup';
 	isDisabled?: boolean;
+	options?: { value: string; label: string }[];
 	placeholder?: string;
 	rows?: number;
-	options?: { value: string; label: string }[];
+	rules?: RegisterOptions<T, Path<T>>;
 };
 
-interface SaveableFormProps<T> {
-	fieldList: FieldSetting[];
-	fieldValidateFn: (fieldName: string, value: string | undefined) => string;
+interface SaveableFormProps<T extends FieldValues> {
+	fieldList: FieldSetting<T>[];
 	formName: string;
-	initialData: SaveFormData<T>;
+	initialData: DefaultValues<T>;
 	localStorageInterval?: number;
-	PreviewComponent?: React.FC<SaveFormData<T>>;
-	submitFn: (formData: SaveFormData<T>) => Promise<void>;
+	PreviewComponent?: React.FC<T>;
+	submitFn: (formData: T) => Promise<void>;
 	submitLabel: string;
 }
 
-const capitalize = (str: string) => `${str.charAt(0).toUpperCase()}${str.substring(1)}`;
 const kebabCaseToTitleCase = (str: string) => str.split('-').map(capitalize).join(' ');
 
-export const getRequiredMessage = (fieldName: string): string =>
-	`${capitalize(fieldName)} is required`;
-
-const SaveableForm = <T,>({
+const SaveableForm = <T extends FieldValues>({
 	fieldList,
-	fieldValidateFn,
 	formName,
 	initialData,
 	localStorageInterval = -1,
@@ -64,9 +58,16 @@ const SaveableForm = <T,>({
 	submitFn,
 	submitLabel,
 }: SaveableFormProps<T>): ReactElement => {
-	const [formData, setFormData] = useState<SaveFormData<T>>(initialData);
-	const [errors, setErrors] = useState<Record<string, string>>({});
-	const [submit, setSubmit] = useState(false);
+	const {
+		control,
+		formState: { isSubmitting },
+		handleSubmit,
+		reset,
+		watch,
+	} = useForm<T>({
+		defaultValues: initialData,
+		mode: 'onBlur',
+	});
 	const [isProcessing, setProcessing] = useState<boolean>(false);
 	const [preview, setPreview] = useState(false);
 
@@ -74,113 +75,87 @@ const SaveableForm = <T,>({
 		if (localStorageInterval && localStorageInterval > 0) {
 			const storedFormData = getItemFromStorage({ key: formName, type: 'json' });
 			if (storedFormData) {
-				setFormData(storedFormData as SaveFormData<T>);
+				reset(storedFormData as T);
 			}
 		}
-	}, []);
+	}, [formName, localStorageInterval]);
 
 	useInterval(
-		() => setItemInStorage({ key: formName, value: formData }),
+		() => setItemInStorage({ key: formName, value: watch() }),
 		// stop local storage backup when form has been submitted
-		submit ? -1 : localStorageInterval
+		isSubmitting ? -1 : localStorageInterval
 	);
-
-	useEffect(() => {
-		if (submit && !Object.keys(errors).length) {
-			if (localStorageInterval && localStorageInterval > 0) {
-				removeItemsFromStorage([formName]);
-			}
-			setProcessing(true);
-			submitFn(formData).then(() => setProcessing(false));
-		}
-		setSubmit(false);
-	}, [errors]);
 
 	const hasPreview = !!PreviewComponent;
 	const togglePreview = () => setPreview(!preview);
 
-	const fieldChanged = (name: string, value: string) => {
-		setFormData({
-			...formData,
-			[name]: value,
+	const submitForm = (update: T) => {
+		if (localStorageInterval && localStorageInterval > 0) {
+			removeItemsFromStorage([formName]);
+		}
+		setProcessing(true);
+		submitFn(update).then(() => {
+			setProcessing(false);
+			reset();
 		});
 	};
 
-	const updateFieldError = (event: FocusEvent<HTMLInputElement>) => {
-		const {
-			target: { name: fieldName, value },
-		} = event;
-		const error = fieldValidateFn(fieldName, value);
-
-		if (error && errors[fieldName] !== error) {
-			setErrors({ ...errors, [fieldName]: error });
-		} else if (!error && errors[fieldName]) {
-			const { [fieldName]: oldError, ...remainingErrors } = errors;
-			setErrors(remainingErrors);
-		}
-	};
-
-	const updateFormErrors = () => {
-		setErrors(
-			Object.keys(formData).reduce((acc: Record<string, string>, fieldName: string) => {
-				const error = fieldValidateFn(fieldName, formData[fieldName as keyof T]);
-				if (error) acc[fieldName] = error;
-				return acc;
-			}, {})
-		);
-	};
-
-	const submitClicked = () => {
-		setSubmit(true);
-		updateFormErrors();
-	};
-
-	const generateFormField = (fieldSettings: FieldSetting) => {
+	const generateFormField = (fieldSettings: FieldSetting<T>) => {
 		return fieldSettings.type === 'buttonGroup'
 			? generateButtonGroup(fieldSettings)
 			: generateTextField(fieldSettings);
 	};
 
-	const generateTextField = ({ name, placeholder, isDisabled, rows }: FieldSetting) => (
+	const generateTextField = ({ name, placeholder, isDisabled, rows, rules }: FieldSetting<T>) => (
 		<Paper key={name}>
-			<TextField
+			<Controller
+				control={control}
 				name={name}
-				fullWidth
-				id={`${formName}-${name}`}
-				label={<Typography fontWeight='bold'>{capitalize(name)}</Typography>}
-				placeholder={placeholder}
-				disabled={isDisabled}
-				value={formData[name as keyof T]}
-				onChange={event => fieldChanged(event.target.name, event.target.value)}
-				onBlur={updateFieldError}
-				error={!!errors[name]}
-				helperText={errors[name] || ' '}
-				multiline={!!rows}
-				minRows={rows}
+				rules={rules}
+				render={({ field, formState: { errors } }) => (
+					<TextField
+						{...field}
+						fullWidth
+						id={`${formName}-${field.name}`}
+						label={capitalize(field.name)}
+						placeholder={placeholder}
+						disabled={isDisabled}
+						error={!!errors[field.name]}
+						helperText={(errors[field.name]?.message as string) || ' '}
+						multiline={!!rows}
+						minRows={rows}
+					/>
+				)}
 			/>
 		</Paper>
 	);
 
-	const generateButtonGroup = ({ name, options }: FieldSetting) => (
-		<FormControl key={name} margin='none'>
-			<FormLabel id={`${formName}-${name}-label`}>
-				<Typography fontWeight='bold'>{capitalize(name)}</Typography>
-			</FormLabel>
-			<ToggleButtonGroup
-				value={formData[name as keyof T]}
-				onChange={(_event, value) => fieldChanged(name, value)}
-				exclusive
-				color='info'
-				size='large'
-				aria-labelledby={`${formName}-${name}-label`}
-			>
-				{options?.map(({ value, label }) => (
-					<ToggleButton key={value} value={value}>
-						{label}
-					</ToggleButton>
-				))}
-			</ToggleButtonGroup>
-		</FormControl>
+	const generateButtonGroup = ({ name, options }: FieldSetting<T>) => (
+		<Controller
+			key={name}
+			control={control}
+			name={name}
+			render={({ field }) => (
+				<FormControl margin='none'>
+					<FormLabel id={`${formName}-${name}-label`}>
+						<Typography fontWeight='bold'>{capitalize(name)}</Typography>
+					</FormLabel>
+					<ToggleButtonGroup
+						{...field}
+						exclusive
+						color='info'
+						size='large'
+						aria-labelledby={`${formName}-${name}-label`}
+					>
+						{options?.map(({ value, label }) => (
+							<ToggleButton key={value} value={value}>
+								{label}
+							</ToggleButton>
+						))}
+					</ToggleButtonGroup>
+				</FormControl>
+			)}
+		/>
 	);
 
 	return (
@@ -190,7 +165,7 @@ const SaveableForm = <T,>({
 					<Dialog open={preview} onClose={togglePreview}>
 						<DialogTitle>{`Preview ${kebabCaseToTitleCase(formName)}`}</DialogTitle>
 						<DialogContent>
-							<PreviewComponent {...formData} />
+							<PreviewComponent {...watch()} />
 						</DialogContent>
 					</Dialog>
 					<Stack direction='row-reverse'>
@@ -200,7 +175,7 @@ const SaveableForm = <T,>({
 					</Stack>
 				</>
 			)}
-			<form>
+			<form onSubmit={handleSubmit(submitForm)}>
 				<Stack spacing={4}>
 					{fieldList.map(generateFormField)}
 					<Box>
@@ -208,10 +183,10 @@ const SaveableForm = <T,>({
 							variant='contained'
 							color='primary'
 							size='large'
+							type='submit'
 							name={`submit-${formName}`}
 							id={`submit-${formName}`}
 							disabled={isProcessing}
-							onClick={submitClicked}
 							endIcon={isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} pulse />}
 						>
 							<strong>{submitLabel}</strong>
