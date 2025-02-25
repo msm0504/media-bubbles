@@ -13,9 +13,9 @@ const headers = {
 const SUPPORT_ADDRESS = 'support@mediabubbles.net';
 const TO_ADDRESS = 'mark.monday0504@gmail.com';
 
-export async function sendSupportEmail(
+export const sendSupportEmail = async (
 	feedbackData: FeedbackMessage
-): Promise<FeedbackSentResponse> {
+): Promise<FeedbackSentResponse> => {
 	const formdata = new FormData();
 	formdata.append('from', SUPPORT_ADDRESS);
 	formdata.append('to', TO_ADDRESS);
@@ -42,4 +42,4 @@ ${feedbackData.email}
 
 	const response = await fetch(process.env.MAILGUN_API_URL, requestOptions);
 	return { feedbackSent: response.ok };
-}
+};

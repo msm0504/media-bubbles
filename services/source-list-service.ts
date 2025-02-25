@@ -40,13 +40,13 @@ if (useBiasRatingsFile) {
 	biasRatingsFile = import('@/data/allsides_pub_data.json');
 }
 
-async function getBiasRatings() {
+const getBiasRatings = async () => {
 	const requestOptions = { method: 'GET', headers };
 	const response = await fetch('' + process.env.ALL_SIDES_RATINGS_URL, requestOptions);
 	return response.json();
-}
+};
 
-async function setSourcesAndBiasRatings() {
+const setSourcesAndBiasRatings = async () => {
 	const biasRatingsResponse: AllSidesPubResponse = await (useBiasRatingsFile
 		? biasRatingsFile
 		: getBiasRatings());
@@ -96,9 +96,9 @@ async function setSourcesAndBiasRatings() {
 			}
 		})
 	);
-}
+};
 
-async function populateSourceLists() {
+const populateSourceLists = async () => {
 	resetSourceLists();
 
 	await setSourcesAndBiasRatings();
@@ -126,18 +126,18 @@ async function populateSourceLists() {
 
 	global.sources.lastUpdate = Date.now();
 	await synchBskyLists(global.sources.bySlant);
-}
+};
 
-export async function getSourceLists(): Promise<{
+export const getSourceLists = async (): Promise<{
 	appSourceList: Source[];
 	sourceListBySlant: Source[][];
-}> {
+}> => {
 	const sourceListsAreOld = Date.now() - MILLISECONDS_IN_DAY * 7 > global.sources.lastUpdate;
 	if (!(global.sources.app && global.sources.app.length) || sourceListsAreOld) {
 		await populateSourceLists();
 	}
 	return { appSourceList: global.sources.app, sourceListBySlant: global.sources.bySlant };
-}
+};
 
 export const getBiasRatingBySourceId = (sourceId: string): SourceSlant =>
 	global.sources.biasRatings[sourceId];

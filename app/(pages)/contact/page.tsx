@@ -15,7 +15,7 @@ const blankFeedbackForm: FeedbackMessage = {
 	message: '',
 };
 
-async function submitFeedback(feedbackData: FeedbackMessage, showAlert: ShowAlertFn) {
+const submitFeedback = async (feedbackData: FeedbackMessage, showAlert: ShowAlertFn) => {
 	const { feedbackSent } = await callApi<FeedbackSentResponse, FeedbackMessage>(
 		'post',
 		'feedback',
@@ -26,7 +26,7 @@ async function submitFeedback(feedbackData: FeedbackMessage, showAlert: ShowAler
 	} else {
 		showAlert(ALERT_LEVEL.success, 'Message sent successfully.');
 	}
-}
+};
 
 const Feedback: React.FC = () => {
 	const showAlert = useContext(AlertsDispatch);
