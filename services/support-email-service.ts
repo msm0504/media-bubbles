@@ -1,4 +1,3 @@
-import FormData from 'form-data';
 import type { FeedbackMessage, FeedbackSentResponse } from '@/types';
 
 const headers = {
@@ -8,6 +7,7 @@ const headers = {
 			`${process.env.MAILGUN_USERNAME}:${process.env.MAILGUN_API_KEY}`,
 			'binary'
 		).toString('base64'),
+	'Content-Type': 'application/x-www-form-urlencoded',
 };
 
 const SUPPORT_ADDRESS = 'support@mediabubbles.net';
@@ -16,23 +16,21 @@ const TO_ADDRESS = 'mark.monday0504@gmail.com';
 export const sendSupportEmail = async (
 	feedbackData: FeedbackMessage
 ): Promise<FeedbackSentResponse> => {
-	const formdata = new FormData();
-	formdata.append('from', SUPPORT_ADDRESS);
-	formdata.append('to', TO_ADDRESS);
-	formdata.append('subject', `Media Bubbles ${feedbackData.reason}`);
-	formdata.append(
-		'text',
-		`
+	const params = new URLSearchParams({
+		from: SUPPORT_ADDRESS,
+		to: TO_ADDRESS,
+		subject: `Media Bubbles ${feedbackData.reason}`,
+		text: `
 ${feedbackData.message}
 
 ${feedbackData.name}
 ${feedbackData.email}
-	`
-	);
+	`,
+	});
 
 	const requestOptions: Record<string, unknown> = {
 		method: 'POST',
-		body: formdata,
+		body: params,
 		headers,
 	};
 
