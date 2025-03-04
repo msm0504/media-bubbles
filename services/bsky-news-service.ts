@@ -111,7 +111,7 @@ const sortPostsFromMultiSources = (
 const getArticlesToShow = ({ posts, source, slantSources }: GetArticlesToShowParams): Article[] => {
 	const articlesToShow: Article[] = [];
 	const uniqueTexts: string[] = [];
-	const uniqueUrls: { [name: string]: boolean } = {};
+	const uniqueTitles: string[] = [];
 	for (let i = 0; i < posts.length && articlesToShow.length < MAX_SHOW_PER_CATEGORY; i++) {
 		const post = posts[i];
 		const postSource =
@@ -121,8 +121,11 @@ const getArticlesToShow = ({ posts, source, slantSources }: GetArticlesToShowPar
 
 		if ((post.embed?.$type || '') === BSKY_ARTICLE_TYPE) {
 			const external = post.embed?.external as ViewExternal;
-			if (!uniqueUrls[external.uri]) {
-				uniqueUrls[external.uri] = true;
+			if (
+				!uniqueTitles.length ||
+				findBestMatch(external.title, uniqueTitles).bestMatch.rating < MAX_SIMILARITY_SCORE
+			) {
+				uniqueTitles.push(external.title);
 				const article = external.title
 					? {
 							source: {
