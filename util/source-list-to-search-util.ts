@@ -80,13 +80,12 @@ const selectRandomSourceList = (sourceList: Source[], numberToSelect: number) =>
 	if (numberToSelect >= sourceList.length) return sourceList;
 
 	const randomSourceList = [];
-	const selectedIndexSet = new Set();
+	const selected: { [name: string]: boolean } = {};
 
-	while (selectedIndexSet.size < numberToSelect) {
-		const currentSize = selectedIndexSet.size;
+	while (randomSourceList.length < numberToSelect) {
 		const nextIndex = Math.floor(Math.random() * sourceList.length);
-		selectedIndexSet.add(nextIndex);
-		if (selectedIndexSet.size > currentSize) {
+		if (!selected[sourceList[nextIndex].id]) {
+			selected[sourceList[nextIndex].id] = true;
 			randomSourceList.push(sourceList[nextIndex]);
 		}
 	}
