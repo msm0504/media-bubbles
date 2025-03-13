@@ -79,11 +79,8 @@ const useHeadlineSearch = (appSourceList: Source[], sourceListBySlant: Source[][
 					keyword: formData.keyword,
 					previousDays: formData.previousDays,
 				};
-				const articleMap = await callApi<ArticleMap, SearchRequest>(
-					'get',
-					'headlines',
-					requestData
-				);
+				const articleMap =
+					(await callApi<ArticleMap, SearchRequest>('get', 'headlines', requestData)) || {};
 				const savedResultName = getSavedResultName(formData);
 				setContext({
 					sourceListToSearch,

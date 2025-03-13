@@ -2,6 +2,26 @@ import MAX_SOURCE_SELECTIONS from '../constants/max-source-selections';
 import { SIMILAR_VIEW_MAP, OPPOSING_VIEW_MAP, SourceSlant } from '../constants/source-slant';
 import type { SearchFormWithMode, Source } from '@/types';
 
+// Fisher–Yates shuffle https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+const shuffle = (array: unknown[]) => {
+	for (let i = array.length - 1; i > 0; i--) {
+		const randomIndex = Math.floor(Math.random() * (i + 1));
+		const temporaryValue = array[i];
+		array[i] = array[randomIndex];
+		array[randomIndex] = temporaryValue;
+	}
+
+	return array;
+};
+
+const selectRandomSourceList = (sourceList: Source[], numberToSelect: number) => {
+	if (numberToSelect >= sourceList.length) return sourceList;
+
+	const randomSourceList = [...sourceList];
+	shuffle(randomSourceList);
+	return randomSourceList.slice(0, numberToSelect);
+};
+
 const getMyBubbleSourceList = (sourceListBySlant: Source[][], sourceSlant: SourceSlant) => {
 	let myBubbleSourceList = selectRandomSourceList(
 		sourceListBySlant[sourceSlant],
@@ -74,23 +94,6 @@ const getCrossSpectrumSourceList = (
 
 const getRandomSourceList = (sourceList: Source[]) => {
 	return selectRandomSourceList(sourceList, MAX_SOURCE_SELECTIONS);
-};
-
-const selectRandomSourceList = (sourceList: Source[], numberToSelect: number) => {
-	if (numberToSelect >= sourceList.length) return sourceList;
-
-	const randomSourceList = [];
-	const selected: { [name: string]: boolean } = {};
-
-	while (randomSourceList.length < numberToSelect) {
-		const nextIndex = Math.floor(Math.random() * sourceList.length);
-		if (!selected[sourceList[nextIndex].id]) {
-			selected[sourceList[nextIndex].id] = true;
-			randomSourceList.push(sourceList[nextIndex]);
-		}
-	}
-
-	return randomSourceList;
 };
 
 const getUserSelectedSourceList = (sourceList: Source[], selectedSourceList: string[]) => {

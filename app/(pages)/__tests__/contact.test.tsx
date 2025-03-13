@@ -44,17 +44,15 @@ test('renders correct input fields', () => {
 	render(<Feedback />);
 	FIELD_LIST.forEach(field =>
 		field.type === 'text'
-			? expect(
-					screen.queryByLabelText(capitalize(field.name), { exact: false })
-				).toBeInTheDocument()
-			: expect(screen.queryByText(capitalize(field.name), { exact: false })).toBeInTheDocument()
+			? expect(screen.queryByLabelText(capitalize(field.name))).toBeInTheDocument()
+			: expect(screen.queryByText(capitalize(field.name))).toBeInTheDocument()
 	);
 });
 
 test('displays correct error messages for invalid input', async () => {
 	vi.mocked(useSession).mockReturnValue({ data: null, status: 'unauthenticated', update: vi.fn() });
 	render(<Feedback />);
-	const emailInput = screen.getByLabelText('Email', { exact: false });
+	const emailInput = screen.getByLabelText('Email');
 
 	fireEvent.blur(emailInput);
 	expect(await screen.findByText('Email is required')).toBeInTheDocument();
@@ -81,7 +79,7 @@ test('displays success alert after successful submit', async () => {
 		</AppProviders>
 	);
 
-	fireEvent.change(screen.getByLabelText('Message', { exact: false }), {
+	fireEvent.change(screen.getByLabelText('Message'), {
 		target: { value: 'This site is amazing!' },
 	});
 
@@ -103,7 +101,7 @@ test('displays error alert after failed submit', async () => {
 		</AppProviders>
 	);
 
-	fireEvent.change(screen.getByLabelText('Message', { exact: false }), {
+	fireEvent.change(screen.getByLabelText('Message'), {
 		target: { value: 'This site is amazing!' },
 	});
 
