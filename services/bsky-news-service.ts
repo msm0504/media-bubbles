@@ -121,9 +121,10 @@ const getArticlesToShow = ({ posts, source, slantSources }: GetArticlesToShowPar
 
 		if ((post.embed?.$type || '') === BSKY_ARTICLE_TYPE) {
 			const external = post.embed?.external as ViewExternal;
+			const key = external.title || (post.record as PostRecord)?.text || '';
 			if (
 				!uniqueTitles.length ||
-				findBestMatch(external.title, uniqueTitles).bestMatch.rating < MAX_SIMILARITY_SCORE
+				findBestMatch(key, uniqueTitles).bestMatch.rating < MAX_SIMILARITY_SCORE
 			) {
 				uniqueTitles.push(external.title);
 				const article = external.title
