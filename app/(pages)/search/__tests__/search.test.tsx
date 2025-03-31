@@ -1,6 +1,6 @@
 import { afterAll, afterEach, beforeAll, expect, test, vi } from 'vitest';
 import { cleanup, render, screen, fireEvent } from '@testing-library/react';
-import Search from '../search/page';
+import Search from '../page';
 import { SEARCH_MODE_MAP } from '@/constants/search-mode';
 
 beforeAll(() => {

@@ -5,8 +5,8 @@ import { useSession } from 'next-auth/react';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import { capitalize } from '@mui/material';
-import FIELD_LIST from '../contact/field-list';
-import Feedback from '../contact/page';
+import FIELD_LIST from '../field-list';
+import Feedback from '../page';
 import { AppProviders } from '@/contexts';
 
 vi.mock('next-auth/react', () => ({

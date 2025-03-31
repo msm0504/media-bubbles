@@ -1,6 +1,6 @@
 import { afterAll, expect, test } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
-import About from '../about/page';
+import About from '../page';
 
 afterAll(cleanup);
 

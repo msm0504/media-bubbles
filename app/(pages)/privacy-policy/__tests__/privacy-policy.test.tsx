@@ -1,6 +1,6 @@
 import { afterAll, expect, test } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
-import PrivacyPolicy from '../privacy-policy/page';
+import PrivacyPolicy from '../page';
 
 afterAll(cleanup);
 

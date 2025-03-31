@@ -1,6 +1,6 @@
 import { afterAll, expect, test } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
-import Terms from '../terms/page';
+import Terms from '../page';
 
 afterAll(cleanup);
 
