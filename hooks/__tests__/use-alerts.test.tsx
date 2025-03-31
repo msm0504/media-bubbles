@@ -1,10 +1,8 @@
 import { useEffect } from 'react';
-import { afterEach, beforeEach, expect, test, vi } from 'vitest';
+import { afterEach, beforeEach, expect, test } from 'vitest';
 import { cleanup, render, fireEvent, screen } from '@testing-library/react';
 import type { AlertColor } from '@mui/material';
 import useAlerts from '../use-alerts';
-
-Element.prototype.scrollIntoView = vi.fn();
 
 const testAlert = { message: 'Urgent, urgent, emergency', level: 'error' };
 

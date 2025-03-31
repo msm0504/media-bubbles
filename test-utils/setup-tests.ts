@@ -77,4 +77,6 @@ vi.mock('@atproto/api', async importOriginal => {
 	};
 });
 
+Element.prototype.scrollIntoView = vi.fn();
+
 loadEnvConfig(process.cwd());

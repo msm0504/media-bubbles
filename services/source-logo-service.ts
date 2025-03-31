@@ -19,7 +19,7 @@ const getLogoUrl = (siteUrl: string): string => {
 	return `${iconApiUrl}/${siteUrl}${formatGetQuery(params)}`;
 };
 
-export async function getSourceLogo(id: string, url: string): Promise<Buffer | null> {
+export const getSourceLogo = async (id: string, url: string): Promise<Buffer | null> => {
 	const s3Key = id.toLowerCase().replaceAll(/[^A-Za-z0-9]/g, '');
 	const getCommand = new GetObjectCommand({
 		Bucket: process.env.AWS_S3_LOGO_BUCKET,
@@ -50,4 +50,4 @@ export async function getSourceLogo(id: string, url: string): Promise<Buffer | n
 	await s3Client.send(putCommand);
 
 	return image;
-}
+};

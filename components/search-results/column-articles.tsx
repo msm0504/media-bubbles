@@ -62,7 +62,7 @@ const ColumnArticles: React.FC<ColumnArticlesProps> = ({ articles, isSearchAll, 
 										target='_blank'
 										rel='noopener noreferrer'
 									>
-										{article.url}
+										Read more
 									</Link>
 								</Typography>
 							) : null}

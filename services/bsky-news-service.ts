@@ -1,7 +1,7 @@
 import type { AppBskyFeedDefs } from '@atproto/api';
 import type { ViewExternal } from '@atproto/api/dist/client/types/app/bsky/embed/external';
 import { findBestMatch } from 'string-similarity';
-import { getBskyAgent } from './bsky-agent';
+import { getBskyAgent, getBskyPublicAgent } from './bsky-agent';
 import { getBskyListUriForSlant } from './bsky-list-service';
 import { getSourceLists } from './source-list-service';
 import type { Article, ArticleMap, SearchRequest, Source } from '@/types';
@@ -27,7 +27,7 @@ const URL_REGEX =
 	/((https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})(\.[a-zA-Z0-9]{2,})?\/[a-zA-Z0-9]{2,})/;
 
 export const getBskyProfile = async (sourceName: string, url: string) => {
-	const agent = await getBskyAgent();
+	const agent = getBskyPublicAgent();
 	const profileIndex = USE_SECOND_PROFILE.includes(sourceName.toLowerCase()) ? 1 : 0;
 	const urlResp = await agent.searchActorsTypeahead({ q: url, limit: MAX_BSKY_PROFILES });
 	if (urlResp?.data?.actors.length) {
@@ -38,7 +38,7 @@ export const getBskyProfile = async (sourceName: string, url: string) => {
 };
 
 const getSourcePosts = async (handle: string) => {
-	const agent = await getBskyAgent();
+	const agent = getBskyPublicAgent();
 	const params = { actor: handle, limit: MAX_BSKY_RESULTS, includePins: false };
 	const resp = await agent.getAuthorFeed(params);
 	return resp.data.feed.map(({ post }) => post) || [];
@@ -64,7 +64,7 @@ const getSourcePostsByKeyword = async (
 };
 
 const getListPosts = async (slant: SourceSlant) => {
-	const agent = await getBskyAgent();
+	const agent = getBskyPublicAgent();
 	const listUri = getBskyListUriForSlant(slant);
 	const params = { list: listUri, limit: MAX_BSKY_RESULTS };
 	const resp = await agent.app.bsky.feed.getListFeed(params);
@@ -111,7 +111,7 @@ const sortPostsFromMultiSources = (
 const getArticlesToShow = ({ posts, source, slantSources }: GetArticlesToShowParams): Article[] => {
 	const articlesToShow: Article[] = [];
 	const uniqueTexts: string[] = [];
-	const uniqueUrls: { [name: string]: boolean } = {};
+	const uniqueTitles: string[] = [];
 	for (let i = 0; i < posts.length && articlesToShow.length < MAX_SHOW_PER_CATEGORY; i++) {
 		const post = posts[i];
 		const postSource =
@@ -121,8 +121,12 @@ const getArticlesToShow = ({ posts, source, slantSources }: GetArticlesToShowPar
 
 		if ((post.embed?.$type || '') === BSKY_ARTICLE_TYPE) {
 			const external = post.embed?.external as ViewExternal;
-			if (!uniqueUrls[external.uri]) {
-				uniqueUrls[external.uri] = true;
+			const key = external.title || (post.record as PostRecord)?.text || '';
+			if (
+				!uniqueTitles.length ||
+				findBestMatch(key, uniqueTitles).bestMatch.rating < MAX_SIMILARITY_SCORE
+			) {
+				uniqueTitles.push(external.title);
 				const article = external.title
 					? {
 							source: {

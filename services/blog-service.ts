@@ -21,11 +21,11 @@ const formatExcerpt = (content: string) => {
 
 const SLUG_WITH_TS_PATTERN = /^\d{4}-\d{2}-\d{2}-/;
 
-export async function savePost(post: BlogPost): Promise<ItemSavedResponse> {
+export const savePost = async (post: BlogPost): Promise<ItemSavedResponse> => {
 	return SLUG_WITH_TS_PATTERN.test(post.slug) ? updatePost(post) : createPost(post);
-}
+};
 
-async function createPost(post: BlogPost) {
+const createPost = async (post: BlogPost) => {
 	const db = await _collection;
 	const createTs = new Date().toISOString();
 	const slugWithTs = `${createTs.split('T')[0]}-${post.slug.toLowerCase()}`;
@@ -38,9 +38,9 @@ async function createPost(post: BlogPost) {
 		updatedAt: createTs,
 	});
 	return { itemId: insertedId.toString() };
-}
+};
 
-async function updatePost(post: BlogPost) {
+const updatePost = async (post: BlogPost) => {
 	const db = await _collection;
 	const updateTs = new Date().toISOString();
 	const { modifiedCount } = await db.updateOne(
@@ -48,18 +48,18 @@ async function updatePost(post: BlogPost) {
 		{ $set: { ...post, excerpt: formatExcerpt(post.content), updatedAt: updateTs } }
 	);
 	return { itemId: modifiedCount === 1 ? post.slug : '' };
-}
+};
 
-export async function getAllPostSlugs(): Promise<string[]> {
+export const getAllPostSlugs = async (): Promise<string[]> => {
 	const db = await _collection;
 	return db
 		.find()
 		.sort({ updatedAt: -1 })
 		.map(({ slug }) => slug)
 		.toArray();
-}
+};
 
-export async function getLatestPostSlug(): Promise<string> {
+export const getLatestPostSlug = async (): Promise<string> => {
 	const db = await _collection;
 	return db
 		.find()
@@ -68,17 +68,17 @@ export async function getLatestPostSlug(): Promise<string> {
 		.map(({ slug }) => slug)
 		.toArray()
 		.then(([latest]) => latest);
-}
+};
 
-export async function getPost(slug: string): Promise<BlogPost> {
+export const getPost = async (slug: string): Promise<BlogPost> => {
 	const db = await _collection;
 	return db.findOne({ _id: slug as unknown as ObjectId }) as unknown as BlogPost;
-}
+};
 
-export async function getPostSummaries(
+export const getPostSummaries = async (
 	filter = '',
 	page = 1
-): Promise<ListResponse<BlogPostSummary>> {
+): Promise<ListResponse<BlogPostSummary>> => {
 	const db = await _collection;
 	const count = await db.countDocuments({
 		$or: [
@@ -104,10 +104,10 @@ export async function getPostSummaries(
 		items: postSummaries,
 		pageCount: Math.ceil(count / PAGE_SIZE),
 	};
-}
+};
 
-export async function deletePost(slug: string): Promise<ItemDeletedResponse> {
+export const deletePost = async (slug: string): Promise<ItemDeletedResponse> => {
 	const db = await _collection;
 	const { deletedCount } = await db.deleteOne({ _id: slug as unknown as ObjectId });
 	return { itemDeleted: deletedCount === 1 };
-}
+};

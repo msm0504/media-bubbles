@@ -14,7 +14,7 @@ const PAGE_SIZE = 10;
 
 const _collection = getCollection(COLLECTION_NAME);
 
-export async function saveSearchResult(result: SavedResult): Promise<ItemSavedResponse> {
+export const saveSearchResult = async (result: SavedResult): Promise<ItemSavedResponse> => {
 	const db = await _collection;
 	const { insertedId } = await db.insertOne({
 		...result,
@@ -22,13 +22,13 @@ export async function saveSearchResult(result: SavedResult): Promise<ItemSavedRe
 		createdAt: new Date().toISOString(),
 	});
 	return { itemId: insertedId.toString() };
-}
+};
 
-export async function getSavedResults(
+export const getSavedResults = async (
 	filter = '',
 	page = 1,
 	userId: string
-): Promise<ListResponse<SavedResultSummary>> {
+): Promise<ListResponse<SavedResultSummary>> => {
 	const db = await _collection;
 	const count = await db.countDocuments({
 		name: { $regex: `^.*${filter}.*$`, $options: 'i' },
@@ -46,13 +46,13 @@ export async function getSavedResults(
 		items: savedResults,
 		pageCount: Math.ceil(count / PAGE_SIZE),
 	};
-}
+};
 
-export async function getAllSavedResults(
+export const getAllSavedResults = async (
 	filter = '',
 	page = 1,
 	pageSize = PAGE_SIZE
-): Promise<ListResponse<SavedResultSummary>> {
+): Promise<ListResponse<SavedResultSummary>> => {
 	const db = await _collection;
 	const count = await db.countDocuments({ name: { $regex: `^.*${filter}.*$`, $options: 'i' } });
 	const savedResults = (await db
@@ -67,15 +67,18 @@ export async function getAllSavedResults(
 		items: savedResults,
 		pageCount: Math.ceil(count / pageSize),
 	};
-}
+};
 
-export async function getSavedResult(id: string): Promise<SavedResult | null> {
+export const getSavedResult = async (id: string): Promise<SavedResult | null> => {
 	const db = await _collection;
 	return db.findOne({ _id: id as unknown as ObjectId }) as unknown as SavedResult;
-}
+};
 
-export async function deleteSavedResult(id: string, userId?: string): Promise<ItemDeletedResponse> {
+export const deleteSavedResult = async (
+	id: string,
+	userId?: string
+): Promise<ItemDeletedResponse> => {
 	const db = await _collection;
 	const { deletedCount } = await db.deleteOne({ _id: id as unknown as ObjectId, userId: userId });
 	return { itemDeleted: deletedCount === 1 };
-}
+};
