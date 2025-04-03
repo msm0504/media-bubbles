@@ -65,11 +65,6 @@ const theme = createTheme({
 				}),
 			},
 		},
-		MuiIconButton: {
-			defaultProps: {
-				disableRipple: true,
-			},
-		},
 		MuiInputLabel: {
 			styleOverrides: {
 				root: ({ theme }) => ({
