@@ -5,7 +5,7 @@ import { Button, ListItemIcon, ListItemText, Menu, MenuItem, MenuList } from '@m
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareFull } from '@fortawesome/free-solid-svg-icons';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
-import { faGoogle, faXTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import styles from '@/styles/main.module.css';
 import useEmailLoginDialog from '@/hooks/use-email-login-dialog';
 
@@ -20,15 +20,6 @@ const GoogleLogin: React.FC<LoginProps> = ({ sessionLoading }) => (
 			<FontAwesomeIcon className={styles.googleBrandColor} icon={faGoogle} mask={faSquareFull} />
 		</ListItemIcon>
 		<ListItemText>Log in with Google</ListItemText>
-	</MenuItem>
-);
-
-const TwitterLogin: React.FC<LoginProps> = ({ sessionLoading }) => (
-	<MenuItem onClick={() => signIn('twitter')} disabled={sessionLoading}>
-		<ListItemIcon>
-			<FontAwesomeIcon className='me-2' icon={faXTwitter} />
-		</ListItemIcon>
-		<ListItemText>Log in with Twitter</ListItemText>
 	</MenuItem>
 );
 
@@ -109,7 +100,6 @@ const Login: React.FC = () => {
 			>
 				<MenuList>
 					<GoogleLogin sessionLoading={loading} closeMenu={handleCloseLoginMenu} />
-					<TwitterLogin sessionLoading={loading} closeMenu={handleCloseLoginMenu} />
 					<EmailLogin sessionLoading={loading} closeMenu={handleCloseLoginMenu} />
 				</MenuList>
 			</Menu>

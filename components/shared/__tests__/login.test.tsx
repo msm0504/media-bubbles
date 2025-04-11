@@ -30,7 +30,6 @@ test('displays log in buttons if no session', async () => {
 	expect(screen.queryByText('Log out')).not.toBeInTheDocument();
 	fireEvent.click(screen.getByText('Log in'));
 	expect(await screen.findByText('Log in with Google', { exact: false })).toBeInTheDocument();
-	expect(await screen.findByText('Log in with Twitter', { exact: false })).toBeInTheDocument();
 });
 
 test('locks log in buttons if auth library is loading session', async () => {

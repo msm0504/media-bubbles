@@ -26,12 +26,12 @@
 		-1px -1px 8px var(--mui-palette-dark-main);
 }
 
-.fbBrandColor {
-	color: #4267b2;
-}
-
 .facebookBtn:not(:hover) {
 	background: #4267b2;
+}
+
+.bskyBtn:not(:hover) {
+	background: #1083fe;
 }
 
 .googleBrandColor {

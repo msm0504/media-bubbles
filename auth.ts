@@ -1,7 +1,6 @@
 import NextAuth from 'next-auth';
 import Google from 'next-auth/providers/google';
 import Mailgun from 'next-auth/providers/mailgun';
-import Twitter from 'next-auth/providers/twitter';
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import { nanoid } from 'nanoid';
 
@@ -14,7 +13,6 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
 	},
 	providers: [
 		Google,
-		Twitter,
 		Mailgun({
 			sendVerificationRequest: ({ expires, identifier, token }) =>
 				sendLoginEmail(identifier, token, expires),
