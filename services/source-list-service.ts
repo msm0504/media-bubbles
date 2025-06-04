@@ -90,9 +90,11 @@ const setSourcesAndBiasRatings = async () => {
 	await Promise.all(
 		global.sources.app.map(async source => {
 			const profile = await getBskyProfile(source.name, source.url);
-			if (profile.handle) {
+			if (profile?.handle) {
 				source.bskyHandle = profile.handle;
 				source.bskyDid = profile.did;
+			} else {
+				console.error(`Failed getting profile for ${source.name} (${source.url}): ${profile}`);
 			}
 		})
 	);

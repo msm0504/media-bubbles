@@ -1,5 +1,4 @@
-import type { AppBskyFeedDefs } from '@atproto/api';
-import type { ViewExternal } from '@atproto/api/dist/client/types/app/bsky/embed/external';
+import type { $Typed, AppBskyEmbedExternal, AppBskyFeedDefs } from '@atproto/api';
 import { findBestMatch } from 'string-similarity';
 import { getBskyAgent, getBskyPublicAgent } from './bsky-agent';
 import { getBskyListUriForSlant } from './bsky-list-service';
@@ -120,7 +119,7 @@ const getArticlesToShow = ({ posts, source, slantSources }: GetArticlesToShowPar
 		if (!postSource) continue;
 
 		if ((post.embed?.$type || '') === BSKY_ARTICLE_TYPE) {
-			const external = post.embed?.external as ViewExternal;
+			const external = (post.embed as $Typed<AppBskyEmbedExternal.View>)?.external;
 			const key = external.title || (post.record as PostRecord)?.text || '';
 			if (
 				!uniqueTitles.length ||
