@@ -44,7 +44,7 @@ const getSourcePosts = async (handle: string) => {
 };
 
 const getSourcePostsByKeyword = async (
-	handle: string,
+	did: string,
 	keyword: string,
 	previousDays: number
 ): Promise<AppBskyFeedDefs.PostView[]> => {
@@ -55,7 +55,7 @@ const getSourcePostsByKeyword = async (
 	const params = {
 		q: keyword,
 		since: fromDate.toISOString(),
-		author: handle,
+		author: did,
 		limit: MAX_BSKY_RESULTS,
 	};
 	const resp = await agent.app.bsky.feed.searchPosts(params);
@@ -72,8 +72,8 @@ const getListPosts = async (slant: SourceSlant) => {
 
 const getListPostsByKeyword = async (sources: Source[], keyword: string, previousDays: number) => {
 	const posts = await Promise.all(
-		sources.map(({ bskyHandle }) =>
-			bskyHandle ? getSourcePostsByKeyword(bskyHandle, keyword, previousDays) : Promise.resolve([])
+		sources.map(({ bskyDid }) =>
+			bskyDid ? getSourcePostsByKeyword(bskyDid, keyword, previousDays) : Promise.resolve([])
 		)
 	);
 	return posts
@@ -201,8 +201,9 @@ export const getHeadlines = async (params: SearchRequest): Promise<ArticleMap> =
 				.reduce<Promise<ArticleMap>>(async (memo: Promise<ArticleMap>, sourceId: string) => {
 					const source = appSourcesById[sourceId];
 					const handle = source.bskyHandle || '';
+					const did = source.bskyDid || '';
 					const posts = await (params.keyword
-						? getSourcePostsByKeyword(handle, params.keyword, params.previousDays)
+						? getSourcePostsByKeyword(did, params.keyword, params.previousDays)
 						: getSourcePosts(handle));
 					const acc = await memo;
 					acc[sourceId] = getArticlesToShow({ posts, source });
