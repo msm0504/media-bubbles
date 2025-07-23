@@ -12,14 +12,13 @@ const headers = {
 
 const SUPPORT_ADDRESS = 'support@mediabubbles.net';
 const LOGIN_ADDRESS = 'login@mediabubbles.net';
-const SUPPORT_TO_ADDRESS = 'mark.monday0504@gmail.com';
 
 export const sendSupportEmail = async (
 	feedbackData: FeedbackMessage
 ): Promise<FeedbackSentResponse> => {
 	const params = new URLSearchParams({
 		from: SUPPORT_ADDRESS,
-		to: SUPPORT_TO_ADDRESS,
+		to: SUPPORT_ADDRESS,
 		subject: `Media Bubbles ${feedbackData.reason}`,
 		text: `
 ${feedbackData.message}
