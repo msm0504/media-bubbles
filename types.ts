@@ -49,9 +49,29 @@ export type TwitterArticle = {
 	url?: string;
 };
 
-export type Article = NewsApiArticle | TwitterArticle;
+export type BskyArticle = {
+	_id: string;
+	sourceId: string;
+	sourceName: string;
+	slant: SourceSlant | undefined;
+	title?: string;
+	description: string;
+	url: string;
+	publishedAt: Date;
+};
+
+export type Article = NewsApiArticle | TwitterArticle | BskyArticle;
 export const isNewsApiArticle = (article: Article): article is NewsApiArticle => {
-	return (article as NewsApiArticle).title !== undefined;
+	return (
+		(article as NewsApiArticle).title !== undefined &&
+		(article as NewsApiArticle).source !== undefined
+	);
+};
+export const isTwitterArticle = (article: Article): article is TwitterArticle => {
+	return (article as TwitterArticle).text !== undefined;
+};
+export const isBskyArticle = (article: Article): article is BskyArticle => {
+	return (article as BskyArticle)._id !== undefined;
 };
 
 export type ArticleMap = { [key: string]: Article[] };

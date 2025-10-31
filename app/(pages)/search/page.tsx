@@ -5,8 +5,6 @@ import SearchInstructions from '@/components/search-form/instructions';
 import SearchTabs from '@/components/search-form/tabs';
 import { getSourceLists } from '@/services/source-list-service';
 
-const SECONDS_IN_WEEK = 60 * 60 * 24 * 7;
-
 export const metadata: Metadata = {
 	title: 'Search - Media Bubbles',
 	alternates: {
@@ -14,9 +12,7 @@ export const metadata: Metadata = {
 	},
 };
 
-const getCachedSourceLists = cache(async () => await getSourceLists(), ['source-lists'], {
-	revalidate: SECONDS_IN_WEEK,
-});
+const getCachedSourceLists = cache(async () => await getSourceLists(), ['source-lists']);
 
 const Search: React.FC = async () => {
 	const { appSourceList, sourceListBySlant } = await getCachedSourceLists();
