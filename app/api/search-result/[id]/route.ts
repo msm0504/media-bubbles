@@ -6,5 +6,5 @@ export const GET = async (_request: Request, { params }: { params: { id: string 
 	Response.json(await getSavedResult(params.id));
 
 export const DELETE = auth(async (request, { params }) =>
-	NextResponse.json(await deleteSavedResult(params?.id as string, request.auth?.user.id))
+	NextResponse.json(await deleteSavedResult((await params)?.id as string, request.auth?.user.id))
 );
