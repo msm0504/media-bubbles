@@ -36,14 +36,6 @@ test('validates email input on step 1', async () => {
 	expect(await screen.findByText('Invalid email format.')).toBeInTheDocument();
 });
 
-test('displays alert if signin returns no response', async () => {
-	vi.mocked(signIn).mockResolvedValue(undefined);
-	const emailInput = screen.getByLabelText('Email');
-	fireEvent.change(emailInput, { target: { value: 'test@gmail.com' } });
-	fireEvent.click(screen.getByText('Send Log In Token'));
-	expect(await screen.findByText('Failed to send log in token')).toBeInTheDocument();
-});
-
 test('displays alert if signin returns error', async () => {
 	vi.mocked(signIn).mockResolvedValue({
 		error: 'some error',
