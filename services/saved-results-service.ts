@@ -31,11 +31,11 @@ export const getSavedResults = async (
 ): Promise<ListResponse<SavedResultSummary>> => {
 	const db = await _collection;
 	const count = await db.countDocuments({
-		name: { $regex: `^.*${filter}.*$`, $options: 'i' },
+		name: { $regex: filter, $options: 'i' },
 		userId: userId,
 	});
 	const savedResults = (await db
-		.find({ name: { $regex: `^.*${filter}.*$`, $options: 'i' }, userId: userId })
+		.find({ name: { $regex: filter, $options: 'i' }, userId: userId })
 		.sort({ createdAt: -1 })
 		.skip(PAGE_SIZE * (page - 1))
 		.limit(PAGE_SIZE)
@@ -54,9 +54,9 @@ export const getAllSavedResults = async (
 	pageSize = PAGE_SIZE
 ): Promise<ListResponse<SavedResultSummary>> => {
 	const db = await _collection;
-	const count = await db.countDocuments({ name: { $regex: `^.*${filter}.*$`, $options: 'i' } });
+	const count = await db.countDocuments({ name: { $regex: filter, $options: 'i' } });
 	const savedResults = (await db
-		.find({ name: { $regex: `^.*${filter}.*$`, $options: 'i' } })
+		.find({ name: { $regex: filter, $options: 'i' } })
 		.sort({ createdAt: -1 })
 		.skip(pageSize * (page - 1))
 		.limit(pageSize)

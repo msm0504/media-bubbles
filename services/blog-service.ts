@@ -82,16 +82,16 @@ export const getPostSummaries = async (
 	const db = await _collection;
 	const count = await db.countDocuments({
 		$or: [
-			{ slug: { $regex: `^.*${filter}.*$`, $options: 'i' } },
-			{ title: { $regex: `^.*${filter}.*$`, $options: 'i' } },
+			{ slug: { $regex: filter, $options: 'i' } },
+			{ title: { $regex: filter, $options: 'i' } },
 		],
 	});
 
 	const postSummaries = (await db
 		.find({
 			$or: [
-				{ slug: { $regex: `^.*${filter}.*$`, $options: 'i' } },
-				{ title: { $regex: `^.*${filter}.*$`, $options: 'i' } },
+				{ slug: { $regex: filter, $options: 'i' } },
+				{ title: { $regex: filter, $options: 'i' } },
 			],
 		})
 		.sort({ updatedAt: -1 })
