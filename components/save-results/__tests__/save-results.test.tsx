@@ -40,7 +40,9 @@ test('button does not show if result has already been saved', () => {
 
 test('displays success alert after successful search result save', async () => {
 	const mockItemId = 'item123';
-	server.use(http.post('/test/api/search-result', () => HttpResponse.json({ itemId: mockItemId })));
+	server.use(
+		http.post('http://test.com/api/search-result', () => HttpResponse.json({ itemId: mockItemId }))
+	);
 	render(
 		<AppProviders>
 			<SaveResults />
@@ -53,7 +55,7 @@ test('displays success alert after successful search result save', async () => {
 });
 
 test('displays error alert after failed search result save', async () => {
-	server.use(http.post('/test/api/search-result', () => HttpResponse.json({})));
+	server.use(http.post('http://test.com/api/search-result', () => HttpResponse.json({})));
 	render(
 		<AppProviders>
 			<SaveResults />

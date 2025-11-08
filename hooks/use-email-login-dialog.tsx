@@ -1,7 +1,6 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { signIn } from 'next-auth/react';
 import {
 	Button,
 	Dialog,
@@ -14,16 +13,14 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import useAlerts from './use-alerts';
+import { authClient, signIn } from '@/lib/auth-client';
 import { EMAIL_PATTERN, getRequiredMessage } from '@/util/form-utils';
-import formatGetQuery from '@/util/format-get-query';
 
-type StepOneProps = { onSuccess?: (email: string) => void };
-type StepTwoProps = { email: string };
+type StepOneProps = { onSuccess: (email: string) => void };
+type StepTwoProps = { onSuccess: () => void };
 type StepOneData = { email: string };
 type StepTwoData = { token: string };
 type UseEmailLoginDialog = { EmailLoginDialog: React.FC; openDialog: () => void };
-
-const LOGIN_URL = `${process.env.NEXT_PUBLIC_URL}/api/auth/callback/mailgun`;
 
 const FormStepOne: React.FC<StepOneProps> = ({ onSuccess }) => {
 	const [isProcessing, setProcessing] = useState<boolean>(false);
@@ -35,14 +32,20 @@ const FormStepOne: React.FC<StepOneProps> = ({ onSuccess }) => {
 
 	const submitForm = (formData: StepOneData) => {
 		setProcessing(true);
-		signIn('mailgun', { redirect: false, ...formData }).then(resp => {
-			setProcessing(false);
-			if (!resp || resp.error) {
-				showAlert('warning', 'Failed to send log in token');
-			} else if (typeof onSuccess === 'function') {
-				onSuccess(formData.email);
-			}
-		});
+		signIn
+			.magicLink({
+				email: formData.email,
+				callbackURL: window.location.href,
+				newUserCallbackURL: window.location.href,
+			})
+			.then(resp => {
+				setProcessing(false);
+				if (!resp || resp.error) {
+					showAlert('warning', 'Failed to send log in token');
+				} else {
+					onSuccess(formData.email);
+				}
+			});
 	};
 
 	return (
@@ -83,27 +86,40 @@ const FormStepOne: React.FC<StepOneProps> = ({ onSuccess }) => {
 	);
 };
 
-const FormStepTwo: React.FC<StepTwoProps> = ({ email }) => {
+const FormStepTwo: React.FC<StepTwoProps> = ({ onSuccess }) => {
+	const [isProcessing, setProcessing] = useState<boolean>(false);
 	const { control, handleSubmit } = useForm<StepTwoData>({
 		defaultValues: { token: '' },
 		mode: 'onBlur',
 	});
-
-	if (!email) return null;
-
-	const params: Record<string, unknown> = {
-		callbackUrl: encodeURIComponent(window.location.href),
-		email,
-	};
+	const [Alert, showAlert] = useAlerts();
+	const { refetch } = authClient.useSession();
 
 	const loginWithToken = (formData: StepTwoData) => {
-		params.token = formData.token;
-		window.location.assign(`${LOGIN_URL}${formatGetQuery(params)}`);
+		setProcessing(true);
+		authClient.magicLink
+			.verify({
+				query: {
+					token: formData.token,
+					callbackURL: `${window.location.href}/#`,
+					newUserCallbackURL: window.location.href,
+				},
+			})
+			.then(resp => {
+				setProcessing(false);
+				if (!resp || resp.error) {
+					showAlert('warning', 'Failed to verify log in token');
+				} else {
+					refetch();
+					onSuccess();
+				}
+			});
 	};
 
 	return (
 		<form onSubmit={handleSubmit(loginWithToken)}>
 			<DialogContent>
+				<Alert />
 				<Controller
 					control={control}
 					name='token'
@@ -120,7 +136,13 @@ const FormStepTwo: React.FC<StepTwoProps> = ({ email }) => {
 				/>
 			</DialogContent>
 			<DialogActions>
-				<Button variant='contained' color='primary' type='submit'>
+				<Button
+					variant='contained'
+					color='primary'
+					type='submit'
+					disabled={isProcessing}
+					endIcon={isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} pulse />}
+				>
 					<strong>Log In</strong>
 				</Button>
 			</DialogActions>
@@ -130,15 +152,21 @@ const FormStepTwo: React.FC<StepTwoProps> = ({ email }) => {
 
 const useEmailLoginDialog = (): UseEmailLoginDialog => {
 	const [isOpen, toggleOpen] = useState<boolean>(false);
+	const [emailSentTo, setEmailSentTo] = useState<string>();
 
-	const EmailLoginDialog = () => {
-		const [emailSentTo, setEmailSentTo] = useState<string>();
+	useEffect(() => {
+		// when dialog is opened, reset to step 1
+		if (isOpen) {
+			setEmailSentTo(undefined);
+		}
+	}, [isOpen]);
 
+	const EmailLoginDialog: React.FC = () => {
 		return (
 			<Dialog fullWidth maxWidth='sm' open={isOpen} onClose={() => toggleOpen(false)}>
 				<DialogTitle>Log In With Email</DialogTitle>
 				{emailSentTo ? (
-					<FormStepTwo email={emailSentTo} />
+					<FormStepTwo onSuccess={() => toggleOpen(false)} />
 				) : (
 					<FormStepOne onSuccess={email => setEmailSentTo(email)} />
 				)}

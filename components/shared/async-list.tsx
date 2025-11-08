@@ -10,10 +10,10 @@ import {
 	Typography,
 	debounce,
 } from '@mui/material';
-import { useSession } from 'next-auth/react';
 import Spinner from './spinner';
 import ALERT_LEVEL from '@/constants/alert-level';
 import { AlertsDispatch } from '@/contexts/alerts-context';
+import { useSession } from '@/lib/auth-client';
 import { callApi } from '@/services/api-service';
 import camelCaseToWords from '@/util/camel-case-to-words';
 import type { ItemDeletedResponse, ListItem, ListResponse } from '@/types';

@@ -10,7 +10,7 @@ test('manifest json', () => {
 
 test('robots txt', () => {
 	const result = robots();
-	expect(result.host).toEqual('test');
+	expect(result.host).toEqual('http://test.com');
 });
 
 test('sitemap xml', async () => {
@@ -26,7 +26,7 @@ test('sitemap xml', async () => {
 	}));
 	const result = await sitemap();
 	expect(result[result.length - 2]).toEqual({
-		url: 'test/headlines/id2',
+		url: 'http://test.com/headlines/id2',
 		lastModified: 'timestamp2',
 	});
 });

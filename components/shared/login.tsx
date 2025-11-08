@@ -1,13 +1,13 @@
 'use client';
 import { useState } from 'react';
-import { signIn, signOut, useSession } from 'next-auth/react';
 import { Button, ListItemIcon, ListItemText, Menu, MenuItem, MenuList } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareFull } from '@fortawesome/free-solid-svg-icons';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
-import styles from '@/styles/main.module.css';
 import useEmailLoginDialog from '@/hooks/use-email-login-dialog';
+import { signIn, signOut, useSession } from '@/lib/auth-client';
+import styles from '@/styles/main.module.css';
 
 type LoginProps = {
 	sessionLoading: boolean;
@@ -15,7 +15,16 @@ type LoginProps = {
 };
 
 const GoogleLogin: React.FC<LoginProps> = ({ sessionLoading }) => (
-	<MenuItem onClick={() => signIn('google')} disabled={sessionLoading}>
+	<MenuItem
+		onClick={() =>
+			signIn.social({
+				provider: 'google',
+				callbackURL: window.location.href,
+				newUserCallbackURL: window.location.href,
+			})
+		}
+		disabled={sessionLoading}
+	>
 		<ListItemIcon sx={theme => ({ color: theme.palette.background.default })}>
 			<FontAwesomeIcon className={styles.googleBrandColor} icon={faGoogle} mask={faSquareFull} />
 		</ListItemIcon>
@@ -47,8 +56,7 @@ const EmailLogin: React.FC<LoginProps> = ({ sessionLoading, closeMenu }) => {
 
 const Login: React.FC = () => {
 	const [anchorElLogin, setAnchorElLogin] = useState<null | HTMLElement>(null);
-	const { data: session, status } = useSession();
-	const loading = status === 'loading';
+	const { data: session, isPending } = useSession();
 
 	const handleOpenLoginMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorElLogin(event.currentTarget);
@@ -65,7 +73,7 @@ const Login: React.FC = () => {
 			sx={{ my: 2, display: 'block' }}
 			color='light'
 			onClick={() => signOut()}
-			disabled={loading}
+			disabled={isPending}
 		>
 			Log out
 		</Button>
@@ -99,8 +107,8 @@ const Login: React.FC = () => {
 				onClose={handleCloseLoginMenu}
 			>
 				<MenuList>
-					<GoogleLogin sessionLoading={loading} closeMenu={handleCloseLoginMenu} />
-					<EmailLogin sessionLoading={loading} closeMenu={handleCloseLoginMenu} />
+					<GoogleLogin sessionLoading={isPending} closeMenu={handleCloseLoginMenu} />
+					<EmailLogin sessionLoading={isPending} closeMenu={handleCloseLoginMenu} />
 				</MenuList>
 			</Menu>
 		</>

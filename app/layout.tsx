@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Roboto_Slab } from 'next/font/google';
-import { SessionProvider } from 'next-auth/react';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Box, ThemeProvider } from '@mui/material';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
@@ -40,13 +39,11 @@ const RootLayout: React.FC<ParentCompProps> = ({ children }) => (
 		<body className={robotoSlab.variable}>
 			<AppRouterCacheProvider>
 				<ThemeProvider theme={theme}>
-					<SessionProvider>
-						<Box display='flex' flexDirection='column' minHeight='100vh'>
-							<TopNavbar />
-							<Box flexGrow={1}>{children}</Box>
-							<Footer />
-						</Box>
-					</SessionProvider>
+					<Box display='flex' flexDirection='column' minHeight='100vh'>
+						<TopNavbar />
+						<Box flexGrow={1}>{children}</Box>
+						<Footer />
+					</Box>
 				</ThemeProvider>
 			</AppRouterCacheProvider>
 		</body>

@@ -1,3 +1,4 @@
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Box, Button, Container, IconButton, Paper, Stack, Typography } from '@mui/material';

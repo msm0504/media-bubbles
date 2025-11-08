@@ -14,7 +14,7 @@ export const getMongoClient = async (): Promise<MongoClient> => {
 	return global.mongo.clientPromise;
 };
 
-const getDbConnection = async (): Promise<Db> => {
+export const getDbConnection = async (): Promise<Db> => {
 	if (global.mongo.db) {
 		return global.mongo.db;
 	}
