@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { unstable_cache as cache } from 'next/cache';
+import { cacheTag } from 'next/cache';
 import { notFound } from 'next/navigation';
 import { Typography } from '@mui/material';
 import type { SavedResult } from '@/types';
@@ -14,9 +14,12 @@ const formatDescription = ({ createdAt = '0', sourceList = [] }: SavedResult) =>
 	`Result saved at: ${new Date(createdAt).toLocaleString()}
 ${sourceList.length ? `Sources: ${sourceList.map(source => source.name).join(', ')}` : ''}`;
 
-const getCachedAllResults = cache(async () => await getAllSavedResults(), ['all-saved-results']);
-
-const getCachedResult = cache(async resultId => await getSavedResult(resultId), ['saved-result']);
+const getCachedResult = async (resultId: string) => {
+	'use cache';
+	cacheTag('saved-result');
+	const result = await getSavedResult(resultId);
+	return result;
+};
 
 export const generateMetadata = async ({ params }: { params: PageParams }): Promise<Metadata> => {
 	const loadedResult = await getCachedResult(params.resultId);
@@ -57,7 +60,9 @@ export const generateMetadata = async ({ params }: { params: PageParams }): Prom
 };
 
 export const generateStaticParams = async () => {
-	const { items: savedResults } = await getCachedAllResults();
+	'use cache';
+	cacheTag('all-saved-results');
+	const { items: savedResults } = await getAllSavedResults();
 	return savedResults.map(({ _id }) => ({ resultId: _id }));
 };
 

@@ -37,7 +37,7 @@ vi.mock('next/navigation', () => ({
 }));
 
 vi.mock('next/cache', () => ({
-	unstable_cache: (fn: () => Promise<unknown>) => () => fn(),
+	cacheTag: vi.fn(),
 }));
 
 Element.prototype.scrollIntoView = vi.fn();

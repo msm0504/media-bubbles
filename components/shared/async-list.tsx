@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useRef, useContext, ReactElement } from 'react';
+import { useState, useEffect, useContext, ReactElement } from 'react';
 import {
 	Container,
 	List,
@@ -57,20 +57,56 @@ const AsyncList = <T,>({
 	const [items, setItems] = useState<ListItem<T>[]>([]);
 	const [pageCount, setPageCount] = useState(0);
 	const [loading, setLoading] = useState(false);
-	const filter = useRef('');
-	const page = useRef(1);
-	const cache = useRef<Cache<T>>({});
+	const [filter, setFilter] = useState('');
+	const [page, setPage] = useState(1);
+	const [cache, setCache] = useState<Cache<T>>({});
+
+	const getListItems = async () => {
+		setLoading(true);
+		const { items: returnedItems, pageCount } = await callApi<ListResponse<T>, GetParams>(
+			'get',
+			apiPath,
+			{
+				filter: filter,
+				page: page,
+			}
+		);
+		if (page === 1) {
+			setCache({
+				...cache,
+				[filter]: { items: { [page]: returnedItems }, pageCount },
+			});
+			setItems(returnedItems);
+		} else if (page >= 1) {
+			setCache({
+				...cache,
+				[filter]: {
+					items: { ...cache[filter].items, [page]: returnedItems },
+					pageCount,
+				},
+			});
+			setItems(returnedItems);
+		} else {
+			throw `Queried for page ${page} of results containing ${filter}`;
+		}
+		if (Object.keys(cache).length > CACHE_SIZE) {
+			const { [Object.keys(cache)[0]]: _firstItem, ...rest } = cache;
+			setCache(rest);
+		}
+		setPageCount(pageCount);
+		setLoading(false);
+	};
 
 	useEffect(() => {
-		initCache();
-		if (!loginRequired || session) getListItems();
-	}, [loginRequired, session]);
-
-	const initCache = () => {
-		filter.current = '';
-		page.current = 1;
-		cache.current = {};
-	};
+		if (!loginRequired || session) {
+			if (cache[filter]?.items[page]) {
+				setItems(cache[filter].items[page]);
+				setPageCount(cache[filter].pageCount);
+			} else {
+				getListItems();
+			}
+		}
+	}, [loginRequired, session, page, filter]);
 
 	if (loginRequired && !session)
 		return (
@@ -81,40 +117,6 @@ const AsyncList = <T,>({
 			</Paper>
 		);
 
-	const getListItems = async () => {
-		setLoading(true);
-		const { items: returnedItems, pageCount } = await callApi<ListResponse<T>, GetParams>(
-			'get',
-			apiPath,
-			{
-				filter: filter.current,
-				page: page.current,
-			}
-		);
-		if (page.current === 1) {
-			cache.current = {
-				...cache.current,
-				[filter.current]: { items: { [page.current]: returnedItems }, pageCount },
-			};
-			setItems(returnedItems);
-		} else if (page.current >= 1) {
-			cache.current = {
-				...cache.current,
-				[filter.current]: {
-					items: { ...cache.current[filter.current].items, [page.current]: returnedItems },
-					pageCount,
-				},
-			};
-			setItems(returnedItems);
-		} else {
-			throw `Queried for page ${page.current} of results containing ${filter.current}`;
-		}
-		if (Object.keys(cache.current).length > CACHE_SIZE)
-			delete cache.current[Object.keys(cache.current)[0]];
-		setPageCount(pageCount);
-		setLoading(false);
-	};
-
 	const deleteItem = async (itemId: string, itemName: string) => {
 		const { itemDeleted } = await callApi<ItemDeletedResponse>('delete', `${apiPath}/${itemId}`);
 		if (itemDeleted !== true) {
@@ -124,30 +126,19 @@ const AsyncList = <T,>({
 			);
 		} else {
 			showAlert(ALERT_LEVEL.success, `${itemName || itemId} deleted successfully.`);
-			page.current = 1;
-			cache.current = {};
+			setPage(1);
+			setCache({});
 			getListItems();
 		}
 	};
 
-	const getItemsFromCache = () => {
-		if (cache.current[filter.current]?.items[page.current]) {
-			setItems(cache.current[filter.current].items[page.current]);
-			setPageCount(cache.current[filter.current].pageCount);
-			return true;
-		}
-		return false;
-	};
-
 	const handleSearch = debounce((query: string) => {
-		filter.current = query;
-		page.current = 1;
-		if (!getItemsFromCache()) getListItems();
+		setFilter(query);
+		setPage(1);
 	}, 300);
 
 	const handleLoadPage = (_event: React.ChangeEvent<unknown>, selectedPage: number) => {
-		page.current = selectedPage;
-		if (!getItemsFromCache()) getListItems();
+		setPage(selectedPage);
 	};
 
 	return (
@@ -182,7 +173,7 @@ const AsyncList = <T,>({
 					<Stack direction='row-reverse'>
 						<Pagination
 							count={pageCount}
-							page={page.current}
+							page={page}
 							onChange={handleLoadPage}
 							variant='outlined'
 							shape='rounded'

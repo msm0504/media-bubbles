@@ -3,7 +3,7 @@ import { Roboto_Slab } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { Box, ThemeProvider } from '@mui/material';
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter';
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v16-appRouter';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { ParentCompProps } from '@/types';
 import Footer from '@/components/shared/footer';

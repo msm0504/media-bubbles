@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { unstable_cache as cache } from 'next/cache';
+import { cacheTag } from 'next/cache';
 import { Stack, Typography } from '@mui/material';
 import SearchInstructions from '@/components/search-form/instructions';
 import SearchTabs from '@/components/search-form/tabs';
@@ -12,10 +12,10 @@ export const metadata: Metadata = {
 	},
 };
 
-const getCachedSourceLists = cache(async () => await getSourceLists(), ['source-lists']);
-
 const Search: React.FC = async () => {
-	const { appSourceList, sourceListBySlant } = await getCachedSourceLists();
+	'use cache';
+	cacheTag('source-lists');
+	const { appSourceList, sourceListBySlant } = await getSourceLists();
 
 	return (
 		<>

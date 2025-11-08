@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect, ReactElement } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { Controller, useForm, useWatch } from 'react-hook-form';
 import type { DefaultValues, FieldValues, Path, RegisterOptions } from 'react-hook-form';
 import {
 	Box,
@@ -63,13 +63,13 @@ const SaveableForm = <T extends FieldValues>({
 		formState: { isSubmitting },
 		handleSubmit,
 		reset,
-		watch,
 	} = useForm<T>({
 		defaultValues: initialData,
 		mode: 'onBlur',
 	});
 	const [isProcessing, setProcessing] = useState<boolean>(false);
 	const [preview, setPreview] = useState(false);
+	const currentValues = useWatch({ control }) as T;
 
 	useEffect(() => {
 		if (localStorageInterval && localStorageInterval > 0) {
@@ -81,7 +81,7 @@ const SaveableForm = <T extends FieldValues>({
 	}, [formName, localStorageInterval]);
 
 	useInterval(
-		() => setItemInStorage({ key: formName, value: watch() }),
+		() => setItemInStorage({ key: formName, value: currentValues }),
 		// stop local storage backup when form has been submitted
 		isSubmitting ? -1 : localStorageInterval
 	);
@@ -165,7 +165,7 @@ const SaveableForm = <T extends FieldValues>({
 					<Dialog open={preview} onClose={togglePreview}>
 						<DialogTitle>{`Preview ${kebabCaseToTitleCase(formName)}`}</DialogTitle>
 						<DialogContent>
-							<PreviewComponent {...watch()} />
+							<PreviewComponent {...currentValues} />
 						</DialogContent>
 					</Dialog>
 					<Stack direction='row-reverse'>

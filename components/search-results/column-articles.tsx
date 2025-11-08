@@ -16,7 +16,6 @@ type ColumnArticleProps = {
 
 type ArticleProps = {
 	isSearchAll: boolean;
-	key: string;
 	slantClass: string;
 	sourceName: string;
 	text: string;
@@ -35,14 +34,13 @@ const NOT_FOUND_MESSAGE = (
 
 const ArticleWithTitle: React.FC<ArticleWithTitleProps> = ({
 	isSearchAll,
-	key,
 	slantClass,
 	sourceName,
 	text,
 	title,
 	url,
 }) => (
-	<Card key={key}>
+	<Card>
 		{isSearchAll ? (
 			<CardHeader subheaderTypographyProps={{ color: slantClass }} subheader={sourceName} />
 		) : null}
@@ -66,13 +64,12 @@ const ArticleWithTitle: React.FC<ArticleWithTitleProps> = ({
 
 const ArticleWithoutTitle: React.FC<ArticleProps> = ({
 	isSearchAll,
-	key,
 	slantClass,
 	sourceName,
 	text,
 	url,
 }) => (
-	<Card key={key}>
+	<Card>
 		{isSearchAll ? (
 			<CardHeader subheaderTypographyProps={{ color: slantClass }} subheader={sourceName} />
 		) : null}
