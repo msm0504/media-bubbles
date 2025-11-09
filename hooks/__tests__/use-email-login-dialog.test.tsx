@@ -1,11 +1,18 @@
 import { useEffect } from 'react';
 import { afterEach, beforeEach, expect, test, vi } from 'vitest';
 import { cleanup, render, fireEvent, screen } from '@testing-library/react';
-import { signIn } from 'next-auth/react';
 import useEmailLoginDialog from '../use-email-login-dialog';
+import { signIn } from '@/lib/auth-client';
 
-vi.mock('next-auth/react', () => ({
-	signIn: vi.fn(),
+vi.mock('@/lib/auth-client', () => ({
+	signIn: {
+		magicLink: vi.fn(),
+	},
+	authClient: {
+		useSession: () => ({
+			refetch: vi.fn(),
+		}),
+	},
 }));
 
 beforeEach(() => {
@@ -36,16 +43,8 @@ test('validates email input on step 1', async () => {
 	expect(await screen.findByText('Invalid email format.')).toBeInTheDocument();
 });
 
-test('displays alert if signin returns no response', async () => {
-	vi.mocked(signIn).mockResolvedValue(undefined);
-	const emailInput = screen.getByLabelText('Email');
-	fireEvent.change(emailInput, { target: { value: 'test@gmail.com' } });
-	fireEvent.click(screen.getByText('Send Log In Token'));
-	expect(await screen.findByText('Failed to send log in token')).toBeInTheDocument();
-});
-
 test('displays alert if signin returns error', async () => {
-	vi.mocked(signIn).mockResolvedValue({
+	vi.mocked(signIn.magicLink).mockResolvedValue({
 		error: 'some error',
 		code: undefined,
 		status: 200,
@@ -60,7 +59,7 @@ test('displays alert if signin returns error', async () => {
 });
 
 test('displays step 2 signin successful', async () => {
-	vi.mocked(signIn).mockResolvedValue({
+	vi.mocked(signIn.magicLink).mockResolvedValue({
 		error: undefined,
 		code: undefined,
 		status: 200,
@@ -75,7 +74,7 @@ test('displays step 2 signin successful', async () => {
 });
 
 test('validates token input on step 2', async () => {
-	vi.mocked(signIn).mockResolvedValue({
+	vi.mocked(signIn.magicLink).mockResolvedValue({
 		error: undefined,
 		code: undefined,
 		status: 200,

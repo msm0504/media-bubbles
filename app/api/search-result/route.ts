@@ -1,29 +1,35 @@
-import { NextResponse } from 'next/server';
-import { auth } from '@/auth';
+import { headers } from 'next/headers';
 import { InvokeCommand, type InvokeCommandInput, LogType } from '@aws-sdk/client-lambda';
+import { auth } from '@/lib/auth';
 import { getLambdaClient } from '@/services/aws-clients';
 import { getSavedResults, saveSearchResult } from '@/services/saved-results-service';
 
-export const GET = auth(async request => {
-	if (!request.auth?.user.id) {
-		return NextResponse.json({ savedResults: [], pageCount: 0 });
+export const GET = async (request: Request) => {
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
+	if (!session?.user.id) {
+		return Response.json({ savedResults: [], pageCount: 0 });
 	} else {
-		const { searchParams } = request.nextUrl;
-		return NextResponse.json(
+		const { searchParams } = new URL(request.url);
+		return Response.json(
 			await getSavedResults(
 				searchParams.get('filter') || '',
 				+(searchParams.get('page') || 1),
-				request.auth.user.id
+				session.user.id
 			)
 		);
 	}
-});
+};
 
-export const POST = auth(async request => {
+export const POST = async (request: Request) => {
 	const resultToSave = await request.json();
 	let imageKey = '';
-	if (request.auth?.user.id) {
-		resultToSave.userId = request.auth.user.id;
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
+	if (session?.user.id) {
+		resultToSave.userId = session.user.id;
 	}
 	if (process.env.AWS_SCREENSHOT_FUNCTION) {
 		imageKey = `${resultToSave.name.replace(/\s/g, '_')}_${Date.now()}.png`;
@@ -46,5 +52,5 @@ export const POST = auth(async request => {
 		lambdaClient.send(commmand);
 	}
 
-	return NextResponse.json(savedResult);
-});
+	return Response.json(savedResult);
+};

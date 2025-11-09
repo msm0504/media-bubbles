@@ -6,6 +6,6 @@ export const GET = async (request: Request) => {
 	if (!image) {
 		return new Response(`No logo found for ${searchParams.get('id')}`, { status: 400 });
 	} else {
-		return new Response(image, { headers: { 'content-type': 'image/png' } });
+		return new Response(new Uint8Array(image), { headers: { 'content-type': 'image/png' } });
 	}
 };

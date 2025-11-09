@@ -1,8 +1,8 @@
 'use client';
 import { useContext } from 'react';
-import { useSession } from 'next-auth/react';
 import FIELD_LIST, { REASON_OPTIONS } from './field-list';
 import type { FeedbackMessage, FeedbackSentResponse, ShowAlertFn } from '@/types';
+import { useSession } from '@/lib/auth-client';
 import SaveableForm from '@/components/shared/saveable-form';
 import ALERT_LEVEL from '@/constants/alert-level';
 import { AlertsDispatch } from '@/contexts/alerts-context';

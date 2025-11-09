@@ -1,11 +1,8 @@
 import type { Metadata } from 'next';
-import { unstable_cache as cache } from 'next/cache';
 import type { SearchRequest } from '@/types';
 import { getHeadlines } from '@/services/bsky-news-service';
 import SearchResults from '@/components/search-results/search-results';
 import PageHeading from '@/components/shared/page-heading';
-
-const SECONDS_IN_FIFTEEN_MIN = 60 * 15;
 
 export const metadata: Metadata = {
 	title: 'Latest News - Media Bubbles',
@@ -20,22 +17,16 @@ export const metadata: Metadata = {
 	},
 };
 
-const getCachedLatestNews = cache(
-	async () => {
-		const params: SearchRequest = {
-			sources: '',
-			spectrumSearchAll: 'Y',
-			keyword: '',
-			previousDays: 1,
-		};
-		return getHeadlines(params);
-	},
-	['latest-news'],
-	{ revalidate: SECONDS_IN_FIFTEEN_MIN }
-);
+const LATEST_NEWS_PARAMS: SearchRequest = {
+	sources: '',
+	spectrumSearchAll: 'Y',
+	keyword: '',
+	previousDays: 1,
+};
 
 const LatestNews: React.FC = async () => {
-	const latestArticleMap = await getCachedLatestNews();
+	'use cache';
+	const latestArticleMap = await getHeadlines(LATEST_NEWS_PARAMS);
 	return (
 		<>
 			<PageHeading heading='Latest News' />

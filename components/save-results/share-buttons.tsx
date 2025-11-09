@@ -1,7 +1,7 @@
 'use client';
 import { Button, Stack } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebookF, faXTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faBluesky, faFacebookF, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faClipboard, faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import styles from '@/styles/main.module.css';
 
@@ -28,6 +28,18 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 			<Button
 				color='info'
 				variant='contained'
+				className={styles.bskyBtn}
+				id='share-bsky'
+				onClick={() => {
+					window.open(`https://bsky.app/intent/compose?text=${encodeURI(urlToShare)}`, '_blank');
+				}}
+			>
+				<FontAwesomeIcon icon={faBluesky} size='xl' />
+				<span className='sr-only'>{'share on Bluesky'}</span>
+			</Button>
+			<Button
+				color='info'
+				variant='contained'
 				className={styles.facebookBtn}
 				id='share-facebook'
 				onClick={() => {
@@ -43,13 +55,13 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 			<Button
 				color='dark'
 				variant='contained'
-				id='share-twitter'
+				id='share-x'
 				onClick={() => {
-					window.open(`https://twitter.com/intent/tweet?url=${encodeURI(urlToShare)}`, '_blank');
+					window.open(`https://x.com/intent/post?url=${encodeURI(urlToShare)}`, '_blank');
 				}}
 			>
 				<FontAwesomeIcon icon={faXTwitter} size='xl' />
-				<span className='sr-only'>{'share on Twitter'}</span>
+				<span className='sr-only'>{'share on X'}</span>
 			</Button>
 			<Button
 				color='secondary'

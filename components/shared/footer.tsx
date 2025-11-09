@@ -1,3 +1,4 @@
+'use client';
 import Link from 'next/link';
 import { Box, Container, Link as MuiLink, Stack } from '@mui/material';
 

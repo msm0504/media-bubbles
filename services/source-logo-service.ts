@@ -27,7 +27,10 @@ export const getSourceLogo = async (id: string, url: string): Promise<Buffer | n
 	});
 	try {
 		const cached = await s3Client.send(getCommand);
-		if (cached.Body && (!cached.Expires || Date.now() < cached.Expires.valueOf())) {
+		if (
+			cached.Body &&
+			(!cached.ExpiresString || Date.now() < new Date(cached.ExpiresString).getTime())
+		) {
 			return streamToBuffer(cached.Body as Readable);
 		}
 	} catch (error) {
@@ -40,7 +43,7 @@ export const getSourceLogo = async (id: string, url: string): Promise<Buffer | n
 	});
 	const image = Buffer.from(await logoResponse.arrayBuffer());
 
-	if (!image) return null;
+	if (!image || !image.length) return null;
 	const putCommand = new PutObjectCommand({
 		Bucket: process.env.AWS_S3_LOGO_BUCKET,
 		Key: `${s3Key}.png`,

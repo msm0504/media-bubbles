@@ -107,7 +107,7 @@ test('displays error alert if no sources have been selected for user select sear
 
 test('get headlines call is made if form is valid', async () => {
 	const apiSpy = vi.spyOn(apiService, 'callApi');
-	server.use(http.get('/test/api/headlines', () => HttpResponse.json({})));
+	server.use(http.get('http://test.com/api/headlines', () => HttpResponse.json({})));
 	renderFormWithContext('MY_BUBBLE');
 	fireEvent.click(screen.getByLabelText('Center-Left'));
 	fireEvent.click(screen.getByText('Get Headlines'));

@@ -12,14 +12,13 @@ const headers = {
 
 const SUPPORT_ADDRESS = 'support@mediabubbles.net';
 const LOGIN_ADDRESS = 'login@mediabubbles.net';
-const SUPPORT_TO_ADDRESS = 'mark.monday0504@gmail.com';
 
 export const sendSupportEmail = async (
 	feedbackData: FeedbackMessage
 ): Promise<FeedbackSentResponse> => {
 	const params = new URLSearchParams({
 		from: SUPPORT_ADDRESS,
-		to: SUPPORT_TO_ADDRESS,
+		to: SUPPORT_ADDRESS,
 		subject: `Media Bubbles ${feedbackData.reason}`,
 		text: `
 ${feedbackData.message}
@@ -43,7 +42,7 @@ ${feedbackData.email}
 	return { feedbackSent: response.ok };
 };
 
-const getLoginEmailHtml = (token: string, expires: Date) =>
+const getLoginEmailHtml = (token: string, expiresInMin: number) =>
 	`
 	<body style="background: #eeeeee; font-family: Helvetica, Arial, sans-serif; color: #212121">
 		<table
@@ -69,7 +68,7 @@ const getLoginEmailHtml = (token: string, expires: Date) =>
 			</tr>
 			<tr>
 				<td style="padding: 0px 0px 10px 0px; font-size: 16px">
-					This token will expire at ${expires.toUTCString()}.
+					This token will expire in ${expiresInMin} minutes.
 				</td>
 			</tr>
 			<tr>
@@ -81,22 +80,22 @@ const getLoginEmailHtml = (token: string, expires: Date) =>
 	</body>
 `;
 
-const getLoginEmailText = (token: string, expires: Date) => `
+const getLoginEmailText = (token: string, expiresInMin: number) => `
 Log in Token: ${token}
-Token expires at ${expires.toUTCString()}
+Token will expire in ${expiresInMin} minutes
 		`;
 
 export const sendLoginEmail = async (
 	toAddress: string,
 	token: string,
-	expires: Date
+	expiresInMin: number
 ): Promise<void> => {
 	const params = new URLSearchParams({
 		from: LOGIN_ADDRESS,
 		to: toAddress,
 		subject: 'Log in Token for Media Bubbles',
-		text: getLoginEmailText(token, expires),
-		html: getLoginEmailHtml(token, expires),
+		text: getLoginEmailText(token, expiresInMin),
+		html: getLoginEmailHtml(token, expiresInMin),
 	});
 
 	const requestOptions: Record<string, unknown> = {
