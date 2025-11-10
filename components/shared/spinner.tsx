@@ -1,4 +1,4 @@
-import { Grid2 as Grid, Icon, Typography } from '@mui/material';
+import { Grid, Icon, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 

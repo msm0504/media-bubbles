@@ -1,4 +1,5 @@
 import type { MetadataRoute } from 'next';
+import { getAllPostSlugs } from '@/services/blog-service';
 import { getAllSavedResults } from '@/services/saved-results-service';
 
 const BASE_URL = process.env.NEXT_PUBLIC_URL || '';
@@ -6,6 +7,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_URL || '';
 const MAX_SAVED_RESULTS = 49950;
 
 const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
+	const allPostSlugs = await getAllPostSlugs();
 	const { items: savedResults } = await getAllSavedResults('', 1, MAX_SAVED_RESULTS);
 	return [
 		{
@@ -40,6 +42,10 @@ const sitemap = async (): Promise<MetadataRoute.Sitemap> => {
 			url: `${BASE_URL}/terms`,
 			lastModified: new Date(),
 		},
+		...allPostSlugs.map(({ slug, updatedAt }) => ({
+			url: `${BASE_URL}/blog/${slug}`,
+			lastModified: updatedAt,
+		})),
 		...savedResults.map(({ _id, createdAt }) => ({
 			url: `${BASE_URL}/headlines/${_id}`,
 			lastModified: createdAt,

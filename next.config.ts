@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
 	cacheComponents: true,
 	images: {
 		qualities: [75, 100],
+		localPatterns: [{ pathname: '/images/slant-bubbles/*' }, { pathname: '/api/source-logo' }],
 		remotePatterns: [
 			{
 				protocol: 'https',

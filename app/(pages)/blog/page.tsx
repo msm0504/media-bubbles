@@ -1,5 +1,4 @@
 'use client';
-import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import {
 	Button,
@@ -14,6 +13,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { faPenToSquare, faPlus } from '@fortawesome/free-solid-svg-icons';
 import type { BlogPostSummary } from '@/types';
+import { isAdmin } from '@/constants/admin-role';
+import { useSession } from '@/lib/auth-client';
 import AsyncList, { DeleteFnType } from '@/components/shared/async-list';
 import markdownToHtml from '@/components/shared/markdown-to-html';
 import PageHeading from '@/components/shared/page-heading';
@@ -45,8 +46,12 @@ const PostSummary: React.FC<PostSummaryProps> = ({
 						</Typography>
 					</>
 				}
+				slotProps={{
+					primary: { component: 'div' },
+					secondary: { component: 'div' },
+				}}
 			/>
-			{session?.user.isAdmin ? (
+			{isAdmin(session?.user.role) ? (
 				<>
 					<IconButton
 						aria-label={`Edit post ${slug}`}
@@ -75,7 +80,7 @@ const BlogPosts: React.FC = () => {
 	return (
 		<>
 			<PageHeading heading='Blog Posts' />
-			{session?.user.isAdmin && (
+			{isAdmin(session?.user.role) && (
 				<Stack direction='row-reverse'>
 					<Button
 						variant='contained'

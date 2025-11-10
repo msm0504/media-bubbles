@@ -1,19 +1,25 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { auth } from '@/auth';
-import { getPostSummaries, savePost } from '@/services/blog-service';
+import { headers } from 'next/headers';
+import { auth } from '@/lib/auth';
+import { isAdmin } from '@/constants/admin-role';
+import { createPost, getPostSummaries } from '@/services/blog-service';
 
-export const GET = async (request: NextRequest) => {
-	const { searchParams } = request.nextUrl;
-	return NextResponse.json(
+export const GET = async (request: Request) => {
+	const { searchParams } = new URL(request.url);
+	return Response.json(
 		await getPostSummaries(searchParams.get('filter') || '', +(searchParams.get('page') || 1))
 	);
 };
 
-export const POST = auth(async request => {
-	if (!request.auth?.user.id) {
-		return NextResponse.json({ slug: null });
-	} else {
-		const postToSave = await request.json();
-		return NextResponse.json(await savePost(postToSave));
+export const POST = async (request: Request) => {
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
+	if (!session?.user) {
+		return Response.json({ itemId: false }, { status: 401 });
 	}
-});
+	if (!isAdmin(session?.user.role)) {
+		return Response.json({ itemId: null }, { status: 403 });
+	}
+	const postToCreate = await request.json();
+	return Response.json(await createPost(postToCreate));
+};

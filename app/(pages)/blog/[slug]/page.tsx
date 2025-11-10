@@ -1,20 +1,15 @@
 import type { Metadata } from 'next';
-import { unstable_cache as cache } from 'next/cache';
 import { notFound } from 'next/navigation';
 import type { BlogPost } from '@/types';
 import { getAllPostSlugs, getPost } from '@/services/blog-service';
 import BlogPostTemplate from '@/components/blog/blog-post-template';
 
-type PageParams = {
+type PageParams = Promise<{
 	slug: string;
-};
-
-const getCachedAllSlugs = cache(async () => await getAllPostSlugs(), ['all-post-slugs']);
-
-const getCachedPost = cache(async slug => await getPost(slug), ['post']);
+}>;
 
 export const generateMetadata = async ({ params }: { params: PageParams }): Promise<Metadata> => {
-	const post = await getCachedPost(params.slug);
+	const post = await getPost((await params).slug);
 	if (!post || !Object.keys(post).length) {
 		return notFound();
 	}
@@ -38,12 +33,12 @@ export const generateMetadata = async ({ params }: { params: PageParams }): Prom
 };
 
 export const generateStaticParams = async () => {
-	const slugs = await getCachedAllSlugs();
-	return slugs.map(slug => ({ slug }));
+	const slugs = await getAllPostSlugs();
+	return slugs.map(({ slug }) => ({ slug }));
 };
 
 const getBlogPost = async (params: PageParams): Promise<BlogPost> => {
-	const post = await getCachedPost(params.slug);
+	const post = await getPost((await params).slug);
 	if (!post || !Object.keys(post).length) {
 		return notFound();
 	}

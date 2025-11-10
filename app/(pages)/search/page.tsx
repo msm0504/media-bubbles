@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { cacheTag } from 'next/cache';
 import { Stack } from '@mui/material';
 import SearchInstructions from '@/components/search-form/instructions';
 import SearchTabs from '@/components/search-form/tabs';
@@ -14,8 +13,6 @@ export const metadata: Metadata = {
 };
 
 const Search: React.FC = async () => {
-	'use cache';
-	cacheTag('source-lists');
 	const { appSourceList, sourceListBySlant } = await getSourceLists();
 
 	return (

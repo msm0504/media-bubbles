@@ -2,12 +2,13 @@
 import { useEffect, useContext } from 'react';
 import { Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import BlogPostTemplate from './blog-post-template';
 import FIELD_LIST from './field-list';
 import SaveableForm from '../shared/saveable-form';
 import ALERT_LEVEL from '@/constants/alert-level';
+import { isAdmin } from '@/constants/admin-role';
 import { AlertsDispatch } from '@/contexts/alerts-context';
+import { useSession } from '@/lib/auth-client';
 import { callApi } from '@/services/api-service';
 import type { BlogPost, ItemSavedResponse, ShowAlertFn } from '@/types';
 import PageHeading from '../shared/page-heading';
@@ -26,9 +27,10 @@ const blankBlogPostForm = {
 const MILLISECONDS_IN_MINUTE = 1000 * 60;
 
 async function submitPost(blogPostData: BlogPost, showAlert: ShowAlertFn) {
+	const isUpdate = !!blogPostData._id;
 	const { itemId: slug } = await callApi<ItemSavedResponse, BlogPost>(
-		'post',
-		'blog-posts',
+		isUpdate ? 'put' : 'post',
+		`blog-posts${isUpdate ? `/${blogPostData._id}` : ''}`,
 		blogPostData
 	);
 	if (!slug) {
@@ -55,7 +57,7 @@ const AddEditBlogPost: React.FC<AddEditPostProps> = ({ currentVersion }) => {
 		}
 	}, [currentVersion]);
 
-	if (!session?.user.isAdmin) {
+	if (!isAdmin(session?.user.role)) {
 		return <Typography color='info'>You shall not post!</Typography>;
 	}
 

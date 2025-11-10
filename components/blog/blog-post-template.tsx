@@ -13,7 +13,7 @@ const BlogPostTemplate: React.FC<BlogPostTemplateProps> = ({ content, date, titl
 		<PageHeading heading={title} />
 		<Paper>
 			<Typography variant='body2'>{`Last updated at ${new Date(date).toLocaleString()} `}</Typography>
-			{markdownToHtml(content)}
+			<Typography component='div'>{markdownToHtml(content)}</Typography>
 		</Paper>
 	</>
 );

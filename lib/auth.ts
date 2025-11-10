@@ -36,6 +36,9 @@ export const auth = betterAuth({
 			clientSecret: process.env.AUTH_GOOGLE_SECRET as string,
 		},
 	},
-	user: { modelName: 'users' },
+	user: {
+		modelName: 'users',
+		additionalFields: { role: { type: 'string', defaultValue: 'user', input: false } },
+	},
 	verification: { modelName: 'verification_tokens' },
 });

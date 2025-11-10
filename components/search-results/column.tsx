@@ -41,7 +41,7 @@ const Column: React.FC<ColumnProps> = ({
 
 	const slantClass =
 		column.slant === null || typeof column.slant === 'undefined'
-			? getTextClassBySlant(Number(column.id))
+			? getTextClassBySlant(+column.id)
 			: getTextClassBySlant(column.slant);
 
 	return (

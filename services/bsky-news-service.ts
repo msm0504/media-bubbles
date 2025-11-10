@@ -41,7 +41,7 @@ const getSourcePostsByKeyword = async (
 								$dateSubtract: {
 									startDate: '$$NOW',
 									unit: 'day',
-									amount: Number(previousDays) || DEFAULT_PREVIOUS_DAYS,
+									amount: +previousDays || DEFAULT_PREVIOUS_DAYS,
 								},
 							},
 						],
@@ -87,7 +87,7 @@ const getSlantPostsByKeyword = async (
 								$dateSubtract: {
 									startDate: '$$NOW',
 									unit: 'day',
-									amount: Number(previousDays) || DEFAULT_PREVIOUS_DAYS,
+									amount: +previousDays || DEFAULT_PREVIOUS_DAYS,
 								},
 							},
 						],
@@ -133,7 +133,7 @@ export const getHeadlines = async (params: SearchRequest): Promise<ArticleMap> =
 	return isSpectrumSearch
 		? Object.keys(SOURCE_SLANT_MAP).reduce<Promise<ArticleMap>>(
 				async (memo: Promise<ArticleMap>, slantKey: string) => {
-					const slant = Number(slantKey) as SourceSlant;
+					const slant = +slantKey as SourceSlant;
 					const posts = await (params.keyword
 						? getSlantPostsByKeyword(slant, params.keyword, params.previousDays)
 						: getSlantPosts(slant));
