@@ -1,1 +1,2 @@
-export default 5;
+const MAX_SOURCE_SELECTIONS = 5;
+export default MAX_SOURCE_SELECTIONS;

@@ -13,51 +13,10 @@ import MySavedResults from '../my-saved-results';
 import { AppProviders } from '@/contexts';
 import type { ListResponse, SavedResultSummary } from '@/types';
 import { useSession } from '@/lib/auth-client';
+import { mockUserSession, mockUnauthSession } from '@/lib/__mocks__/mock-sessions';
 import * as apiService from '@/services/api-service';
 
-vi.mock('@/lib/auth-client', () => ({
-	useSession: vi.fn(),
-}));
 const server = setupServer();
-
-const today = new Date();
-const tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate() + 1);
-
-const mockUser: ReturnType<typeof useSession>['data'] = {
-	user: {
-		id: '12345',
-		createdAt: today,
-		updatedAt: today,
-		name: 'Some Guy',
-		email: 'some.guy@test.com',
-		emailVerified: true,
-	},
-	session: {
-		id: '67890',
-		createdAt: today,
-		updatedAt: today,
-		userId: '12345',
-		expiresAt: tomorrow,
-		token: 'abc123',
-	},
-};
-
-const mockUnauthSession: ReturnType<typeof useSession> = {
-	data: null,
-	isPending: false,
-	isRefetching: false,
-	error: null,
-	refetch: vi.fn(),
-};
-
-const mockAuthSession: ReturnType<typeof useSession> = {
-	data: mockUser,
-	isPending: false,
-	isRefetching: false,
-	error: null,
-	refetch: vi.fn(),
-};
 
 const mockResponse: ListResponse<SavedResultSummary> = {
 	items: [
@@ -98,14 +57,14 @@ test('blocks access if not logged in', () => {
 });
 
 test('makes initial API call and renders results', async () => {
-	vi.mocked(useSession).mockReturnValue(mockAuthSession);
+	vi.mocked(useSession).mockReturnValue(mockUserSession);
 	server.use(http.get('http://test.com/api/search-result', () => HttpResponse.json(mockResponse)));
 	render(<MySavedResults />);
 	expect(await screen.findByText('Headlines Across the Spectrum')).toBeInTheDocument();
 });
 
 test('makes initial API call and displays message if no results', async () => {
-	vi.mocked(useSession).mockReturnValue(mockAuthSession);
+	vi.mocked(useSession).mockReturnValue(mockUserSession);
 	server.use(
 		http.get('http://test.com/api/search-result', () => HttpResponse.json(mockEmptyResponse))
 	);
@@ -115,7 +74,7 @@ test('makes initial API call and displays message if no results', async () => {
 
 test('caches results returned from API', async () => {
 	const apiSpy = vi.spyOn(apiService, 'callApi');
-	vi.mocked(useSession).mockReturnValue(mockAuthSession);
+	vi.mocked(useSession).mockReturnValue(mockUserSession);
 	server.use(
 		http.get('http://test.com/api/search-result', ({ request }) => {
 			const filter = new URL(request.url).searchParams.get('filter');
@@ -147,7 +106,7 @@ test('caches results returned from API', async () => {
 });
 
 test('displays success alert after successful item delete', async () => {
-	vi.mocked(useSession).mockReturnValue(mockAuthSession);
+	vi.mocked(useSession).mockReturnValue(mockUserSession);
 	const mockRespCopy: ListResponse<SavedResultSummary> = {
 		items: [...mockResponse.items],
 		pageCount: 1,
@@ -174,7 +133,7 @@ test('displays success alert after successful item delete', async () => {
 });
 
 test('displays error alert after failed item delete', async () => {
-	vi.mocked(useSession).mockReturnValue(mockAuthSession);
+	vi.mocked(useSession).mockReturnValue(mockUserSession);
 	server.use(http.get('http://test.com/api/search-result', () => HttpResponse.json(mockResponse)));
 	server.use(
 		http.delete(`http://test.com/api/search-result/${mockResponse.items[0]._id}`, () =>

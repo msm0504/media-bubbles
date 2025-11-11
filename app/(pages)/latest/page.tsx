@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { Typography } from '@mui/material';
 import type { SearchRequest } from '@/types';
 import { getHeadlines } from '@/services/bsky-news-service';
 import SearchResults from '@/components/search-results/search-results';
+import PageHeading from '@/components/shared/page-heading';
 
 export const metadata: Metadata = {
 	title: 'Latest News - Media Bubbles',
@@ -29,9 +29,7 @@ const LatestNews: React.FC = async () => {
 	const latestArticleMap = await getHeadlines(LATEST_NEWS_PARAMS);
 	return (
 		<>
-			<Typography component='h2' variant='h3' color='info' marginBottom={2} fontWeight='bold'>
-				Latest News
-			</Typography>
+			<PageHeading heading='Latest News' />
 			<SearchResults sourceList={[]} isSearchAll articleMap={latestArticleMap} />
 		</>
 	);

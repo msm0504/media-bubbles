@@ -1,6 +1,7 @@
+import { cacheTag, revalidateTag } from 'next/cache';
 import { ObjectId } from 'mongodb';
 import { getCollection } from './db-connection';
-import {
+import type {
 	BlogPost,
 	BlogPostSummary,
 	ItemDeletedResponse,
@@ -9,6 +10,7 @@ import {
 } from '@/types';
 
 const COLLECTION_NAME = 'blog_posts';
+const CACHE_TAG = 'blog-posts';
 const PAGE_SIZE = 10;
 
 const _collection = getCollection(COLLECTION_NAME);
@@ -19,13 +21,7 @@ const formatExcerpt = (content: string) => {
 	return `${content.substring(0, lastSentenceEnd)}...`;
 };
 
-const SLUG_WITH_TS_PATTERN = /^\d{4}-\d{2}-\d{2}-/;
-
-export const savePost = async (post: BlogPost): Promise<ItemSavedResponse> => {
-	return SLUG_WITH_TS_PATTERN.test(post.slug) ? updatePost(post) : createPost(post);
-};
-
-const createPost = async (post: BlogPost) => {
+export const createPost = async (post: BlogPost): Promise<ItemSavedResponse> => {
 	const db = await _collection;
 	const createTs = new Date().toISOString();
 	const slugWithTs = `${createTs.split('T')[0]}-${post.slug.toLowerCase()}`;
@@ -37,29 +33,36 @@ const createPost = async (post: BlogPost) => {
 		createdAt: createTs,
 		updatedAt: createTs,
 	});
+	revalidateTag(CACHE_TAG, 'max');
 	return { itemId: insertedId.toString() };
 };
 
-const updatePost = async (post: BlogPost) => {
+export const updatePost = async (post: BlogPost): Promise<ItemSavedResponse> => {
 	const db = await _collection;
 	const updateTs = new Date().toISOString();
 	const { modifiedCount } = await db.updateOne(
 		{ _id: post.slug as unknown as ObjectId },
 		{ $set: { ...post, excerpt: formatExcerpt(post.content), updatedAt: updateTs } }
 	);
+	revalidateTag(CACHE_TAG, 'max');
+	revalidateTag(`${CACHE_TAG}-${post.slug}`, 'max');
 	return { itemId: modifiedCount === 1 ? post.slug : '' };
 };
 
-export const getAllPostSlugs = async (): Promise<string[]> => {
+export const getAllPostSlugs = async (): Promise<{ slug: string; updatedAt: string }[]> => {
+	'use cache';
+	cacheTag(CACHE_TAG);
 	const db = await _collection;
 	return db
 		.find()
 		.sort({ updatedAt: -1 })
-		.map(({ slug }) => slug)
+		.map(({ slug, updatedAt }) => ({ slug, updatedAt }))
 		.toArray();
 };
 
 export const getLatestPostSlug = async (): Promise<string> => {
+	'use cache';
+	cacheTag(CACHE_TAG);
 	const db = await _collection;
 	return db
 		.find()
@@ -71,6 +74,8 @@ export const getLatestPostSlug = async (): Promise<string> => {
 };
 
 export const getPost = async (slug: string): Promise<BlogPost> => {
+	'use cache';
+	cacheTag(`${CACHE_TAG}-${slug}`);
 	const db = await _collection;
 	return db.findOne({ _id: slug as unknown as ObjectId }) as unknown as BlogPost;
 };
@@ -79,6 +84,8 @@ export const getPostSummaries = async (
 	filter = '',
 	page = 1
 ): Promise<ListResponse<BlogPostSummary>> => {
+	'use cache';
+	cacheTag(CACHE_TAG);
 	const db = await _collection;
 	const count = await db.countDocuments({
 		$or: [
@@ -109,5 +116,7 @@ export const getPostSummaries = async (
 export const deletePost = async (slug: string): Promise<ItemDeletedResponse> => {
 	const db = await _collection;
 	const { deletedCount } = await db.deleteOne({ _id: slug as unknown as ObjectId });
+	revalidateTag(CACHE_TAG, 'max');
+	revalidateTag(`${CACHE_TAG}-${slug}`, 'max');
 	return { itemDeleted: deletedCount === 1 };
 };

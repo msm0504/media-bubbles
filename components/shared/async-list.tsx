@@ -142,7 +142,7 @@ const AsyncList = <T,>({
 	};
 
 	return (
-		<>
+		<Stack spacing={4}>
 			<Stack direction='row' justifyContent='center'>
 				<Container maxWidth='sm' component={Paper}>
 					<TextField
@@ -184,7 +184,7 @@ const AsyncList = <T,>({
 					</Stack>
 				</Paper>
 			)}
-		</>
+		</Stack>
 	);
 };
 

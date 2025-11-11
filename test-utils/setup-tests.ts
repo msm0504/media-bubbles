@@ -40,6 +40,18 @@ vi.mock('next/cache', () => ({
 	cacheTag: vi.fn(),
 }));
 
+vi.mock('@/lib/auth-client', () => ({
+	useSession: vi.fn(),
+	signIn: {
+		magicLink: vi.fn(),
+	},
+	authClient: {
+		useSession: () => ({
+			refetch: vi.fn(),
+		}),
+	},
+}));
+
 Element.prototype.scrollIntoView = vi.fn();
 
 loadEnvConfig(process.cwd());

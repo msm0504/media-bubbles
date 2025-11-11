@@ -1,3 +1,4 @@
+import { cacheTag, revalidateTag } from 'next/cache';
 import { ObjectId } from 'mongodb';
 import { nanoid } from 'nanoid';
 import { getCollection } from './db-connection';
@@ -10,6 +11,7 @@ import {
 } from '@/types';
 
 const COLLECTION_NAME = 'saved_results';
+const CACHE_TAG = 'saved-results';
 const PAGE_SIZE = 10;
 
 const _collection = getCollection(COLLECTION_NAME);
@@ -21,6 +23,7 @@ export const saveSearchResult = async (result: SavedResult): Promise<ItemSavedRe
 		_id: nanoid(16) as unknown as ObjectId,
 		createdAt: new Date().toISOString(),
 	});
+	revalidateTag(CACHE_TAG, 'max');
 	return { itemId: insertedId.toString() };
 };
 
@@ -29,6 +32,8 @@ export const getSavedResults = async (
 	page = 1,
 	userId: string
 ): Promise<ListResponse<SavedResultSummary>> => {
+	'use cache';
+	cacheTag(CACHE_TAG);
 	const db = await _collection;
 	const count = await db.countDocuments({
 		name: { $regex: filter, $options: 'i' },
@@ -53,6 +58,8 @@ export const getAllSavedResults = async (
 	page = 1,
 	pageSize = PAGE_SIZE
 ): Promise<ListResponse<SavedResultSummary>> => {
+	'use cache';
+	cacheTag(CACHE_TAG);
 	const db = await _collection;
 	const count = await db.countDocuments({ name: { $regex: filter, $options: 'i' } });
 	const savedResults = (await db
@@ -70,6 +77,8 @@ export const getAllSavedResults = async (
 };
 
 export const getSavedResult = async (id: string): Promise<SavedResult | null> => {
+	'use cache';
+	cacheTag(`${CACHE_TAG}-${id}`);
 	const db = await _collection;
 	return db.findOne({ _id: id as unknown as ObjectId }) as unknown as SavedResult;
 };
@@ -80,5 +89,7 @@ export const deleteSavedResult = async (
 ): Promise<ItemDeletedResponse> => {
 	const db = await _collection;
 	const { deletedCount } = await db.deleteOne({ _id: id as unknown as ObjectId, userId: userId });
+	revalidateTag(CACHE_TAG, 'max');
+	revalidateTag(`${CACHE_TAG}-${id}`, 'max');
 	return { itemDeleted: deletedCount === 1 };
 };

@@ -41,7 +41,7 @@ const SlantRadioButtons: React.FC<SlantRadioButtonsProps> = ({ selection, onChan
 					name='sourceSlant'
 					value={selection || ''}
 					onChange={(event: ChangeEvent<HTMLInputElement>) =>
-						onChange(event.target.name, Number(event.target.value) as SourceSlant)
+						onChange(event.target.name, +event.target.value as SourceSlant)
 					}
 				>
 					{radiobuttons}

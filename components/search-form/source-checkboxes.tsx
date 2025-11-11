@@ -1,6 +1,6 @@
 'use client';
 import { ChangeEvent } from 'react';
-import { Checkbox, FormControlLabel, Grid2 as Grid, Paper, Typography } from '@mui/material';
+import { Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquare, faSquareCheck } from '@fortawesome/free-regular-svg-icons';
 // import { faSquare as faSquareSolid } from '@fortawesome/free-solid-svg-icons';

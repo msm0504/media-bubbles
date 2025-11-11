@@ -162,7 +162,7 @@ const SaveableForm = <T extends FieldValues>({
 		<>
 			{hasPreview && PreviewComponent && (
 				<>
-					<Dialog open={preview} onClose={togglePreview}>
+					<Dialog open={preview} onClose={togglePreview} fullWidth maxWidth='lg'>
 						<DialogTitle>{`Preview ${kebabCaseToTitleCase(formName)}`}</DialogTitle>
 						<DialogContent>
 							<PreviewComponent {...currentValues} />

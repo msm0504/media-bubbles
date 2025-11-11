@@ -24,6 +24,7 @@ export default defineConfig({
 				'**/__tests__',
 				'**/__mocks__',
 				'.next/',
+				'styles/theme.ts',
 			],
 		},
 	},
