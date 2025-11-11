@@ -1,9 +1,11 @@
 'use client';
+import { Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Box, Container, Typography } from '@mui/material';
 import { AppProviders } from '@/contexts';
 import { ParentCompProps } from '@/types';
+import Spinner from '@/components/shared/spinner';
 import background from '@/public/images/background.png';
 import bannerBackground from '@/public/images/banner.png';
 import styles from '@/styles/main.module.css';
@@ -58,7 +60,9 @@ const NonHomeLayout: React.FC<ParentCompProps> = ({ children }) => (
 		<Box sx={{ background: 'transparent' }}>
 			<Header />
 			<Container maxWidth='xl' sx={{ padding: { xs: 2, md: 5 }, minHeight: '600px' }}>
-				<AppProviders>{children}</AppProviders>
+				<Suspense fallback={<Spinner />}>
+					<AppProviders>{children}</AppProviders>
+				</Suspense>
 			</Container>
 		</Box>
 	</Box>
