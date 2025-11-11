@@ -24,6 +24,9 @@ test('sitemap xml', async () => {
 			pageCount: 1,
 		}),
 	}));
+	vi.mock('@/services/blog-service', () => ({
+		getAllPostSlugs: vi.fn().mockResolvedValue([]),
+	}));
 	const result = await sitemap();
 	expect(result[result.length - 2]).toEqual({
 		url: 'http://test.com/headlines/id2',

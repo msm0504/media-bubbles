@@ -1,40 +1,18 @@
 import { beforeAll, afterAll, afterEach, expect, test, vi } from 'vitest';
 import { cleanup, render, fireEvent, screen, waitFor } from '@testing-library/react';
-import { Session } from 'next-auth';
-import { useSession } from 'next-auth/react';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
 import AddEditBlogPost from '../add-edit-post';
 import FIELD_LIST from '../field-list';
 import { AppProviders } from '@/contexts';
+import { useSession } from '@/lib/auth-client';
+import {
+	mockAdminSession,
+	mockUnauthSession,
+	mockUserSession,
+} from '@/lib/__mocks__/mock-sessions';
 
-vi.mock('next-auth/react', () => ({
-	useSession: vi.fn(),
-}));
 const server = setupServer();
-
-const tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate() + 1);
-
-const mockUser: Session = {
-	user: {
-		id: '12346',
-		isAdmin: false,
-		name: 'Some Guy',
-		email: 'some.guy@test.com',
-	},
-	expires: tomorrow.toDateString(),
-};
-
-const mockAdmin: Session = {
-	user: {
-		id: '12345',
-		isAdmin: true,
-		name: 'John Doe',
-		email: 'john.doe@test.com',
-	},
-	expires: tomorrow.toDateString(),
-};
 
 beforeAll(() => {
 	Element.prototype.scrollIntoView = vi.fn();
@@ -49,27 +27,19 @@ afterEach(() => {
 afterAll(() => server.close());
 
 test('blocks access if not logged in', () => {
-	vi.mocked(useSession).mockReturnValue({ data: null, status: 'unauthenticated', update: vi.fn() });
+	vi.mocked(useSession).mockReturnValue(mockUnauthSession);
 	render(<AddEditBlogPost />);
 	expect(screen.queryByText('You shall not post!')).toBeInTheDocument();
 });
 
 test('blocks access if not user is not admin', () => {
-	vi.mocked(useSession).mockReturnValue({
-		data: mockUser,
-		status: 'authenticated',
-		update: vi.fn(),
-	});
+	vi.mocked(useSession).mockReturnValue(mockUserSession);
 	render(<AddEditBlogPost />);
 	expect(screen.queryByText('You shall not post!')).toBeInTheDocument();
 });
 
 test('renders correct input fields', () => {
-	vi.mocked(useSession).mockReturnValue({
-		data: mockAdmin,
-		status: 'authenticated',
-		update: vi.fn(),
-	});
+	vi.mocked(useSession).mockReturnValue(mockAdminSession);
 	render(<AddEditBlogPost />);
 	FIELD_LIST.forEach(field =>
 		expect(screen.queryByLabelText(new RegExp(`^${field.name}$`, 'i'))).toBeInTheDocument()
@@ -77,11 +47,7 @@ test('renders correct input fields', () => {
 });
 
 test('displays correct error messages for invalid input', async () => {
-	vi.mocked(useSession).mockReturnValue({
-		data: mockAdmin,
-		status: 'authenticated',
-		update: vi.fn(),
-	});
+	vi.mocked(useSession).mockReturnValue(mockAdminSession);
 	render(<AddEditBlogPost />);
 	const slugInput = screen.getByLabelText('Slug');
 
@@ -100,11 +66,7 @@ test('displays correct error messages for invalid input', async () => {
 });
 
 test('renders preview modal after button click', () => {
-	vi.mocked(useSession).mockReturnValue({
-		data: mockAdmin,
-		status: 'authenticated',
-		update: vi.fn(),
-	});
+	vi.mocked(useSession).mockReturnValue(mockAdminSession);
 	render(<AddEditBlogPost />);
 	expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
 	fireEvent.click(screen.getByText('Preview'));
@@ -113,12 +75,10 @@ test('renders preview modal after button click', () => {
 
 test('displays success alert after successful submit', async () => {
 	const mockItemId = 'item123';
-	vi.mocked(useSession).mockReturnValue({
-		data: mockAdmin,
-		status: 'authenticated',
-		update: vi.fn(),
-	});
-	server.use(http.post('/test/api/blog-posts', () => HttpResponse.json({ itemId: mockItemId })));
+	vi.mocked(useSession).mockReturnValue(mockAdminSession);
+	server.use(
+		http.post('http://test.com/api/blog-posts', () => HttpResponse.json({ itemId: mockItemId }))
+	);
 	render(
 		<AppProviders>
 			<AddEditBlogPost />
@@ -135,12 +95,8 @@ test('displays success alert after successful submit', async () => {
 });
 
 test('displays error alert after failed submit', async () => {
-	vi.mocked(useSession).mockReturnValue({
-		data: mockAdmin,
-		status: 'authenticated',
-		update: vi.fn(),
-	});
-	server.use(http.post('/test/api/blog-posts', () => HttpResponse.json({})));
+	vi.mocked(useSession).mockReturnValue(mockAdminSession);
+	server.use(http.post('http://test.com/api/blog-posts', () => HttpResponse.json({})));
 	render(
 		<AppProviders>
 			<AddEditBlogPost />

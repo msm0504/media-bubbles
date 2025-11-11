@@ -4,17 +4,6 @@ import { cleanup, render, fireEvent, screen } from '@testing-library/react';
 import useEmailLoginDialog from '../use-email-login-dialog';
 import { signIn } from '@/lib/auth-client';
 
-vi.mock('@/lib/auth-client', () => ({
-	signIn: {
-		magicLink: vi.fn(),
-	},
-	authClient: {
-		useSession: () => ({
-			refetch: vi.fn(),
-		}),
-	},
-}));
-
 beforeEach(() => {
 	const Wrapper = () => {
 		const { EmailLoginDialog, openDialog } = useEmailLoginDialog();

@@ -7,50 +7,9 @@ import FIELD_LIST from '../field-list';
 import Feedback from '../page';
 import { AppProviders } from '@/contexts';
 import { useSession } from '@/lib/auth-client';
+import { mockUnauthSession, mockUserSession } from '@/lib/__mocks__/mock-sessions';
 
-vi.mock('@/lib/auth-client', () => ({
-	useSession: vi.fn(),
-}));
 const server = setupServer();
-
-const today = new Date();
-const tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate() + 1);
-
-const mockUser: ReturnType<typeof useSession>['data'] = {
-	user: {
-		id: '12345',
-		createdAt: today,
-		updatedAt: today,
-		name: 'Some Guy',
-		email: 'some.guy@test.com',
-		emailVerified: true,
-	},
-	session: {
-		id: '67890',
-		createdAt: today,
-		updatedAt: today,
-		userId: '12345',
-		expiresAt: tomorrow,
-		token: 'abc123',
-	},
-};
-
-const mockUnauthSession: ReturnType<typeof useSession> = {
-	data: null,
-	isPending: false,
-	isRefetching: false,
-	error: null,
-	refetch: vi.fn(),
-};
-
-const mockAuthSession: ReturnType<typeof useSession> = {
-	data: mockUser,
-	isPending: false,
-	isRefetching: false,
-	error: null,
-	refetch: vi.fn(),
-};
 
 beforeAll(() => {
 	Element.prototype.scrollIntoView = vi.fn();
@@ -92,7 +51,7 @@ test('displays correct error messages for invalid input', async () => {
 });
 
 test('displays success alert after successful submit', async () => {
-	vi.mocked(useSession).mockReturnValue(mockAuthSession);
+	vi.mocked(useSession).mockReturnValue(mockUserSession);
 	server.use(
 		http.post('http://test.com/api/feedback', () => HttpResponse.json({ feedbackSent: true }))
 	);
@@ -112,7 +71,7 @@ test('displays success alert after successful submit', async () => {
 });
 
 test('displays error alert after failed submit', async () => {
-	vi.mocked(useSession).mockReturnValue(mockAuthSession);
+	vi.mocked(useSession).mockReturnValue(mockUserSession);
 	server.use(
 		http.post('http://test.com/api/feedback', () => HttpResponse.json({ feedbackSent: false }))
 	);
