@@ -3,7 +3,7 @@
 	"version": "7.2.2",
 	"private": true,
 	"scripts": {
-		"build": "next build",
+		"build": "next build --debug-prerender",
 		"check-types": "tsc",
 		"dev": "next dev",
 		"format": "prettier \"**/*.(ts|tsx)\" --write",
