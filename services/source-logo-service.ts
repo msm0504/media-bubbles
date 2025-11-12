@@ -5,6 +5,8 @@ import { MILLISECONDS_IN_DAY } from '../constants/server';
 import formatGetQuery from '@/util/format-get-query';
 
 const MILLISECONDS_IN_MONTH = MILLISECONDS_IN_DAY * 30;
+// empty png files getting added to s3 with size ~20 B
+const MIN_IMAGE_BYTES = 50;
 const s3Client = getS3Client();
 
 const streamToBuffer = async (stream: Readable) => Buffer.concat(await stream.toArray());
@@ -29,6 +31,7 @@ export const getSourceLogo = async (id: string, url: string): Promise<Buffer | n
 		const cached = await s3Client.send(getCommand);
 		if (
 			cached.Body &&
+			(cached.ContentLength ?? 0) > MIN_IMAGE_BYTES &&
 			(!cached.ExpiresString || Date.now() < new Date(cached.ExpiresString).getTime())
 		) {
 			return streamToBuffer(cached.Body as Readable);
@@ -43,7 +46,7 @@ export const getSourceLogo = async (id: string, url: string): Promise<Buffer | n
 	});
 	const image = Buffer.from(await logoResponse.arrayBuffer());
 
-	if (!image || !image.length) return null;
+	if (!image || image.length < MIN_IMAGE_BYTES) return null;
 	const putCommand = new PutObjectCommand({
 		Bucket: process.env.AWS_S3_LOGO_BUCKET,
 		Key: `${s3Key}.png`,
