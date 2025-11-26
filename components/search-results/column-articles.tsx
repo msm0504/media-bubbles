@@ -42,10 +42,10 @@ const ArticleWithTitle: React.FC<ArticleWithTitleProps> = ({
 }) => (
 	<Card>
 		{isSearchAll ? (
-			<CardHeader subheaderTypographyProps={{ color: slantClass }} subheader={sourceName} />
+			<CardHeader slotProps={{ subheader: { color: slantClass } }} subheader={sourceName} />
 		) : null}
 		<CardHeader
-			titleTypographyProps={{ variant: 'h6' }}
+			slotProps={{ title: { variant: 'h6' } }}
 			title={
 				<Link
 					color={slantClass}
@@ -71,7 +71,7 @@ const ArticleWithoutTitle: React.FC<ArticleProps> = ({
 }) => (
 	<Card>
 		{isSearchAll ? (
-			<CardHeader subheaderTypographyProps={{ color: slantClass }} subheader={sourceName} />
+			<CardHeader slotProps={{ subheader: { color: slantClass } }} subheader={sourceName} />
 		) : null}
 		<CardContent>
 			<Typography dangerouslySetInnerHTML={{ __html: text }} />
