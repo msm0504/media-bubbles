@@ -25,6 +25,8 @@ export const GET = async (request: Request) => {
 	}
 };
 
+export const maxDuration = 60;
+
 export const POST = async (request: Request) => {
 	const resultToSave = await request.json();
 	const session = await auth.api.getSession({
