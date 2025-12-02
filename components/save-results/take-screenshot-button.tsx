@@ -7,8 +7,8 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 import ALERT_LEVEL from '@/constants/alert-level';
 import { AlertsDispatch } from '@/contexts/alerts-context';
-// import { isAdmin } from '@/constants/admin-role';
-// import { useSession } from '@/lib/auth-client';
+import { isAdmin } from '@/constants/admin-role';
+import { useSession } from '@/lib/auth-client';
 import { callApi } from '@/services/api-service';
 
 type ScreenshotButtonProps = {
@@ -18,7 +18,7 @@ type ScreenshotButtonProps = {
 const ScreenshotButton: React.FC<ScreenshotButtonProps> = ({ urlToShare }) => {
 	const [isProcessing, setProcessing] = useState<boolean>(false);
 	const showAlert = useContext(AlertsDispatch);
-	// const { data: session } = useSession();
+	const { data: session } = useSession();
 	const resultId = urlToShare.substring(urlToShare.lastIndexOf('/') + 1);
 
 	const generateClicked = useMemo(
@@ -36,7 +36,7 @@ const ScreenshotButton: React.FC<ScreenshotButtonProps> = ({ urlToShare }) => {
 		[resultId, setProcessing, showAlert]
 	);
 
-	// if (!isAdmin(session?.user.role)) return null;
+	if (!isAdmin(session?.user.role)) return null;
 
 	return (
 		<Button

@@ -1,6 +1,6 @@
-// import { headers } from 'next/headers';
-// import { auth } from '@/lib/auth';
-// import { isAdmin } from '@/constants/admin-role';
+import { headers } from 'next/headers';
+import { auth } from '@/lib/auth';
+import { isAdmin } from '@/constants/admin-role';
 import { getSavedResult } from '@/services/saved-results-service';
 import { takeScreenshot } from '@/services/screenshot-service';
 
@@ -10,7 +10,6 @@ const SCREENSHOT_HEIGHT = 630;
 export const maxDuration = 30;
 
 export const PUT = async (_request: Request, { params }: { params: Promise<{ id: string }> }) => {
-	/*
 	const session = await auth.api.getSession({
 		headers: await headers(),
 	});
@@ -20,7 +19,7 @@ export const PUT = async (_request: Request, { params }: { params: Promise<{ id:
 	if (!isAdmin(session?.user.role)) {
 		return Response.json({}, { status: 403 });
 	}
-	*/
+
 	const resultId = (await params).id;
 	const savedResult = await getSavedResult(resultId);
 	if (!savedResult) {
