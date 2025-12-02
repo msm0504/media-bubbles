@@ -21,7 +21,7 @@ const ColumnHeadingIcon: React.FC<ColumnHeadingIconProps> = ({ column, isColumnS
 		) : (
 			<Image
 				className={styles.sourceLogo}
-				src={`/api/source-logo?id=${column.id}&url=${column.url}`}
+				src={`/api/source-logo?id=${column.id}`}
 				alt={`Logo for ${column.name}`}
 				width={100}
 				height={100}
