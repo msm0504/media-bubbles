@@ -1,8 +1,9 @@
 'use client';
-import { Button, Stack } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBluesky, faFacebookF, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faClipboard, faEnvelope } from '@fortawesome/free-regular-svg-icons';
+import ScreenshotButton from './take-screenshot-button';
 import styles from '@/styles/main.module.css';
 
 type ShareButtonsProps = {
@@ -11,17 +12,6 @@ type ShareButtonsProps = {
 
 const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 	if (!urlToShare) return null;
-
-	const copyToClipboard = () => {
-		const el = document.createElement('textarea');
-		el.style.height = '0px';
-		el.style.width = '1px';
-		document.body.appendChild(el);
-		el.value = urlToShare;
-		el.select();
-		document.execCommand('copy');
-		document.body.removeChild(el);
-	};
 
 	return (
 		<Stack direction='row' marginBottom={1} spacing={4}>
@@ -34,8 +24,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 					window.open(`https://bsky.app/intent/compose?text=${encodeURI(urlToShare)}`, '_blank');
 				}}
 			>
-				<FontAwesomeIcon icon={faBluesky} size='xl' />
-				<span className='sr-only'>{'share on Bluesky'}</span>
+				<FontAwesomeIcon aria-label='share on Bluesky' icon={faBluesky} size='xl' />
 			</Button>
 			<Button
 				color='info'
@@ -49,8 +38,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 					);
 				}}
 			>
-				<FontAwesomeIcon icon={faFacebookF} size='xl' />
-				<span className='sr-only'>{'share on Facebook'}</span>
+				<FontAwesomeIcon aria-label='share on Facebook' icon={faFacebookF} size='xl' />
 			</Button>
 			<Button
 				color='dark'
@@ -60,8 +48,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 					window.open(`https://x.com/intent/post?url=${encodeURI(urlToShare)}`, '_blank');
 				}}
 			>
-				<FontAwesomeIcon icon={faXTwitter} size='xl' />
-				<span className='sr-only'>{'share on X'}</span>
+				<FontAwesomeIcon aria-label='share on X' icon={faXTwitter} size='xl' />
 			</Button>
 			<Button
 				color='secondary'
@@ -75,15 +62,20 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 					);
 				}}
 			>
-				<FontAwesomeIcon icon={faEnvelope} size='xl' />
-				<span className='sr-only'>{'email'}</span>
+				<FontAwesomeIcon aria-label='email link' icon={faEnvelope} size='xl' />
 			</Button>
-			{document && document.queryCommandSupported('copy') ? (
-				<Button color='secondary' variant='contained' id='share-copy' onClick={copyToClipboard}>
-					<FontAwesomeIcon icon={faClipboard} size='xl' />
-					<span className='sr-only'>{'copy link'}</span>
+			{navigator && navigator.clipboard ? (
+				<Button
+					color='secondary'
+					variant='contained'
+					id='share-copy'
+					onClick={() => navigator.clipboard.writeText(urlToShare)}
+				>
+					<FontAwesomeIcon aria-label='copy link' icon={faClipboard} size='xl' />
 				</Button>
 			) : null}
+			<Box flexGrow={1}></Box>
+			<ScreenshotButton urlToShare={urlToShare} />
 		</Stack>
 	);
 };

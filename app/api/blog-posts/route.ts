@@ -15,10 +15,10 @@ export const POST = async (request: Request) => {
 		headers: await headers(),
 	});
 	if (!session?.user) {
-		return Response.json({ itemId: false }, { status: 401 });
+		return Response.json({}, { status: 401 });
 	}
 	if (!isAdmin(session?.user.role)) {
-		return Response.json({ itemId: null }, { status: 403 });
+		return Response.json({}, { status: 403 });
 	}
 	const postToCreate = await request.json();
 	return Response.json(await createPost(postToCreate));

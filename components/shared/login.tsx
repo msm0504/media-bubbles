@@ -25,7 +25,10 @@ const GoogleLogin: React.FC<LoginProps> = ({ sessionLoading }) => (
 		}
 		disabled={sessionLoading}
 	>
-		<ListItemIcon sx={theme => ({ color: theme.palette.background.default })}>
+		<ListItemIcon
+			className='fa-width-auto'
+			sx={theme => ({ color: theme.palette.background.default })}
+		>
 			<FontAwesomeIcon className={styles.googleBrandColor} icon={faGoogle} mask={faSquareFull} />
 		</ListItemIcon>
 		<ListItemText>Log in with Google</ListItemText>
@@ -46,7 +49,7 @@ const EmailLogin: React.FC<LoginProps> = ({ sessionLoading, closeMenu }) => {
 				disabled={sessionLoading}
 			>
 				<ListItemIcon>
-					<FontAwesomeIcon className='me-2' icon={faPaperPlane} />
+					<FontAwesomeIcon icon={faPaperPlane} />
 				</ListItemIcon>
 				<ListItemText>Log in with Email</ListItemText>
 			</MenuItem>

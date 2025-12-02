@@ -27,6 +27,8 @@ export const callApi = <T, U = undefined>(
 	return fetch(url, params).then(response => {
 		if (response.ok) {
 			return response.json();
+		} else {
+			return Promise.reject({ errorMessage: response.statusText });
 		}
 	});
 };

@@ -9,14 +9,14 @@ export const PUT = async (request: Request, { params }: { params: Promise<{ id: 
 		headers: await headers(),
 	});
 	if (!session?.user) {
-		return Response.json({ itemId: null }, { status: 401 });
+		return Response.json({}, { status: 401 });
 	}
 	if (!isAdmin(session?.user.role)) {
-		return Response.json({ itemId: null }, { status: 403 });
+		return Response.json({}, { status: 403 });
 	}
 	const postToUpdate = (await request.json()) as BlogPost;
 	if ((await params)?.id !== postToUpdate.slug) {
-		return Response.json({ itemId: null }, { status: 500 });
+		return Response.json({}, { status: 500 });
 	}
 	return Response.json(await updatePost(postToUpdate));
 };

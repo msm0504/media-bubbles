@@ -6,7 +6,7 @@ const Spinner: React.FC = () => (
 	<Grid container paddingTop={4}>
 		<Grid size={4} offset={4} textAlign='center'>
 			<Icon sx={{ fontSize: '4rem' }} color='primary'>
-				<FontAwesomeIcon icon={faSpinner} pulse />
+				<FontAwesomeIcon icon={faSpinner} spinPulse />
 			</Icon>
 		</Grid>
 		<Grid size={4} offset={4} textAlign='center'>

@@ -77,7 +77,7 @@ const FormStepOne: React.FC<StepOneProps> = ({ onSuccess }) => {
 					color='primary'
 					type='submit'
 					disabled={isProcessing}
-					endIcon={isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} pulse />}
+					endIcon={isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
 				>
 					<strong>Send Log In Token</strong>
 				</Button>
@@ -141,7 +141,7 @@ const FormStepTwo: React.FC<StepTwoProps> = ({ onSuccess }) => {
 					color='primary'
 					type='submit'
 					disabled={isProcessing}
-					endIcon={isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} pulse />}
+					endIcon={isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
 				>
 					<strong>Log In</strong>
 				</Button>

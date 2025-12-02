@@ -27,6 +27,12 @@ export const saveSearchResult = async (result: SavedResult): Promise<ItemSavedRe
 	return { itemId: insertedId.toString() };
 };
 
+export const setSavedResultImagePath = async (id: string, url: string): Promise<void> => {
+	const db = await _collection;
+	await db.updateOne({ _id: id as unknown as ObjectId }, { $set: { imagePath: url } });
+	revalidateTag(`${CACHE_TAG}-${id}`, 'max');
+};
+
 export const getSavedResults = async (
 	filter = '',
 	page = 1,
