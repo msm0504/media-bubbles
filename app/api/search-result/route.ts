@@ -1,4 +1,5 @@
 import { headers } from 'next/headers';
+import { after } from 'next/server';
 import { auth } from '@/lib/auth';
 import { getSavedResults, saveSearchResult } from '@/services/saved-results-service';
 import { takeScreenshot } from '@/services/screenshot-service';
@@ -38,7 +39,9 @@ export const POST = async (request: Request) => {
 	if (savedResult.itemId) {
 		const pageToCapture = `${process.env.NEXT_PUBLIC_URL}/headlines/${savedResult.itemId}`;
 		const imageKey = resultToSave.name.replace(/\s/g, '_');
-		takeScreenshot(pageToCapture, imageKey, SEARCH_RESULT_ELEM_SELECTOR, SCREENSHOT_HEIGHT);
+		after(async () =>
+			takeScreenshot(pageToCapture, imageKey, SEARCH_RESULT_ELEM_SELECTOR, SCREENSHOT_HEIGHT)
+		);
 	}
 
 	return Response.json(savedResult);
