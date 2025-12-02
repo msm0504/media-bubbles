@@ -7,6 +7,8 @@ import { takeScreenshot } from '@/services/screenshot-service';
 const SEARCH_RESULT_ELEM_SELECTOR = '#search-results';
 const SCREENSHOT_HEIGHT = 630;
 
+export const maxDuration = 30;
+
 export const PUT = async (_request: Request, { params }: { params: Promise<{ id: string }> }) => {
 	/*
 	const session = await auth.api.getSession({
