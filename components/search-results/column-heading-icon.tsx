@@ -27,7 +27,6 @@ const ColumnHeadingIcon: React.FC<ColumnHeadingIconProps> = ({ column, isColumnS
 				height={100}
 			/>
 		)}
-		<span className='sr-only'>{`Search results for ${column.name}`}</span>
 	</Box>
 );
 

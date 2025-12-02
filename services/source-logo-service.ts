@@ -1,15 +1,9 @@
-import type { Readable } from 'stream';
-import { GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
-import { getS3Client } from './aws-clients';
-import { MILLISECONDS_IN_DAY } from '../constants/server';
+import { head, put } from '@vercel/blob';
 import formatGetQuery from '@/util/format-get-query';
 
-const MILLISECONDS_IN_MONTH = MILLISECONDS_IN_DAY * 30;
-// empty png files getting added to s3 with size ~20 B
+const LOGO_STORAGE_FOLDER = 'logos';
+// empty png files getting added to store with size ~20 B
 const MIN_IMAGE_BYTES = 50;
-const s3Client = getS3Client();
-
-const streamToBuffer = async (stream: Readable) => Buffer.concat(await stream.toArray());
 
 const getLogoUrl = (siteUrl: string): string => {
 	const iconApiUrl = 'https://img.logo.dev';
@@ -22,38 +16,27 @@ const getLogoUrl = (siteUrl: string): string => {
 };
 
 export const getSourceLogo = async (id: string, url: string): Promise<Buffer | null> => {
-	const s3Key = id.toLowerCase().replaceAll(/[^A-Za-z0-9]/g, '');
-	const getCommand = new GetObjectCommand({
-		Bucket: process.env.AWS_S3_LOGO_BUCKET,
-		Key: `${s3Key}.png`,
-	});
+	const fileName = id.toLowerCase().replaceAll(/[^A-Za-z0-9]/g, '');
+	const filePath = `${LOGO_STORAGE_FOLDER}/${fileName}.png`;
+	let storedLogoUrl = '';
 	try {
-		const cached = await s3Client.send(getCommand);
-		if (
-			cached.Body &&
-			(cached.ContentLength ?? 0) > MIN_IMAGE_BYTES &&
-			(!cached.ExpiresString || Date.now() < new Date(cached.ExpiresString).getTime())
-		) {
-			return streamToBuffer(cached.Body as Readable);
+		const metaData = await head(filePath);
+		if (metaData && metaData.url) {
+			storedLogoUrl = metaData.url;
 		}
 	} catch (error) {
 		null;
 	}
 
-	const logoResponse = await fetch(getLogoUrl(url), {
+	const logoResponse = await fetch(storedLogoUrl || getLogoUrl(url), {
 		method: 'get',
 		headers: { Accept: 'image/png, image/jpg' },
 	});
 	const image = Buffer.from(await logoResponse.arrayBuffer());
-
 	if (!image || image.length < MIN_IMAGE_BYTES) return null;
-	const putCommand = new PutObjectCommand({
-		Bucket: process.env.AWS_S3_LOGO_BUCKET,
-		Key: `${s3Key}.png`,
-		Body: image,
-		Expires: new Date(Date.now() + MILLISECONDS_IN_MONTH),
-	});
-	await s3Client.send(putCommand);
 
+	if (!storedLogoUrl) {
+		await put(filePath, image, { access: 'public', allowOverwrite: true });
+	}
 	return image;
 };

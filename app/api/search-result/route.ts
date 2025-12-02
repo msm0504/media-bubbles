@@ -1,8 +1,10 @@
 import { headers } from 'next/headers';
-import { InvokeCommand, type InvokeCommandInput, LogType } from '@aws-sdk/client-lambda';
 import { auth } from '@/lib/auth';
-import { getLambdaClient } from '@/services/aws-clients';
 import { getSavedResults, saveSearchResult } from '@/services/saved-results-service';
+import { takeScreenshot } from '@/services/screenshot-service';
+
+const SEARCH_RESULT_ELEM_SELECTOR = '#search-results';
+const SCREENSHOT_HEIGHT = 630;
 
 export const GET = async (request: Request) => {
 	const session = await auth.api.getSession({
@@ -24,32 +26,19 @@ export const GET = async (request: Request) => {
 
 export const POST = async (request: Request) => {
 	const resultToSave = await request.json();
-	let imageKey = '';
 	const session = await auth.api.getSession({
 		headers: await headers(),
 	});
 	if (session?.user.id) {
 		resultToSave.userId = session.user.id;
 	}
-	if (process.env.AWS_SCREENSHOT_FUNCTION) {
-		imageKey = `${resultToSave.name.replace(/\s/g, '_')}_${Date.now()}.png`;
-		resultToSave.imagePath = `https://${process.env.AWS_S3_SCREENSHOT_BUCKET}.s3.${process.env.AWS_MB_REGION}.amazonaws.com/${imageKey}`;
-	}
 
 	const savedResult = await saveSearchResult(resultToSave);
 
-	if (savedResult.itemId && imageKey) {
-		const lambdaClient = getLambdaClient();
-		const params: InvokeCommandInput = {
-			FunctionName: process.env.AWS_SCREENSHOT_FUNCTION,
-			Payload: JSON.stringify({
-				pageToCapture: `${process.env.NEXT_PUBLIC_URL}/headlines/${savedResult.itemId}`,
-				imageKey,
-			}),
-			LogType: LogType.Tail,
-		};
-		const commmand = new InvokeCommand(params);
-		lambdaClient.send(commmand);
+	if (savedResult.itemId) {
+		const pageToCapture = `${process.env.NEXT_PUBLIC_URL}/headlines/${savedResult.itemId}`;
+		const imageKey = resultToSave.name.replace(/\s/g, '_');
+		takeScreenshot(pageToCapture, imageKey, SEARCH_RESULT_ELEM_SELECTOR, SCREENSHOT_HEIGHT);
 	}
 
 	return Response.json(savedResult);

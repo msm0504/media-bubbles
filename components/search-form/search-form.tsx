@@ -151,7 +151,7 @@ const SearchForm: React.FC<SearchFormProps> = ({
 						id='getHeadlines'
 						disabled={isSearching}
 						onClick={searchTriggered}
-						endIcon={isSearching && <FontAwesomeIcon className='ms-2' icon={faSpinner} pulse />}
+						endIcon={isSearching && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
 					>
 						<strong>Get Headlines</strong>
 					</Button>

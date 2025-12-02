@@ -26,7 +26,7 @@ const blankBlogPostForm = {
 
 const MILLISECONDS_IN_MINUTE = 1000 * 60;
 
-async function submitPost(blogPostData: BlogPost, showAlert: ShowAlertFn) {
+const submitPost = async (blogPostData: BlogPost, showAlert: ShowAlertFn) => {
 	const isUpdate = !!blogPostData._id;
 	const { itemId: slug } = await callApi<ItemSavedResponse, BlogPost>(
 		isUpdate ? 'put' : 'post',
@@ -38,7 +38,7 @@ async function submitPost(blogPostData: BlogPost, showAlert: ShowAlertFn) {
 	} else {
 		showAlert(ALERT_LEVEL.success, `Blog post ${slug} saved successfully.`);
 	}
-}
+};
 
 const BlogPostPreview = ({ content, title }: BlogPost) => {
 	const currentDate = new Date().toISOString();
@@ -64,10 +64,10 @@ const AddEditBlogPost: React.FC<AddEditPostProps> = ({ currentVersion }) => {
 	const mode = currentVersion ? 'Edit' : 'Add';
 	const initialData = currentVersion || { ...blankBlogPostForm, author: session.user.name };
 
-	async function submitFn(blogPostData: BlogPost) {
+	const submitFn = async (blogPostData: BlogPost) => {
 		await submitPost(blogPostData, showAlert);
 		router.push('/blog');
-	}
+	};
 
 	return (
 		<>

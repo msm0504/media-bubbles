@@ -187,7 +187,9 @@ const SaveableForm = <T extends FieldValues>({
 							name={`submit-${formName}`}
 							id={`submit-${formName}`}
 							disabled={isProcessing}
-							endIcon={isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} pulse />}
+							endIcon={
+								isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />
+							}
 						>
 							<strong>{submitLabel}</strong>
 						</Button>
