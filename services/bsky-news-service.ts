@@ -29,8 +29,8 @@ const getSourcePostsByKeyword = async (
 				{ sourceId: sourceId },
 				{
 					$or: [
-						{ title: { $regex: `\b${keyword}\b`, $options: 'i' } },
-						{ description: { $regex: `\b${keyword}\b`, $options: 'i' } },
+						{ title: { $regex: `\\b${keyword}\\b`, $options: 'i' } },
+						{ description: { $regex: `\\b${keyword}\\b`, $options: 'i' } },
 					],
 				},
 				{
@@ -75,8 +75,8 @@ const getSlantPostsByKeyword = async (
 				{ slant: slant },
 				{
 					$or: [
-						{ title: { $regex: `\b${keyword}\b`, $options: 'i' } },
-						{ description: { $regex: `\b${keyword}\b`, $options: 'i' } },
+						{ title: { $regex: `\\b${keyword}\\b`, $options: 'i' } },
+						{ description: { $regex: `\\b${keyword}\\b`, $options: 'i' } },
 					],
 				},
 				{
