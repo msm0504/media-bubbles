@@ -14,7 +14,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 	if (!urlToShare) return null;
 
 	return (
-		<Stack direction='row' marginBottom={1} spacing={4}>
+		<Stack direction='row' marginBottom={1} flexWrap='wrap' gap={4}>
 			<Button
 				color='info'
 				variant='contained'
@@ -24,7 +24,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 					window.open(`https://bsky.app/intent/compose?text=${encodeURI(urlToShare)}`, '_blank');
 				}}
 			>
-				<FontAwesomeIcon aria-label='share on Bluesky' icon={faBluesky} size='xl' />
+				<FontAwesomeIcon aria-label='share on Bluesky' icon={faBluesky} size='lg' />
 			</Button>
 			<Button
 				color='info'
@@ -38,7 +38,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 					);
 				}}
 			>
-				<FontAwesomeIcon aria-label='share on Facebook' icon={faFacebookF} size='xl' />
+				<FontAwesomeIcon aria-label='share on Facebook' icon={faFacebookF} size='lg' />
 			</Button>
 			<Button
 				color='dark'
@@ -48,7 +48,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 					window.open(`https://x.com/intent/post?url=${encodeURI(urlToShare)}`, '_blank');
 				}}
 			>
-				<FontAwesomeIcon aria-label='share on X' icon={faXTwitter} size='xl' />
+				<FontAwesomeIcon aria-label='share on X' icon={faXTwitter} size='lg' />
 			</Button>
 			<Button
 				color='secondary'
@@ -62,7 +62,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 					);
 				}}
 			>
-				<FontAwesomeIcon aria-label='email link' icon={faEnvelope} size='xl' />
+				<FontAwesomeIcon aria-label='email link' icon={faEnvelope} size='lg' />
 			</Button>
 			{navigator && navigator.clipboard ? (
 				<Button
@@ -71,7 +71,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 					id='share-copy'
 					onClick={() => navigator.clipboard.writeText(urlToShare)}
 				>
-					<FontAwesomeIcon aria-label='copy link' icon={faClipboard} size='xl' />
+					<FontAwesomeIcon aria-label='copy link' icon={faClipboard} size='lg' />
 				</Button>
 			) : null}
 			<Box flexGrow={1}></Box>
