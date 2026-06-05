@@ -13,8 +13,7 @@ export default defineConfig({
 		setupFiles: './test-utils/setup-tests.ts',
 		coverage: {
 			reporter: ['html', 'lcov'],
-			all: true,
-			extension: ['.ts', '.tsx'],
+			include: ['**/*.{ts,tsx}'],
 			exclude: [
 				'node_modules/',
 				'test-utils/',

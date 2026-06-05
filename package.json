@@ -1,7 +1,10 @@
 {
 	"name": "media-bubbles",
-	"version": "7.3.3",
+	"version": "7.3.4",
 	"private": true,
+	"overrides": {
+		"postcss": "^8.5.10"
+	},
 	"scripts": {
 		"build": "next build --debug-prerender",
 		"check-types": "tsc",
@@ -9,6 +12,7 @@
 		"format": "prettier \"**/*.(ts|tsx)\" --write",
 		"lint": "eslint .",
 		"postbuild": "",
+		"prepare": "husky",
 		"start": "next start",
 		"test": "vitest",
 		"test:coverage": "vitest run --coverage"
@@ -23,17 +27,17 @@
 		"@fortawesome/free-solid-svg-icons": "^7.1.0",
 		"@fortawesome/react-fontawesome": "^3.1.1",
 		"@mui/material": "^7.3.5",
-		"@mui/material-nextjs": "^7.3.5",
-		"@next/third-parties": "^16.0.1",
+		"@mui/material-nextjs": "^9.0.1",
+		"@next/third-parties": "^16.2.7",
 		"@sparticuz/chromium-min": "^141.0.0",
 		"@vercel/blob": "^2.0.0",
-		"better-auth": "^1.4.12",
+		"better-auth": "^1.6.14",
 		"mongodb": "^6.9.0",
 		"nanoid": "^5.0.7",
-		"next": "^16.0.1",
+		"next": "^16.2.7",
 		"puppeteer-core": "^24.31.0",
-		"react": "^18",
-		"react-dom": "^18",
+		"react": "^19.2.7",
+		"react-dom": "^19.2.7",
 		"react-hook-form": "^7.54.2",
 		"react-markdown": "^9.0.1",
 		"remark-gfm": "^4.0.0",
@@ -41,7 +45,7 @@
 	},
 	"devDependencies": {
 		"@testing-library/jest-dom": "^6.5.0",
-		"@testing-library/react": "^16.0.1",
+		"@testing-library/react": "^16.3.2",
 		"@testing-library/user-event": "^14.5.2",
 		"@types/jest": "^29.5.13",
 		"@types/mongodb": "^4.0.6",
@@ -50,17 +54,17 @@
 		"@types/react-dom": "^18",
 		"@types/string-similarity": "^4.0.2",
 		"@vitejs/plugin-react": "^4.3.3",
-		"@vitest/coverage-v8": "^3.0.9",
+		"@vitest/coverage-v8": "^4.1.8",
 		"eslint": "^9.39.1",
 		"eslint-config-next": "16.0.1",
 		"eslint-config-prettier": "^10.1.8",
-		"eslint-plugin-jsx-a11y": "^6.10.2",
+		"husky": "^9.1.7",
 		"jsdom": "^25.0.1",
 		"msw": "^2.4.12",
 		"prettier": "^3.3.3",
 		"puppeteer": "^24.31.0",
 		"typescript": "^5",
-		"vitest": "^3.0.9",
+		"vitest": "^4.1.8",
 		"whatwg-fetch": "^3.6.20"
 	}
 }
