@@ -1,12 +1,16 @@
 commit_message="$(git show --no-patch --format=%B HEAD)"
 
-if [ "$commit_message" = feat!* ]; then
+case "$commit_message" in
+  feat!*)
     npm version major -git-tag-version=false
-elif [ "$commit_message" = feat* ]; then
+    ;;
+  feat*)
     npm version minor -git-tag-version=false
-else
+    ;;
+  *)
     npm version patch -git-tag-version=false
-fi
+    ;;
+esac
 
 npm install --package-lock-only
 git add package.json package-lock.json
