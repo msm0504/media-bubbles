@@ -6,7 +6,7 @@ import { resolve } from 'path';
 export default defineConfig({
 	plugins: [react()],
 	resolve: {
-		alias: [{ find: '@', replacement: resolve(__dirname, './') }],
+		alias: [{ find: '@', replacement: resolve(import.meta.dirname, './') }],
 	},
 	test: {
 		environment: 'jsdom',
