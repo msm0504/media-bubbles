@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import { Box } from '@mui/material';
 import type { Source } from '@/types';
 import styles from '@/styles/search-results.module.css';
 
@@ -9,7 +8,7 @@ type ColumnHeadingIconProps = {
 };
 
 const ColumnHeadingIcon: React.FC<ColumnHeadingIconProps> = ({ column, isColumnSlant }) => (
-	<Box display='block' textAlign='center' margin={2}>
+	<div className='m-2 block text-center'>
 		{isColumnSlant ? (
 			<Image
 				className={styles.bubbleImg}
@@ -27,7 +26,7 @@ const ColumnHeadingIcon: React.FC<ColumnHeadingIconProps> = ({ column, isColumnS
 				height={100}
 			/>
 		)}
-	</Box>
+	</div>
 );
 
 export default ColumnHeadingIcon;

@@ -1,10 +1,11 @@
 'use client';
 import { useState } from 'react';
-import { Button, ListItemIcon, ListItemText, Menu, MenuItem, MenuList } from '@mui/material';
+import { ListItemIcon, ListItemText, Menu, MenuItem, MenuList } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareFull } from '@fortawesome/free-solid-svg-icons';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
 import { faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { Button } from './base-ui';
 import useEmailLoginDialog from '@/hooks/use-email-login-dialog';
 import { signIn, signOut, useSession } from '@/lib/auth-client';
 import styles from '@/styles/main.module.css';
@@ -71,10 +72,9 @@ const Login: React.FC = () => {
 
 	return session ? (
 		<Button
-			size='large'
+			className='my-2 text-lg'
+			color='neutral'
 			variant='text'
-			sx={{ my: 2, display: 'block' }}
-			color='light'
 			onClick={() => signOut()}
 			disabled={isPending}
 		>
@@ -83,10 +83,9 @@ const Login: React.FC = () => {
 	) : (
 		<>
 			<Button
-				size='large'
+				className='my-2 text-lg'
+				color='neutral'
 				variant='text'
-				sx={{ my: 2, display: 'block' }}
-				color='light'
 				aria-label='open login menu'
 				aria-controls='menu-login'
 				aria-haspopup='true'

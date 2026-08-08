@@ -1,9 +1,9 @@
 'use client';
-import { Box, Button, Stack } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBluesky, faFacebookF, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faClipboard, faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import ScreenshotButton from './take-screenshot-button';
+import { Button } from '../shared/base-ui';
 import styles from '@/styles/main.module.css';
 
 type ShareButtonsProps = {
@@ -14,7 +14,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 	if (!urlToShare) return null;
 
 	return (
-		<Stack direction='row' marginBottom={1} flexWrap='wrap' gap={4}>
+		<div className='mb-1 flex flex-wrap gap-4'>
 			<Button
 				color='info'
 				variant='contained'
@@ -41,7 +41,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 				<FontAwesomeIcon aria-label='share on Facebook' icon={faFacebookF} size='lg' />
 			</Button>
 			<Button
-				color='dark'
+				color='neutral'
 				variant='contained'
 				id='share-x'
 				onClick={() => {
@@ -74,9 +74,9 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 					<FontAwesomeIcon aria-label='copy link' icon={faClipboard} size='lg' />
 				</Button>
 			) : null}
-			<Box flexGrow={1}></Box>
+			<div className='grow'></div>
 			<ScreenshotButton urlToShare={urlToShare} />
-		</Stack>
+		</div>
 	);
 };
 

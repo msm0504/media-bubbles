@@ -1,21 +1,10 @@
 'use client';
 import { useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import {
-	AppBar,
-	Box,
-	Button,
-	Container,
-	IconButton,
-	Menu,
-	MenuItem,
-	Stack,
-	Toolbar,
-	Typography,
-} from '@mui/material';
+import { AppBar, Menu, MenuItem, Toolbar } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { Button, Link, LinkButton } from './base-ui';
 import Login from './login';
 import favIcon from '@/app/favicon.ico';
 
@@ -46,19 +35,19 @@ const TopNavbar: React.FC = () => {
 
 	return (
 		<AppBar color='dark' position='sticky' elevation={0}>
-			<Container maxWidth='xl'>
+			<div className='max-w-[1536]'>
 				<Toolbar disableGutters>
-					<Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-						<IconButton
-							color='light'
-							size='large'
+					<div className='flex md:hidden'>
+						<Button
+							color='neutral'
+							variant='contained'
 							aria-label='open main menu'
 							aria-controls='menu-appbar'
 							aria-haspopup='true'
 							onClick={handleOpenNavMenu}
 						>
-							<FontAwesomeIcon icon={faBars} />
-						</IconButton>
+							<FontAwesomeIcon size='xl' icon={faBars} />
+						</Button>
 						<Menu
 							id='menu-appbar'
 							anchorEl={anchorElNav}
@@ -77,39 +66,32 @@ const TopNavbar: React.FC = () => {
 						>
 							{pages.map(page => (
 								<MenuItem key={page.label} component={Link} href={page.route}>
-									<Typography sx={{ textAlign: 'center' }}>{page.label}</Typography>
+									<p className='text-center'>{page.label}</p>
 								</MenuItem>
 							))}
 						</Menu>
-					</Box>
-					<Box flexGrow={{ xs: 1, md: 0 }}>
-						<IconButton aria-label='logo button to home' component={Link} href='/'>
+					</div>
+					<div className='grow md:grow-0'>
+						<LinkButton aria-label='logo button to home' href='/'>
 							<Image src={favIcon} width={45} height={45} alt='Media Bubbles logo' />
-						</IconButton>
-					</Box>
-					<Stack
-						direction='row'
-						spacing={4}
-						flexGrow={1}
-						sx={{ display: { xs: 'none', md: 'flex' } }}
-					>
+						</LinkButton>
+					</div>
+					<div className='hidden grow gap-4 md:flex'>
 						{pages.map(page => (
-							<Button
+							<LinkButton
 								key={page.label}
-								size='large'
-								variant='text'
-								sx={{ my: 2, display: 'block' }}
-								color='light'
-								component={Link}
+								className='my-2 text-lg'
+								color='neutral'
+								variant='contained'
 								href={page.route}
 							>
 								{page.label}
-							</Button>
+							</LinkButton>
 						))}
-					</Stack>
+					</div>
 					<Login />
 				</Toolbar>
-			</Container>
+			</div>
 		</AppBar>
 	);
 };

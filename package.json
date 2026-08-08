@@ -1,9 +1,8 @@
 {
 	"name": "media-bubbles",
-	"version": "7.3.6",
+	"version": "7.3.7",
 	"private": true,
 	"overrides": {
-		"postcss": "^8.5.10",
 		"sharp": "^0.35.3"
 	},
 	"scripts": {
@@ -19,29 +18,31 @@
 		"test:coverage": "vitest run --coverage"
 	},
 	"dependencies": {
-		"@emotion/cache": "^11.14.0",
-		"@emotion/react": "^11.14.0",
-		"@emotion/styled": "^11.14.1",
+		"@base-ui/react": "^1.6.0",
 		"@fortawesome/fontawesome-svg-core": "^7.1.0",
 		"@fortawesome/free-brands-svg-icons": "^7.1.0",
 		"@fortawesome/free-regular-svg-icons": "^7.1.0",
 		"@fortawesome/free-solid-svg-icons": "^7.1.0",
 		"@fortawesome/react-fontawesome": "^3.1.1",
-		"@mui/material": "^7.3.5",
-		"@mui/material-nextjs": "^9.0.1",
 		"@next/third-parties": "^16.2.7",
 		"@sparticuz/chromium-min": "^141.0.0",
+		"@tailwindcss/postcss": "^4.3.3",
 		"@vercel/blob": "^2.0.0",
 		"better-auth": "^1.6.25",
+		"class-variance-authority": "^0.7.1",
+		"clsx": "^2.1.1",
 		"mongodb": "^6.9.0",
 		"nanoid": "^5.0.7",
 		"next": "^16.2.12",
+		"postcss": "^8.5.25",
 		"puppeteer-core": "^24.31.0",
 		"react": "^19.2.7",
 		"react-dom": "^19.2.7",
 		"react-hook-form": "^7.54.2",
 		"react-markdown": "^9.0.1",
-		"remark-gfm": "^4.0.0"
+		"remark-gfm": "^4.0.0",
+		"tailwind-merge": "^3.6.0",
+		"tailwindcss": "^4.3.3"
 	},
 	"devDependencies": {
 		"@testing-library/jest-dom": "^6.5.0",
@@ -60,7 +61,8 @@
 		"husky": "^9.1.7",
 		"jsdom": "^25.0.1",
 		"msw": "^2.4.12",
-		"prettier": "^3.3.3",
+		"prettier": "^3.9.6",
+		"prettier-plugin-tailwindcss": "^0.8.1",
 		"puppeteer": "^24.31.0",
 		"typescript": "^5",
 		"vitest": "^4.1.10",

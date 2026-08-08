@@ -1,41 +1,31 @@
-import { Link, Paper, Typography } from '@mui/material';
+import { Link } from '../shared/base-ui';
 
 const SearchInstructions: React.FC = () => (
-	<Paper>
-		<Typography gutterBottom fontWeight='bold'>
-			How to Use This Search:
-		</Typography>
-		<Typography>We offer several different ways to view the latest news:</Typography>
+	<div className='rounded-xl p-4'>
+		<p className='font-bold'>How to Use This Search:</p>
+		<p>We offer several different ways to view the latest news:</p>
 		<ul>
 			<li>
-				<Typography>
-					{`Across the Spectrum: This will return results from a sources with various biases. If
+				{`Across the Spectrum: This will return results from a sources with various biases. If
 					"Include Multiple Sources in Each Category" is selected, results will be organized
 					according to political bias (left, center-left, center, center-right, right), with
 					multiple sources included under each. Otherwise, results will include news from 5 sources,
 					1 from each category.`}
-				</Typography>
 			</li>
 			<li>
-				<Typography>
-					{`Stay in My Bubble / Burst My Bubble: These searches will show results from 5 sources all
+				{`Stay in My Bubble / Burst My Bubble: These searches will show results from 5 sources all
 					with the same political bias. "Stay" will pick sources that match the bias you select;
 					"Burst" will pick sources that have the opposite.`}
-				</Typography>
 			</li>
 			<li>
-				<Typography>
-					{`Random: This one picks 5 random sources to include in results, which can give some very
+				{`Random: This one picks 5 random sources to include in results, which can give some very
 					different combinations than any of the others.`}
-				</Typography>
 			</li>
 			<li>
-				<Typography>
-					{`I Want to Pick: You pick up to 5 sources from our list to include in the search results.`}
-				</Typography>
+				{`I Want to Pick: You pick up to 5 sources from our list to include in the search results.`}
 			</li>
 		</ul>
-		<Typography>
+		<p>
 			{`With any of these search types, you can either enter a keyword, which limits results to those
 			about that topic, or get whatever the latest news is from these various sources. All search
 			results are from Bluesky and will show the contents of the individual posts along with the
@@ -52,8 +42,8 @@ const SearchInstructions: React.FC = () => (
 			</Link>
 			{`. So, other than selecting the source list, we do not want any of our opinions influencing
 			this search tool.`}
-		</Typography>
-	</Paper>
+		</p>
+	</div>
 );
 
 export default SearchInstructions;

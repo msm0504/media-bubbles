@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { Stack } from '@mui/material';
 import SearchInstructions from '@/components/search-form/instructions';
 import SearchTabs from '@/components/search-form/tabs';
 import { getSourceLists } from '@/services/source-list-service';
@@ -18,10 +17,10 @@ const Search: React.FC = async () => {
 	return (
 		<>
 			<PageHeading heading='Headlines Search' />
-			<Stack spacing={4}>
+			<div className='flex flex-col gap-4'>
 				<SearchTabs appSourceList={appSourceList} sourceListBySlant={sourceListBySlant} />
 				<SearchInstructions />
-			</Stack>
+			</div>
 		</>
 	);
 };

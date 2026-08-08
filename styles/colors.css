@@ -1,0 +1,82 @@
+@theme {
+	--color-red-50: #fff4f7;
+	--color-red-100: #ffe0e8;
+	--color-red-200: #ffc8d6;
+	--color-red-300: #fda2bb;
+	--color-red-400: #f46a98;
+	--color-red-500: #eb3d82;
+	--color-red-600: #e60b76;
+	--color-red-700: #b5195e;
+	--color-red-800: #931c4d;
+	--color-red-900: #791b41;
+	--color-red-950: #471727;
+	--color-blue-50: #f9f5fe;
+	--color-blue-100: #efe4fd;
+	--color-blue-200: #e2cffc;
+	--color-blue-300: #cdb1f9;
+	--color-blue-400: #ae86f5;
+	--color-blue-500: #986bf1;
+	--color-blue-600: #8152ee;
+	--color-blue-700: #6235ea;
+	--color-blue-800: #340be6;
+	--color-blue-900: #3311be;
+	--color-blue-950: #29126b;
+	--color-green-50: #eefde8;
+	--color-green-100: #cdf9be;
+	--color-green-200: #9df389;
+	--color-green-300: #17e618;
+	--color-green-400: #22c11c;
+	--color-green-500: #24a81d;
+	--color-green-600: #25911d;
+	--color-green-700: #247a1b;
+	--color-green-800: #22641a;
+	--color-green-900: #1f5318;
+	--color-green-950: #183213;
+	--color-yellow-50: #fff8e1;
+	--color-yellow-100: #fbeaaa;
+	--color-yellow-200: #f2da64;
+	--color-yellow-300: #e6ce17;
+	--color-yellow-400: #b4a11c;
+	--color-yellow-500: #9d8d1c;
+	--color-yellow-600: #897b1c;
+	--color-yellow-700: #73661a;
+	--color-yellow-800: #5e5419;
+	--color-yellow-900: #4e4517;
+	--color-yellow-950: #302a12;
+	--color-purple-50: #fcf4fe;
+	--color-purple-100: #f6e2fc;
+	--color-purple-200: #eecbfa;
+	--color-purple-300: #e1a7f6;
+	--color-purple-400: #cc73f0;
+	--color-purple-500: #bd4fec;
+	--color-purple-600: #a800e6;
+	--color-purple-700: #930ec8;
+	--color-purple-800: #7916a2;
+	--color-purple-900: #641884;
+	--color-purple-950: #3d154d;
+
+	--color-primary-light: var(--color-red-100);
+	--color-primary: var(--color-red-600);
+	--color-primary-hover: var(--color-red-700);
+	--color-primary-dark: var(--color-red-800);
+
+	--color-info-light: var(--color-blue-100);
+	--color-info: var(--color-blue-700);
+	--color-info-hover: var(--color-blue-800);
+	--color-info-dark: var(--color-blue-900);
+
+	--color-success-light: var(--color-green-100);
+	--color-success: var(--color-green-700);
+	--color-success-hover: var(--color-green-800);
+	--color-success-dark: var(--color-green-900);
+
+	--color-warning-light: var(--color-yellow-100);
+	--color-warning: var(--color-yellow-700);
+	--color-warning-hover: var(--color-yellow-800);
+	--color-warning-dark: var(--color-yellow-900);
+
+	--color-error-light: var(--color-purple-100);
+	--color-error: var(--color-purple-600);
+	--color-error-hover: var(--color-purple-700);
+	--color-error-dark: var(--color-purple-800);
+}

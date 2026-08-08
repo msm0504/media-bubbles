@@ -1,51 +1,31 @@
 'use client';
 import { Suspense } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { Box, Container, Typography } from '@mui/material';
 import { AppProviders } from '@/contexts';
 import { ParentCompProps } from '@/types';
+import { Link } from '@/components/shared/base-ui';
 import Spinner from '@/components/shared/spinner';
 import background from '@/public/images/background.png';
 import bannerBackground from '@/public/images/banner.png';
-import styles from '@/styles/main.module.css';
 
 const Header: React.FC = () => (
-	<Box
-		className={styles.headerImgContainer}
-		width='100%'
-		tabIndex={0}
-		role='button'
-		component={Link}
-		href='/'
-	>
+	<Link className='relative w-full overflow-hidden no-underline' href='/'>
 		<Image
 			alt='banner background'
 			src={bannerBackground}
 			quality={100}
 			fill
-			className={styles.headerImg}
+			className='bg-size-[100% auto] -z-1 bg-no-repeat'
 		/>
-		<Container
-			sx={{ margin: 'auto', paddingX: 4, paddingY: 16, textAlign: 'center' }}
-			maxWidth='md'
-		>
-			<Typography
-				className={styles.outlinedText}
-				variant='h1'
-				component='h1'
-				fontWeight='bold'
-				color='light'
-			>
-				Media Bubbles
-			</Typography>
-		</Container>
-	</Box>
+		<div className='mx-auto max-w-4xl px-4 py-16 text-center'>
+			<h1 className='text-4xl font-bold text-white text-shadow-outlined'>Media Bubbles</h1>
+		</div>
+	</Link>
 );
 
 const NonHomeLayout: React.FC<ParentCompProps> = ({ children }) => (
-	<Box sx={{ margin: 0, padding: 0 }}>
-		<div className={styles.bgImgContainer}>
+	<div className='m-0 p-0'>
+		<div className='fixed -z-10 h-screen w-screen overflow-hidden'>
 			<Image
 				alt='background'
 				src={background}
@@ -57,15 +37,15 @@ const NonHomeLayout: React.FC<ParentCompProps> = ({ children }) => (
 				}}
 			/>
 		</div>
-		<Box sx={{ background: 'transparent' }}>
+		<div className='bg-transparent'>
 			<Header />
-			<Container maxWidth='xl' sx={{ padding: { xs: 2, md: 5 }, minHeight: '600px' }}>
+			<div className='mx-auto min-h-150 max-w-[1536] p-2 md:p-5'>
 				<Suspense fallback={<Spinner />}>
 					<AppProviders>{children}</AppProviders>
 				</Suspense>
-			</Container>
-		</Box>
-	</Box>
+			</div>
+		</div>
+	</div>
 );
 
 export default NonHomeLayout;

@@ -3,23 +3,19 @@ import { useState, useEffect, ReactElement } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import type { DefaultValues, FieldValues, Path, RegisterOptions } from 'react-hook-form';
 import {
-	Box,
-	Button,
 	capitalize,
 	Dialog,
 	DialogContent,
 	DialogTitle,
 	FormControl,
 	FormLabel,
-	Paper,
-	Stack,
 	TextField,
 	ToggleButtonGroup,
 	ToggleButton,
-	Typography,
 } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { Button } from './base-ui';
 import useInterval from '@/hooks/use-interval';
 import {
 	getItemFromStorage,
@@ -107,7 +103,7 @@ const SaveableForm = <T extends FieldValues>({
 	};
 
 	const generateTextField = ({ name, placeholder, isDisabled, rows, rules }: FieldSetting<T>) => (
-		<Paper key={name}>
+		<div key={name} className='rounded-xl p-4'>
 			<Controller
 				control={control}
 				name={name}
@@ -127,7 +123,7 @@ const SaveableForm = <T extends FieldValues>({
 					/>
 				)}
 			/>
-		</Paper>
+		</div>
 	);
 
 	const generateButtonGroup = ({ name, options }: FieldSetting<T>) => (
@@ -138,7 +134,7 @@ const SaveableForm = <T extends FieldValues>({
 			render={({ field }) => (
 				<FormControl margin='none'>
 					<FormLabel id={`${formName}-${name}-label`}>
-						<Typography fontWeight='bold'>{capitalize(name)}</Typography>
+						<p className='font-bold capitalize'>{name}</p>
 					</FormLabel>
 					<ToggleButtonGroup
 						{...field}
@@ -168,33 +164,29 @@ const SaveableForm = <T extends FieldValues>({
 							<PreviewComponent {...currentValues} />
 						</DialogContent>
 					</Dialog>
-					<Stack direction='row-reverse'>
+					<div className='flex flex-row-reverse'>
 						<Button color='info' onClick={() => setPreview(true)}>
 							<strong>Preview</strong>
 						</Button>
-					</Stack>
+					</div>
 				</>
 			)}
 			<form onSubmit={handleSubmit(submitForm)}>
-				<Stack spacing={4}>
+				<div className='flex flex-col gap-4'>
 					{fieldList.map(generateFormField)}
-					<Box>
-						<Button
-							variant='contained'
-							color='primary'
-							size='large'
-							type='submit'
-							name={`submit-${formName}`}
-							id={`submit-${formName}`}
-							disabled={isProcessing}
-							endIcon={
-								isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />
-							}
-						>
-							<strong>{submitLabel}</strong>
-						</Button>
-					</Box>
-				</Stack>
+					<Button
+						className='text-lg'
+						variant='contained'
+						color='primary'
+						type='submit'
+						name={`submit-${formName}`}
+						id={`submit-${formName}`}
+						disabled={isProcessing}
+					>
+						<strong>{submitLabel}</strong>
+						{isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
+					</Button>
+				</div>
 			</form>
 		</>
 	);

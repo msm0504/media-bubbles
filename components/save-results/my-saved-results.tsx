@@ -1,8 +1,9 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { Button, IconButton, ListItem, ListItemText, Typography } from '@mui/material';
+import { ListItem, ListItemText } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import { Button } from '../shared/base-ui';
 
 import AsyncList, { DeleteFnType } from '../shared/async-list';
 import type { SavedResultSummary } from '@/types';
@@ -32,21 +33,21 @@ const SavedResultItem: React.FC<SavedResultItemProps> = ({
 			>
 				View
 			</Button>
-			<IconButton
-				aria-label={`Delete saved result ${name}`}
-				color='primary'
-				onClick={() => fnDeleteItem(_id, name)}
-			>
-				<FontAwesomeIcon id={`delete-${_id}-icon`} icon={faTrashCan} />
-			</IconButton>
+			<Button color='primary' onClick={() => fnDeleteItem(_id, name)}>
+				<FontAwesomeIcon
+					id={`delete-${_id}-icon`}
+					aria-label={`Delete saved result ${name}`}
+					icon={faTrashCan}
+				/>
+			</Button>
 		</ListItem>
 	);
 };
 
 const LoginRequiredComponent: React.FC = () => (
 	<>
-		<Typography>Any search results you save while logged in will be shown here.</Typography>
-		<Typography>Log in to view your saved search results.</Typography>
+		<p>Any search results you save while logged in will be shown here.</p>
+		<p>Log in to view your saved search results.</p>
 	</>
 );
 

@@ -1,16 +1,7 @@
 'use client';
 import { useState, useReducer, useEffect, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-	Box,
-	Button,
-	FormControlLabel,
-	Paper,
-	Slider,
-	Stack,
-	TextField,
-	Tooltip,
-} from '@mui/material';
+import { FormControlLabel, Slider, TextField, Tooltip } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import * as ACTION_TYPES from './action-types';
@@ -18,6 +9,7 @@ import FullSpectrum from './full-spectrum';
 import searchFormReducer, { initialState, FieldValue } from './search-form-reducer';
 import SlantRadioButtons from './slant-radio-buttons';
 import SourceCheckboxes from './source-checkboxes';
+import { Button } from '../shared/base-ui';
 import type { SearchMode } from '@/constants/search-mode';
 import useHeadlineSearch from '@/hooks/use-headline-search';
 import type { Source } from '@/types';
@@ -94,9 +86,9 @@ const SearchForm: React.FC<SearchFormProps> = ({
 
 	return (
 		<form>
-			<Stack spacing={4}>
-				<Paper>
-					<Stack direction={{ xs: 'column', md: 'row' }} spacing={4}>
+			<div className='flex flex-col gap-4'>
+				<div className='rounded-xl p-4'>
+					<div className='flex flex-col gap-4 md:flex-row'>
 						<TextField
 							name='keyword'
 							sx={{ flexGrow: 1 }}
@@ -137,26 +129,23 @@ const SearchForm: React.FC<SearchFormProps> = ({
 								labelPlacement='start'
 							/>
 						) : (
-							<Box flexGrow={1}></Box>
+							<div className='grow'></div>
 						)}
-					</Stack>
-				</Paper>
+					</div>
+				</div>
 				{generateFormBySearchMode()}
-				<Box>
-					<Button
-						color='primary'
-						variant='contained'
-						size='large'
-						name='getHeadlines'
-						id='getHeadlines'
-						disabled={isSearching}
-						onClick={searchTriggered}
-						endIcon={isSearching && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
-					>
-						<strong>Get Headlines</strong>
-					</Button>
-				</Box>
-			</Stack>
+				<Button
+					color='primary'
+					variant='contained'
+					name='getHeadlines'
+					id='getHeadlines'
+					disabled={isSearching}
+					onClick={searchTriggered}
+				>
+					<strong>Get Headlines</strong>
+					{isSearching && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
+				</Button>
+			</div>
 		</form>
 	);
 };

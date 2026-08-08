@@ -1,6 +1,6 @@
 'use client';
 import { ChangeEvent } from 'react';
-import { Checkbox, FormControlLabel, Grid, Paper, Typography } from '@mui/material';
+import { Checkbox, FormControlLabel, Grid } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquare, faSquareCheck } from '@fortawesome/free-regular-svg-icons';
 // import { faSquare as faSquareSolid } from '@fortawesome/free-solid-svg-icons';
@@ -44,12 +44,12 @@ const SourceCheckboxes: React.FC<SourceCheckboxesProps> = ({
 
 	return (
 		<>
-			<Typography fontWeight='bold'>Choose up to {MAX_SOURCE_SELECTIONS} sources.</Typography>
-			<Paper>
+			<p className='font-bold'>Choose up to {MAX_SOURCE_SELECTIONS} sources.</p>
+			<div className='rounded-xl p-4'>
 				<Grid container spacing={2}>
 					{checkboxes}
 				</Grid>
-			</Paper>
+			</div>
 		</>
 	);
 };

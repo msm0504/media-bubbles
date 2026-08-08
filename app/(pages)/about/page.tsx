@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { Paper, Stack, Typography } from '@mui/material';
+import { Link } from '@/components/shared/base-ui';
 import PageHeading from '@/components/shared/page-heading';
 
 export const metadata: Metadata = {
@@ -13,12 +12,10 @@ export const metadata: Metadata = {
 const About: React.FC = () => (
 	<>
 		<PageHeading heading='About' />
-		<Paper>
-			<Stack spacing={4}>
-				<Typography component='h3' variant='h4' fontWeight='bold'>
-					Our Mission
-				</Typography>
-				<Typography>
+		<div className='rounded-xl p-4'>
+			<div className='flex flex-col gap-4'>
+				<h3 className='text-xl font-bold'>Our Mission</h3>
+				<p>
 					{`An accepted truth: contemporary society is increasingly polarized. The common explanation is
 				the media people consume is biased. However, we believe media bias has existed since the
 				media’s inception. The difference today is how people consume media. Prior to cable and the
@@ -32,8 +29,8 @@ const About: React.FC = () => (
 				no accident. Cable news networks and social media companies make money through engagement.
 				People gravitate towards media they agree with; at the same time, it is in a company’s best
 				interest to show its audience news they will agree with.`}
-				</Typography>
-				<Typography>
+				</p>
+				<p>
 					{`Our goal at Media Bubbles is to afford people the opportunity to see outside of these filter
 				bubbles. Instead of pining for a "simpler time", we believe society will need to adapt to
 				the current media landscape. We provide an easy-to-use search function to sort news
@@ -43,11 +40,9 @@ const About: React.FC = () => (
 				Try out our `}
 					<Link href='/search'>search tool</Link>
 					{` to see for yourself. We hope this will be the first step towards living in a shared reality.`}
-				</Typography>
-				<Typography component='h3' variant='h4' fontWeight='bold'>
-					How We Got Started
-				</Typography>
-				<Typography>
+				</p>
+				<h3 className='text-xl font-bold'>How We Got Started</h3>
+				<p>
 					{`Around 2017, we noticed a media bias chart being shared on social media, placing various
 				news sources into categories of political bias. Soon after, of course, other charts were
 				posted showing the "correct" way the first chart should have been arranged. Seeing this led
@@ -58,9 +53,9 @@ const About: React.FC = () => (
 				and burying or not reporting on others? Are they using different words that are meant to
 				lead their readers to certain conclusions? This site was created as a way to compare these
 				various news sources and highlight how they each express bias.`}
-				</Typography>
-			</Stack>
-		</Paper>
+				</p>
+			</div>
+		</div>
 	</>
 );
 

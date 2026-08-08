@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { Link, Paper } from '@mui/material';
+import { Link } from '@/components/shared/base-ui';
 
 export const metadata: Metadata = {
 	title: 'Terms and Conditions - Media Bubbles',
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const Terms: React.FC = () => (
-	<Paper>
+	<div className='rounded-xl p-4'>
 		<h1>Terms and Conditions</h1>
 		<p>Last updated: July 21, 2020</p>
 		<p>Please read these terms and conditions carefully before using Our Service.</p>
@@ -311,7 +311,7 @@ const Terms: React.FC = () => (
 				</Link>
 			</li>
 		</ul>
-	</Paper>
+	</div>
 );
 
 export default Terms;

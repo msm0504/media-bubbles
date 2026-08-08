@@ -1,13 +1,9 @@
-import { Typography } from '@mui/material';
-
 type PageHeadingProps = {
 	heading: string;
 };
 
 const PageHeading: React.FC<PageHeadingProps> = ({ heading }) => (
-	<Typography component='h2' variant='h3' color='info' marginBottom={2} fontWeight='bold'>
-		{heading}
-	</Typography>
+	<h2 className='mb-2 text-3xl font-bold text-blue-600'>{heading}</h2>
 );
 
 export default PageHeading;

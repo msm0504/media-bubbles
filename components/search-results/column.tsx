@@ -1,15 +1,7 @@
-import {
-	Button,
-	Card,
-	CardHeader,
-	Collapse,
-	Stack,
-	Typography,
-	useMediaQuery,
-	useTheme,
-} from '@mui/material';
+import { Card, CardHeader, Collapse, useMediaQuery, useTheme } from '@mui/material';
 import ColumnArticles from './column-articles';
 import ColumnHeadingIcon from './column-heading-icon';
+import { Button } from '../shared/base-ui';
 import { SOURCE_SLANT_MAP } from '@/constants/source-slant';
 import type { Article, Source } from '@/types';
 
@@ -45,7 +37,7 @@ const Column: React.FC<ColumnProps> = ({
 			: getTextClassBySlant(column.slant);
 
 	return (
-		<Stack flexBasis='20%' spacing={4}>
+		<div className='flex basis-1/5 flex-col gap-4'>
 			<Card>
 				<CardHeader
 					disableTypography
@@ -54,22 +46,20 @@ const Column: React.FC<ColumnProps> = ({
 					avatar={<ColumnHeadingIcon column={column} isColumnSlant={isSearchAll} />}
 					title={
 						isLgScreen ? (
-							<Typography variant='h3' textAlign='center' marginBottom={2}>
-								{column.name}
-							</Typography>
+							<h3 className='mb-2 text-center text-2xl'>{column.name}</h3>
 						) : (
-							<Stack direction='row' justifyContent='center'>
+							<div className='flex justify-center'>
 								<Button
+									className='mx-auto'
 									variant='text'
 									color={slantClass}
-									sx={{ marginX: 'auto', textTransform: 'none' }}
 									onClick={() => togglePanel(column.id)}
 									aria-expanded={isPanelExpanded}
 									aria-controls={collapseId}
 								>
-									<Typography variant='h4'>{column.name}</Typography>
+									<h4 className='text-xl'>{column.name}</h4>
 								</Button>
-							</Stack>
+							</div>
 						)
 					}
 				/>
@@ -79,7 +69,7 @@ const Column: React.FC<ColumnProps> = ({
 					<ColumnArticles articles={articles} isSearchAll={isSearchAll} slantClass={slantClass} />
 				</div>
 			</Collapse>
-		</Stack>
+		</div>
 	);
 };
 

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Link, Paper } from '@mui/material';
+import { Link } from '@/components/shared/base-ui';
 
 export const metadata: Metadata = {
 	title: 'Privacy Policy - Media Bubbles',
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 const PrivacyPolicy: React.FC = () => (
-	<Paper>
+	<div className='rounded-xl p-4'>
 		<h1>Privacy Policy</h1>
 		<p>Last updated: July 21, 2020</p>
 		<p>
@@ -435,7 +435,7 @@ const PrivacyPolicy: React.FC = () => (
 				</Link>
 			</li>
 		</ul>
-	</Paper>
+	</div>
 );
 
 export default PrivacyPolicy;

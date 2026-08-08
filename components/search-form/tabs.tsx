@@ -1,6 +1,6 @@
 'use client';
 import { useState, useMemo } from 'react';
-import { Box, Button, Menu, MenuItem, Tab, Tabs, Typography } from '@mui/material';
+import { Button, Menu, MenuItem, Tab, Tabs } from '@mui/material';
 import SearchForm from './search-form';
 import MySavedResults from '../save-results/my-saved-results';
 import type { Source } from '@/types';
@@ -41,7 +41,7 @@ const SearchTabs: React.FC<SearchTabsProps> = ({ appSourceList, sourceListBySlan
 
 	return (
 		<>
-			<Box display={{ xs: 'block', md: 'none' }}>
+			<div className='block md:hidden'>
 				<Button
 					id='search-mode-btn'
 					aria-label='search mode selection'
@@ -84,8 +84,8 @@ const SearchTabs: React.FC<SearchTabsProps> = ({ appSourceList, sourceListBySlan
 						</MenuItem>
 					))}
 				</Menu>
-			</Box>
-			<Box display={{ xs: 'none', md: 'block' }}>
+			</div>
+			<div className='hidden md:block'>
 				<Tabs
 					centered
 					aria-label='search mode selection'
@@ -97,12 +97,12 @@ const SearchTabs: React.FC<SearchTabsProps> = ({ appSourceList, sourceListBySlan
 						<Tab key={searchModeId} value={searchModeId} label={searchMode.name} />
 					))}
 				</Tabs>
-			</Box>
+			</div>
 			{curSearchMode === 'SAVED_RESULTS' ? (
 				<MySavedResults />
 			) : (
 				<>
-					<Typography fontWeight='bold'>{`Results shown will be from ${getCurrentSearchModeInfo()}.`}</Typography>
+					<p className='font-bold'>{`Results shown will be from ${getCurrentSearchModeInfo()}.`}</p>
 					<SearchForm
 						searchMode={curSearchMode}
 						appSourceList={appSourceList}

@@ -2,7 +2,6 @@
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
-	Button,
 	Dialog,
 	DialogActions,
 	DialogContent,
@@ -13,6 +12,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import useAlerts from './use-alerts';
+import { Button } from '@/components/shared/base-ui';
 import { authClient, signIn } from '@/lib/auth-client';
 import { EMAIL_PATTERN, getRequiredMessage } from '@/util/form-utils';
 
@@ -72,14 +72,9 @@ const FormStepOne: React.FC<StepOneProps> = ({ onSuccess }) => {
 				/>
 			</DialogContent>
 			<DialogActions>
-				<Button
-					variant='contained'
-					color='primary'
-					type='submit'
-					disabled={isProcessing}
-					endIcon={isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
-				>
+				<Button variant='contained' color='primary' type='submit' disabled={isProcessing}>
 					<strong>Send Log In Token</strong>
+					{isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
 				</Button>
 			</DialogActions>
 		</form>
@@ -136,14 +131,9 @@ const FormStepTwo: React.FC<StepTwoProps> = ({ onSuccess }) => {
 				/>
 			</DialogContent>
 			<DialogActions>
-				<Button
-					variant='contained'
-					color='primary'
-					type='submit'
-					disabled={isProcessing}
-					endIcon={isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
-				>
+				<Button variant='contained' color='primary' type='submit' disabled={isProcessing}>
 					<strong>Log In</strong>
+					{isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
 				</Button>
 			</DialogActions>
 		</form>

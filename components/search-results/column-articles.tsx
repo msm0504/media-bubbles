@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, Link, Stack, Typography } from '@mui/material';
+import { Card, CardContent, CardHeader, Link } from '@mui/material';
 import { isBskyArticle, isNewsApiArticle, isTwitterArticle } from '@/types';
 import type { Article } from '@/types';
 
@@ -57,7 +57,7 @@ const ArticleWithTitle: React.FC<ArticleWithTitleProps> = ({
 			}
 		/>
 		<CardContent>
-			<Typography dangerouslySetInnerHTML={{ __html: text }} />
+			<p dangerouslySetInnerHTML={{ __html: text }} />
 		</CardContent>
 	</Card>
 );
@@ -74,13 +74,13 @@ const ArticleWithoutTitle: React.FC<ArticleProps> = ({
 			<CardHeader slotProps={{ subheader: { color: slantClass } }} subheader={sourceName} />
 		) : null}
 		<CardContent>
-			<Typography dangerouslySetInnerHTML={{ __html: text }} />
+			<p dangerouslySetInnerHTML={{ __html: text }} />
 			{url ? (
-				<Typography>
+				<p>
 					<Link color={slantClass} href={url} target='_blank' rel='noopener noreferrer'>
 						Read more
 					</Link>
-				</Typography>
+				</p>
 			) : null}
 		</CardContent>
 	</Card>
@@ -144,9 +144,9 @@ const ColumnArticles: React.FC<ColumnArticlesProps> = ({ articles, isSearchAll, 
 	if (!(articles && articles.length)) return NOT_FOUND_MESSAGE;
 
 	return (
-		<Stack spacing={4}>
+		<div className='flex flex-col gap-4'>
 			{articles.map(article => getColumnArticle({ article, isSearchAll, slantClass }))}
-		</Stack>
+		</div>
 	);
 };
 

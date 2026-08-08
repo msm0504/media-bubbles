@@ -2,7 +2,6 @@ import { afterAll, afterEach, beforeAll, expect, test, vi } from 'vitest';
 import { cleanup, render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { capitalize } from '@mui/material';
 import FIELD_LIST from '../field-list';
 import Feedback from '../page';
 import { AppProviders } from '@/contexts';
@@ -28,8 +27,8 @@ test('renders correct input fields', () => {
 	render(<Feedback />);
 	FIELD_LIST.forEach(field =>
 		field.type === 'text'
-			? expect(screen.queryByLabelText(capitalize(field.name))).toBeInTheDocument()
-			: expect(screen.queryByText(capitalize(field.name))).toBeInTheDocument()
+			? expect(screen.queryByLabelText(field.name?.toUpperCase())).toBeInTheDocument()
+			: expect(screen.queryByText(field.name?.toUpperCase())).toBeInTheDocument()
 	);
 });
 

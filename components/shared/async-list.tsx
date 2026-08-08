@@ -1,15 +1,6 @@
 'use client';
 import { useState, useEffect, useContext, ReactElement } from 'react';
-import {
-	Container,
-	List,
-	Pagination,
-	Paper,
-	Stack,
-	TextField,
-	Typography,
-	debounce,
-} from '@mui/material';
+import { List, Pagination, TextField, debounce } from '@mui/material';
 import Spinner from './spinner';
 import ALERT_LEVEL from '@/constants/alert-level';
 import { AlertsDispatch } from '@/contexts/alerts-context';
@@ -110,11 +101,11 @@ const AsyncList = <T,>({
 
 	if (loginRequired && !session)
 		return (
-			<Paper sx={{ marginTop: 4 }}>
-				<Typography component='div' color='primary'>
+			<div className='mt-4 rounded-xl p-4'>
+				<div className='text-red-600'>
 					{LoginRequiredComponent ? <LoginRequiredComponent /> : 'Log in to view this page'}
-				</Typography>
-			</Paper>
+				</div>
+			</div>
 		);
 
 	const deleteItem = async (itemId: string, itemName: string) => {
@@ -142,21 +133,19 @@ const AsyncList = <T,>({
 	};
 
 	return (
-		<Stack spacing={4}>
-			<Stack direction='row' justifyContent='center'>
-				<Container maxWidth='sm' component={Paper}>
-					<TextField
-						fullWidth
-						name='filter'
-						onChange={event => handleSearch(event.target.value)}
-						label='Filter:'
-					/>
-				</Container>
-			</Stack>
+		<div className='flex flex-col gap-4'>
+			<div className='w-full rounded-xl p-4 sm:m-auto sm:w-xl'>
+				<TextField
+					fullWidth
+					name='filter'
+					onChange={event => handleSearch(event.target.value)}
+					label='Filter:'
+				/>
+			</div>
 			{loading ? (
 				<Spinner />
 			) : (
-				<Paper>
+				<div className='rounded-xl p-4'>
 					<List>
 						{items && items.length ? (
 							items.map(item => (
@@ -167,10 +156,10 @@ const AsyncList = <T,>({
 								/>
 							))
 						) : (
-							<Typography color='primary'>{`No ${camelCaseToWords(apiListName)} found`}</Typography>
+							<p className='text-red-600'>{`No ${camelCaseToWords(apiListName)} found`}</p>
 						)}
 					</List>
-					<Stack direction='row-reverse'>
+					<div className='flex flex-row-reverse'>
 						<Pagination
 							count={pageCount}
 							page={page}
@@ -181,10 +170,10 @@ const AsyncList = <T,>({
 							showFirstButton
 							showLastButton
 						/>
-					</Stack>
-				</Paper>
+					</div>
+				</div>
 			)}
-		</Stack>
+		</div>
 	);
 };
 
