@@ -19,6 +19,19 @@
 		color: var(--color-primary-dark);
 		text-decoration: underline;
 	}
+	h1 {
+		font-size: var(--text-4xl);
+		font-weight: var(--font-weight-bold);
+	}
+	h2 {
+		font-size: var(--text-2xl);
+	}
+	h3 {
+		font-size: var(--text-xl);
+	}
+	h4 {
+		font-size: var(--text-lg);
+	}
 }
 
 html {

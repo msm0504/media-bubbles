@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 const PrivacyPolicy: React.FC = () => (
-	<div className='rounded-xl p-4'>
+	<div className='rounded-xl bg-white p-4'>
 		<h1>Privacy Policy</h1>
 		<p>Last updated: July 21, 2020</p>
 		<p>

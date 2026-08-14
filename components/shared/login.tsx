@@ -1,6 +1,5 @@
 'use client';
-import { useState } from 'react';
-import { ListItemIcon, ListItemText, Menu, MenuItem, MenuList } from '@mui/material';
+import { NavigationMenu } from '@base-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSquareFull } from '@fortawesome/free-solid-svg-icons';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons';
@@ -12,107 +11,76 @@ import styles from '@/styles/main.module.css';
 
 type LoginProps = {
 	sessionLoading: boolean;
-	closeMenu: () => void;
 };
 
 const GoogleLogin: React.FC<LoginProps> = ({ sessionLoading }) => (
-	<MenuItem
-		onClick={() =>
-			signIn.social({
-				provider: 'google',
-				callbackURL: window.location.href,
-				newUserCallbackURL: window.location.href,
-			})
-		}
-		disabled={sessionLoading}
-	>
-		<ListItemIcon
-			className='fa-width-auto'
-			sx={theme => ({ color: theme.palette.background.default })}
+	<li>
+		<Button
+			color='neutral'
+			variant='text'
+			onClick={() =>
+				signIn.social({
+					provider: 'google',
+					callbackURL: window.location.href,
+					newUserCallbackURL: window.location.href,
+				})
+			}
+			disabled={sessionLoading}
 		>
 			<FontAwesomeIcon className={styles.googleBrandColor} icon={faGoogle} mask={faSquareFull} />
-		</ListItemIcon>
-		<ListItemText>Log in with Google</ListItemText>
-	</MenuItem>
+			Log in with Google
+		</Button>
+	</li>
 );
 
-const EmailLogin: React.FC<LoginProps> = ({ sessionLoading, closeMenu }) => {
-	const { EmailLoginDialog, openDialog } = useEmailLoginDialog();
-
+const EmailLogin: React.FC<LoginProps & { openDialog: () => void }> = ({
+	openDialog,
+	sessionLoading,
+}) => {
 	return (
-		<>
-			<EmailLoginDialog />
-			<MenuItem
-				onClick={() => {
-					openDialog();
-					closeMenu();
-				}}
-				disabled={sessionLoading}
-			>
-				<ListItemIcon>
-					<FontAwesomeIcon icon={faPaperPlane} />
-				</ListItemIcon>
-				<ListItemText>Log in with Email</ListItemText>
-			</MenuItem>
-		</>
+		<Button color='neutral' variant='text' onClick={openDialog} disabled={sessionLoading}>
+			<FontAwesomeIcon icon={faPaperPlane} />
+			Log in with Email
+		</Button>
 	);
 };
 
 const Login: React.FC = () => {
-	const [anchorElLogin, setAnchorElLogin] = useState<null | HTMLElement>(null);
 	const { data: session, isPending } = useSession();
+	const { EmailLoginDialog, openDialog } = useEmailLoginDialog();
 
-	const handleOpenLoginMenu = (event: React.MouseEvent<HTMLElement>) => {
-		setAnchorElLogin(event.currentTarget);
-	};
-
-	const handleCloseLoginMenu = () => {
-		setAnchorElLogin(null);
-	};
-
-	return session ? (
-		<Button
-			className='my-2 text-lg'
-			color='neutral'
-			variant='text'
-			onClick={() => signOut()}
-			disabled={isPending}
-		>
-			Log out
-		</Button>
-	) : (
+	return (
 		<>
-			<Button
-				className='my-2 text-lg'
-				color='neutral'
-				variant='text'
-				aria-label='open login menu'
-				aria-controls='menu-login'
-				aria-haspopup='true'
-				onClick={handleOpenLoginMenu}
-			>
-				Log in
-			</Button>
-			<Menu
-				id='menu-login'
-				anchorEl={anchorElLogin}
-				anchorOrigin={{
-					vertical: 'bottom',
-					horizontal: 'right',
-				}}
-				keepMounted
-				transformOrigin={{
-					vertical: 'top',
-					horizontal: 'right',
-				}}
-				open={!!anchorElLogin}
-				onClose={handleCloseLoginMenu}
-			>
-				<MenuList>
-					<GoogleLogin sessionLoading={isPending} closeMenu={handleCloseLoginMenu} />
-					<EmailLogin sessionLoading={isPending} closeMenu={handleCloseLoginMenu} />
-				</MenuList>
-			</Menu>
+			<NavigationMenu.Item>
+				{session ? (
+					<Button
+						className='my-2 text-lg'
+						color='neutral'
+						variant='contained'
+						onClick={() => signOut()}
+						disabled={isPending}
+					>
+						Log out
+					</Button>
+				) : (
+					<>
+						<NavigationMenu.Trigger
+							render={props => (
+								<Button className='my-2 text-lg' {...props} color='neutral' variant='contained'>
+									Log in
+								</Button>
+							)}
+						/>
+						<NavigationMenu.Content>
+							<ul>
+								<GoogleLogin sessionLoading={isPending} />
+								<EmailLogin sessionLoading={isPending} openDialog={openDialog} />
+							</ul>
+						</NavigationMenu.Content>
+					</>
+				)}
+			</NavigationMenu.Item>
+			<EmailLoginDialog />
 		</>
 	);
 };

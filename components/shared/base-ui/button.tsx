@@ -1,4 +1,3 @@
-import type { PropsWithChildren } from 'react';
 import { Button as BaseButton } from '@base-ui/react/button';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { BUTTON_CVA_CONFIG } from './button-variants';
@@ -12,7 +11,7 @@ const buttonVariants = cva('flex h-8 items-center justify-center gap-2 rounded-x
 	},
 });
 
-type ButtonProps = BaseButton.Props & VariantProps<typeof buttonVariants> & PropsWithChildren;
+type ButtonProps = BaseButton.Props & VariantProps<typeof buttonVariants>;
 
 const Button: React.FC<ButtonProps> = ({ color, variant, className, children, ...props }) => (
 	<BaseButton className={cn(buttonVariants({ color, variant }), className)} {...props}>

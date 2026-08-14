@@ -1,4 +1,4 @@
-import type { ComponentProps, PropsWithChildren } from 'react';
+import type { ComponentProps } from 'react';
 import { default as NextLink } from 'next/link';
 import { cva, type VariantProps } from 'class-variance-authority';
 import type { CvaColorConfig } from '@/styles/color-variants';
@@ -9,12 +9,11 @@ const LINK_CVA_CONFIG: CvaColorConfig = {
 	variants: {
 		color: {
 			primary: tw`not-data-disabled:text-primary hover:not-data-disabled:text-primary-hover`,
-			secondary: tw`not-data-disabled:text-gray-600`,
 			success: tw`not-data-disabled:text-success hover:not-data-disabled:text-success-hover`,
 			info: tw`not-data-disabled:text-info hover:not-data-disabled:text-info-hover`,
 			warning: tw`not-data-disabled:text-warning hover:not-data-disabled:text-warning-hover`,
 			error: tw`not-data-disabled:text-error hover:not-data-disabled:text-error-hover`,
-			neutral: tw`text-black`,
+			neutral: tw`not-data-disabled:bg-gray-800 hover:not-data-disabled:bg-black`,
 		},
 	},
 };
@@ -29,9 +28,7 @@ const linkVariants = cva(
 	}
 );
 
-type LinkProps = ComponentProps<typeof NextLink> &
-	VariantProps<typeof linkVariants> &
-	PropsWithChildren;
+type LinkProps = ComponentProps<typeof NextLink> & VariantProps<typeof linkVariants>;
 
 const Link: React.FC<LinkProps> = ({ color, className, children, href, ...props }) =>
 	href.toString().startsWith('/') ? (

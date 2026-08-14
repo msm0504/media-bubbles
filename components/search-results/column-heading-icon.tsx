@@ -16,6 +16,7 @@ const ColumnHeadingIcon: React.FC<ColumnHeadingIconProps> = ({ column, isColumnS
 				alt={`Icon for ${column.name} slant`}
 				width={100}
 				height={100}
+				style={{ width: 'auto', height: 100 }}
 			/>
 		) : (
 			<Image
@@ -24,6 +25,7 @@ const ColumnHeadingIcon: React.FC<ColumnHeadingIconProps> = ({ column, isColumnS
 				alt={`Logo for ${column.name}`}
 				width={100}
 				height={100}
+				style={{ width: 'auto', height: 100 }}
 			/>
 		)}
 	</div>

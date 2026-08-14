@@ -51,8 +51,8 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 				<FontAwesomeIcon aria-label='share on X' icon={faXTwitter} size='lg' />
 			</Button>
 			<Button
-				color='secondary'
-				variant='contained'
+				color='neutral'
+				variant='outlined'
 				id='share-email'
 				onClick={() => {
 					window.open(
@@ -66,8 +66,8 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 			</Button>
 			{navigator && navigator.clipboard ? (
 				<Button
-					color='secondary'
-					variant='contained'
+					color='neutral'
+					variant='outlined'
 					id='share-copy'
 					onClick={() => navigator.clipboard.writeText(urlToShare)}
 				>

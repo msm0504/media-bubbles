@@ -1,10 +1,10 @@
 import { Link } from '../shared/base-ui';
 
 const SearchInstructions: React.FC = () => (
-	<div className='rounded-xl p-4'>
+	<div className='flex flex-col gap-2 rounded-xl bg-white p-4'>
 		<p className='font-bold'>How to Use This Search:</p>
 		<p>We offer several different ways to view the latest news:</p>
-		<ul>
+		<ul className='list-inside list-disc'>
 			<li>
 				{`Across the Spectrum: This will return results from a sources with various biases. If
 					"Include Multiple Sources in Each Category" is selected, results will be organized

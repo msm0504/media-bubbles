@@ -1,5 +1,4 @@
 'use client';
-import { ListItem, ListItemText } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { faPenToSquare, faPlus } from '@fortawesome/free-solid-svg-icons';
@@ -24,39 +23,35 @@ const PostSummary: React.FC<PostSummaryProps> = ({
 	const { data: session } = useSession();
 
 	return (
-		<ListItem>
-			<ListItemText
-				primary={<Link href={`/blog/${slug}`}>{title}</Link>}
-				secondary={
+		<ul className='list-none'>
+			<li className='flex items-center gap-2'>
+				<div className='grow'>
+					<h3>
+						<Link href={`/blog/${slug}`}>{title}</Link>
+					</h3>
+					{markdownToHtml(excerpt)}
+					<p className='text-sm'>Last updated at {new Date(date).toLocaleString()}</p>
+				</div>
+				{isAdmin(session?.user.role) ? (
 					<>
-						{markdownToHtml(excerpt)}
-						<p className='text-sm'>Last updated at {new Date(date).toLocaleString()}</p>
+						<LinkButton color='info' href={`/blog/edit-post/${slug}`}>
+							<FontAwesomeIcon
+								id={`edit-${slug}-icon`}
+								aria-label={`Edit post ${slug}`}
+								icon={faPenToSquare}
+							/>
+						</LinkButton>
+						<Button color='primary' onClick={() => fnDeleteItem(slug, title)}>
+							<FontAwesomeIcon
+								id={`delete-${slug}-icon`}
+								aria-label={`Delete post ${slug}`}
+								icon={faTrashCan}
+							/>
+						</Button>
 					</>
-				}
-				slotProps={{
-					primary: { component: 'div' },
-					secondary: { component: 'div' },
-				}}
-			/>
-			{isAdmin(session?.user.role) ? (
-				<>
-					<LinkButton color='info' href={`/blog/edit-post/${slug}`}>
-						<FontAwesomeIcon
-							id={`edit-${slug}-icon`}
-							aria-label={`Edit post ${slug}`}
-							icon={faPenToSquare}
-						/>
-					</LinkButton>
-					<Button color='primary' onClick={() => fnDeleteItem(slug, title)}>
-						<FontAwesomeIcon
-							id={`delete-${slug}-icon`}
-							aria-label={`Delete post ${slug}`}
-							icon={faTrashCan}
-						/>
-					</Button>
-				</>
-			) : null}
-		</ListItem>
+				) : null}
+			</li>
+		</ul>
 	);
 };
 

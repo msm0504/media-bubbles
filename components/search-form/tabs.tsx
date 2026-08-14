@@ -1,8 +1,8 @@
 'use client';
-import { useState, useMemo } from 'react';
-import { Button, Menu, MenuItem, Tab, Tabs } from '@mui/material';
+import { useMemo } from 'react';
 import SearchForm from './search-form';
 import MySavedResults from '../save-results/my-saved-results';
+import { Button, Select } from '../shared/base-ui';
 import type { Source } from '@/types';
 import { SEARCH_MODE_MAP, type SearchMode } from '@/constants/search-mode';
 import useLocalStorage from '@/hooks/use-local-storage';
@@ -16,19 +16,10 @@ type SearchTabsProps = {
 const SEARCH_MODE_IDS = keys(SEARCH_MODE_MAP);
 
 const SearchTabs: React.FC<SearchTabsProps> = ({ appSourceList, sourceListBySlant }) => {
-	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const [curSearchMode, setSearchMode] = useLocalStorage<SearchMode>(
 		'searchMode',
 		SEARCH_MODE_IDS[0]
 	);
-
-	const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-		setAnchorEl(event.currentTarget);
-	};
-
-	const handleClose = () => {
-		setAnchorEl(null);
-	};
 
 	const getCurrentSearchModeInfo = useMemo(
 		() => () => SEARCH_MODE_MAP[curSearchMode].description,
@@ -40,77 +31,56 @@ const SearchTabs: React.FC<SearchTabsProps> = ({ appSourceList, sourceListBySlan
 	};
 
 	return (
-		<>
+		<div className='flex flex-col gap-4'>
 			<div className='block md:hidden'>
-				<Button
-					id='search-mode-btn'
-					aria-label='search mode selection'
-					aria-controls={!!anchorEl ? 'search-mode-menu' : undefined}
-					aria-haspopup='true'
-					aria-expanded={!!anchorEl ? 'true' : undefined}
-					onClick={handleClick}
-					fullWidth
+				<Select
+					className='w-full text-lg'
 					color='info'
 					variant='contained'
-				>
-					{SEARCH_MODE_MAP[curSearchMode].name}
-				</Button>
-				<Menu
-					id='search-mode-menu'
-					anchorEl={anchorEl}
-					open={!!anchorEl}
-					onClose={handleClose}
-					MenuListProps={{
-						'aria-labelledby': 'search-mode-btn',
-					}}
-					anchorOrigin={{
-						vertical: 'bottom',
-						horizontal: 'center',
-					}}
-					transformOrigin={{
-						vertical: 'top',
-						horizontal: 'center',
-					}}
-				>
-					{Object.entries(SEARCH_MODE_MAP).map(([searchModeId, searchMode]) => (
-						<MenuItem
+					items={Object.entries(SEARCH_MODE_MAP).map(([searchModeId, searchMode]) => ({
+						label: searchMode.name,
+						value: searchModeId,
+					}))}
+					value={curSearchMode}
+					onValueChange={value => onSearchModeChange(value as SearchMode)}
+				/>
+			</div>
+			<div
+				role='tablist'
+				className='hidden rounded-xl bg-white p-4 md:flex md:items-center md:justify-between'
+			>
+				{Object.entries(SEARCH_MODE_MAP).map(([searchModeId, searchMode]) => {
+					const isActive = curSearchMode === searchModeId;
+					return (
+						<Button
 							key={searchModeId}
-							onClick={() => {
-								onSearchModeChange(searchModeId as SearchMode);
-								handleClose();
-							}}
+							role='tab'
+							aria-controls='search-form-panel'
+							aria-selected={isActive}
+							color='info'
+							variant={isActive ? 'contained' : 'text'}
+							onClick={() => onSearchModeChange(searchModeId as SearchMode)}
 						>
 							{searchMode.name}
-						</MenuItem>
-					))}
-				</Menu>
+						</Button>
+					);
+				})}
 			</div>
-			<div className='hidden md:block'>
-				<Tabs
-					centered
-					aria-label='search mode selection'
-					variant='fullWidth'
-					value={curSearchMode}
-					onChange={(_event, newValue) => onSearchModeChange(newValue)}
-				>
-					{Object.entries(SEARCH_MODE_MAP).map(([searchModeId, searchMode]) => (
-						<Tab key={searchModeId} value={searchModeId} label={searchMode.name} />
-					))}
-				</Tabs>
+			<div id='search-form-panel' role='tabpanel' className='contents md:block'>
+				{curSearchMode === 'SAVED_RESULTS' ? (
+					<MySavedResults />
+				) : (
+					<>
+						<p className='font-bold'>{`Results shown will be from ${getCurrentSearchModeInfo()}.`}</p>
+						<SearchForm
+							searchMode={curSearchMode}
+							appSourceList={appSourceList}
+							sourceListBySlant={sourceListBySlant}
+						/>
+					</>
+				)}
 			</div>
-			{curSearchMode === 'SAVED_RESULTS' ? (
-				<MySavedResults />
-			) : (
-				<>
-					<p className='font-bold'>{`Results shown will be from ${getCurrentSearchModeInfo()}.`}</p>
-					<SearchForm
-						searchMode={curSearchMode}
-						appSourceList={appSourceList}
-						sourceListBySlant={sourceListBySlant}
-					/>
-				</>
-			)}
-		</>
+		</div>
 	);
 };
 

@@ -2,7 +2,7 @@ import { Link } from './base-ui';
 
 const Footer: React.FC = () => (
 	<footer className='w-full bg-white p-3'>
-		<div className='m-auto flex max-w-[1536] flex-col gap-2 md:flex-row md:gap-5'>
+		<div className='m-auto flex w-full flex-col gap-2 md:flex-row md:gap-5 2xl:container'>
 			<div className='flex flex-col gap-2'>
 				<Link href='https://bsky.app' target='_blank' rel='noreferrer'>
 					Headline Searches Powered By Bluesky

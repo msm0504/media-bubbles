@@ -1,6 +1,8 @@
 'use client';
 import { useState, useEffect, useContext, ReactElement } from 'react';
-import { List, Pagination, TextField, debounce } from '@mui/material';
+import { Input } from '@base-ui/react';
+import debounce from 'lodash.debounce';
+import { Pagination } from './base-ui';
 import Spinner from './spinner';
 import ALERT_LEVEL from '@/constants/alert-level';
 import { AlertsDispatch } from '@/contexts/alerts-context';
@@ -101,8 +103,8 @@ const AsyncList = <T,>({
 
 	if (loginRequired && !session)
 		return (
-			<div className='mt-4 rounded-xl p-4'>
-				<div className='text-red-600'>
+			<div className='mt-4 rounded-xl bg-white p-4'>
+				<div className='text-primary'>
 					{LoginRequiredComponent ? <LoginRequiredComponent /> : 'Log in to view this page'}
 				</div>
 			</div>
@@ -128,25 +130,21 @@ const AsyncList = <T,>({
 		setPage(1);
 	}, 300);
 
-	const handleLoadPage = (_event: React.ChangeEvent<unknown>, selectedPage: number) => {
+	const handleLoadPage = (selectedPage: number) => {
 		setPage(selectedPage);
 	};
 
 	return (
 		<div className='flex flex-col gap-4'>
-			<div className='w-full rounded-xl p-4 sm:m-auto sm:w-xl'>
-				<TextField
-					fullWidth
-					name='filter'
-					onChange={event => handleSearch(event.target.value)}
-					label='Filter:'
-				/>
-			</div>
+			<label className='flex w-full flex-col items-start gap-1 rounded-xl bg-white p-4 sm:m-auto sm:w-xl'>
+				Filter:
+				<Input name='filter' onValueChange={newValue => handleSearch(newValue)} />
+			</label>
 			{loading ? (
 				<Spinner />
 			) : (
-				<div className='rounded-xl p-4'>
-					<List>
+				<div className='rounded-xl bg-white p-4'>
+					<ul className='list-none'>
 						{items && items.length ? (
 							items.map(item => (
 								<ListItemComponent
@@ -156,16 +154,14 @@ const AsyncList = <T,>({
 								/>
 							))
 						) : (
-							<p className='text-red-600'>{`No ${camelCaseToWords(apiListName)} found`}</p>
+							<p className='text-primary'>{`No ${camelCaseToWords(apiListName)} found`}</p>
 						)}
-					</List>
+					</ul>
 					<div className='flex flex-row-reverse'>
 						<Pagination
 							count={pageCount}
 							page={page}
 							onChange={handleLoadPage}
-							variant='outlined'
-							shape='rounded'
 							color='primary'
 							showFirstButton
 							showLastButton

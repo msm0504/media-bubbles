@@ -8,12 +8,11 @@ const SLIDER_IND_CVA_CONFIG: CvaColorConfig = {
 	variants: {
 		color: {
 			primary: tw`not-data-disabled:bg-primary hover:not-data-disabled:bg-primary-hover`,
-			secondary: tw`not-data-disabled:bg-gray-600`,
 			success: tw`not-data-disabled:bg-success hover:not-data-disabled:bg-success-hover`,
 			info: tw`not-data-disabled:bg-info hover:not-data-disabled:bg-info-hover`,
 			warning: tw`not-data-disabled:bg-warning hover:not-data-disabled:bg-warning-hover`,
 			error: tw`not-data-disabled:bg-error hover:not-data-disabled:bg-error-hover`,
-			neutral: tw`bg-black`,
+			neutral: tw`not-data-disabled:bg-gray-800 hover:not-data-disabled:bg-black`,
 		},
 	},
 };
@@ -25,10 +24,14 @@ const sliderIndVariants = cva('rounded-xl', {
 	},
 });
 
-type SliderProps = BaseSlider.Root.Props & VariantProps<typeof sliderIndVariants>;
+type SliderProps = BaseSlider.Root.Props &
+	VariantProps<typeof sliderIndVariants> & {
+		label: React.ReactNode;
+	};
 
-const Slider: React.FC<SliderProps> = ({ color, className, ...props }) => (
+const Slider: React.FC<SliderProps> = ({ color, className, label, ...props }) => (
 	<BaseSlider.Root className={cn('min-w-50', className)} {...props}>
+		<BaseSlider.Label>{label}</BaseSlider.Label>
 		<BaseSlider.Control className='flex w-full'>
 			<BaseSlider.Track className='h-4 w-full rounded-xl bg-gray-300 opacity-70 transition-opacity duration-200 outline-none hover:opacity-100 focus:opacity-100'>
 				<BaseSlider.Indicator className={sliderIndVariants({ color })} />

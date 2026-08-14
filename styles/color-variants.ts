@@ -1,5 +1,7 @@
-type Color = 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'error' | 'neutral';
-type Variant = 'contained' | 'outlined' | 'text';
+import { cva } from 'class-variance-authority';
+
+export type Color = 'primary' | 'success' | 'info' | 'warning' | 'error' | 'neutral';
+export type Variant = 'contained' | 'outlined' | 'text';
 
 export type CvaColorConfig = {
 	variants: {
@@ -18,18 +20,35 @@ export type CvaColorVarConfig = {
 		class: string;
 	}[];
 };
-/*
-export const ALERT_CONFIG: CvaColorConfig = {
+
+export const textVariants = cva('', {
 	variants: {
 		color: {
-			primary: tw`bg-primary-light text-primary-dark`,
-			secondary: tw`text-gray-600`,
-			success: tw`bg-success-light text-success-dark`,
-			info: tw`bg-info-light text-info-dark`,
-			warning: tw`bg-warning-light text-warning-dark`,
-			error: tw`bg-error-light text-error-dark`,
-			neutral: tw`text-black`,
+			primary: 'text-primary',
+			success: 'text-success',
+			info: 'text-info',
+			warning: 'text-warning',
+			error: 'text-error',
+			neutral: 'text-black',
 		},
 	},
-};
-*/
+	defaultVariants: {
+		color: 'neutral',
+	},
+});
+
+export const backgroundVariants = cva('', {
+	variants: {
+		color: {
+			primary: 'bg-primary',
+			success: 'bg-success',
+			info: 'bg-info',
+			warning: 'bg-warning',
+			error: 'bg-error',
+			neutral: 'bg-black',
+		},
+	},
+	defaultVariants: {
+		color: 'primary',
+	},
+});

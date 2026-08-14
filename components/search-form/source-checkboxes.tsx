@@ -1,16 +1,12 @@
 'use client';
-import { ChangeEvent } from 'react';
-import { Checkbox, FormControlLabel, Grid } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSquare, faSquareCheck } from '@fortawesome/free-regular-svg-icons';
-// import { faSquare as faSquareSolid } from '@fortawesome/free-solid-svg-icons';
-import MAX_SOURCE_SELECTIONS from '@/constants/max-source-selections';
+import { Checkbox } from '../shared/base-ui';
 import type { Source } from '@/types';
+import MAX_SOURCE_SELECTIONS from '@/constants/max-source-selections';
 
 type SourceCheckboxesProps = {
 	sourceList: Source[];
 	selections: string[];
-	onChange: (event: ChangeEvent<HTMLInputElement>, sourceId: string) => void;
+	onChange: (checked: boolean, sourceId: string) => void;
 };
 
 const SourceCheckboxes: React.FC<SourceCheckboxesProps> = ({
@@ -23,32 +19,25 @@ const SourceCheckboxes: React.FC<SourceCheckboxesProps> = ({
 		const isDisabled =
 			selections.indexOf(source.id) === -1 && selections.length === MAX_SOURCE_SELECTIONS;
 		return (
-			<Grid key={source.id + 'Checkbox'} size={{ xs: 12, md: 2 }}>
-				<FormControlLabel
-					control={
-						<Checkbox
-							name={source.id + 'Checkbox'}
-							value={source.id}
-							checked={isChecked}
-							disabled={isDisabled}
-							onChange={(event: ChangeEvent<HTMLInputElement>) => onChange(event, source.id)}
-							icon={<FontAwesomeIcon icon={faSquare} size='2xl' />}
-							checkedIcon={<FontAwesomeIcon icon={faSquareCheck} size='2xl' />}
-						/>
-					}
-					label={source.name}
+			<label key={source.id + 'Checkbox'}>
+				<Checkbox
+					name={source.id + 'Checkbox'}
+					size='2xl'
+					value={source.id}
+					checked={isChecked}
+					disabled={isDisabled}
+					onCheckedChange={checked => onChange(checked, source.id)}
 				/>
-			</Grid>
+				{source.name}
+			</label>
 		);
 	});
 
 	return (
 		<>
 			<p className='font-bold'>Choose up to {MAX_SOURCE_SELECTIONS} sources.</p>
-			<div className='rounded-xl p-4'>
-				<Grid container spacing={2}>
-					{checkboxes}
-				</Grid>
+			<div className='grid grid-cols-1 gap-2 rounded-xl bg-white p-4 md:grid-cols-6'>
+				{checkboxes}
 			</div>
 		</>
 	);

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const Terms: React.FC = () => (
-	<div className='rounded-xl p-4'>
+	<div className='rounded-xl bg-white p-4'>
 		<h1>Terms and Conditions</h1>
 		<p>Last updated: July 21, 2020</p>
 		<p>Please read these terms and conditions carefully before using Our Service.</p>

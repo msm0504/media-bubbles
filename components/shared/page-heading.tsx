@@ -3,7 +3,7 @@ type PageHeadingProps = {
 };
 
 const PageHeading: React.FC<PageHeadingProps> = ({ heading }) => (
-	<h2 className='mb-2 text-3xl font-bold text-blue-600'>{heading}</h2>
+	<h2 className='mb-2 text-3xl font-bold text-info'>{heading}</h2>
 );
 
 export default PageHeading;

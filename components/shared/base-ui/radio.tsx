@@ -11,7 +11,6 @@ const RADIO_CVA_CONFIG: CvaColorConfig = {
 	variants: {
 		color: {
 			primary: tw`data-checked:text-primary`,
-			secondary: tw`data-checked:text-gray-600`,
 			success: tw`data-checked:text-success`,
 			info: tw`data-checked:text-info`,
 			warning: tw`data-checked:text-warning`,

@@ -24,10 +24,15 @@ const SlantRadioButtons: React.FC<SlantRadioButtonsProps> = ({ selection, onChan
 				Choose the category that you think best fits your political views.
 			</p>
 			<RadioGroup
-				className='flex flex-col rounded-xl p-4 md:flex-row md:justify-around'
+				className='flex flex-col rounded-xl bg-white p-4 md:flex-row md:justify-around'
 				name='sourceSlant'
 				value={selection || ''}
-				onValueChange={value => onChange('sourceSlant', value as SourceSlant)}
+				onValueChange={(value, eventDetails) =>
+					onChange(
+						(eventDetails.event.target as HTMLInputElement)?.name || '',
+						value as SourceSlant
+					)
+				}
 			>
 				{radiobuttons}
 			</RadioGroup>

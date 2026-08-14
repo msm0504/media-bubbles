@@ -1,4 +1,4 @@
-import type { ComponentProps, PropsWithChildren } from 'react';
+import type { ComponentProps } from 'react';
 import Link from 'next/link';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { BUTTON_CVA_CONFIG } from './button-variants';
@@ -15,9 +15,7 @@ const linkVariants = cva(
 	}
 );
 
-type LinkButtonProps = ComponentProps<typeof Link> &
-	VariantProps<typeof linkVariants> &
-	PropsWithChildren;
+type LinkButtonProps = ComponentProps<typeof Link> & VariantProps<typeof linkVariants>;
 
 const LinkButton: React.FC<LinkButtonProps> = ({
 	color,

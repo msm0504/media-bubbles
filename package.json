@@ -1,6 +1,6 @@
 {
 	"name": "media-bubbles",
-	"version": "7.3.7",
+	"version": "7.3.8",
 	"private": true,
 	"overrides": {
 		"sharp": "^0.35.3"
@@ -31,6 +31,8 @@
 		"better-auth": "^1.6.25",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
+		"lodash.capitalize": "^4.2.1",
+		"lodash.debounce": "^4.0.8",
 		"mongodb": "^6.9.0",
 		"nanoid": "^5.0.7",
 		"next": "^16.2.12",
@@ -49,6 +51,8 @@
 		"@testing-library/react": "^16.3.2",
 		"@testing-library/user-event": "^14.5.2",
 		"@types/jest": "^29.5.13",
+		"@types/lodash.capitalize": "^4.2.9",
+		"@types/lodash.debounce": "^4.0.9",
 		"@types/mongodb": "^4.0.6",
 		"@types/node": "^20",
 		"@types/react": "^18",

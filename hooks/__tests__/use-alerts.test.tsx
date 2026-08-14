@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { afterEach, beforeEach, expect, test } from 'vitest';
 import { cleanup, render, fireEvent, screen } from '@testing-library/react';
-import type { AlertColor } from '@mui/material';
 import useAlerts from '../use-alerts';
+import type { Color } from '@/styles/color-variants';
 
 const testAlert = { message: 'Urgent, urgent, emergency', level: 'error' };
 
@@ -11,7 +11,7 @@ beforeEach(() => {
 		const [Alerts, showAlert] = useAlerts();
 
 		useEffect(() => {
-			showAlert(testAlert.level as AlertColor, testAlert.message);
+			showAlert(testAlert.level as Color, testAlert.message);
 		}, []);
 
 		return <Alerts />;

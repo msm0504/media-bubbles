@@ -5,7 +5,6 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import styles from '../styles/main.module.css';
 import homeBackground from '../public/images/og_image.png';
 import { LinkButton } from '@/components/shared/base-ui';
-import Spinner from '@/components/shared/spinner';
 
 type HomePageLinkProps = {
 	message: string;

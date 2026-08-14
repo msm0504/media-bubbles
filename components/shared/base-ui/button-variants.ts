@@ -5,7 +5,6 @@ export const BUTTON_CVA_CONFIG: CvaColorVarConfig = {
 	variants: {
 		color: {
 			primary: '',
-			secondary: '',
 			success: '',
 			info: '',
 			warning: '',
@@ -33,22 +32,6 @@ export const BUTTON_CVA_CONFIG: CvaColorVarConfig = {
 			color: 'primary',
 			variant: 'text',
 			class: tw`not-data-disabled:bg-white not-data-disabled:text-primary hover:not-data-disabled:bg-primary-light`,
-		},
-
-		{
-			color: 'secondary',
-			variant: 'contained',
-			class: tw`not-data-disabled:bg-gray-600 not-data-disabled:text-white`,
-		},
-		{
-			color: 'secondary',
-			variant: 'outlined',
-			class: tw`not-data-disabled:border-gray-600 not-data-disabled:bg-white not-data-disabled:text-gray-600`,
-		},
-		{
-			color: 'secondary',
-			variant: 'text',
-			class: tw`not-data-disabled:bg-white not-data-disabled:text-gray-600`,
 		},
 
 		{
@@ -118,17 +101,17 @@ export const BUTTON_CVA_CONFIG: CvaColorVarConfig = {
 		{
 			color: 'neutral',
 			variant: 'contained',
-			class: tw`not-data-disabled:bg-black not-data-disabled:text-white`,
+			class: tw`not-data-disabled:bg-black not-data-disabled:text-white hover:not-data-disabled:bg-gray-800`,
 		},
 		{
 			color: 'neutral',
 			variant: 'outlined',
-			class: tw`not-data-disabled:border-black not-data-disabled:bg-white not-data-disabled:text-black`,
+			class: tw`not-data-disabled:border-black not-data-disabled:bg-white not-data-disabled:text-black hover:not-data-disabled:bg-gray-100`,
 		},
 		{
 			color: 'neutral',
 			variant: 'text',
-			class: tw`not-data-disabled:bg-white not-data-disabled:text-black`,
+			class: tw`not-data-disabled:bg-white not-data-disabled:text-black hover:not-data-disabled:bg-gray-100`,
 		},
 	],
 };

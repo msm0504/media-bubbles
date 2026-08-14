@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 const About: React.FC = () => (
 	<>
 		<PageHeading heading='About' />
-		<div className='rounded-xl p-4'>
+		<div className='rounded-xl bg-white p-4'>
 			<div className='flex flex-col gap-4'>
 				<h3 className='text-xl font-bold'>Our Mission</h3>
 				<p>

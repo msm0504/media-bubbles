@@ -1,6 +1,6 @@
-import type { AlertColor } from '@mui/material';
+import type { Color } from '@/styles/color-variants';
 
-const ALERT_LEVEL: Record<string, AlertColor> = {
+const ALERT_LEVEL: Record<string, Color> = {
 	success: 'success',
 	info: 'info',
 	warning: 'warning',

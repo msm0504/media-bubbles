@@ -57,7 +57,7 @@ const AddEditBlogPost: React.FC<AddEditPostProps> = ({ currentVersion }) => {
 	}, [currentVersion]);
 
 	if (!isAdmin(session?.user.role)) {
-		return <p className='text-blue-600'>You shall not post!</p>;
+		return <p className='text-info'>You shall not post!</p>;
 	}
 
 	const mode = currentVersion ? 'Edit' : 'Add';

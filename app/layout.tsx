@@ -4,7 +4,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { ParentCompProps } from '@/types';
 import Footer from '@/components/shared/footer';
-// import TopNavbar from '@/components/shared/top-navbar';
+import TopNavbar from '@/components/shared/top-navbar';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import '../styles/globals.css';
 
@@ -31,17 +31,18 @@ const robotoSlab = Roboto_Slab({
 	variable: '--font-roboto-slab',
 });
 
-// 			<TopNavbar />
-
 const RootLayout: React.FC<ParentCompProps> = ({ children }) => (
 	<html lang='en' className={robotoSlab.variable}>
 		<body>
 			<div className='flex min-h-screen flex-col'>
+				<TopNavbar />
 				<div className='flex grow flex-col'>{children}</div>
 				<Footer />
 			</div>
 		</body>
-		<GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID || ''} />
+		{process.env.NEXT_PUBLIC_GA_ID ? (
+			<GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+		) : null}
 	</html>
 );
 

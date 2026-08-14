@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react';
-import type { AlertColor } from '@mui/material';
 import type { SearchMode } from './constants/search-mode';
 import type { SourceSlant } from './constants/source-slant';
+import type { Color } from './styles/color-variants';
 
 /** Source List Type Definition */
 
@@ -129,7 +129,7 @@ export type FeedbackMessage = {
 
 /** Client Context Type Definitions */
 
-export type ShowAlertFn = (level: AlertColor, message: string) => void;
+export type ShowAlertFn = (level: Color, message: string) => void;
 
 export type SearchResult =
 	| {

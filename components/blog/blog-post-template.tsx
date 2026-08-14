@@ -10,7 +10,7 @@ type BlogPostTemplateProps = {
 const BlogPostTemplate: React.FC<BlogPostTemplateProps> = ({ content, date, title }) => (
 	<>
 		<PageHeading heading={title} />
-		<div className='rounded-xl p-4'>
+		<div className='rounded-xl bg-white p-4'>
 			<div className='text-sm'>{`Last updated at ${new Date(date).toLocaleString()} `}</div>
 			{markdownToHtml(content)}
 		</div>

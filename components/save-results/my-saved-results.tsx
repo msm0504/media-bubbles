@@ -1,6 +1,5 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { ListItem, ListItemText } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { Button } from '../shared/base-ui';
@@ -19,11 +18,11 @@ const SavedResultItem: React.FC<SavedResultItemProps> = ({
 }) => {
 	const router = useRouter();
 	return (
-		<ListItem>
-			<ListItemText
-				primary={name}
-				secondary={`Saved at: ${new Date(createdAt).toLocaleString()}`}
-			/>
+		<li className='flex items-center gap-2'>
+			<div className='grow'>
+				<p>{name}</p>
+				<p className='text-sm'>{`Saved at: ${new Date(createdAt).toLocaleString()}`}</p>
+			</div>
 			<Button
 				color='info'
 				variant='outlined'
@@ -40,7 +39,7 @@ const SavedResultItem: React.FC<SavedResultItemProps> = ({
 					icon={faTrashCan}
 				/>
 			</Button>
-		</ListItem>
+		</li>
 	);
 };
 
