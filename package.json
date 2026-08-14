@@ -1,6 +1,6 @@
 {
 	"name": "media-bubbles",
-	"version": "7.3.6",
+	"version": "7.3.7",
 	"private": true,
 	"overrides": {
 		"postcss": "^8.5.10",
@@ -36,7 +36,7 @@
 		"mongodb": "^6.9.0",
 		"nanoid": "^5.0.7",
 		"next": "^16.2.12",
-		"puppeteer-core": "^24.31.0",
+		"puppeteer-core": "^25.7.0",
 		"react": "^19.2.7",
 		"react-dom": "^19.2.7",
 		"react-hook-form": "^7.54.2",
@@ -61,7 +61,7 @@
 		"jsdom": "^25.0.1",
 		"msw": "^2.4.12",
 		"prettier": "^3.3.3",
-		"puppeteer": "^24.31.0",
+		"puppeteer": "^25.7.0",
 		"typescript": "^5",
 		"vitest": "^4.1.10",
 		"whatwg-fetch": "^3.6.20"
