@@ -1,6 +1,6 @@
 import type { AtUriString, DidString } from '@atproto/lex';
 import { app } from '@bsky/sdk/lexicons';
-import { getBskyNewsListUri } from './bsky-list.service';
+import { getBskyNewsListUri } from './bsky-list-service';
 import { getSourceLists } from './source-list-service';
 import { getBskyPublicAgent } from '@/connections/bsky-agent';
 import type { BskyArticle, Source } from '@/types';
@@ -43,7 +43,7 @@ const getSourcePosts = async (handle: string, cursor: string) => {
 		cursor,
 	};
 	try {
-		return agent.call(app.bsky.feed.getAuthorFeed, params);
+		return await agent.call(app.bsky.feed.getAuthorFeed, params);
 	} catch (error) {
 		console.error(`${handle}: ${error}`);
 		return { feed: [] };
@@ -54,7 +54,7 @@ const getPostsFromAllSources = async (cursor: string) => {
 	const agent = getBskyPublicAgent();
 	const listUri = (await getBskyNewsListUri()) as AtUriString;
 	try {
-		return agent.call(app.bsky.feed.getListFeed, {
+		return await agent.call(app.bsky.feed.getListFeed, {
 			list: listUri,
 			limit: MAX_BSKY_RESULTS,
 			cursor,
@@ -169,6 +169,8 @@ const loadRecentPosts = async ({
 			: getSourcePosts(source?.bskyHandle || '', cursor));
 		data.feed.forEach(({ post }) => {
 			const postSource = source || sourcesByBskyId[post.author.did];
+			if (!postSource) return;
+
 			const formatted = formatPost(post, postSource);
 			if (
 				formatted &&

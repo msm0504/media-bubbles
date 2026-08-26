@@ -1,5 +1,5 @@
 import { cacheTag, revalidateTag } from 'next/cache';
-import { synchBskyList } from './bsky-list.service';
+import { synchBskyList } from './bsky-list-service';
 import {
 	deleteSourcePosts,
 	loadPostsForNewSource,
