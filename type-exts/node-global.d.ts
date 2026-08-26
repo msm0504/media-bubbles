@@ -1,16 +1,12 @@
 /* eslint-disable no-var */
 import type { Db, MongoClient } from 'mongodb';
-import type { SourceSlant } from '../constants/source-slant';
+import type { Client } from '@atproto/lex';
 
 declare global {
 	var mongo: {
 		clientPromise: Promise<MongoClient>;
 		db: Db;
 	};
-	var sources: {
-		lastUpdate: number;
-		app: Source[];
-		bySlant: Source[][];
-		biasRatings: Record<string, SourceSlant>;
-	};
+	var bskyAgent: Promise<Client>;
+	var bskyPublicAgent: Client;
 }

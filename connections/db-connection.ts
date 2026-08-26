@@ -1,4 +1,4 @@
-import { Collection, Db, MongoClient } from 'mongodb';
+import { Collection, Db, type Document, MongoClient } from 'mongodb';
 
 import { MONGODB_URL } from '@/constants/server';
 
@@ -23,7 +23,9 @@ export const getDbConnection = async (): Promise<Db> => {
 	return global.mongo.db;
 };
 
-export const getCollection = async (collectionName: string): Promise<Collection> => {
+export const getCollection = async <T extends Document>(
+	collectionName: string
+): Promise<Collection<T>> => {
 	const db = await getDbConnection();
-	return db.collection(collectionName);
+	return db.collection<T>(collectionName);
 };

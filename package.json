@@ -1,6 +1,6 @@
 {
 	"name": "media-bubbles",
-	"version": "7.3.7",
+	"version": "7.3.8",
 	"private": true,
 	"overrides": {
 		"postcss": "^8.5.10",
@@ -19,6 +19,9 @@
 		"test:coverage": "vitest run --coverage"
 	},
 	"dependencies": {
+		"@atproto/lex": "^0.3.6",
+		"@atproto/lex-password-session": "^0.2.0",
+		"@bsky/sdk": "^1.0.1",
 		"@emotion/cache": "^11.14.0",
 		"@emotion/react": "^11.14.0",
 		"@emotion/styled": "^11.14.1",

@@ -1,5 +1,5 @@
-import { getHeadlines } from '@/services/bsky-news-service';
 import { SearchRequest } from '@/types';
+import { getHeadlines } from '@/services/news-search-service';
 
 export const GET = async (request: Request) => {
 	const { searchParams } = new URL(request.url);
