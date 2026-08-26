@@ -41,7 +41,7 @@ const source: Source = {
 const makePost = (overrides: Record<string, unknown> = {}) =>
 	({
 		uri: 'at://did:plc:example/app.bsky.feed.post/post-1',
-		indexedAt: '2026-01-01T12:00:00.000Z',
+		indexedAt: new Date(Date.now() - 60_000).toISOString(),
 		author: { did: 'did:plc:example' },
 		record: { text: 'Read this https://example.com/story' },
 		...overrides,

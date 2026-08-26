@@ -87,7 +87,8 @@ const formatPost = (
 	} else if ((post.record as PostRecord)?.text) {
 		const textWithUrl = ((post.record as PostRecord).text || '').split(URL_REGEX, 2);
 		const text = textWithUrl[0]?.trim() || '';
-		const url = textWithUrl[1]?.startsWith('http')
+		if (!textWithUrl[1]) return;
+		const url = textWithUrl[1].startsWith('http')
 			? textWithUrl[1] || ''
 			: `https://${textWithUrl[1]}`;
 		return {
@@ -137,16 +138,19 @@ const loadRecentPosts = async ({
 	const uniqueTitles: string[] = [];
 	const uniqueDescs: string[] = [];
 
-	const { appSourceList } = await getSourceLists();
-	const sourcesByBskyId = appSourceList.reduce(
-		(acc, source) => {
-			if (source.bskyDid) {
-				acc[source.bskyDid] = source;
-			}
-			return acc;
-		},
-		{} as { [name: string]: Source }
-	);
+	let sourcesByBskyId: { [name: string]: Source } = {};
+	if (loadAllSources) {
+		const { appSourceList } = await getSourceLists();
+		sourcesByBskyId = appSourceList.reduce(
+			(acc, source) => {
+				if (source.bskyDid) {
+					acc[source.bskyDid] = source;
+				}
+				return acc;
+			},
+			{} as { [name: string]: Source }
+		);
+	}
 
 	const minDate = new Date();
 	switch (previousUnit) {
@@ -167,9 +171,11 @@ const loadRecentPosts = async ({
 		const data: GetPostsResp = await (loadAllSources
 			? getPostsFromAllSources(cursor)
 			: getSourcePosts(source?.bskyHandle || '', cursor));
-		data.feed.forEach(({ post }) => {
+		for (const { post } of data.feed) {
+			if (new Date(post.indexedAt).getTime() < minTs) break;
+
 			const postSource = source || sourcesByBskyId[post.author.did];
-			if (!postSource) return;
+			if (!postSource) continue;
 
 			const formatted = formatPost(post, postSource);
 			if (
@@ -185,7 +191,7 @@ const loadRecentPosts = async ({
 				}
 				uniquePosts.push(formatted);
 			}
-		});
+		}
 		cursor = data.cursor;
 	}
 

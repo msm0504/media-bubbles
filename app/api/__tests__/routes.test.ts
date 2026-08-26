@@ -16,8 +16,10 @@ const mocks = vi.hoisted(() => ({
 	deleteSavedResult: vi.fn(),
 	takeScreenshot: vi.fn(),
 	getSourceLists: vi.fn(),
+	populateSourceLists: vi.fn(),
 	getSourceLogo: vi.fn(),
-	after: vi.fn(),
+	loadRecentPostsForAllSources: vi.fn(),
+	after: vi.fn().mockImplementation((callback: () => Promise<void>) => callback()),
 }));
 
 vi.mock('@/lib/auth', () => ({ auth: { api: { getSession: mocks.authSession } } }));
@@ -38,8 +40,14 @@ vi.mock('@/services/saved-results-service', () => ({
 	deleteSavedResult: mocks.deleteSavedResult,
 }));
 vi.mock('@/services/screenshot-service', () => ({ takeScreenshot: mocks.takeScreenshot }));
-vi.mock('@/services/source-list-service', () => ({ getSourceLists: mocks.getSourceLists }));
+vi.mock('@/services/source-list-service', () => ({
+	getSourceLists: mocks.getSourceLists,
+	populateSourceLists: mocks.populateSourceLists,
+}));
 vi.mock('@/services/source-logo-service', () => ({ getSourceLogo: mocks.getSourceLogo }));
+vi.mock('@/services/bsky-post-service', () => ({
+	loadRecentPostsForAllSources: mocks.loadRecentPostsForAllSources,
+}));
 vi.mock('better-auth/next-js', () => ({
 	toNextJsHandler: vi.fn(() => ({ GET: mocks.betterAuthGet, POST: mocks.betterAuthPost })),
 }));
@@ -48,14 +56,17 @@ import { GET as authGet, POST as authPost } from '@/app/api/auth/[...all]/route'
 import { DELETE as deleteBlogPost, PUT as updateBlogPost } from '@/app/api/blog-posts/[id]/route';
 import { GET as getBlogPosts, POST as createBlogPost } from '@/app/api/blog-posts/route';
 import { POST as sendFeedback } from '@/app/api/feedback/route';
-import { GET as getHeadlinesRoute } from '@/app/api/headlines/route';
+import { GET as getHeadlinesRoute, POST as postHeadlinesRoute } from '@/app/api/headlines/route';
 import {
 	DELETE as deleteSearchResult,
 	GET as getSearchResult,
 } from '@/app/api/search-result/[id]/route';
 import { PUT as screenshotSearchResult } from '@/app/api/search-result/[id]/screenshot/route';
 import { GET as getSavedResultsRoute, POST as saveResult } from '@/app/api/search-result/route';
-import { GET as getSourceListsRoute } from '@/app/api/source-lists/route';
+import {
+	GET as getSourceListsRoute,
+	POST as postSourceListsRoute,
+} from '@/app/api/source-lists/route';
 import { GET as getSourceLogoRoute } from '@/app/api/source-logo/route';
 
 const request = (url: string, init?: RequestInit) => new Request(`http://localhost${url}`, init);
@@ -65,7 +76,6 @@ const params = (id: string) => ({ params: Promise.resolve({ id }) });
 
 afterEach(() => {
 	vi.clearAllMocks();
-	process.env.NEXT_PUBLIC_URL = 'https://media-bubbles.test';
 });
 
 describe('auth API route', () => {
@@ -159,6 +169,34 @@ describe('feedback and headlines API routes', () => {
 			previousDays: '2',
 		});
 	});
+
+	test('loads recent posts', async () => {
+		const response = await postHeadlinesRoute(
+			request('/api/headlines', {
+				method: 'POST',
+				headers: { 'x-batch-job-key': 'batch-job-secret-123' },
+			})
+		);
+
+		expect(mocks.loadRecentPostsForAllSources).toHaveBeenCalled();
+		expect(response.status).toBe(202);
+	});
+
+	test('does not load recent posts if no key given', async () => {
+		const response = await postHeadlinesRoute(request('/api/headlines', { method: 'POST' }));
+
+		expect(mocks.loadRecentPostsForAllSources).not.toHaveBeenCalled();
+		expect(response.status).toBe(401);
+	});
+
+	test('does not load recent posts if incorrect key given', async () => {
+		const response = await postHeadlinesRoute(
+			request('/api/headlines', { method: 'POST', headers: { 'x-batch-job-key': 'wrong-key' } })
+		);
+
+		expect(mocks.loadRecentPostsForAllSources).not.toHaveBeenCalled();
+		expect(response.status).toBe(401);
+	});
 });
 
 describe('saved search-result API routes', () => {
@@ -184,7 +222,6 @@ describe('saved search-result API routes', () => {
 	test('saves a result with the current user and schedules its screenshot', async () => {
 		mocks.authSession.mockResolvedValue({ user: { id: 'user-1' } });
 		mocks.saveSearchResult.mockResolvedValue({ itemId: 'result-1' });
-		mocks.after.mockImplementation((callback: () => Promise<void>) => callback());
 		const result = { name: 'Morning News', items: [] };
 
 		await saveResult(jsonRequest('/api/search-result', result));
@@ -255,6 +292,34 @@ describe('source API routes', () => {
 		mocks.getSourceLists.mockResolvedValue({ appSourceList: [] });
 
 		expect(await (await getSourceListsRoute()).json()).toEqual({ appSourceList: [] });
+	});
+
+	test('populates the source lists', async () => {
+		const response = await postSourceListsRoute(
+			request('/api/source-lists', {
+				method: 'POST',
+				headers: { 'x-batch-job-key': 'batch-job-secret-123' },
+			})
+		);
+
+		expect(mocks.populateSourceLists).toHaveBeenCalled();
+		expect(response.status).toBe(202);
+	});
+
+	test('does not populate the source lists if no key given', async () => {
+		const response = await postSourceListsRoute(request('/api/source-lists', { method: 'POST' }));
+
+		expect(mocks.populateSourceLists).not.toHaveBeenCalled();
+		expect(response.status).toBe(401);
+	});
+
+	test('does not populate the source lists if incorrect key given', async () => {
+		const response = await postSourceListsRoute(
+			request('/api/source-lists', { method: 'POST', headers: { 'x-batch-job-key': 'wrong-key' } })
+		);
+
+		expect(mocks.populateSourceLists).not.toHaveBeenCalled();
+		expect(response.status).toBe(401);
 	});
 
 	test('returns a PNG response for an existing source logo', async () => {

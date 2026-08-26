@@ -134,12 +134,17 @@ export const populateSourceLists = async () => {
 		}
 		sourceListBySlant[sourceSlant].push(source);
 
-		if (!curSourcesMap[source.id]) {
+		const current = curSourcesMap[source.id];
+		if (!current) {
 			added.push(source);
 			isChanged = true;
-		} else if (curSourcesMap[source.id].slant !== sourceSlant) {
-			changed.push(source);
-			isChanged = true;
+		} else {
+			source.bskyDid = current.bskyDid;
+			source.bskyHandle = current.bskyHandle;
+			if (current.slant !== sourceSlant) {
+				changed.push(source);
+				isChanged = true;
+			}
 		}
 
 		deletedIds.delete(source.id);

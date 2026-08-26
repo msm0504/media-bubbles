@@ -66,14 +66,18 @@ afterAll(() => server.close());
 
 test('makes initial API call and renders results if not logged in', async () => {
 	vi.mocked(useSession).mockReturnValue(mockUnauthSession);
-	server.use(http.get('http://test.com/api/blog-posts', () => HttpResponse.json(mockResponse)));
+	server.use(
+		http.get('https://media-bubbles.test/api/blog-posts', () => HttpResponse.json(mockResponse))
+	);
 	render(<BlogPosts />);
 	expect(await screen.findByText('Very Important Post')).toBeInTheDocument();
 });
 
 test('makes initial API call and renders results if logged in', async () => {
 	vi.mocked(useSession).mockReturnValue(mockUserSession);
-	server.use(http.get('http://test.com/api/blog-posts', () => HttpResponse.json(mockResponse)));
+	server.use(
+		http.get('https://media-bubbles.test/api/blog-posts', () => HttpResponse.json(mockResponse))
+	);
 	render(<BlogPosts />);
 	expect(await screen.findByText('Very Important Post')).toBeInTheDocument();
 });
@@ -81,7 +85,9 @@ test('makes initial API call and renders results if logged in', async () => {
 test('makes initial API call and displays message if no results', async () => {
 	vi.mocked(useSession).mockReturnValue(mockUnauthSession);
 	server.use(
-		http.get('http://test.com/api/blog-posts', () => HttpResponse.json(mockEmptyResponse))
+		http.get('https://media-bubbles.test/api/blog-posts', () =>
+			HttpResponse.json(mockEmptyResponse)
+		)
 	);
 	render(<BlogPosts />);
 	expect(await screen.findByText('No posts found')).toBeInTheDocument();
@@ -91,7 +97,7 @@ test('caches results returned from API', async () => {
 	const apiSpy = vi.spyOn(apiService, 'callApi');
 	vi.mocked(useSession).mockReturnValue(mockUserSession);
 	server.use(
-		http.get('http://test.com/api/blog-posts', ({ request }) => {
+		http.get('https://media-bubbles.test/api/blog-posts', ({ request }) => {
 			const filter = new URL(request.url).searchParams.get('filter');
 			return filter
 				? HttpResponse.json({
@@ -122,7 +128,9 @@ test('caches results returned from API', async () => {
 
 test('hides edit and delete buttons if not logged in', async () => {
 	vi.mocked(useSession).mockReturnValue(mockUnauthSession);
-	server.use(http.get('http://test.com/api/blog-posts', () => HttpResponse.json(mockResponse)));
+	server.use(
+		http.get('https://media-bubbles.test/api/blog-posts', () => HttpResponse.json(mockResponse))
+	);
 	render(<BlogPosts />);
 	expect(screen.queryByLabelText('Add Post')).not.toBeInTheDocument();
 	await screen.findByText('Very Important Post');
@@ -133,7 +141,9 @@ test('hides edit and delete buttons if not logged in', async () => {
 
 test('hides edit and delete buttons if not admin', async () => {
 	vi.mocked(useSession).mockReturnValue(mockUserSession);
-	server.use(http.get('http://test.com/api/blog-posts', () => HttpResponse.json(mockResponse)));
+	server.use(
+		http.get('https://media-bubbles.test/api/blog-posts', () => HttpResponse.json(mockResponse))
+	);
 	render(<BlogPosts />);
 	expect(screen.queryByLabelText('Add Post')).not.toBeInTheDocument();
 	await screen.findByText('Very Important Post');
@@ -148,9 +158,11 @@ test('displays success alert after successful item delete', async () => {
 		items: [...mockResponse.items],
 		pageCount: 1,
 	};
-	server.use(http.get('http://test.com/api/blog-posts', () => HttpResponse.json(mockRespCopy)));
 	server.use(
-		http.delete(`http://test.com/api/blog-posts/${mockRespCopy.items[0].slug}`, () => {
+		http.get('https://media-bubbles.test/api/blog-posts', () => HttpResponse.json(mockRespCopy))
+	);
+	server.use(
+		http.delete(`https://media-bubbles.test/api/blog-posts/${mockRespCopy.items[0].slug}`, () => {
 			mockRespCopy.items.splice(0, 1);
 			return HttpResponse.json({ itemDeleted: true });
 		})
@@ -171,9 +183,11 @@ test('displays success alert after successful item delete', async () => {
 
 test('displays error alert after failed item delete', async () => {
 	vi.mocked(useSession).mockReturnValue(mockAdminSession);
-	server.use(http.get('http://test.com/api/blog-posts', () => HttpResponse.json(mockResponse)));
 	server.use(
-		http.delete(`http://test.com/api/blog-posts/${mockResponse.items[0].slug}`, () =>
+		http.get('https://media-bubbles.test/api/blog-posts', () => HttpResponse.json(mockResponse))
+	);
+	server.use(
+		http.delete(`https://media-bubbles.test/api/blog-posts/${mockResponse.items[0].slug}`, () =>
 			HttpResponse.json({ itemDeleted: false })
 		)
 	);
