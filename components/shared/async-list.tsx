@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useContext, ReactElement } from 'react';
+import { useState, useEffect, useContext, useRef, useCallback, ReactElement } from 'react';
 import {
 	Container,
 	List,
@@ -59,9 +59,9 @@ const AsyncList = <T,>({
 	const [loading, setLoading] = useState(false);
 	const [filter, setFilter] = useState('');
 	const [page, setPage] = useState(1);
-	const [cache, setCache] = useState<Cache<T>>({});
+	const cache = useRef<Cache<T>>({});
 
-	const getListItems = async () => {
+	const getListItems = useCallback(async () => {
 		setLoading(true);
 		const { items: returnedItems, pageCount } = await callApi<ListResponse<T>, GetParams>(
 			'get',
@@ -72,41 +72,41 @@ const AsyncList = <T,>({
 			}
 		);
 		if (page === 1) {
-			setCache({
-				...cache,
+			cache.current = {
+				...cache.current,
 				[filter]: { items: { [page]: returnedItems }, pageCount },
-			});
+			};
 			setItems(returnedItems);
 		} else if (page >= 1) {
-			setCache({
-				...cache,
+			cache.current = {
+				...cache.current,
 				[filter]: {
-					items: { ...cache[filter].items, [page]: returnedItems },
+					items: { ...cache.current[filter].items, [page]: returnedItems },
 					pageCount,
 				},
-			});
+			};
 			setItems(returnedItems);
 		} else {
 			throw `Queried for page ${page} of results containing ${filter}`;
 		}
 		if (Object.keys(cache).length > CACHE_SIZE) {
-			const { [Object.keys(cache)[0]]: _firstItem, ...rest } = cache;
-			setCache(rest);
+			const { [Object.keys(cache.current)[0]]: firstItem, ...rest } = cache.current;
+			cache.current = rest;
 		}
 		setPageCount(pageCount);
 		setLoading(false);
-	};
+	}, [apiPath, filter, page]);
 
 	useEffect(() => {
 		if (!loginRequired || session) {
-			if (cache[filter]?.items[page]) {
-				setItems(cache[filter].items[page]);
-				setPageCount(cache[filter].pageCount);
+			if (cache.current[filter]?.items[page]) {
+				setItems(cache.current[filter].items[page]);
+				setPageCount(cache.current[filter].pageCount);
 			} else {
 				getListItems();
 			}
 		}
-	}, [loginRequired, session, page, filter]);
+	}, [loginRequired, session, page, filter, getListItems]);
 
 	if (loginRequired && !session)
 		return (
@@ -127,7 +127,7 @@ const AsyncList = <T,>({
 		} else {
 			showAlert(ALERT_LEVEL.success, `${itemName || itemId} deleted successfully.`);
 			setPage(1);
-			setCache({});
+			cache.current = {};
 			getListItems();
 		}
 	};

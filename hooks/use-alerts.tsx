@@ -1,12 +1,12 @@
 'use client';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { Alert as MuiAlert } from '@mui/material';
 import type { AlertColor } from '@mui/material';
 import type { ShowAlertFn } from '@/types';
 
 type UseAlerts = [React.FC, ShowAlertFn];
-type AlertInfo = { level: AlertColor; message: string };
+type AlertInfo = { level: AlertColor; message: string; pathname: string | null };
 
 const useAlerts = (): UseAlerts => {
 	const [alert, setAlert] = useState<AlertInfo>();
@@ -17,13 +17,14 @@ const useAlerts = (): UseAlerts => {
 		if (alert) alertRef.current?.scrollIntoView();
 	}, [alert]);
 
-	useEffect(() => {
-		setAlert(undefined);
-	}, [pathname]);
+	const visibleAlert = alert?.pathname === pathname ? alert : undefined;
 
-	const showAlert = (level: AlertColor, message: string) => {
-		setAlert({ level, message });
-	};
+	const showAlert = useCallback(
+		(level: AlertColor, message: string) => {
+			setAlert({ level, message, pathname });
+		},
+		[pathname]
+	);
 
 	const hideAlert = () => {
 		setAlert(undefined);
@@ -31,9 +32,9 @@ const useAlerts = (): UseAlerts => {
 
 	const Alert = () => (
 		<div style={{ scrollMarginTop: '5rem' }} ref={alertRef}>
-			{alert ? (
-				<MuiAlert severity={alert.level} onClose={hideAlert}>
-					{alert.message}
+			{visibleAlert ? (
+				<MuiAlert severity={visibleAlert.level} onClose={hideAlert}>
+					{visibleAlert.message}
 				</MuiAlert>
 			) : null}
 		</div>

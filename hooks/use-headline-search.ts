@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react';
+import { useCallback, useContext } from 'react';
 import { AlertsDispatch } from '../contexts/alerts-context';
 import { SearchResultContext } from '../contexts/search-result-context';
 import ALERT_LEVEL from '../constants/alert-level';
@@ -47,53 +47,51 @@ const useHeadlineSearch = (appSourceList: Source[], sourceListBySlant: Source[][
 	const [_context, setContext] = useContext(SearchResultContext);
 	const showAlert = useContext(AlertsDispatch);
 
-	const validateFormData = useMemo(
-		() =>
-			(formData: SearchFormWithMode): boolean => {
-				const errorMessage = getFormErrorMessage(formData);
-				if (errorMessage) {
-					showAlert(ALERT_LEVEL.warning, errorMessage);
-				}
-				return !errorMessage;
-			},
+	const validateFormData = useCallback(
+		(formData: SearchFormWithMode): boolean => {
+			const errorMessage = getFormErrorMessage(formData);
+			if (errorMessage) {
+				showAlert(ALERT_LEVEL.warning, errorMessage);
+			}
+			return !errorMessage;
+		},
 		[showAlert]
 	);
 
-	const performSearch = useMemo(
-		() =>
-			async (formData: SearchFormWithMode): Promise<void> => {
-				const isSearchAll =
-					formData.searchMode === 'FULL_SPECTRUM' && formData.spectrumSearchAll === 'Y';
-				const sourceListToSearch = isSearchAll
-					? []
-					: getNextSourcesToSearch(formData, appSourceList, sourceListBySlant);
-				removeItemsFromStorage(['articleMap', 'savedResultId', 'savedResultName']);
-				setItemsInStorage([
-					{ key: 'sourceListToSearch', value: sourceListToSearch },
-					{ key: 'isSearchAll', value: isSearchAll },
-				]);
+	const performSearch = useCallback(
+		async (formData: SearchFormWithMode): Promise<void> => {
+			const isSearchAll =
+				formData.searchMode === 'FULL_SPECTRUM' && formData.spectrumSearchAll === 'Y';
+			const sourceListToSearch = isSearchAll
+				? []
+				: getNextSourcesToSearch(formData, appSourceList, sourceListBySlant);
+			removeItemsFromStorage(['articleMap', 'savedResultId', 'savedResultName']);
+			setItemsInStorage([
+				{ key: 'sourceListToSearch', value: sourceListToSearch },
+				{ key: 'isSearchAll', value: isSearchAll },
+			]);
 
-				const requestData: SearchRequest = {
-					sources: sourceListToSearch.map(source => source.id).join(),
-					spectrumSearchAll: formData.spectrumSearchAll,
-					keyword: formData.keyword,
-					previousDays: formData.previousDays,
-				};
-				const articleMap =
-					(await callApi<ArticleMap, SearchRequest>('get', 'headlines', requestData)) || {};
-				const savedResultName = getSavedResultName(formData);
-				setContext({
-					sourceListToSearch,
-					isSearchAll,
-					articleMap,
-					savedResultName,
-				} as SearchResult);
-				setItemsInStorage([
-					{ key: 'articleMap', value: articleMap },
-					{ key: 'savedResultName', value: savedResultName },
-				]);
-				return;
-			},
+			const requestData: SearchRequest = {
+				sources: sourceListToSearch.map(source => source.id).join(),
+				spectrumSearchAll: formData.spectrumSearchAll,
+				keyword: formData.keyword,
+				previousDays: formData.previousDays,
+			};
+			const articleMap =
+				(await callApi<ArticleMap, SearchRequest>('get', 'headlines', requestData)) || {};
+			const savedResultName = getSavedResultName(formData);
+			setContext({
+				sourceListToSearch,
+				isSearchAll,
+				articleMap,
+				savedResultName,
+			} as SearchResult);
+			setItemsInStorage([
+				{ key: 'articleMap', value: articleMap },
+				{ key: 'savedResultName', value: savedResultName },
+			]);
+			return;
+		},
 		[appSourceList, setContext, sourceListBySlant]
 	);
 

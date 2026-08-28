@@ -78,7 +78,7 @@ const SaveableForm = <T extends FieldValues>({
 				reset(storedFormData as T);
 			}
 		}
-	}, [formName, localStorageInterval]);
+	}, [formName, localStorageInterval, reset]);
 
 	useInterval(
 		() => setItemInStorage({ key: formName, value: currentValues }),
