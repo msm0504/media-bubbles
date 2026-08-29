@@ -32,6 +32,7 @@ const renderFormWithContext = (searchMode: SearchMode) =>
 	);
 
 beforeAll(() => {
+	globalThis.PointerEvent = MouseEvent as unknown as typeof PointerEvent;
 	Element.prototype.scrollIntoView = vi.fn();
 	server.listen();
 });
@@ -46,24 +47,26 @@ afterAll(() => server.close());
 test('renders the component', () => {
 	renderForm('MY_BUBBLE');
 	expect(screen.queryByText(/^Choose the category.*$/)).toBeInTheDocument();
-	expect(screen.queryByLabelText('Center-Left')).toBeInTheDocument();
+	expect(screen.getByRole('radio', { name: 'Center-Left' })).toBeInTheDocument();
 });
 
 test('renders across the spectrum form', () => {
 	renderForm('FULL_SPECTRUM');
 	expect(screen.queryByText(/^Choose the category.*$/)).not.toBeInTheDocument();
-	expect(screen.queryByLabelText('Include Multiple Sources in Each Category')).toBeInTheDocument();
+	expect(
+		screen.getByRole('switch', { name: 'Include Multiple Sources in Each Category' })
+	).toBeInTheDocument();
 });
 
 test('renders user select form', () => {
 	renderForm('USER_SELECT');
 	expect(screen.queryByText(`Choose up to ${MAX_SOURCE_SELECTIONS} sources.`)).toBeInTheDocument();
-	const cnnCheckbox = screen.queryByLabelText('CNN') as HTMLInputElement;
+	const cnnCheckbox = screen.getByRole('checkbox', { name: 'CNN' });
 	expect(cnnCheckbox).toBeInTheDocument();
-	fireEvent.click(cnnCheckbox, { target: { checked: false } });
-	expect(cnnCheckbox.checked).toBe(true);
-	fireEvent.click(cnnCheckbox, { target: { checked: true } });
-	expect(cnnCheckbox.checked).toBe(false);
+	fireEvent.click(cnnCheckbox);
+	expect(cnnCheckbox).toHaveAttribute('aria-checked', 'true');
+	fireEvent.click(cnnCheckbox);
+	expect(cnnCheckbox).toHaveAttribute('aria-checked', 'false');
 });
 
 test('has no extra inputs for random search', () => {
@@ -77,11 +80,13 @@ test('has no extra inputs for random search', () => {
 	).not.toBeInTheDocument();
 });
 
-test('gives more options if keyword entered', () => {
+test('gives more options if keyword entered', async () => {
 	renderForm('FULL_SPECTRUM');
-	const keywordInput = screen.getByLabelText('Key Words', { exact: false });
-	fireEvent.change(keywordInput, { target: { value: 'truth' } });
-	expect(screen.queryByLabelText('Search Past 5 Day(s)')).toBeInTheDocument();
+	const keywordInput = screen.getByRole('textbox');
+	fireEvent.input(keywordInput, { target: { value: 'truth' } });
+	await waitFor(() =>
+		expect(screen.getByRole('slider', { name: 'Search Past 5 Day(s)' })).toBeInTheDocument()
+	);
 });
 
 test('displays error alert if slant has not been selected for my bubble search', async () => {
@@ -109,7 +114,7 @@ test('get headlines call is made if form is valid', async () => {
 	const apiSpy = vi.spyOn(apiService, 'callApi');
 	server.use(http.get('https://media-bubbles.test/api/headlines', () => HttpResponse.json({})));
 	renderFormWithContext('MY_BUBBLE');
-	fireEvent.click(screen.getByLabelText('Center-Left'));
+	fireEvent.click(screen.getByRole('radio', { name: 'Center-Left' }));
 	fireEvent.click(screen.getByText('Get Headlines'));
 	expect(screen.queryByRole('alert')).not.toBeInTheDocument();
 	expect(apiSpy).toHaveBeenCalledTimes(1);

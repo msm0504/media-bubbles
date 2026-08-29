@@ -26,10 +26,14 @@ const useAlerts = (): UseAlerts => {
 		[pathname]
 	);
 
+	const hideAlert = () => {
+		setAlert(undefined);
+	};
+
 	const AlertDisplay = () => (
 		<div className='scroll-mt-20' ref={alertRef}>
 			{visibleAlert ? (
-				<Alert color={visibleAlert.level} description={visibleAlert.message} />
+				<Alert color={visibleAlert.level} description={visibleAlert.message} onClose={hideAlert} />
 			) : null}
 		</div>
 	);

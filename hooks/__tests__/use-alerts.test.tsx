@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { afterEach, beforeEach, expect, test } from 'vitest';
-import { cleanup, render, fireEvent, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 import useAlerts from '../use-alerts';
 import type { Color } from '@/styles/color-variants';
 
@@ -26,6 +26,6 @@ test('renders the component', () => {
 });
 
 test('closes when button is clicked', () => {
-	fireEvent.click(screen.getByTitle('Close'));
+	fireEvent.click(screen.getByLabelText('close alert'));
 	expect(screen.queryByText('Urgent, urgent, emergency')).not.toBeInTheDocument();
 });

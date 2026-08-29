@@ -11,19 +11,6 @@ import addTestWait from '@/test-utils/add-test-wait';
 
 const server = setupServer();
 
-const createMatchMediaLg = (isLgScreen: boolean) => (): MediaQueryList => ({
-	matches: isLgScreen,
-	media: '',
-	onchange: () => {},
-	addListener: () => {},
-	addEventListener: () => {},
-	dispatchEvent: () => false,
-	removeListener: () => {},
-	removeEventListener: () => {},
-});
-const mockLgScreen = () => createMatchMediaLg(true);
-const mockSmallerScreen = () => createMatchMediaLg(false);
-
 beforeAll(() => {
 	server.listen();
 	server.use(http.get('/api/source-logo', () => new HttpResponse(Buffer.from(''))));
@@ -34,7 +21,7 @@ afterEach(cleanup);
 afterAll(() => server.close());
 
 test('displays results for individual sources', async () => {
-	window.matchMedia = mockLgScreen();
+	window.innerWidth = 1280;
 	render(<SearchResults {...singleSourcesMock} />);
 
 	expect(screen.queryByText('NPR')).toBeInTheDocument();
@@ -70,7 +57,7 @@ test('displays results for individual sources', async () => {
 });
 
 test('displays results for search of all sources', async () => {
-	window.matchMedia = mockLgScreen();
+	window.innerWidth = 1280;
 	render(<SearchResults {...allSourcesMock} />);
 
 	Object.values(SOURCE_SLANT_MAP).forEach(slantName =>
@@ -114,7 +101,7 @@ test('displays results for search of all sources', async () => {
 });
 
 test('displays old saved results from News API', async () => {
-	window.matchMedia = mockLgScreen();
+	window.innerWidth = 1280;
 	render(<SearchResults {...oldFormatMock} />);
 
 	expect(screen.queryByText('Axios')).toBeInTheDocument();
@@ -155,19 +142,29 @@ test('displays old saved results from News API', async () => {
 });
 
 test('uses collapse components to show/hide results on smaller screens', async () => {
-	window.matchMedia = mockSmallerScreen();
+	window.innerWidth = 1279;
 	render(<SearchResults {...singleSourcesMock} />);
 
 	const columnToggle = screen.queryByText('NPR')?.closest('button');
 	expect(columnToggle).toBeInTheDocument();
 
-	const article = screen.queryByText(
-		'Plenty of research has found COVID vaccines to be safe and effective.',
-		{ exact: false }
-	);
-	expect(article?.closest('.MuiCollapse-hidden')).toBeInTheDocument();
+	const column = columnToggle?.closest('[data-closed]');
 	fireEvent.click(columnToggle as HTMLButtonElement);
-	await waitFor(() => expect(article?.closest('.MuiCollapse-entered')).toBeInTheDocument());
+	await waitFor(() => {
+		expect(column).toHaveAttribute('data-open');
+		expect(
+			screen.getByText('Plenty of research has found COVID vaccines to be safe and effective.', {
+				exact: false,
+			})
+		).toBeInTheDocument();
+	});
 	fireEvent.click(columnToggle as HTMLButtonElement);
-	await waitFor(() => expect(article?.closest('.MuiCollapse-hidden')).toBeInTheDocument());
+	await waitFor(() => {
+		expect(column).toHaveAttribute('data-closed');
+		expect(
+			screen.queryByText('Plenty of research has found COVID vaccines to be safe and effective.', {
+				exact: false,
+			})
+		).not.toBeInTheDocument();
+	});
 });

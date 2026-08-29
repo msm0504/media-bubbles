@@ -5,8 +5,10 @@ import {
 	faCircleExclamation,
 	faCircleInfo,
 	faTriangleExclamation,
+	faX,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Button from './button';
 import type { CvaColorConfig } from '@/styles/color-variants';
 import cn from '@/util/cn';
 import tw from '@/util/tailwind-template';
@@ -35,25 +37,26 @@ type AlertProps = VariantProps<typeof alertVariants> & {
 	className?: string | string[];
 	title?: React.ReactNode;
 	description: React.ReactNode;
+	onClose?: () => void;
 };
 
-const Alert: React.FC<AlertProps> = ({ className = '', color, description, title }) => {
+const Alert: React.FC<AlertProps> = ({ className = '', color, description, onClose, title }) => {
 	const Icon = useMemo(() => {
 		switch (color) {
 			case 'primary':
-				return <FontAwesomeIcon className='text-primary-dark' icon={faCircleInfo} size='lg' />;
+				return <FontAwesomeIcon className='text-primary-dark' icon={faCircleInfo} size='xl' />;
 			case 'success':
-				return <FontAwesomeIcon className='text-success-dark' icon={faCircleCheck} size='lg' />;
+				return <FontAwesomeIcon className='text-success-dark' icon={faCircleCheck} size='xl' />;
 			case 'info':
-				return <FontAwesomeIcon className='text-info-dark' icon={faCircleInfo} size='lg' />;
+				return <FontAwesomeIcon className='text-info-dark' icon={faCircleInfo} size='xl' />;
 			case 'warning':
 				return (
-					<FontAwesomeIcon className='text-warning-dark' icon={faTriangleExclamation} size='lg' />
+					<FontAwesomeIcon className='text-warning-dark' icon={faTriangleExclamation} size='xl' />
 				);
 			case 'error':
-				return <FontAwesomeIcon className='text-error-dark' icon={faCircleExclamation} size='lg' />;
+				return <FontAwesomeIcon className='text-error-dark' icon={faCircleExclamation} size='xl' />;
 			case 'neutral':
-				return <FontAwesomeIcon className='text-black' icon={faCircleInfo} size='lg' />;
+				return <FontAwesomeIcon className='text-black' icon={faCircleInfo} size='xl' />;
 			default:
 				return null;
 		}
@@ -62,10 +65,15 @@ const Alert: React.FC<AlertProps> = ({ className = '', color, description, title
 	return (
 		<div role='alert' className={cn(alertVariants({ color }), className)}>
 			{Icon}
-			<div className='flex flex-col'>
+			<div className='flex grow flex-col'>
 				{title ? <h2 className='text-lg font-bold'>{title}</h2> : null}
 				<p>{description}</p>
 			</div>
+			{typeof onClose === 'function' ? (
+				<Button color={color} variant='text' onClick={onClose}>
+					<FontAwesomeIcon aria-label='close alert' size='sm' icon={faX} />
+				</Button>
+			) : null}
 		</div>
 	);
 };
