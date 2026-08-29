@@ -25,7 +25,7 @@ export const SearchResultProvider: React.FC<ParentCompProps> = ({ children }) =>
 	const [context, setContext] = useState<SearchResult>(initialState);
 
 	useEffect(() => {
-		setContext({ ...context, ...getItemsFromStorage(storageKeys) } as SearchResult);
+		setContext(context => ({ ...context, ...getItemsFromStorage(storageKeys) }) as SearchResult);
 	}, []);
 
 	return (

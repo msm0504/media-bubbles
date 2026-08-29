@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import type { SearchRequest } from '@/types';
-import { getHeadlines } from '@/services/bsky-news-service';
+import { getHeadlines } from '@/services/news-search-service';
 import SearchResults from '@/components/search-results/search-results';
 import PageHeading from '@/components/shared/page-heading';
 

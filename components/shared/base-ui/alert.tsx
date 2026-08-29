@@ -60,7 +60,7 @@ const Alert: React.FC<AlertProps> = ({ className = '', color, description, title
 	}, [color]);
 
 	return (
-		<div className={cn(alertVariants({ color }), className)}>
+		<div role='alert' className={cn(alertVariants({ color }), className)}>
 			{Icon}
 			<div className='flex flex-col'>
 				{title ? <h2 className='text-lg font-bold'>{title}</h2> : null}

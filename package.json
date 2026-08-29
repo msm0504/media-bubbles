@@ -1,6 +1,6 @@
 {
 	"name": "media-bubbles",
-	"version": "7.3.9",
+	"version": "7.4.2",
 	"private": true,
 	"overrides": {
 		"sharp": "^0.35.3"
@@ -18,7 +18,10 @@
 		"test:coverage": "vitest run --coverage"
 	},
 	"dependencies": {
+		"@atproto/lex": "^0.3.6",
+		"@atproto/lex-password-session": "^0.2.0",
 		"@base-ui/react": "^1.6.0",
+		"@bsky/sdk": "^1.0.1",
 		"@fortawesome/fontawesome-svg-core": "^7.1.0",
 		"@fortawesome/free-brands-svg-icons": "^7.1.0",
 		"@fortawesome/free-regular-svg-icons": "^7.1.0",

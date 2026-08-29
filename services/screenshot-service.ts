@@ -99,7 +99,7 @@ export const takeScreenshot = async (
 			);
 		}
 	} catch (error) {
-		console.log(error);
+		console.error(error);
 	} finally {
 		if (page !== null) await page.close();
 		if (browser !== null) await browser.close();

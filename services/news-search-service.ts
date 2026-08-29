@@ -1,12 +1,12 @@
-import { getCollection } from './db-connection';
 import type { ArticleMap, BskyArticle, SearchRequest } from '@/types';
+import { getCollection } from '@/connections/db-connection';
 import { type SourceSlant, SOURCE_SLANT_MAP } from '@/constants/source-slant';
 
 const DEFAULT_PREVIOUS_DAYS = 5;
 const MAX_SLANT_RESULTS = 50;
 const MAX_SHOW_PER_CATEGORY = 10;
 const COLLECTION_NAME = 'bsky_posts';
-const _collection = getCollection(COLLECTION_NAME);
+const _collection = getCollection<BskyArticle>(COLLECTION_NAME);
 
 const getSourcePosts = async (sourceId: string): Promise<BskyArticle[]> => {
 	const db = await _collection;

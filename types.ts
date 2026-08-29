@@ -14,8 +14,6 @@ export type Source = {
 	bskyHandle?: string;
 };
 
-export type BskyList = { name: string; uri: string };
-
 /** Headline Search Request Type Definition */
 
 export type SearchRequest = {

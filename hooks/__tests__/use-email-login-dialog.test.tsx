@@ -24,7 +24,7 @@ test('renders the component', () => {
 });
 
 test('validates email input on step 1', async () => {
-	const emailInput = screen.getByLabelText('Email');
+	const emailInput = screen.getByLabelText('email');
 	fireEvent.blur(emailInput);
 	expect(await screen.findByText('Email is required')).toBeInTheDocument();
 	fireEvent.change(emailInput, { target: { value: 'test@gmail.' } });
@@ -41,7 +41,7 @@ test('displays alert if signin returns error', async () => {
 		url: null,
 	});
 
-	const emailInput = screen.getByLabelText('Email');
+	const emailInput = screen.getByLabelText('email');
 	fireEvent.change(emailInput, { target: { value: 'test@gmail.com' } });
 	fireEvent.click(screen.getByText('Send Log In Token'));
 	expect(await screen.findByText('Failed to send log in token')).toBeInTheDocument();
@@ -56,10 +56,10 @@ test('displays step 2 signin successful', async () => {
 		url: 'someurl.test',
 	});
 
-	const emailInput = screen.getByLabelText('Email');
+	const emailInput = screen.getByLabelText('email');
 	fireEvent.change(emailInput, { target: { value: 'test@gmail.com' } });
 	fireEvent.click(screen.getByText('Send Log In Token'));
-	expect(await screen.findByLabelText('Token')).toBeInTheDocument();
+	expect(await screen.findByLabelText('token')).toBeInTheDocument();
 });
 
 test('validates token input on step 2', async () => {
@@ -71,11 +71,11 @@ test('validates token input on step 2', async () => {
 		url: 'someurl.test',
 	});
 
-	const emailInput = screen.getByLabelText('Email');
+	const emailInput = screen.getByLabelText('email');
 	fireEvent.change(emailInput, { target: { value: 'test@gmail.com' } });
 	fireEvent.click(screen.getByText('Send Log In Token'));
 
-	const tokenInput = await screen.findByLabelText('Token');
+	const tokenInput = await screen.findByLabelText('token');
 	fireEvent.blur(tokenInput);
 	expect(await screen.findByText('Token is required')).toBeInTheDocument();
 });

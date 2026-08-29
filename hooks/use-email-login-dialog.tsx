@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Dialog, Field } from '@base-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -147,12 +147,11 @@ const useEmailLoginDialog = (): UseEmailLoginDialog => {
 	const [isOpen, toggleOpen] = useState<boolean>(false);
 	const [emailSentTo, setEmailSentTo] = useState<string>();
 
-	useEffect(() => {
+	const openDialog = useCallback(() => {
 		// when dialog is opened, reset to step 1
-		if (isOpen) {
-			setEmailSentTo(undefined);
-		}
-	}, [isOpen]);
+		setEmailSentTo(undefined);
+		toggleOpen(true);
+	}, []);
 
 	const EmailLoginDialog: React.FC = () => {
 		return (
@@ -172,7 +171,7 @@ const useEmailLoginDialog = (): UseEmailLoginDialog => {
 		);
 	};
 
-	return { EmailLoginDialog, openDialog: () => toggleOpen(true) };
+	return { EmailLoginDialog, openDialog };
 };
 
 export default useEmailLoginDialog;

@@ -3,7 +3,7 @@ import { mongodbAdapter } from 'better-auth/adapters/mongodb';
 import { magicLink } from 'better-auth/plugins';
 import { nanoid } from 'nanoid';
 
-import { getDbConnection } from '@/services/db-connection';
+import { getDbConnection } from '@/connections/db-connection';
 import { sendLoginEmail } from '@/services/support-email-service';
 
 const MAGIC_LINK_EXPIRE_MIN = 10;

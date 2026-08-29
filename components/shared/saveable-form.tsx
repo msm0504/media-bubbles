@@ -65,7 +65,7 @@ const SaveableForm = <T extends FieldValues>({
 				reset(storedFormData as T);
 			}
 		}
-	}, [formName, localStorageInterval]);
+	}, [formName, localStorageInterval, reset]);
 
 	useInterval(
 		() => setItemInStorage({ key: formName, value: currentValues }),
@@ -105,7 +105,7 @@ const SaveableForm = <T extends FieldValues>({
 
 					return (
 						<Field.Root className='flex w-full flex-col items-start gap-1' invalid={!!error}>
-							<Field.Label className='font-bold capitalize'>{field.name}</Field.Label>
+							<Field.Label htmlFor={`${formName}-${field.name}`} className='font-bold capitalize'>{field.name}</Field.Label>
 							{rows ? (
 								<textarea
 									{...field}

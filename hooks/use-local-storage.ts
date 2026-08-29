@@ -11,7 +11,7 @@ const useLocalStorage = <T>(
 	useEffect(() => {
 		const storedValue = getItemFromStorage({ key, type }) as T;
 		if (storedValue) setValue(storedValue);
-	}, []);
+	}, [key, type]);
 
 	const setAndStoreValue = (newValue: T) => {
 		setItemInStorage({ key, value: newValue });

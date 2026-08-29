@@ -27,15 +27,15 @@ test('renders correct input fields', () => {
 	render(<Feedback />);
 	FIELD_LIST.forEach(field =>
 		field.type === 'text'
-			? expect(screen.queryByLabelText(field.name?.toUpperCase())).toBeInTheDocument()
-			: expect(screen.queryByText(field.name?.toUpperCase())).toBeInTheDocument()
+			? expect(screen.queryByLabelText(field.name)).toBeInTheDocument()
+			: expect(screen.queryByText(field.name)).toBeInTheDocument()
 	);
 });
 
 test('displays correct error messages for invalid input', async () => {
 	vi.mocked(useSession).mockReturnValue(mockUnauthSession);
 	render(<Feedback />);
-	const emailInput = screen.getByLabelText('Email');
+	const emailInput = screen.getByLabelText('email');
 
 	fireEvent.blur(emailInput);
 	expect(await screen.findByText('Email is required')).toBeInTheDocument();
@@ -52,7 +52,9 @@ test('displays correct error messages for invalid input', async () => {
 test('displays success alert after successful submit', async () => {
 	vi.mocked(useSession).mockReturnValue(mockUserSession);
 	server.use(
-		http.post('http://test.com/api/feedback', () => HttpResponse.json({ feedbackSent: true }))
+		http.post('https://media-bubbles.test/api/feedback', () =>
+			HttpResponse.json({ feedbackSent: true })
+		)
 	);
 	render(
 		<AppProviders>
@@ -60,7 +62,7 @@ test('displays success alert after successful submit', async () => {
 		</AppProviders>
 	);
 
-	fireEvent.change(screen.getByLabelText('Message'), {
+	fireEvent.change(screen.getByLabelText('message'), {
 		target: { value: 'This site is amazing!' },
 	});
 
@@ -72,7 +74,9 @@ test('displays success alert after successful submit', async () => {
 test('displays error alert after failed submit', async () => {
 	vi.mocked(useSession).mockReturnValue(mockUserSession);
 	server.use(
-		http.post('http://test.com/api/feedback', () => HttpResponse.json({ feedbackSent: false }))
+		http.post('https://media-bubbles.test/api/feedback', () =>
+			HttpResponse.json({ feedbackSent: false })
+		)
 	);
 	render(
 		<AppProviders>
@@ -80,7 +84,7 @@ test('displays error alert after failed submit', async () => {
 		</AppProviders>
 	);
 
-	fireEvent.change(screen.getByLabelText('Message'), {
+	fireEvent.change(screen.getByLabelText('message'), {
 		target: { value: 'This site is amazing!' },
 	});
 

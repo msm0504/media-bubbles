@@ -13,11 +13,24 @@ const eslintConfig = defineConfig([
 		'.next/**',
 		'out/**',
 		'build/**',
-		'next-env.d.ts',
+		'*/**/*.d.ts',
+		'coverage/**',
 	]),
 	{
 		rules: {
-			'@typescript-eslint/no-unused-vars': 1,
+			// https://typescript-eslint.io/rules/no-unused-vars/#what-benefits-does-this-rule-have-over-typescript
+			'@typescript-eslint/no-unused-vars': [
+				'error',
+				{
+					args: 'all',
+					argsIgnorePattern: '^_',
+					caughtErrors: 'all',
+					caughtErrorsIgnorePattern: '^_',
+					destructuredArrayIgnorePattern: '^_',
+					varsIgnorePattern: '^_',
+					ignoreRestSiblings: true,
+				},
+			],
 			'react-hooks/set-state-in-effect': 0,
 		},
 	},

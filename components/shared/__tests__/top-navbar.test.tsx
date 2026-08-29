@@ -7,7 +7,7 @@ import { mockUnauthSession, mockUserSession } from '@/lib/__mocks__/mock-session
 test('renders the navbar', () => {
 	vi.mocked(useSession).mockReturnValue(mockUnauthSession);
 	render(<TopNavbar />);
-	expect(screen.queryAllByText('Search')).toHaveLength(2);
+	expect(screen.queryByText('Search')).toBeInTheDocument();
 	expect(screen.queryByText('Log in')).toBeInTheDocument();
 });
 
