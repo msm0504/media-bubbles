@@ -77,7 +77,9 @@ test('displays success alert after successful submit', async () => {
 	const mockItemId = 'item123';
 	vi.mocked(useSession).mockReturnValue(mockAdminSession);
 	server.use(
-		http.post('http://test.com/api/blog-posts', () => HttpResponse.json({ itemId: mockItemId }))
+		http.post('https://media-bubbles.test/api/blog-posts', () =>
+			HttpResponse.json({ itemId: mockItemId })
+		)
 	);
 	render(
 		<AppProviders>
@@ -96,7 +98,7 @@ test('displays success alert after successful submit', async () => {
 
 test('displays error alert after failed submit', async () => {
 	vi.mocked(useSession).mockReturnValue(mockAdminSession);
-	server.use(http.post('http://test.com/api/blog-posts', () => HttpResponse.json({})));
+	server.use(http.post('https://media-bubbles.test/api/blog-posts', () => HttpResponse.json({})));
 	render(
 		<AppProviders>
 			<AddEditBlogPost />

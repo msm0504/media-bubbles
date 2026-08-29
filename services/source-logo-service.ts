@@ -30,9 +30,7 @@ export const getSourceLogo = async (id: string): Promise<Buffer | null> => {
 		if (metaData && metaData.url) {
 			storedLogoUrl = metaData.url;
 		}
-	} catch (error) {
-		null;
-	}
+	} catch {}
 
 	const logoResponse = await fetch(storedLogoUrl || (await getLogoUrl(id)), {
 		method: 'get',

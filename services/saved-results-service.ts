@@ -1,7 +1,5 @@
 import { cacheTag, revalidateTag } from 'next/cache';
-import { ObjectId } from 'mongodb';
 import { nanoid } from 'nanoid';
-import { getCollection } from './db-connection';
 import {
 	ItemDeletedResponse,
 	ItemSavedResponse,
@@ -9,18 +7,19 @@ import {
 	SavedResult,
 	SavedResultSummary,
 } from '@/types';
+import { getCollection } from '@/connections/db-connection';
 
 const COLLECTION_NAME = 'saved_results';
 const CACHE_TAG = 'saved-results';
 const PAGE_SIZE = 10;
 
-const _collection = getCollection(COLLECTION_NAME);
+const _collection = getCollection<SavedResult>(COLLECTION_NAME);
 
 export const saveSearchResult = async (result: SavedResult): Promise<ItemSavedResponse> => {
 	const db = await _collection;
 	const { insertedId } = await db.insertOne({
 		...result,
-		_id: nanoid(16) as unknown as ObjectId,
+		_id: nanoid(16),
 		createdAt: new Date().toISOString(),
 	});
 	revalidateTag(CACHE_TAG, 'max');
@@ -29,7 +28,7 @@ export const saveSearchResult = async (result: SavedResult): Promise<ItemSavedRe
 
 export const setSavedResultImagePath = async (id: string, url: string): Promise<void> => {
 	const db = await _collection;
-	await db.updateOne({ _id: id as unknown as ObjectId }, { $set: { imagePath: url } });
+	await db.updateOne({ _id: id }, { $set: { imagePath: url } });
 	revalidateTag(`${CACHE_TAG}-${id}`, 'max');
 };
 
@@ -86,7 +85,7 @@ export const getSavedResult = async (id: string): Promise<SavedResult | null> =>
 	'use cache';
 	cacheTag(`${CACHE_TAG}-${id}`);
 	const db = await _collection;
-	return db.findOne({ _id: id as unknown as ObjectId }) as unknown as SavedResult;
+	return db.findOne({ _id: id }) as unknown as SavedResult;
 };
 
 export const deleteSavedResult = async (
@@ -94,7 +93,7 @@ export const deleteSavedResult = async (
 	userId?: string
 ): Promise<ItemDeletedResponse> => {
 	const db = await _collection;
-	const { deletedCount } = await db.deleteOne({ _id: id as unknown as ObjectId, userId: userId });
+	const { deletedCount } = await db.deleteOne({ _id: id, userId: userId });
 	revalidateTag(CACHE_TAG, 'max');
 	revalidateTag(`${CACHE_TAG}-${id}`, 'max');
 	return { itemDeleted: deletedCount === 1 };

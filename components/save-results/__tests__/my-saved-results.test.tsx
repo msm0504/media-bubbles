@@ -58,7 +58,9 @@ test('blocks access if not logged in', () => {
 
 test('makes initial API call and renders results', async () => {
 	vi.mocked(useSession).mockReturnValue(mockUserSession);
-	server.use(http.get('http://test.com/api/search-result', () => HttpResponse.json(mockResponse)));
+	server.use(
+		http.get('https://media-bubbles.test/api/search-result', () => HttpResponse.json(mockResponse))
+	);
 	render(<MySavedResults />);
 	expect(await screen.findByText('Headlines Across the Spectrum')).toBeInTheDocument();
 });
@@ -66,7 +68,9 @@ test('makes initial API call and renders results', async () => {
 test('makes initial API call and displays message if no results', async () => {
 	vi.mocked(useSession).mockReturnValue(mockUserSession);
 	server.use(
-		http.get('http://test.com/api/search-result', () => HttpResponse.json(mockEmptyResponse))
+		http.get('https://media-bubbles.test/api/search-result', () =>
+			HttpResponse.json(mockEmptyResponse)
+		)
 	);
 	render(<MySavedResults />);
 	expect(await screen.findByText('No saved results found')).toBeInTheDocument();
@@ -76,7 +80,7 @@ test('caches results returned from API', async () => {
 	const apiSpy = vi.spyOn(apiService, 'callApi');
 	vi.mocked(useSession).mockReturnValue(mockUserSession);
 	server.use(
-		http.get('http://test.com/api/search-result', ({ request }) => {
+		http.get('https://media-bubbles.test/api/search-result', ({ request }) => {
 			const filter = new URL(request.url).searchParams.get('filter');
 			return filter
 				? HttpResponse.json({
@@ -111,9 +115,11 @@ test('displays success alert after successful item delete', async () => {
 		items: [...mockResponse.items],
 		pageCount: 1,
 	};
-	server.use(http.get('http://test.com/api/search-result', () => HttpResponse.json(mockRespCopy)));
 	server.use(
-		http.delete(`http://test.com/api/search-result/${mockRespCopy.items[0]._id}`, () => {
+		http.get('https://media-bubbles.test/api/search-result', () => HttpResponse.json(mockRespCopy))
+	);
+	server.use(
+		http.delete(`https://media-bubbles.test/api/search-result/${mockRespCopy.items[0]._id}`, () => {
 			mockRespCopy.items.splice(0, 1);
 			return HttpResponse.json({ itemDeleted: true });
 		})
@@ -134,9 +140,11 @@ test('displays success alert after successful item delete', async () => {
 
 test('displays error alert after failed item delete', async () => {
 	vi.mocked(useSession).mockReturnValue(mockUserSession);
-	server.use(http.get('http://test.com/api/search-result', () => HttpResponse.json(mockResponse)));
 	server.use(
-		http.delete(`http://test.com/api/search-result/${mockResponse.items[0]._id}`, () =>
+		http.get('https://media-bubbles.test/api/search-result', () => HttpResponse.json(mockResponse))
+	);
+	server.use(
+		http.delete(`https://media-bubbles.test/api/search-result/${mockResponse.items[0]._id}`, () =>
 			HttpResponse.json({ itemDeleted: false })
 		)
 	);

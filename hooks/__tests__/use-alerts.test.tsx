@@ -12,7 +12,7 @@ beforeEach(() => {
 
 		useEffect(() => {
 			showAlert(testAlert.level as AlertColor, testAlert.message);
-		}, []);
+		}, [showAlert]);
 
 		return <Alerts />;
 	};

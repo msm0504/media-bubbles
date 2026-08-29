@@ -53,7 +53,9 @@ test('displays correct error messages for invalid input', async () => {
 test('displays success alert after successful submit', async () => {
 	vi.mocked(useSession).mockReturnValue(mockUserSession);
 	server.use(
-		http.post('http://test.com/api/feedback', () => HttpResponse.json({ feedbackSent: true }))
+		http.post('https://media-bubbles.test/api/feedback', () =>
+			HttpResponse.json({ feedbackSent: true })
+		)
 	);
 	render(
 		<AppProviders>
@@ -73,7 +75,9 @@ test('displays success alert after successful submit', async () => {
 test('displays error alert after failed submit', async () => {
 	vi.mocked(useSession).mockReturnValue(mockUserSession);
 	server.use(
-		http.post('http://test.com/api/feedback', () => HttpResponse.json({ feedbackSent: false }))
+		http.post('https://media-bubbles.test/api/feedback', () =>
+			HttpResponse.json({ feedbackSent: false })
+		)
 	);
 	render(
 		<AppProviders>

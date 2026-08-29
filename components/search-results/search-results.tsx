@@ -42,7 +42,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 		if (id !== openPanels.id) {
 			setOpenPanels({ id, list: [] });
 		}
-	}, [savedResultId]);
+	}, [openPanels.id, savedResultId, setOpenPanels]);
 
 	const togglePanel = (columnId: string) => {
 		if (openPanels.list.indexOf(columnId) === -1) {
