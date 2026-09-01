@@ -26,12 +26,12 @@ export const BUTTON_CVA_CONFIG: CvaColorVarConfig = {
 		{
 			color: 'primary',
 			variant: 'outlined',
-			class: tw`not-data-disabled:border-primary not-data-disabled:bg-inherit not-data-disabled:text-primary hover:not-data-disabled:bg-primary-light`,
+			class: tw`not-data-disabled:border-primary not-data-disabled:bg-white not-data-disabled:text-primary hover:not-data-disabled:bg-primary-light`,
 		},
 		{
 			color: 'primary',
 			variant: 'text',
-			class: tw`not-data-disabled:bg-inherit not-data-disabled:text-primary hover:not-data-disabled:bg-primary-light`,
+			class: tw`not-data-disabled:bg-white not-data-disabled:text-primary hover:not-data-disabled:bg-primary-light`,
 		},
 
 		{
@@ -42,12 +42,12 @@ export const BUTTON_CVA_CONFIG: CvaColorVarConfig = {
 		{
 			color: 'success',
 			variant: 'outlined',
-			class: tw`not-data-disabled:border-success not-data-disabled:bg-inherit not-data-disabled:text-success hover:not-data-disabled:bg-success-light`,
+			class: tw`not-data-disabled:border-success not-data-disabled:bg-white not-data-disabled:text-success hover:not-data-disabled:bg-success-light`,
 		},
 		{
 			color: 'success',
 			variant: 'text',
-			class: tw`not-data-disabled:bg-inherit not-data-disabled:text-success hover:not-data-disabled:bg-success-light`,
+			class: tw`not-data-disabled:bg-white not-data-disabled:text-success hover:not-data-disabled:bg-success-light`,
 		},
 
 		{
@@ -58,12 +58,12 @@ export const BUTTON_CVA_CONFIG: CvaColorVarConfig = {
 		{
 			color: 'info',
 			variant: 'outlined',
-			class: tw`not-data-disabled:border-info not-data-disabled:bg-inherit not-data-disabled:text-info hover:not-data-disabled:bg-info-light`,
+			class: tw`not-data-disabled:border-info not-data-disabled:bg-white not-data-disabled:text-info hover:not-data-disabled:bg-info-light`,
 		},
 		{
 			color: 'info',
 			variant: 'text',
-			class: tw`not-data-disabled:bg-inherit not-data-disabled:text-info hover:not-data-disabled:bg-info-light`,
+			class: tw`not-data-disabled:bg-white not-data-disabled:text-info hover:not-data-disabled:bg-info-light`,
 		},
 
 		{
@@ -74,12 +74,12 @@ export const BUTTON_CVA_CONFIG: CvaColorVarConfig = {
 		{
 			color: 'warning',
 			variant: 'outlined',
-			class: tw`not-data-disabled:border-warning not-data-disabled:bg-inherit not-data-disabled:text-warning hover:not-data-disabled:bg-warning-light`,
+			class: tw`not-data-disabled:border-warning not-data-disabled:bg-white not-data-disabled:text-warning hover:not-data-disabled:bg-warning-light`,
 		},
 		{
 			color: 'warning',
 			variant: 'text',
-			class: tw`not-data-disabled:bg-inherit not-data-disabled:text-warning hover:not-data-disabled:bg-warning-light`,
+			class: tw`not-data-disabled:bg-white not-data-disabled:text-warning hover:not-data-disabled:bg-warning-light`,
 		},
 
 		{
@@ -90,28 +90,28 @@ export const BUTTON_CVA_CONFIG: CvaColorVarConfig = {
 		{
 			color: 'error',
 			variant: 'outlined',
-			class: tw`not-data-disabled:border-error not-data-disabled:bg-inherit not-data-disabled:text-error hover:not-data-disabled:bg-error-light`,
+			class: tw`not-data-disabled:border-error not-data-disabled:bg-white not-data-disabled:text-error hover:not-data-disabled:bg-error-light`,
 		},
 		{
 			color: 'error',
 			variant: 'text',
-			class: tw`not-data-disabled:bg-inherit not-data-disabled:text-error hover:not-data-disabled:bg-error-light`,
+			class: tw`not-data-disabled:bg-white not-data-disabled:text-error hover:not-data-disabled:bg-error-light`,
 		},
 
 		{
 			color: 'neutral',
 			variant: 'contained',
-			class: tw`not-data-disabled:bg-gray-800 not-data-disabled:text-white hover:not-data-disabled:bg-black`,
+			class: tw`not-data-disabled:bg-black not-data-disabled:text-white hover:not-data-disabled:bg-gray-800`,
 		},
 		{
 			color: 'neutral',
 			variant: 'outlined',
-			class: tw`not-data-disabled:border-black not-data-disabled:bg-inherit not-data-disabled:text-black hover:not-data-disabled:bg-gray-100`,
+			class: tw`not-data-disabled:border-black not-data-disabled:bg-white not-data-disabled:text-black hover:not-data-disabled:bg-gray-100`,
 		},
 		{
 			color: 'neutral',
 			variant: 'text',
-			class: tw`not-data-disabled:bg-inherit not-data-disabled:text-black hover:not-data-disabled:bg-gray-100`,
+			class: tw`not-data-disabled:bg-white not-data-disabled:text-black hover:not-data-disabled:bg-gray-100`,
 		},
 	],
 };

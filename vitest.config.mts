@@ -16,6 +16,7 @@ export default defineConfig({
 			include: ['**/*.{ts,tsx}'],
 			exclude: [
 				'node_modules/',
+				'stories/',
 				'test-utils/',
 				'type-exts/',
 				'next-env.d.ts',

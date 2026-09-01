@@ -1,12 +1,13 @@
 {
 	"name": "media-bubbles",
-	"version": "7.4.3",
+	"version": "7.4.4",
 	"private": true,
 	"overrides": {
 		"sharp": "^0.35.3"
 	},
 	"scripts": {
 		"build": "next build --debug-prerender",
+		"build-storybook": "storybook build",
 		"check-types": "tsc",
 		"dev": "next dev",
 		"format": "prettier \"**/*.(ts|tsx)\" --write",
@@ -15,7 +16,8 @@
 		"prepare": "husky",
 		"start": "next start",
 		"test": "vitest",
-		"test:coverage": "vitest run --coverage"
+		"test:coverage": "vitest run --coverage",
+		"storybook": "storybook dev -p 6006"
 	},
 	"dependencies": {
 		"@atproto/lex": "^0.3.6",
@@ -50,6 +52,7 @@
 		"tailwindcss": "^4.3.3"
 	},
 	"devDependencies": {
+		"@storybook/nextjs-vite": "^10.5.10",
 		"@testing-library/jest-dom": "^6.5.0",
 		"@testing-library/react": "^16.3.2",
 		"@testing-library/user-event": "^14.5.2",
@@ -65,6 +68,7 @@
 		"eslint": "^9.39.1",
 		"eslint-config-next": "16.0.1",
 		"eslint-config-prettier": "^10.1.8",
+		"eslint-plugin-storybook": "^10.5.10",
 		"husky": "^9.1.7",
 		"jsdom": "^25.0.1",
 		"msw": "^2.4.12",
@@ -72,7 +76,9 @@
 		"prettier-plugin-tailwindcss": "^0.8.1",
 		"puppeteer": "^25.7.0",
 		"typescript": "^5",
+		"vite": "latest",
 		"vitest": "^4.1.10",
-		"whatwg-fetch": "^3.6.20"
+		"whatwg-fetch": "^3.6.20",
+		"storybook": "^10.5.10"
 	}
 }

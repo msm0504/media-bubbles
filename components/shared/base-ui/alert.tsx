@@ -70,7 +70,12 @@ const Alert: React.FC<AlertProps> = ({ className = '', color, description, onClo
 				<p>{description}</p>
 			</div>
 			{typeof onClose === 'function' ? (
-				<Button color={color} variant='text' onClick={onClose}>
+				<Button
+					className='p-0 not-hover:bg-inherit!'
+					color={color}
+					variant='text'
+					onClick={onClose}
+				>
 					<FontAwesomeIcon aria-label='close alert' size='sm' icon={faX} />
 				</Button>
 			) : null}

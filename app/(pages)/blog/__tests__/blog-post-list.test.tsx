@@ -19,9 +19,6 @@ import {
 	mockUserSession,
 } from '@/lib/__mocks__/mock-sessions';
 
-vi.mock('next-auth/react', () => ({
-	useSession: vi.fn(),
-}));
 const server = setupServer();
 
 const mockResponse: ListResponse<BlogPostSummary> = {
