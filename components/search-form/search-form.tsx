@@ -1,7 +1,6 @@
 'use client';
 import { useState, useReducer, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Input } from '@base-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import * as ACTION_TYPES from './action-types';
@@ -9,7 +8,7 @@ import FullSpectrum from './full-spectrum';
 import searchFormReducer, { initialState, FieldValue } from './search-form-reducer';
 import SlantRadioButtons from './slant-radio-buttons';
 import SourceCheckboxes from './source-checkboxes';
-import { Button, Popover, Slider } from '../shared/base-ui';
+import { Button, Input, Popover, Slider } from '../shared/base-ui';
 import type { SearchMode } from '@/constants/search-mode';
 import useHeadlineSearch from '@/hooks/use-headline-search';
 import type { Source } from '@/types';
@@ -100,7 +99,6 @@ const SearchForm: React.FC<SearchFormProps> = ({
 								</Popover>
 							</span>
 							<Input
-								className='h-8 w-40 rounded-xl border border-neutral-950 bg-white px-2 text-sm font-normal text-neutral-950 placeholder:text-neutral-500 focus:outline-2 focus:-outline-offset-1 focus:outline-neutral-950 dark:border-white dark:bg-neutral-950 dark:text-white dark:placeholder:text-neutral-400 dark:focus:outline-white any-pointer-coarse:text-base'
 								name='keyword'
 								value={formData.keyword}
 								onValueChange={(newValue, eventDetails) =>

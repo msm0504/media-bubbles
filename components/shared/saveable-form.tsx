@@ -6,7 +6,7 @@ import { Dialog, Field, Toggle, ToggleGroup } from '@base-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import capitalize from 'lodash.capitalize';
-import { Button } from './base-ui';
+import { Button, Input } from './base-ui';
 import useInterval from '@/hooks/use-interval';
 import {
 	getItemFromStorage,
@@ -98,39 +98,27 @@ const SaveableForm = <T extends FieldValues>({
 				control={control}
 				name={name}
 				rules={rules}
-				render={({ field, formState: { errors } }) => {
-					const error = errors[field.name];
-					const controlClassName =
-						'w-full rounded-xl border border-neutral-950 bg-white px-2 py-1 text-sm text-neutral-950 placeholder:text-neutral-500 focus:outline-2 focus:-outline-offset-1 focus:outline-neutral-950 disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:text-neutral-500';
-
+				render={({ field, fieldState: { invalid, isTouched, isDirty, error } }) => {
 					return (
-						<Field.Root className='flex w-full flex-col items-start gap-1' invalid={!!error}>
+						<Field.Root
+							className='flex w-full flex-col items-start gap-1'
+							invalid={invalid}
+							touched={isTouched}
+							dirty={isDirty}
+						>
 							<Field.Label htmlFor={`${formName}-${field.name}`} className='font-bold capitalize'>
 								{field.name}
 							</Field.Label>
-							{rows ? (
-								<textarea
-									{...field}
-									id={`${formName}-${field.name}`}
-									className={controlClassName}
-									placeholder={placeholder}
-									disabled={isDisabled}
-									rows={rows}
-								/>
-							) : (
-								<Field.Control
-									{...field}
-									id={`${formName}-${field.name}`}
-									className={controlClassName}
-									placeholder={placeholder}
-									disabled={isDisabled}
-								/>
-							)}
-							{error ? (
-								<Field.Error className='text-sm text-error' match>
-									{error.message as string}
-								</Field.Error>
-							) : null}
+							<Input
+								{...field}
+								id={`${formName}-${field.name}`}
+								placeholder={placeholder}
+								disabled={isDisabled}
+								render={rows ? props => <textarea {...props} rows={rows} /> : undefined}
+							/>
+							<Field.Error className='text-sm text-error' match={!!error}>
+								{error?.message}
+							</Field.Error>
 						</Field.Root>
 					);
 				}}

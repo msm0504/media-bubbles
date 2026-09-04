@@ -5,7 +5,7 @@ import { Dialog, Field } from '@base-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import useAlerts from './use-alerts';
-import { Button } from '@/components/shared/base-ui';
+import { Button, Input } from '@/components/shared/base-ui';
 import { authClient, signIn } from '@/lib/auth-client';
 import { EMAIL_PATTERN, getRequiredMessage } from '@/util/form-utils';
 
@@ -52,19 +52,18 @@ const FormStepOne: React.FC<StepOneProps> = ({ onSuccess }) => {
 						required: getRequiredMessage('email'),
 						pattern: { value: EMAIL_PATTERN, message: 'Invalid email format.' },
 					}}
-					render={({ field, formState: { errors } }) => (
-						<Field.Root className='flex flex-col items-start gap-1' invalid={!!errors[field.name]}>
+					render={({ field, fieldState: { invalid, isTouched, isDirty, error } }) => (
+						<Field.Root
+							className='flex flex-col items-start gap-1'
+							invalid={invalid}
+							touched={isTouched}
+							dirty={isDirty}
+						>
 							<Field.Label className='font-bold capitalize'>{field.name}</Field.Label>
-							<Field.Control
-								{...field}
-								className='w-full rounded-xl border border-neutral-950 bg-white px-2 py-1 text-sm text-neutral-950 placeholder:text-neutral-500 focus:outline-2 focus:-outline-offset-1 focus:outline-neutral-950'
-								placeholder='johndoe@domain.com'
-							/>
-							{errors[field.name] ? (
-								<Field.Error className='text-sm text-error' match>
-									{errors[field.name]?.message as string}
-								</Field.Error>
-							) : null}
+							<Input {...field} placeholder='johndoe@domain.com' />
+							<Field.Error className='text-sm text-error' match={!!error}>
+								{error?.message}
+							</Field.Error>
 						</Field.Root>
 					)}
 				/>

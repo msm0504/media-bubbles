@@ -1,8 +1,7 @@
 'use client';
 import { useState, useEffect, useContext, useRef, useCallback, ReactElement } from 'react';
-import { Input } from '@base-ui/react';
 import debounce from 'lodash.debounce';
-import { Pagination } from './base-ui';
+import { Input, Pagination } from './base-ui';
 import Spinner from './spinner';
 import ALERT_LEVEL from '@/constants/alert-level';
 import { AlertsDispatch } from '@/contexts/alerts-context';
