@@ -4,7 +4,6 @@ import { faBluesky, faFacebookF, faXTwitter } from '@fortawesome/free-brands-svg
 import { faClipboard, faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import ScreenshotButton from './take-screenshot-button';
 import { Button } from '../shared/base-ui';
-import styles from '@/styles/main.module.css';
 
 type ShareButtonsProps = {
 	urlToShare?: string;
@@ -18,7 +17,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 			<Button
 				color='info'
 				variant='contained'
-				className={styles.bskyBtn}
+				className='not-hover:bg-[#1083fe]!'
 				id='share-bsky'
 				onClick={() => {
 					window.open(`https://bsky.app/intent/compose?text=${encodeURI(urlToShare)}`, '_blank');
@@ -29,7 +28,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 			<Button
 				color='info'
 				variant='contained'
-				className={styles.facebookBtn}
+				className='not-hover:bg-[#4267b2]!'
 				id='share-facebook'
 				onClick={() => {
 					window.open(

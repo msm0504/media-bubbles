@@ -7,7 +7,6 @@ import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { Button } from './base-ui';
 import useEmailLoginDialog from '@/hooks/use-email-login-dialog';
 import { signIn, signOut, useSession } from '@/lib/auth-client';
-import styles from '@/styles/main.module.css';
 
 type LoginProps = {
 	sessionLoading: boolean;
@@ -27,7 +26,13 @@ const GoogleLogin: React.FC<LoginProps> = ({ sessionLoading }) => (
 			}
 			disabled={sessionLoading}
 		>
-			<FontAwesomeIcon className={styles.googleBrandColor} icon={faGoogle} mask={faSquareFull} />
+			<FontAwesomeIcon
+				className='bg-conic-[from_-45deg,#ea4335_110deg,#4285f4_90deg_180deg,#34a853_180deg_270deg,#fbbc05_270deg] bg-size-[150%_150%] bg-position-[73%_55%] bg-no-repeat'
+				icon={faGoogle}
+				mask={faSquareFull}
+				inverse
+				widthAuto
+			/>
 			Log in with Google
 		</Button>
 	</li>

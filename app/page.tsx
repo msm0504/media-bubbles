@@ -2,7 +2,6 @@
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import styles from '../styles/main.module.css';
 import homeBackground from '../public/images/og_image.png';
 import { LinkButton } from '@/components/shared/base-ui';
 
@@ -23,7 +22,7 @@ const HomePageLink: React.FC<HomePageLinkProps> = ({ message, routePath, srText 
 
 const Home: React.FC = () => (
 	<div className='m-0 flex grow flex-col p-0'>
-		<div className={styles.bgImgContainer}>
+		<div className='fixed -z-10 h-screen w-screen overflow-hidden'>
 			<Image
 				alt='background'
 				src={homeBackground}
