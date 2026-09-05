@@ -2,7 +2,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { faPenToSquare, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { Button, LinkButton } from '@/components/shared/base-ui';
+import { Button } from '@/components/shared/base-ui';
 import type { BlogPostSummary } from '@/types';
 import { isAdmin } from '@/constants/admin-role';
 import { useSession } from '@/lib/auth-client';
@@ -34,13 +34,13 @@ const PostSummary: React.FC<PostSummaryProps> = ({
 				</div>
 				{isAdmin(session?.user.role) ? (
 					<>
-						<LinkButton color='info' href={`/blog/edit-post/${slug}`}>
+						<Button color='info' href={`/blog/edit-post/${slug}`}>
 							<FontAwesomeIcon
 								id={`edit-${slug}-icon`}
 								aria-label={`Edit post ${slug}`}
 								icon={faPenToSquare}
 							/>
-						</LinkButton>
+						</Button>
 						<Button color='primary' onClick={() => fnDeleteItem(slug, title)}>
 							<FontAwesomeIcon
 								id={`delete-${slug}-icon`}
@@ -63,10 +63,10 @@ const BlogPosts: React.FC = () => {
 			<PageHeading heading='Blog Posts' />
 			{isAdmin(session?.user.role) && (
 				<div className='flex flex-row-reverse'>
-					<LinkButton variant='contained' href='/blog/add-post'>
+					<Button variant='contained' href='/blog/add-post'>
 						Add Post
 						{<FontAwesomeIcon icon={faPlus} aria-label='Add Post' />}
-					</LinkButton>
+					</Button>
 				</div>
 			)}
 			<AsyncList<BlogPostSummary>

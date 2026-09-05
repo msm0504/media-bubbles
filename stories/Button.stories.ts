@@ -76,3 +76,12 @@ export const Error: Story = {
 		children: 'Button',
 	},
 };
+
+export const LinkButton: Story = {
+	args: {
+		color: 'primary',
+		children: 'Button',
+		href: '#',
+		onClick: undefined,
+	},
+};

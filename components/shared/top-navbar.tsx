@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { NavigationMenu } from '@base-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import { LinkButton } from './base-ui';
+import { Button } from './base-ui';
 import Login from './login';
 import favIcon from '@/app/favicon.ico';
 import { backgroundVariants, type Color } from '@/styles/color-variants';
@@ -43,29 +43,24 @@ const TopNavbar: React.FC<TopNavbarProps> = ({ color = 'neutral' }) => {
 						<ul>
 							{pages.map(page => (
 								<li key={page.label}>
-									<LinkButton color='neutral' variant='text' href={page.route}>
+									<Button color='neutral' variant='text' href={page.route}>
 										{page.label}
-									</LinkButton>
+									</Button>
 								</li>
 							))}
 						</ul>
 					</NavigationMenu.Content>
 				</NavigationMenu.Item>
 				<NavigationMenu.Item>
-					<LinkButton color='neutral' variant='contained' aria-label='logo button to home' href='/'>
+					<Button color='neutral' variant='contained' aria-label='logo button to home' href='/'>
 						<Image src={favIcon} width={45} height={45} alt='Media Bubbles logo' />
-					</LinkButton>
+					</Button>
 				</NavigationMenu.Item>
 				{pages.map(page => (
 					<NavigationMenu.Item key={page.label} className='hidden md:block'>
-						<LinkButton
-							className='my-2 text-lg'
-							color='neutral'
-							variant='contained'
-							href={page.route}
-						>
+						<Button className='my-2 text-lg' color='neutral' variant='contained' href={page.route}>
 							{page.label}
-						</LinkButton>
+						</Button>
 					</NavigationMenu.Item>
 				))}
 				<div className='grow' />

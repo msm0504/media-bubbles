@@ -3,7 +3,6 @@ export { default as Button } from './button';
 export { default as Checkbox } from './checkbox';
 export { default as Input } from './input';
 export { default as Link } from './link';
-export { default as LinkButton } from './link-button';
 export { default as Pagination } from './pagination';
 export { default as Popover } from './popover';
 export { default as Radio } from './radio';

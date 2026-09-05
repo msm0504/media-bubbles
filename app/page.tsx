@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import homeBackground from '../public/images/og_image.png';
-import { LinkButton } from '@/components/shared/base-ui';
+import { Button } from '@/components/shared/base-ui';
 
 type HomePageLinkProps = {
 	message: string;
@@ -14,9 +14,9 @@ type HomePageLinkProps = {
 const HomePageLink: React.FC<HomePageLinkProps> = ({ message, routePath, srText }) => (
 	<div className='flex items-center rounded-xl bg-white p-3'>
 		<p>{message}</p>
-		<LinkButton color='neutral' variant='text' href={routePath}>
+		<Button color='neutral' variant='text' href={routePath}>
 			<FontAwesomeIcon size='sm' aria-label={srText} icon={faArrowRight} />
-		</LinkButton>
+		</Button>
 	</div>
 );
 
@@ -48,9 +48,9 @@ const Home: React.FC = () => (
 						("Burst my Bubble"), or specific outlets of your choosing. Escape your information bubble!
 					`}
 				</p>
-				<LinkButton className='text-lg' color='neutral' variant='outlined' href='/search'>
+				<Button className='text-lg' color='neutral' variant='outlined' href='/search'>
 					Start Searching
-				</LinkButton>
+				</Button>
 			</div>
 			<div className='flex flex-col items-center justify-center gap-4 py-8'>
 				<HomePageLink
