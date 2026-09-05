@@ -24,7 +24,7 @@ export type FieldSetting<T extends FieldValues> = {
 	rules?: RegisterOptions<T, Path<T>>;
 };
 
-interface SaveableFormProps<T extends FieldValues> {
+type SaveableFormProps<T extends FieldValues> = {
 	fieldList: FieldSetting<T>[];
 	formName: string;
 	initialData: DefaultValues<T>;
@@ -32,7 +32,7 @@ interface SaveableFormProps<T extends FieldValues> {
 	PreviewComponent?: React.FC<T>;
 	submitFn: (formData: T) => Promise<void>;
 	submitLabel: string;
-}
+};
 
 const kebabCaseToTitleCase = (str: string) => str.split('-').map(capitalize).join(' ');
 

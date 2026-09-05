@@ -10,24 +10,24 @@ import { callApi } from '@/services/api-service';
 import camelCaseToWords from '@/util/camel-case-to-words';
 import type { ItemDeletedResponse, ListItem, ListResponse } from '@/types';
 
-export type DeleteFnType = (itemId: string, itemName: string) => void;
-interface ListItemProps<T> {
+type DeleteFnType = (itemId: string, itemName: string) => void;
+export type ListItemProps<T> = {
 	item: ListItem<T>;
 	fnDeleteItem: DeleteFnType;
-}
+};
 
-interface AsyncListProps<T> {
+type AsyncListProps<T> = {
 	apiListName: string;
 	apiPath: string;
 	keyField: string;
 	ListItemComponent: React.FC<ListItemProps<T>>;
 	loginRequired?: boolean;
 	LoginRequiredComponent?: React.FC;
-}
+};
 
-interface Cache<T> {
+type Cache<T> = {
 	[name: string]: { items: { [name: number]: ListItem<T>[] }; pageCount: number };
-}
+};
 
 type GetParams = {
 	filter: string;
@@ -143,7 +143,7 @@ const AsyncList = <T,>({
 				<Spinner />
 			) : (
 				<div className='rounded-xl bg-white p-4'>
-					<ul className='list-none'>
+					<ul className='flex list-none flex-col gap-2'>
 						{items && items.length ? (
 							items.map(item => (
 								<ListItemComponent
@@ -156,7 +156,7 @@ const AsyncList = <T,>({
 							<p className='text-primary'>{`No ${camelCaseToWords(apiListName)} found`}</p>
 						)}
 					</ul>
-					<div className='flex flex-row-reverse'>
+					<div className='mt-2 flex flex-row-reverse'>
 						<Pagination
 							count={pageCount}
 							page={page}

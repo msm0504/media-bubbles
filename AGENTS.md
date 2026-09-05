@@ -9,7 +9,7 @@
 - lib - Better Auth configuration and client setup
 - public - image and other static assets
 - services - server-side data-source/business services and the client-side API wrapper (api-service.ts)
-- styles - CSS files and Material UI theme configuration
+- styles - CSS files and Tailwind theme configuration
 - util - utility functions that can be used in either server or UI code
 
 The `@/*` TypeScript path alias refers to the repository root.

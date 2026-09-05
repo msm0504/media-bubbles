@@ -1,41 +1,41 @@
 'use client';
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import { faNewspaper, faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import AsyncList, { ListItemProps } from '../shared/async-list';
 import { Button } from '../shared/base-ui';
-
-import AsyncList, { DeleteFnType } from '../shared/async-list';
 import type { SavedResultSummary } from '@/types';
 
-type SavedResultItemProps = {
-	item: SavedResultSummary;
-	fnDeleteItem: DeleteFnType;
-};
-
-const SavedResultItem: React.FC<SavedResultItemProps> = ({
+const SavedResultItem: React.FC<ListItemProps<SavedResultSummary>> = ({
 	item: { _id, name, createdAt },
 	fnDeleteItem,
 }) => {
 	const router = useRouter();
 	return (
-		<li className='flex items-center gap-2'>
+		<li className='flex items-center gap-2 px-2 py-1 even:bg-gray-200'>
 			<div className='grow'>
 				<p>{name}</p>
 				<p className='text-sm'>{`Saved at: ${new Date(createdAt).toLocaleString()}`}</p>
 			</div>
 			<Button
 				color='info'
-				variant='outlined'
+				variant='text'
 				onClick={() => {
 					router.push(`/headlines/${_id}`);
 				}}
 			>
-				View
+				<FontAwesomeIcon
+					id={`view-results-${_id}-icon`}
+					aria-label={`View saved result ${name}`}
+					size='lg'
+					icon={faNewspaper}
+				/>
 			</Button>
-			<Button color='primary' onClick={() => fnDeleteItem(_id, name)}>
+			<Button color='primary' variant='text' onClick={() => fnDeleteItem(_id, name)}>
 				<FontAwesomeIcon
 					id={`delete-${_id}-icon`}
 					aria-label={`Delete saved result ${name}`}
+					size='lg'
 					icon={faTrashCan}
 				/>
 			</Button>

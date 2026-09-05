@@ -6,52 +6,47 @@ import { Button } from '@/components/shared/base-ui';
 import type { BlogPostSummary } from '@/types';
 import { isAdmin } from '@/constants/admin-role';
 import { useSession } from '@/lib/auth-client';
-import AsyncList, { DeleteFnType } from '@/components/shared/async-list';
+import AsyncList, { ListItemProps } from '@/components/shared/async-list';
 import { Link } from '@/components/shared/base-ui';
 import markdownToHtml from '@/components/shared/markdown-to-html';
 import PageHeading from '@/components/shared/page-heading';
 
-type PostSummaryProps = {
-	item: BlogPostSummary;
-	fnDeleteItem: DeleteFnType;
-};
-
-const PostSummary: React.FC<PostSummaryProps> = ({
+const PostSummary: React.FC<ListItemProps<BlogPostSummary>> = ({
 	item: { title, excerpt, slug, updatedAt: date },
 	fnDeleteItem,
 }) => {
 	const { data: session } = useSession();
 
 	return (
-		<ul className='list-none'>
-			<li className='flex items-center gap-2'>
-				<div className='grow'>
-					<h3>
-						<Link href={`/blog/${slug}`}>{title}</Link>
-					</h3>
-					{markdownToHtml(excerpt)}
-					<p className='text-sm'>Last updated at {new Date(date).toLocaleString()}</p>
-				</div>
-				{isAdmin(session?.user.role) ? (
-					<>
-						<Button color='info' href={`/blog/edit-post/${slug}`}>
-							<FontAwesomeIcon
-								id={`edit-${slug}-icon`}
-								aria-label={`Edit post ${slug}`}
-								icon={faPenToSquare}
-							/>
-						</Button>
-						<Button color='primary' onClick={() => fnDeleteItem(slug, title)}>
-							<FontAwesomeIcon
-								id={`delete-${slug}-icon`}
-								aria-label={`Delete post ${slug}`}
-								icon={faTrashCan}
-							/>
-						</Button>
-					</>
-				) : null}
-			</li>
-		</ul>
+		<li className='flex items-center gap-2 px-2 py-1 even:bg-gray-200'>
+			<div className='grow'>
+				<h3>
+					<Link href={`/blog/${slug}`}>{title}</Link>
+				</h3>
+				{markdownToHtml(excerpt)}
+				<p className='text-sm'>Last updated at {new Date(date).toLocaleString()}</p>
+			</div>
+			{isAdmin(session?.user.role) ? (
+				<>
+					<Button color='info' variant='text' href={`/blog/edit-post/${slug}`}>
+						<FontAwesomeIcon
+							id={`edit-${slug}-icon`}
+							aria-label={`Edit post ${slug}`}
+							size='lg'
+							icon={faPenToSquare}
+						/>
+					</Button>
+					<Button color='primary' variant='text' onClick={() => fnDeleteItem(slug, title)}>
+						<FontAwesomeIcon
+							id={`delete-${slug}-icon`}
+							aria-label={`Delete post ${slug}`}
+							size='lg'
+							icon={faTrashCan}
+						/>
+					</Button>
+				</>
+			) : null}
+		</li>
 	);
 };
 

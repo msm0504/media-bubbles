@@ -25,7 +25,7 @@ const Header: React.FC = () => (
 
 const NonHomeLayout: React.FC<ParentCompProps> = ({ children }) => (
 	<div className='m-0 p-0'>
-		<div className='fixed -z-10 h-screen w-screen overflow-hidden'>
+		<div className='fixed top-0 left-0 -z-10 h-screen w-screen overflow-hidden'>
 			<Image
 				alt='background'
 				src={background}
