@@ -2,7 +2,8 @@
 @import './colors.css';
 
 @theme {
-	--font-serif: var(--font-roboto-slab);
+	--font-body: var(--font-inter);
+	--font-heading: var(--font-plus-jakarta-sans);
 	--text-shadow-outlined:
 		-1px 1px 8px var(--color-black), 1px 1px 8px var(--color-black),
 		1px -1px 8px var(--color-black), -1px -1px 8px var(--color-black);
@@ -10,14 +11,30 @@
 
 @layer base {
 	body {
-		font-family: var(--font-serif);
-	}
-	a {
-		color: var(--color-primary);
+		font-family: var(--font-body);
+		background:
+			radial-gradient(
+				circle at 83% 13%,
+				color-mix(in srgb, var(--color-primary) 13%, transparent),
+				transparent 26%
+			),
+			radial-gradient(
+				circle at 4% 85%,
+				color-mix(in srgb, var(--color-info) 10%, transparent),
+				transparent 24%
+			),
+			var(--color-white);
 	}
 	a:hover {
-		color: var(--color-primary-dark);
 		text-decoration: underline;
+	}
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: var(--font-heading);
 	}
 	h1 {
 		font-size: var(--text-4xl);

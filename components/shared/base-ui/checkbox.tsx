@@ -20,7 +20,7 @@ const CHECKBOX_CVA_CONFIG: CvaColorConfig = {
 	},
 };
 
-const checkboxVariants = cva('text-black data-disabled:text-gray-400', {
+const checkboxVariants = cva('text-black data-disabled:text-slate-400', {
 	...CHECKBOX_CVA_CONFIG,
 	defaultVariants: {
 		color: 'primary',

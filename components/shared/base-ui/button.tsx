@@ -21,7 +21,7 @@ const isLink = (props: ActionProps): props is LinkProps => {
 	return !!(props as LinkProps).href;
 };
 const isButton = (props: ActionProps): props is ButtonProps => {
-	return !!(props as ButtonProps).onClick;
+	return !!(props as ButtonProps).onClick || props.type === 'submit';
 };
 
 const Button: React.FC<ActionProps> = ({ color, variant, className, children, ...props }) => {

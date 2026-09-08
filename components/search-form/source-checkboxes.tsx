@@ -2,6 +2,7 @@
 import { Checkbox } from '../shared/base-ui';
 import type { Source } from '@/types';
 import MAX_SOURCE_SELECTIONS from '@/constants/max-source-selections';
+import getColorBySlant from '@/util/get-color-by-slant';
 
 type SourceCheckboxesProps = {
 	sourceList: Source[];
@@ -22,7 +23,8 @@ const SourceCheckboxes: React.FC<SourceCheckboxesProps> = ({
 			<label key={source.id + 'Checkbox'}>
 				<Checkbox
 					name={source.id + 'Checkbox'}
-					size='2xl'
+					size='xl'
+					color={typeof source.slant !== 'undefined' ? getColorBySlant(source.slant) : undefined}
 					value={source.id}
 					checked={isChecked}
 					disabled={isDisabled}
@@ -36,9 +38,7 @@ const SourceCheckboxes: React.FC<SourceCheckboxesProps> = ({
 	return (
 		<>
 			<p className='font-bold'>Choose up to {MAX_SOURCE_SELECTIONS} sources.</p>
-			<div className='grid grid-cols-1 gap-2 rounded-xl bg-white p-4 md:grid-cols-6'>
-				{checkboxes}
-			</div>
+			<div className='grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-6'>{checkboxes}</div>
 		</>
 	);
 };

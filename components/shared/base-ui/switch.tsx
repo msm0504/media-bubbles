@@ -20,7 +20,7 @@ const SWITCH_CVA_CONFIG: CvaColorConfig = {
 	},
 };
 
-const switchVariants = cva('text-black data-disabled:text-gray-400', {
+const switchVariants = cva('text-black data-disabled:text-slate-400', {
 	...SWITCH_CVA_CONFIG,
 	defaultVariants: {
 		color: 'primary',

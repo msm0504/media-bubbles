@@ -18,7 +18,7 @@ const PostSummary: React.FC<ListItemProps<BlogPostSummary>> = ({
 	const { data: session } = useSession();
 
 	return (
-		<li className='flex items-center gap-2 px-2 py-1 even:bg-gray-200'>
+		<li className='flex items-center gap-2 px-2 py-1 even:bg-slate-200'>
 			<div className='grow'>
 				<h3>
 					<Link href={`/blog/${slug}`}>{title}</Link>
@@ -36,7 +36,7 @@ const PostSummary: React.FC<ListItemProps<BlogPostSummary>> = ({
 							icon={faPenToSquare}
 						/>
 					</Button>
-					<Button color='primary' variant='text' onClick={() => fnDeleteItem(slug, title)}>
+					<Button color='error' variant='text' onClick={() => fnDeleteItem(slug, title)}>
 						<FontAwesomeIcon
 							id={`delete-${slug}-icon`}
 							aria-label={`Delete post ${slug}`}

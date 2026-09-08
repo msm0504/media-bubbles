@@ -13,13 +13,13 @@ const LINK_CVA_CONFIG: CvaColorConfig = {
 			info: tw`not-data-disabled:text-info hover:not-data-disabled:text-info-hover`,
 			warning: tw`not-data-disabled:text-warning hover:not-data-disabled:text-warning-hover`,
 			error: tw`not-data-disabled:text-error hover:not-data-disabled:text-error-hover`,
-			neutral: tw`not-data-disabled:bg-gray-800 hover:not-data-disabled:bg-black`,
+			neutral: tw`not-data-disabled:text-slate-700 hover:not-data-disabled:text-slate-950`,
 		},
 	},
 };
 
 const linkVariants = cva(
-	'no-underline hover:not-data-disabled:underline data-disabled:text-gray-400',
+	'no-underline hover:not-data-disabled:underline data-disabled:text-slate-400',
 	{
 		...LINK_CVA_CONFIG,
 		defaultVariants: {

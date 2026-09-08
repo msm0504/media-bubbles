@@ -20,7 +20,7 @@ const RADIO_CVA_CONFIG: CvaColorConfig = {
 	},
 };
 
-const radioVariants = cva('text-black data-disabled:text-gray-400', {
+const radioVariants = cva('text-black data-disabled:text-slate-400', {
 	...RADIO_CVA_CONFIG,
 	defaultVariants: {
 		color: 'primary',

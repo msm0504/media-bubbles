@@ -1,9 +1,7 @@
 'use client';
-import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
-import homeBackground from '../public/images/og_image.png';
-import { Button } from '@/components/shared/base-ui';
+import { faArrowRightLong } from '@fortawesome/free-solid-svg-icons';
+import { Button, Paper } from '@/components/shared/base-ui';
 
 type HomePageLinkProps = {
 	message: string;
@@ -15,61 +13,59 @@ const HomePageLink: React.FC<HomePageLinkProps> = ({ message, routePath, srText 
 	<div className='flex items-center rounded-xl bg-white p-3'>
 		<p>{message}</p>
 		<Button color='neutral' variant='text' href={routePath}>
-			<FontAwesomeIcon size='sm' aria-label={srText} icon={faArrowRight} />
+			<FontAwesomeIcon size='sm' aria-label={srText} icon={faArrowRightLong} />
 		</Button>
 	</div>
 );
 
 const Home: React.FC = () => (
-	<div className='m-0 flex grow flex-col p-0'>
-		<div className='fixed -z-10 h-screen w-screen overflow-hidden'>
-			<Image
-				alt='background'
-				src={homeBackground}
-				quality={100}
-				fill
-				sizes='100vw'
-				style={{
-					objectFit: 'cover',
-				}}
-			/>
-		</div>
-		<div className='m-auto max-w-4xl bg-transparent px-2'>
-			<div className='mb-2 flex flex-col items-center justify-center gap-4 py-8'>
-				<h1 className='text-center text-7xl font-bold text-white text-shadow-outlined'>
-					Media Bubbles
-				</h1>
-				<p className='text-center font-bold text-white'>
-					{`
+	<div className='m-auto grid max-w-6xl grid-cols-1 gap-4 px-2 md:grid-cols-2'>
+		<Paper className='mb-2 flex flex-col justify-center gap-4 py-8'>
+			<h2 className='text-5xl font-extrabold'>
+				See the{' '}
+				<span className='bg-linear-[100deg] from-info via-primary via-48% to-error bg-clip-text text-transparent'>
+					whole story.
+				</span>
+				<br />
+				Not just one side.
+			</h2>
+			<p className='text-slate-700'>
+				{`
 						In the age of social media and targeted advertising, it's easy to
 						get trapped inside of our own bubbles. We only see information from sources we are already
 						likely to agree with. This site provides a way out. Search for recent news from outlets
 						across the spectrum, outlets you agree with ("Stay in my Bubble"), outlets you disagree with
 						("Burst my Bubble"), or specific outlets of your choosing. Escape your information bubble!
 					`}
-				</p>
-				<Button className='text-lg' color='neutral' variant='outlined' href='/search'>
-					Start Searching
+			</p>
+			<div className='flex flex-row gap-2'>
+				<Button className='grow-2' color='neutral' variant='contained' href='/search'>
+					Explore the headlines
+					<FontAwesomeIcon size='2xs' icon={faArrowRightLong} />
+				</Button>
+				<Button className='grow' color='neutral' variant='text' href='/about'>
+					Learn how it works
+					<FontAwesomeIcon size='2xs' icon={faArrowRightLong} />
 				</Button>
 			</div>
-			<div className='flex flex-col items-center justify-center gap-4 py-8'>
-				<HomePageLink
-					message='See the latest news from sources across the political spectrum.'
-					routePath='/latest'
-					srText='go to Latest News page'
-				/>
-				<HomePageLink
-					message='Learn about our mission and how we got started.'
-					routePath='/about'
-					srText='go to About page'
-				/>
-				<HomePageLink
-					message='Have a suggestion or question for us? Send us a message.'
-					routePath='/contact'
-					srText='go to Contact Us page'
-				/>
-			</div>
-		</div>
+		</Paper>
+		<Paper className='flex flex-col items-center justify-center gap-4 py-8'>
+			<HomePageLink
+				message='See the latest news from sources across the political spectrum.'
+				routePath='/latest'
+				srText='go to Latest News page'
+			/>
+			<HomePageLink
+				message='Learn about our mission and how we got started.'
+				routePath='/about'
+				srText='go to About page'
+			/>
+			<HomePageLink
+				message='Have a suggestion or question for us? Send us a message.'
+				routePath='/contact'
+				srText='go to Contact Us page'
+			/>
+		</Paper>
 	</div>
 );
 

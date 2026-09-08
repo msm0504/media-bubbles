@@ -5,8 +5,6 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { Button } from './base-ui';
 import Login from './login';
 import favIcon from '@/app/favicon.ico';
-import { backgroundVariants, type Color } from '@/styles/color-variants';
-import cn from '@/util/cn';
 import tw from '@/util/tailwind-template';
 
 type PageLink = {
@@ -14,12 +12,7 @@ type PageLink = {
 	route: string;
 };
 
-type TopNavbarProps = {
-	color?: Color;
-};
-
 const pages: PageLink[] = [
-	{ label: 'Home', route: '/' },
 	{ label: 'Search', route: '/search' },
 	{ label: 'Latest News', route: '/latest' },
 	{ label: 'About', route: '/about' },
@@ -29,12 +22,10 @@ const pages: PageLink[] = [
 
 const contentClassName = tw`h-full w-[calc(100vw-40px)] p-2 transition-[opacity,transform,translate] duration-(--duration) ease-(--easing) data-ending-style:opacity-0 data-starting-style:opacity-0 data-ending-style:data-[activation-direction=left]:translate-x-[50%] data-starting-style:data-[activation-direction=left]:translate-x-[-50%] data-ending-style:data-[activation-direction=right]:translate-x-[-50%] data-starting-style:data-[activation-direction=right]:translate-x-[50%] min-[500px]:w-max min-[500px]:max-w-100`;
 
-const TopNavbar: React.FC<TopNavbarProps> = ({ color = 'neutral' }) => {
+const TopNavbar: React.FC = () => {
 	return (
-		<NavigationMenu.Root
-			className={cn(backgroundVariants({ color }), 'static min-h-6 w-screen text-white')}
-		>
-			<NavigationMenu.List className='relative mx-auto flex w-full items-center p-4 2xl:container'>
+		<NavigationMenu.Root className='min-h-6 w-screen'>
+			<NavigationMenu.List className='relative mx-auto flex w-full max-w-6xl items-center p-4'>
 				<NavigationMenu.Item className='flex md:hidden'>
 					<NavigationMenu.Trigger>
 						<FontAwesomeIcon size='xl' aria-label='open pages menu' icon={faBars} />
@@ -52,18 +43,19 @@ const TopNavbar: React.FC<TopNavbarProps> = ({ color = 'neutral' }) => {
 					</NavigationMenu.Content>
 				</NavigationMenu.Item>
 				<NavigationMenu.Item>
-					<Button color='neutral' variant='contained' aria-label='logo button to home' href='/'>
+					<Button color='neutral' variant='text' aria-label='logo button to home' href='/'>
 						<Image src={favIcon} width={45} height={45} alt='Media Bubbles logo' />
+						<h1 className='text-lg font-extrabold'>Media Bubbles</h1>
 					</Button>
 				</NavigationMenu.Item>
+				<div className='grow' />
 				{pages.map(page => (
 					<NavigationMenu.Item key={page.label} className='hidden md:block'>
-						<Button className='my-2 text-lg' color='neutral' variant='contained' href={page.route}>
+						<Button className='my-2' color='neutral' variant='text' href={page.route}>
 							{page.label}
 						</Button>
 					</NavigationMenu.Item>
 				))}
-				<div className='grow' />
 				<Login />
 			</NavigationMenu.List>
 

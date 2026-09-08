@@ -12,9 +12,9 @@ export const BUTTON_CVA_CONFIG: CvaColorVarConfig = {
 			neutral: '',
 		},
 		variant: {
-			contained: tw`data-disabled:bg-gray-200 data-disabled:text-gray-400`,
-			outlined: tw`border border-solid data-disabled:border-gray-400 data-disabled:text-gray-400`,
-			text: tw`data-disabled:text-gray-400`,
+			contained: tw`data-disabled:bg-slate-200 data-disabled:text-slate-400`,
+			outlined: tw`border border-solid data-disabled:border-slate-400 data-disabled:text-slate-400`,
+			text: tw`data-disabled:text-slate-400`,
 		},
 	},
 	compoundVariants: [
@@ -101,17 +101,17 @@ export const BUTTON_CVA_CONFIG: CvaColorVarConfig = {
 		{
 			color: 'neutral',
 			variant: 'contained',
-			class: tw`not-data-disabled:bg-black not-data-disabled:text-white hover:not-data-disabled:bg-gray-800`,
+			class: tw`not-data-disabled:bg-slate-950 not-data-disabled:text-white hover:not-data-disabled:bg-slate-800`,
 		},
 		{
 			color: 'neutral',
 			variant: 'outlined',
-			class: tw`not-data-disabled:border-black not-data-disabled:bg-white not-data-disabled:text-black hover:not-data-disabled:bg-gray-100`,
+			class: tw`not-data-disabled:border-slate-950 not-data-disabled:bg-white not-data-disabled:text-slate-950 hover:not-data-disabled:bg-slate-100`,
 		},
 		{
 			color: 'neutral',
 			variant: 'text',
-			class: tw`not-data-disabled:bg-inherit not-data-disabled:text-black hover:not-data-disabled:bg-gray-100`,
+			class: tw`not-data-disabled:bg-inherit not-data-disabled:text-slate-950 hover:not-data-disabled:bg-slate-100`,
 		},
 	],
 };

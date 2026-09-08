@@ -1,7 +1,7 @@
-import { Link } from '../shared/base-ui';
+import { Link, Paper } from '../shared/base-ui';
 
 const SearchInstructions: React.FC = () => (
-	<div className='flex flex-col gap-2 rounded-xl bg-white p-4'>
+	<Paper className='flex flex-col gap-2'>
 		<p className='font-bold'>How to Use This Search:</p>
 		<p>We offer several different ways to view the latest news:</p>
 		<ul className='list-inside list-disc'>
@@ -43,7 +43,7 @@ const SearchInstructions: React.FC = () => (
 			{`. So, other than selecting the source list, we do not want any of our opinions influencing
 			this search tool.`}
 		</p>
-	</div>
+	</Paper>
 );
 
 export default SearchInstructions;

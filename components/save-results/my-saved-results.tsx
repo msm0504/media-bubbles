@@ -12,7 +12,7 @@ const SavedResultItem: React.FC<ListItemProps<SavedResultSummary>> = ({
 }) => {
 	const router = useRouter();
 	return (
-		<li className='flex items-center gap-2 px-2 py-1 even:bg-gray-200'>
+		<li className='flex items-center gap-2 px-2 py-1 even:bg-slate-200'>
 			<div className='grow'>
 				<p>{name}</p>
 				<p className='text-sm'>{`Saved at: ${new Date(createdAt).toLocaleString()}`}</p>
@@ -31,7 +31,7 @@ const SavedResultItem: React.FC<ListItemProps<SavedResultSummary>> = ({
 					icon={faNewspaper}
 				/>
 			</Button>
-			<Button color='primary' variant='text' onClick={() => fnDeleteItem(_id, name)}>
+			<Button color='error' variant='text' onClick={() => fnDeleteItem(_id, name)}>
 				<FontAwesomeIcon
 					id={`delete-${_id}-icon`}
 					aria-label={`Delete saved result ${name}`}

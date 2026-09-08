@@ -1,6 +1,7 @@
 import { RadioGroup } from '@base-ui/react';
 import { Radio } from '../shared/base-ui';
 import { SOURCE_SLANT_MAP, SourceSlant } from '@/constants/source-slant';
+import getColorBySlant from '@/util/get-color-by-slant';
 import { keys } from '@/util/typed-keys';
 
 type SlantRadioButtonsProps = {
@@ -11,8 +12,8 @@ type SlantRadioButtonsProps = {
 const SlantRadioButtons: React.FC<SlantRadioButtonsProps> = ({ selection, onChange }) => {
 	const radiobuttons = keys(SOURCE_SLANT_MAP).map((sourceSlant: SourceSlant) => {
 		return (
-			<label key={'sourceSlant' + sourceSlant} className='flex gap-2 font-bold'>
-				<Radio value={sourceSlant} />
+			<label key={'sourceSlant' + sourceSlant} className='flex gap-2'>
+				<Radio size='xl' color={getColorBySlant(sourceSlant)} value={sourceSlant} />
 				{SOURCE_SLANT_MAP[sourceSlant]}
 			</label>
 		);
@@ -20,11 +21,9 @@ const SlantRadioButtons: React.FC<SlantRadioButtonsProps> = ({ selection, onChan
 
 	return (
 		<>
-			<p className='font-bold'>
-				Choose the category that you think best fits your political views.
-			</p>
+			<p>Choose the category that you think best fits your political views.</p>
 			<RadioGroup
-				className='flex flex-col rounded-xl bg-white p-4 md:flex-row md:justify-around'
+				className='flex flex-col md:flex-row md:justify-around'
 				name='sourceSlant'
 				value={selection || ''}
 				onValueChange={(value, eventDetails) =>

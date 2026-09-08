@@ -4,9 +4,9 @@ import { Controller, useForm, useWatch } from 'react-hook-form';
 import type { DefaultValues, FieldValues, Path, RegisterOptions } from 'react-hook-form';
 import { Dialog, Field, Toggle, ToggleGroup } from '@base-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import capitalize from 'lodash.capitalize';
-import { Button, Input } from './base-ui';
+import { Button, Input, Paper } from './base-ui';
 import useInterval from '@/hooks/use-interval';
 import {
 	getItemFromStorage,
@@ -93,37 +93,36 @@ const SaveableForm = <T extends FieldValues>({
 	};
 
 	const generateTextField = ({ name, placeholder, isDisabled, rows, rules }: FieldSetting<T>) => (
-		<div key={name} className='rounded-xl bg-white p-4'>
-			<Controller
-				control={control}
-				name={name}
-				rules={rules}
-				render={({ field, fieldState: { invalid, isTouched, isDirty, error } }) => {
-					return (
-						<Field.Root
-							className='flex w-full flex-col items-start gap-1'
-							invalid={invalid}
-							touched={isTouched}
-							dirty={isDirty}
-						>
-							<Field.Label htmlFor={`${formName}-${field.name}`} className='font-bold capitalize'>
-								{field.name}
-							</Field.Label>
-							<Input
-								{...field}
-								id={`${formName}-${field.name}`}
-								placeholder={placeholder}
-								disabled={isDisabled}
-								render={rows ? props => <textarea {...props} rows={rows} /> : undefined}
-							/>
-							<Field.Error className='text-sm text-error' match={!!error}>
-								{error?.message}
-							</Field.Error>
-						</Field.Root>
-					);
-				}}
-			/>
-		</div>
+		<Controller
+			key={name}
+			control={control}
+			name={name}
+			rules={rules}
+			render={({ field, fieldState: { invalid, isTouched, isDirty, error } }) => {
+				return (
+					<Field.Root
+						className='flex w-full flex-col items-start gap-1'
+						invalid={invalid}
+						touched={isTouched}
+						dirty={isDirty}
+					>
+						<Field.Label htmlFor={`${formName}-${field.name}`} className='capitalize'>
+							{field.name}
+						</Field.Label>
+						<Input
+							{...field}
+							id={`${formName}-${field.name}`}
+							placeholder={placeholder}
+							disabled={isDisabled}
+							render={rows ? props => <textarea {...props} rows={rows} /> : undefined}
+						/>
+						<Field.Error className='text-sm text-error' match={!!error}>
+							{error?.message}
+						</Field.Error>
+					</Field.Root>
+				);
+			}}
+		/>
 	);
 
 	const generateButtonGroup = ({ name, options }: FieldSetting<T>) => (
@@ -133,7 +132,7 @@ const SaveableForm = <T extends FieldValues>({
 			name={name}
 			render={({ field }) => (
 				<Field.Root className='flex flex-col items-start gap-1'>
-					<Field.Label id={`${formName}-${name}-label`} className='font-bold capitalize'>
+					<Field.Label id={`${formName}-${name}-label`} className='capitalize'>
 						{name}
 					</Field.Label>
 					<ToggleGroup
@@ -146,7 +145,7 @@ const SaveableForm = <T extends FieldValues>({
 							<Toggle
 								key={value}
 								value={value}
-								className='rounded-xl border border-neutral-950 px-4 py-2 text-neutral-950 data-pressed:bg-info data-pressed:text-white'
+								className='rounded-xl border border-neutral-950 px-4 py-2 text-neutral-950 data-pressed:border-primary data-pressed:font-semibold data-pressed:text-primary'
 							>
 								{label}
 							</Toggle>
@@ -164,7 +163,7 @@ const SaveableForm = <T extends FieldValues>({
 					<Dialog.Root open={preview} onOpenChange={setPreview}>
 						<Dialog.Trigger
 							render={props => (
-								<Button className='font-bold' {...props} color='info' variant='text'>
+								<Button {...props} color='info' variant='text'>
 									Preview
 								</Button>
 							)}
@@ -182,7 +181,7 @@ const SaveableForm = <T extends FieldValues>({
 				</div>
 			)}
 			<form onSubmit={handleSubmit(submitForm)}>
-				<div className='flex flex-col gap-4'>
+				<Paper className='flex flex-col gap-6'>
 					{fieldList.map(generateFormField)}
 					<div>
 						<Button
@@ -194,11 +193,15 @@ const SaveableForm = <T extends FieldValues>({
 							id={`submit-${formName}`}
 							disabled={isProcessing}
 						>
-							<strong>{submitLabel}</strong>
-							{isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
+							{submitLabel}
+							<FontAwesomeIcon
+								icon={isProcessing ? faSpinner : faPaperPlane}
+								spinPulse={isProcessing}
+							/>
 						</Button>
+						<Button>Test</Button>
 					</div>
-				</div>
+				</Paper>
 			</form>
 		</>
 	);

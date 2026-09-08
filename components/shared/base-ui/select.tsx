@@ -50,7 +50,7 @@ const Select: React.FC<SelectProps> = ({ className, color, label, variant, ...pr
 										<BaseSelect.Item
 											key={label}
 											value={value}
-											className='grid cursor-default grid-cols-[1rem_1fr] items-center gap-2 py-1.5 pr-4 pl-2.5 text-sm outline-hidden select-none data-highlighted:bg-gray-100 dark:data-highlighted:bg-gray-800'
+											className='grid cursor-default grid-cols-[1rem_1fr] items-center gap-2 py-1.5 pr-4 pl-2.5 text-sm outline-hidden select-none data-highlighted:bg-slate-100 dark:data-highlighted:bg-slate-800'
 										>
 											<BaseSelect.ItemText className='col-start-2'>{label}</BaseSelect.ItemText>
 										</BaseSelect.Item>

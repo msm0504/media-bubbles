@@ -102,10 +102,8 @@ const AsyncList = <T,>({
 
 	if (loginRequired && !session)
 		return (
-			<div className='mt-4 rounded-xl bg-white p-4'>
-				<div className='text-primary'>
-					{LoginRequiredComponent ? <LoginRequiredComponent /> : 'Log in to view this page'}
-				</div>
+			<div className='text-primary'>
+				{LoginRequiredComponent ? <LoginRequiredComponent /> : 'Log in to view this page'}
 			</div>
 		);
 
@@ -135,14 +133,14 @@ const AsyncList = <T,>({
 
 	return (
 		<div className='flex flex-col gap-4'>
-			<label className='flex w-full flex-col items-start gap-1 rounded-xl bg-white p-4 sm:m-auto sm:w-xl'>
+			<label className='flex w-full flex-col items-start gap-1 sm:m-auto sm:w-xl'>
 				Filter:
 				<Input name='filter' onValueChange={newValue => handleSearch(newValue)} />
 			</label>
 			{loading ? (
 				<Spinner />
 			) : (
-				<div className='rounded-xl bg-white p-4'>
+				<>
 					<ul className='flex list-none flex-col gap-2'>
 						{items && items.length ? (
 							items.map(item => (
@@ -153,7 +151,7 @@ const AsyncList = <T,>({
 								/>
 							))
 						) : (
-							<p className='text-primary'>{`No ${camelCaseToWords(apiListName)} found`}</p>
+							<p>{`No ${camelCaseToWords(apiListName)} found`}</p>
 						)}
 					</ul>
 					<div className='mt-2 flex flex-row-reverse'>
@@ -166,7 +164,7 @@ const AsyncList = <T,>({
 							showLastButton
 						/>
 					</div>
-				</div>
+				</>
 			)}
 		</div>
 	);
