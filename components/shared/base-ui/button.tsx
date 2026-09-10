@@ -5,13 +5,16 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { BUTTON_CVA_CONFIG } from './button-variants';
 import cn from '@/util/cn';
 
-const buttonVariants = cva('flex h-8 items-center justify-center gap-2 rounded-xl px-4 py-5', {
-	...BUTTON_CVA_CONFIG,
-	defaultVariants: {
-		color: 'primary',
-		variant: 'contained',
-	},
-});
+const buttonVariants = cva(
+	'flex h-8 items-center justify-center gap-2 rounded-full px-4 py-5 font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2',
+	{
+		...BUTTON_CVA_CONFIG,
+		defaultVariants: {
+			color: 'primary',
+			variant: 'contained',
+		},
+	}
+);
 
 type ButtonProps = VariantProps<typeof buttonVariants> & BaseButton.Props;
 type LinkProps = VariantProps<typeof buttonVariants> & ComponentProps<typeof Link>;

@@ -4,7 +4,7 @@ import cn from '@/util/cn';
 const Paper: React.FC<ComponentProps<'div'>> = ({ children, className, ...props }) => (
 	<div
 		className={cn(
-			'rounded-4xl border border-slate-300 bg-white p-6 opacity-80 shadow-2xl shadow-slate-200 backdrop-blur-md',
+			'rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-xl shadow-slate-200/70 backdrop-blur-md dark:border-slate-700/80 dark:bg-slate-900/85 dark:shadow-black/20',
 			className
 		)}
 		{...props}

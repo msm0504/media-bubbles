@@ -15,17 +15,20 @@ const CHECKBOX_CVA_CONFIG: CvaColorConfig = {
 			info: tw`data-checked:text-info`,
 			warning: tw`data-checked:text-warning`,
 			error: tw`data-checked:text-error`,
-			neutral: tw`data-checked:text-black`,
+			neutral: tw`data-checked:text-slate-950 dark:data-checked:text-white`,
 		},
 	},
 };
 
-const checkboxVariants = cva('text-black data-disabled:text-slate-400', {
-	...CHECKBOX_CVA_CONFIG,
-	defaultVariants: {
-		color: 'primary',
-	},
-});
+const checkboxVariants = cva(
+	'text-slate-700 transition-colors data-disabled:text-slate-400 dark:text-slate-300 dark:data-disabled:text-slate-600',
+	{
+		...CHECKBOX_CVA_CONFIG,
+		defaultVariants: {
+			color: 'primary',
+		},
+	}
+);
 
 type CheckboxProps = BaseCheckbox.Root.Props &
 	VariantProps<typeof checkboxVariants> & {
