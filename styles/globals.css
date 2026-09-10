@@ -25,8 +25,15 @@
 			),
 			var(--color-white);
 	}
-	a:hover {
-		text-decoration: underline;
+	@media (prefers-color-scheme: dark) {
+		body {
+			min-height: 100vh;
+			color: var(--color-slate-100);
+			background-color: var(--color-slate-950);
+			background-image:
+				radial-gradient(circle at 83% 13%, rgb(139 104 202 / 28%), transparent 60%),
+				radial-gradient(circle at 4% 85%, rgb(76 114 232 / 20%), transparent 55%);
+		}
 	}
 	h1,
 	h2,
