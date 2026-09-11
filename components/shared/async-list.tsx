@@ -1,7 +1,7 @@
 'use client';
-import { useState, useEffect, useContext, useRef, useCallback, ReactElement } from 'react';
+import { useState, useEffect, useContext, useRef, useMemo, ReactElement } from 'react';
 import debounce from 'lodash.debounce';
-import { Input, Pagination } from './base-ui';
+import { Pagination, SearchInput } from './base-ui';
 import Spinner from './spinner';
 import ALERT_LEVEL from '@/constants/alert-level';
 import { AlertsDispatch } from '@/contexts/alerts-context';
@@ -53,41 +53,45 @@ const AsyncList = <T,>({
 	const [page, setPage] = useState(1);
 	const cache = useRef<Cache<T>>({});
 
-	const getListItems = useCallback(async () => {
-		setLoading(true);
-		const { items: returnedItems, pageCount } = await callApi<ListResponse<T>, GetParams>(
-			'get',
-			apiPath,
-			{
-				filter: filter,
-				page: page,
-			}
-		);
-		if (page === 1) {
-			cache.current = {
-				...cache.current,
-				[filter]: { items: { [page]: returnedItems }, pageCount },
-			};
-			setItems(returnedItems);
-		} else if (page >= 1) {
-			cache.current = {
-				...cache.current,
-				[filter]: {
-					items: { ...cache.current[filter].items, [page]: returnedItems },
-					pageCount,
-				},
-			};
-			setItems(returnedItems);
-		} else {
-			throw `Queried for page ${page} of results containing ${filter}`;
-		}
-		if (Object.keys(cache).length > CACHE_SIZE) {
-			const { [Object.keys(cache.current)[0]]: firstItem, ...rest } = cache.current;
-			cache.current = rest;
-		}
-		setPageCount(pageCount);
-		setLoading(false);
-	}, [apiPath, filter, page]);
+	const getListItems = useMemo(
+		() =>
+			debounce(async () => {
+				setLoading(true);
+				const { items: returnedItems, pageCount } = await callApi<ListResponse<T>, GetParams>(
+					'get',
+					apiPath,
+					{
+						filter: filter,
+						page: page,
+					}
+				);
+				if (page === 1) {
+					cache.current = {
+						...cache.current,
+						[filter]: { items: { [page]: returnedItems }, pageCount },
+					};
+					setItems(returnedItems);
+				} else if (page >= 1) {
+					cache.current = {
+						...cache.current,
+						[filter]: {
+							items: { ...cache.current[filter].items, [page]: returnedItems },
+							pageCount,
+						},
+					};
+					setItems(returnedItems);
+				} else {
+					throw `Queried for page ${page} of results containing ${filter}`;
+				}
+				if (Object.keys(cache.current).length > CACHE_SIZE) {
+					const { [Object.keys(cache.current)[0]]: firstItem, ...rest } = cache.current;
+					cache.current = rest;
+				}
+				setPageCount(pageCount);
+				setLoading(false);
+			}, 300),
+		[apiPath, filter, page]
+	);
 
 	useEffect(() => {
 		if (!loginRequired || session) {
@@ -98,6 +102,8 @@ const AsyncList = <T,>({
 				getListItems();
 			}
 		}
+
+		return () => getListItems.cancel();
 	}, [loginRequired, session, page, filter, getListItems]);
 
 	if (loginRequired && !session)
@@ -122,10 +128,10 @@ const AsyncList = <T,>({
 		}
 	};
 
-	const handleSearch = debounce((query: string) => {
+	const handleSearch = (query: string) => {
 		setFilter(query);
 		setPage(1);
-	}, 300);
+	};
 
 	const handleLoadPage = (selectedPage: number) => {
 		setPage(selectedPage);
@@ -133,10 +139,12 @@ const AsyncList = <T,>({
 
 	return (
 		<div className='flex flex-col gap-4'>
-			<label className='flex w-full flex-col items-start gap-1 sm:m-auto sm:w-xl'>
-				Filter:
-				<Input name='filter' onValueChange={newValue => handleSearch(newValue)} />
-			</label>
+			<SearchInput
+				rootClassName='flex w-full flex-col items-start gap-1 sm:m-auto sm:w-xl'
+				className='pl-10'
+				placeholder='Search'
+				onValueChange={newValue => handleSearch(newValue)}
+			/>
 			{loading ? (
 				<Spinner />
 			) : (

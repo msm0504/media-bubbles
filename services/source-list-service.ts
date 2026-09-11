@@ -93,7 +93,7 @@ const getSourcesAndBiasRatings = () => {
 
 export const populateSourceLists = async () => {
 	const db = await _collection;
-	const savedSourceLists = (await db.findOne()) as unknown as SourceLists;
+	const savedSourceLists = await db.findOne();
 	const curSourcesMap = savedSourceLists
 		? savedSourceLists.appSourceList.reduce(
 				(acc, source) => {
@@ -184,9 +184,9 @@ export const getSourceLists = async (): Promise<SourceLists> => {
 	'use cache';
 	cacheTag('source-lists');
 	const db = await _collection;
-	const sourceLists = (await db.findOne()) as unknown as SourceLists;
+	const sourceLists = await db.findOne();
 	return {
-		appSourceList: sourceLists.appSourceList,
-		sourceListBySlant: sourceLists.sourceListBySlant,
+		appSourceList: sourceLists?.appSourceList || [],
+		sourceListBySlant: sourceLists?.sourceListBySlant || [],
 	};
 };

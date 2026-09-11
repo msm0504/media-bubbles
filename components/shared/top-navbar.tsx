@@ -24,7 +24,7 @@ const contentClassName = tw`h-full w-[calc(100vw-40px)] p-2 transition-[opacity,
 
 const TopNavbar: React.FC = () => {
 	return (
-		<NavigationMenu.Root className='min-h-6 w-screen'>
+		<NavigationMenu.Root className='min-h-6 w-full'>
 			<NavigationMenu.List className='relative mx-auto flex w-full max-w-6xl items-center p-4'>
 				<NavigationMenu.Item className='flex md:hidden'>
 					<NavigationMenu.Trigger>

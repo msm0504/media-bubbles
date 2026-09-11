@@ -38,6 +38,7 @@ vi.mock('next/navigation', () => ({
 
 vi.mock('next/cache', () => ({
 	cacheTag: vi.fn(),
+	cacheLife: vi.fn(),
 }));
 
 vi.mock('@/lib/auth-client', () => ({

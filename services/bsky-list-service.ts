@@ -1,3 +1,4 @@
+import { cacheLife } from 'next/cache';
 import type { AtUriString, DatetimeString, DidString } from '@atproto/lex';
 import { AtUri } from '@atproto/syntax';
 import { app } from '@bsky/sdk/lexicons';
@@ -21,6 +22,7 @@ const createBskyList = async () => {
 
 export const getBskyNewsListUri = async () => {
 	'use cache';
+	cacheLife('max');
 	const agent = await getBskyAgent();
 	if (!agent.did) return '';
 

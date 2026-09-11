@@ -24,7 +24,7 @@ const SourceCheckboxes: React.FC<SourceCheckboxesProps> = ({
 				<Checkbox
 					name={source.id + 'Checkbox'}
 					size='xl'
-					color={typeof source.slant !== 'undefined' ? getColorBySlant(source.slant) : undefined}
+					color={getColorBySlant(source.slant)}
 					value={source.id}
 					checked={isChecked}
 					disabled={isDisabled}
