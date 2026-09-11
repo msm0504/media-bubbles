@@ -1,8 +1,8 @@
 import type { MetadataRoute } from 'next';
 
 const manifest = (): MetadataRoute.Manifest => ({
-	theme_color: '#222',
-	background_color: '#a800e6',
+	theme_color: '#8b68ca',
+	background_color: '#8b68ca',
 	display: 'standalone',
 	scope: '/',
 	start_url: '/',

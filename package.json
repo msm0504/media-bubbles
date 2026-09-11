@@ -1,6 +1,6 @@
 {
 	"name": "media-bubbles",
-	"version": "8.0.3",
+	"version": "8.0.4",
 	"private": true,
 	"overrides": {
 		"sharp": "^0.35.3"
@@ -32,6 +32,7 @@
 		"@next/third-parties": "^16.2.7",
 		"@sparticuz/chromium-min": "^141.0.0",
 		"@tailwindcss/postcss": "^4.3.3",
+		"@tailwindcss/typography": "^0.5.20",
 		"@vercel/blob": "^2.0.0",
 		"better-auth": "^1.6.25",
 		"class-variance-authority": "^0.7.1",
@@ -75,10 +76,10 @@
 		"prettier": "^3.9.6",
 		"prettier-plugin-tailwindcss": "^0.8.1",
 		"puppeteer": "^25.7.0",
+		"storybook": "^10.5.10",
 		"typescript": "^6",
 		"vite": "latest",
 		"vitest": "^4.1.10",
-		"whatwg-fetch": "^3.6.20",
-		"storybook": "^10.5.10"
+		"whatwg-fetch": "^3.6.20"
 	}
 }

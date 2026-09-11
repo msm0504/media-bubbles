@@ -40,7 +40,9 @@ const fontHeading = Plus_Jakarta_Sans({
 const RootLayout: React.FC<ParentCompProps> = ({ children }) => (
 	<html lang='en' className={`${fontBody.variable} ${fontHeading.variable}`}>
 		<body>
-			<div className='flex min-h-screen flex-col'>
+			<div className='relative flex min-h-screen flex-col overflow-hidden'>
+				<div className='bg-bubble bg-left'></div>
+				<div className='bg-bubble bg-right'></div>
 				<TopNavbar />
 				<div className='grow'>{children}</div>
 				<Footer />

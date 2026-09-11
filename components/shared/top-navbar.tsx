@@ -70,7 +70,7 @@ const TopNavbar: React.FC = () => {
 						['--easing' as string]: 'cubic-bezier(0.22, 1, 0.36, 1)',
 					}}
 				>
-					<NavigationMenu.Popup className='relative h-(--popup-height) w-(--popup-width) origin-(--transform-origin) border border-neutral-950 bg-white text-neutral-950 shadow-[0.25rem_0.25rem_0] shadow-black/12 transition-[opacity,transform,width,height,scale] duration-(--duration) ease-(--easing) outline-none data-ending-style:scale-90 data-ending-style:opacity-0 data-ending-style:duration-150 data-ending-style:ease-[ease] data-starting-style:scale-90 data-starting-style:opacity-0 dark:border-white dark:bg-neutral-950 dark:text-white dark:shadow-none'>
+					<NavigationMenu.Popup className='relative h-(--popup-height) w-(--popup-width) origin-(--transform-origin) border border-slate-950 bg-white text-slate-950 shadow-[0.25rem_0.25rem_0] shadow-black/12 transition-[opacity,transform,width,height,scale] duration-(--duration) ease-(--easing) outline-none data-ending-style:scale-90 data-ending-style:opacity-0 data-ending-style:duration-150 data-ending-style:ease-[ease] data-starting-style:scale-90 data-starting-style:opacity-0 dark:border-white dark:bg-slate-950 dark:text-white dark:shadow-none'>
 						<NavigationMenu.Viewport className='relative h-full w-full overflow-hidden' />
 					</NavigationMenu.Popup>
 				</NavigationMenu.Positioner>

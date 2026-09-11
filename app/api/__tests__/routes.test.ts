@@ -18,7 +18,10 @@ const mocks = vi.hoisted(() => ({
 	getSourceLists: vi.fn(),
 	populateSourceLists: vi.fn(),
 	getSourceLogo: vi.fn(),
+	getMostRecentHeadlines: vi.fn(),
+	searchMostRecentHeadlines: vi.fn(),
 	loadRecentPostsForAllSources: vi.fn(),
+
 	after: vi.fn().mockImplementation((callback: () => Promise<void>) => callback()),
 }));
 
@@ -32,7 +35,11 @@ vi.mock('@/services/blog-service', () => ({
 	deletePost: mocks.deletePost,
 }));
 vi.mock('@/services/support-email-service', () => ({ sendSupportEmail: mocks.sendSupportEmail }));
-vi.mock('@/services/news-search-service', () => ({ getHeadlines: mocks.getHeadlines }));
+vi.mock('@/services/news-search-service', () => ({
+	getHeadlines: mocks.getHeadlines,
+	getMostRecent: mocks.getMostRecentHeadlines,
+	searchMostRecent: mocks.searchMostRecentHeadlines,
+}));
 vi.mock('@/services/saved-results-service', () => ({
 	getSavedResults: mocks.getSavedResults,
 	saveSearchResult: mocks.saveSearchResult,
@@ -57,6 +64,7 @@ import { DELETE as deleteBlogPost, PUT as updateBlogPost } from '@/app/api/blog-
 import { GET as getBlogPosts, POST as createBlogPost } from '@/app/api/blog-posts/route';
 import { POST as sendFeedback } from '@/app/api/feedback/route';
 import { GET as getHeadlinesRoute, POST as postHeadlinesRoute } from '@/app/api/headlines/route';
+import { GET as getMostRecentHeadlinesRoute } from '@/app/api/headlines/most-recent/route';
 import {
 	DELETE as deleteSearchResult,
 	GET as getSearchResult,
@@ -196,6 +204,24 @@ describe('feedback and headlines API routes', () => {
 
 		expect(mocks.loadRecentPostsForAllSources).not.toHaveBeenCalled();
 		expect(response.status).toBe(401);
+	});
+
+	test('gets most recent headlines', async () => {
+		mocks.getMostRecentHeadlines.mockResolvedValue([]);
+
+		await getMostRecentHeadlinesRoute(request('/api/headlines/most-recent'));
+
+		expect(mocks.getMostRecentHeadlines).toHaveBeenCalled();
+		expect(mocks.searchMostRecentHeadlines).not.toHaveBeenCalled();
+	});
+
+	test('searches most recent headlines with keyword', async () => {
+		mocks.searchMostRecentHeadlines.mockResolvedValue([]);
+
+		await getMostRecentHeadlinesRoute(request('/api/headlines/most-recent?keyword=climate'));
+
+		expect(mocks.searchMostRecentHeadlines).toHaveBeenCalledWith('climate');
+		expect(mocks.getMostRecentHeadlines).not.toHaveBeenCalled();
 	});
 });
 

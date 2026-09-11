@@ -12,7 +12,7 @@ const SavedResultItem: React.FC<ListItemProps<SavedResultSummary>> = ({
 }) => {
 	const router = useRouter();
 	return (
-		<li className='flex items-center gap-2 px-2 py-1 even:bg-slate-200'>
+		<li className='flex items-center gap-2 px-2 py-1 even:bg-slate-100 dark:even:bg-slate-800'>
 			<div className='grow'>
 				<p>{name}</p>
 				<p className='text-sm'>{`Saved at: ${new Date(createdAt).toLocaleString()}`}</p>
