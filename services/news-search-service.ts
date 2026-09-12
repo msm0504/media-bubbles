@@ -161,7 +161,6 @@ export const getRecentPosts = async (keyword = ''): Promise<BskyArticle[]> => {
 					$or: [
 						{ $expr: { $eq: [keyword, ''] } },
 						{ title: { $regex: `\\b${keyword}\\b`, $options: 'i' } },
-						{ description: { $regex: `\\b${keyword}\\b`, $options: 'i' } },
 					],
 				},
 			},
