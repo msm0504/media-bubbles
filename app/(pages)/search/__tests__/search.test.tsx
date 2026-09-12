@@ -1,13 +1,11 @@
-import { afterAll, afterEach, beforeAll, expect, test, vi } from 'vitest';
+import { afterAll, afterEach, expect, test, vi } from 'vitest';
 import { cleanup, render, screen, fireEvent } from '@testing-library/react';
 import Search from '../page';
 import { SEARCH_MODE_MAP } from '@/constants/search-mode';
 
-beforeAll(() => {
-	vi.mock('@/services/source-list-service', () => ({
-		getSourceLists: () => ({ appSourceList: [], sourceListBySlant: [] }),
-	}));
-});
+vi.mock('@/services/source-list-service', () => ({
+	getSourceLists: () => ({ appSourceList: [], sourceListBySlant: [] }),
+}));
 
 afterEach(cleanup);
 

@@ -1,6 +1,6 @@
 {
 	"name": "media-bubbles",
-	"version": "8.0.6",
+	"version": "8.0.7",
 	"private": true,
 	"overrides": {
 		"sharp": "^0.35.3"
@@ -34,7 +34,7 @@
 		"@tailwindcss/postcss": "^4.3.3",
 		"@tailwindcss/typography": "^0.5.20",
 		"@vercel/blob": "^2.0.0",
-		"better-auth": "^1.6.25",
+		"better-auth": "^1.7.4",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
 		"lodash.capitalize": "^4.2.1",
@@ -61,11 +61,11 @@
 		"@types/lodash.capitalize": "^4.2.9",
 		"@types/lodash.debounce": "^4.0.9",
 		"@types/mongodb": "^4.0.6",
-		"@types/node": "^20",
+		"@types/node": "^22",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
 		"@vitejs/plugin-react": "^6.0.5",
-		"@vitest/coverage-v8": "^4.1.10",
+		"@vitest/coverage-v8": "^5.0.0",
 		"eslint": "^9.39.1",
 		"eslint-config-next": "16.0.1",
 		"eslint-config-prettier": "^10.1.8",
@@ -79,7 +79,7 @@
 		"storybook": "^10.5.10",
 		"typescript": "^6",
 		"vite": "latest",
-		"vitest": "^4.1.10",
+		"vitest": "^5.0.0",
 		"whatwg-fetch": "^3.6.20"
 	}
 }
