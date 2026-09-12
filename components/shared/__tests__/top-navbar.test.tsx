@@ -1,8 +1,10 @@
-import { expect, test, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { afterEach, expect, test, vi } from 'vitest';
+import { cleanup, render, screen } from '@testing-library/react';
 import TopNavbar from '../top-navbar';
 import { useSession } from '@/lib/auth-client';
 import { mockUnauthSession, mockUserSession } from '@/lib/__mocks__/mock-sessions';
+
+afterEach(cleanup);
 
 test('renders the navbar', () => {
 	vi.mocked(useSession).mockReturnValue(mockUnauthSession);

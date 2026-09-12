@@ -2,7 +2,7 @@
 import { useState, useReducer, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightLong, faInfoCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import * as ACTION_TYPES from './action-types';
 import FullSpectrum from './full-spectrum';
 import searchFormReducer, { initialState, FieldValue } from './search-form-reducer';
@@ -84,66 +84,65 @@ const SearchForm: React.FC<SearchFormProps> = ({
 	};
 
 	return (
-		<form>
-			<div className='flex flex-col gap-4'>
-				<div className='rounded-xl bg-white p-4'>
-					<div className='flex flex-col gap-4 md:flex-row'>
-						<label className='flex grow flex-col items-start gap-1 font-bold'>
-							<span>
-								Key Words:{' '}
-								<Popover
-									side='top'
-									description='If no key words are entered, top headlines will be returned for each source.'
-								>
-									<FontAwesomeIcon icon={faInfoCircle} aria-label='keyword tooltip' />
-								</Popover>
-							</span>
-							<Input
-								name='keyword'
-								value={formData.keyword}
-								onValueChange={(newValue, eventDetails) =>
-									onFormFieldChange((eventDetails.event.target as HTMLInputElement)?.name, newValue)
-								}
-							/>
-						</label>
-						<div className='flex grow justify-center'>
-							{formData.keyword ? (
-								<Slider
-									className='flex w-full max-w-150 items-center justify-center gap-4 font-bold'
-									label={`Search Past ${formData.previousDays} Day(s)`}
-									name='previousDays'
-									color='info'
-									min={1}
-									max={7}
-									step={1}
-									value={formData.previousDays}
-									onValueChange={(newValue, eventDetails) =>
-										onFormFieldChange(
-											(eventDetails.event.target as HTMLInputElement)?.name,
-											newValue as number
-										)
-									}
-								/>
-							) : null}
-						</div>
-					</div>
-				</div>
-				{generateFormBySearchMode()}
-				<div>
-					<Button
-						color='primary'
-						variant='contained'
-						name='getHeadlines'
-						id='getHeadlines'
-						disabled={isSearching}
-						onClick={searchTriggered}
-					>
-						<strong>Get Headlines</strong>
-						{isSearching && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
-					</Button>
+		<>
+			<div className='flex flex-col gap-4 md:flex-row'>
+				<label className='flex grow flex-col items-start gap-1'>
+					<span>
+						Key Words:{' '}
+						<Popover
+							side='top'
+							description='If no key words are entered, top headlines will be returned for each source.'
+						>
+							<FontAwesomeIcon icon={faInfoCircle} aria-label='keyword tooltip' />
+						</Popover>
+					</span>
+					<Input
+						name='keyword'
+						value={formData.keyword}
+						onValueChange={(newValue, eventDetails) =>
+							onFormFieldChange((eventDetails.event.target as HTMLInputElement)?.name, newValue)
+						}
+					/>
+				</label>
+				<div className='flex grow justify-center'>
+					{formData.keyword ? (
+						<Slider
+							className='flex w-full max-w-150 items-center justify-center gap-4'
+							label={`Search Past ${formData.previousDays} Day(s)`}
+							name='previousDays'
+							color='primary'
+							min={1}
+							max={7}
+							step={1}
+							value={formData.previousDays}
+							onValueChange={(newValue, eventDetails) =>
+								onFormFieldChange(
+									(eventDetails.event.target as HTMLInputElement)?.name,
+									newValue as number
+								)
+							}
+						/>
+					) : null}
 				</div>
 			</div>
-		</form>
+			{generateFormBySearchMode()}
+			<Button
+				className='max-w-md'
+				color='neutral'
+				variant='contained'
+				name='getHeadlines'
+				id='getHeadlines'
+				disabled={isSearching}
+				onClick={searchTriggered}
+			>
+				Get Headlines
+				<FontAwesomeIcon
+					size='2xs'
+					icon={isSearching ? faSpinner : faArrowRightLong}
+					spinPulse={isSearching}
+				/>
+			</Button>
+		</>
 	);
 };
 

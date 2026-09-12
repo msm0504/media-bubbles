@@ -119,10 +119,7 @@ const FormStepTwo: React.FC<StepTwoProps> = ({ onSuccess }) => {
 					render={({ field, formState: { errors } }) => (
 						<Field.Root className='flex flex-col items-start gap-1' invalid={!!errors[field.name]}>
 							<Field.Label className='font-bold capitalize'>{field.name}</Field.Label>
-							<Field.Control
-								{...field}
-								className='w-full rounded-xl border border-neutral-950 bg-white px-2 py-1 text-sm text-neutral-950 placeholder:text-neutral-500 focus:outline-2 focus:-outline-offset-1 focus:outline-neutral-950'
-							/>
+							<Input {...field} />
 							{errors[field.name] ? (
 								<Field.Error className='text-sm text-error' match>
 									{errors[field.name]?.message as string}
@@ -157,7 +154,7 @@ const useEmailLoginDialog = (): UseEmailLoginDialog => {
 			<Dialog.Root open={isOpen} onOpenChange={toggleOpen}>
 				<Dialog.Portal>
 					<Dialog.Backdrop className='fixed inset-0 min-h-dvh bg-black/20 data-ending-style:opacity-0 data-starting-style:opacity-0' />
-					<Dialog.Popup className='fixed top-1/2 left-1/2 flex w-full max-w-sm -translate-x-1/2 -translate-y-1/2 flex-col gap-4 rounded-xl bg-white p-4 text-neutral-950 shadow-lg outline-none data-ending-style:scale-98 data-ending-style:opacity-0 data-starting-style:scale-98 data-starting-style:opacity-0'>
+					<Dialog.Popup className='fixed top-1/2 left-1/2 flex w-full max-w-sm -translate-x-1/2 -translate-y-1/2 flex-col gap-4 rounded-xl bg-white p-4 text-slate-950 shadow-lg outline-none data-ending-style:scale-98 data-ending-style:opacity-0 data-starting-style:scale-98 data-starting-style:opacity-0 dark:bg-slate-900 dark:text-slate-100'>
 						<Dialog.Title className='text-xl font-bold'>Log In With Email</Dialog.Title>
 						{emailSentTo ? (
 							<FormStepTwo onSuccess={() => toggleOpen(false)} />

@@ -72,11 +72,11 @@ export const getLatestPostSlug = async (): Promise<string> => {
 		.then(([latest]) => latest);
 };
 
-export const getPost = async (slug: string): Promise<BlogPost> => {
+export const getPost = async (slug: string): Promise<BlogPost | null> => {
 	'use cache';
 	cacheTag(`${CACHE_TAG}-${slug}`);
 	const db = await _collection;
-	return db.findOne({ _id: slug }) as unknown as BlogPost;
+	return db.findOne({ _id: slug });
 };
 
 export const getPostSummaries = async (

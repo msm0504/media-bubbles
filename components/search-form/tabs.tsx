@@ -2,7 +2,7 @@
 import { useMemo } from 'react';
 import SearchForm from './search-form';
 import MySavedResults from '../save-results/my-saved-results';
-import { Button, Select } from '../shared/base-ui';
+import { Button, Paper, Select } from '../shared/base-ui';
 import type { Source } from '@/types';
 import { SEARCH_MODE_MAP, type SearchMode } from '@/constants/search-mode';
 import useLocalStorage from '@/hooks/use-local-storage';
@@ -31,12 +31,12 @@ const SearchTabs: React.FC<SearchTabsProps> = ({ appSourceList, sourceListBySlan
 	};
 
 	return (
-		<div className='flex flex-col gap-4'>
+		<Paper className='flex flex-col gap-4'>
 			<div className='block md:hidden'>
 				<Select
 					className='w-full text-lg'
-					color='info'
-					variant='contained'
+					color='neutral'
+					variant='outlined'
 					items={Object.entries(SEARCH_MODE_MAP).map(([searchModeId, searchMode]) => ({
 						label: searchMode.name,
 						value: searchModeId,
@@ -45,10 +45,7 @@ const SearchTabs: React.FC<SearchTabsProps> = ({ appSourceList, sourceListBySlan
 					onValueChange={value => onSearchModeChange(value as SearchMode)}
 				/>
 			</div>
-			<div
-				role='tablist'
-				className='hidden rounded-xl bg-white p-4 md:flex md:items-center md:justify-between'
-			>
+			<div role='tablist' className='hidden p-4 md:flex md:items-center md:justify-between'>
 				{Object.entries(SEARCH_MODE_MAP).map(([searchModeId, searchMode]) => {
 					const isActive = curSearchMode === searchModeId;
 					return (
@@ -57,8 +54,8 @@ const SearchTabs: React.FC<SearchTabsProps> = ({ appSourceList, sourceListBySlan
 							role='tab'
 							aria-controls='search-form-panel'
 							aria-selected={isActive}
-							color='info'
-							variant={isActive ? 'contained' : 'text'}
+							color='neutral'
+							variant={isActive ? 'outlined' : 'text'}
 							onClick={() => onSearchModeChange(searchModeId as SearchMode)}
 						>
 							{searchMode.name}
@@ -70,17 +67,17 @@ const SearchTabs: React.FC<SearchTabsProps> = ({ appSourceList, sourceListBySlan
 				{curSearchMode === 'SAVED_RESULTS' ? (
 					<MySavedResults />
 				) : (
-					<>
-						<p className='font-bold'>{`Results shown will be from ${getCurrentSearchModeInfo()}.`}</p>
+					<form className='flex flex-col gap-6'>
+						<p>{`Results shown will be from ${getCurrentSearchModeInfo()}.`}</p>
 						<SearchForm
 							searchMode={curSearchMode}
 							appSourceList={appSourceList}
 							sourceListBySlant={sourceListBySlant}
 						/>
-					</>
+					</form>
 				)}
 			</div>
-		</div>
+		</Paper>
 	);
 };
 

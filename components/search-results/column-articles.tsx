@@ -1,6 +1,6 @@
 import { isBskyArticle, isNewsApiArticle, isTwitterArticle } from '@/types';
 import type { Article } from '@/types';
-import { Link } from '../shared/base-ui';
+import { Link, Paper } from '../shared/base-ui';
 import { type Color, textVariants } from '@/styles/color-variants';
 import cn from '@/util/cn';
 
@@ -29,9 +29,9 @@ type ArticleWithTitleProps = Required<ArticleProps> & {
 };
 
 const NOT_FOUND_MESSAGE = (
-	<div className='rounded-xl bg-white p-4'>
+	<Paper>
 		<p className='w-full text-center text-primary'>No Headlines Found</p>
-	</div>
+	</Paper>
 );
 
 const ArticleWithTitle: React.FC<ArticleWithTitleProps> = ({
@@ -42,7 +42,7 @@ const ArticleWithTitle: React.FC<ArticleWithTitleProps> = ({
 	title,
 	url,
 }) => (
-	<div className='flex flex-col gap-4 rounded-xl bg-white p-4'>
+	<Paper className='flex flex-col gap-4'>
 		{isSearchAll ? (
 			<div className={cn(textVariants({ color: slantColor }), 'text-sm')}>{sourceName}</div>
 		) : null}
@@ -56,7 +56,7 @@ const ArticleWithTitle: React.FC<ArticleWithTitleProps> = ({
 			/>
 		</h3>
 		<p dangerouslySetInnerHTML={{ __html: text }} />
-	</div>
+	</Paper>
 );
 
 const ArticleWithoutTitle: React.FC<ArticleProps> = ({
@@ -66,7 +66,7 @@ const ArticleWithoutTitle: React.FC<ArticleProps> = ({
 	text,
 	url,
 }) => (
-	<div className='flex flex-col gap-4 rounded-xl bg-white p-4'>
+	<Paper className='flex flex-col gap-4'>
 		{isSearchAll ? (
 			<div className={cn(textVariants({ color: slantColor }), 'text-sm')}>{sourceName}</div>
 		) : null}
@@ -80,7 +80,7 @@ const ArticleWithoutTitle: React.FC<ArticleProps> = ({
 				</p>
 			) : null}
 		</div>
-	</div>
+	</Paper>
 );
 
 const getColumnArticle = ({ article, isSearchAll, slantColor }: ColumnArticleProps) => {

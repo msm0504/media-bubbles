@@ -59,9 +59,9 @@ const Login: React.FC = () => {
 			<NavigationMenu.Item>
 				{session ? (
 					<Button
-						className='my-2 text-lg'
+						className='my-2'
 						color='neutral'
-						variant='contained'
+						variant='text'
 						onClick={() => signOut()}
 						disabled={isPending}
 					>
@@ -71,7 +71,7 @@ const Login: React.FC = () => {
 					<>
 						<NavigationMenu.Trigger
 							render={props => (
-								<Button className='my-2 text-lg' {...props} color='neutral' variant='contained'>
+								<Button className='my-2' {...props} color='neutral' variant='text'>
 									Log in
 								</Button>
 							)}

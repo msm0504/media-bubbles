@@ -108,7 +108,7 @@ test('caches results returned from API', async () => {
 
 	await screen.findByText('Funny + Insightful Post');
 	expect(apiSpy).toHaveBeenCalledTimes(1);
-	const filterInput = screen.getByLabelText(/^Filter.*/);
+	const filterInput = screen.getByLabelText(/^Search.*/);
 
 	fireEvent.change(filterInput, { target: { value: mockFilter1 } });
 	await waitForElementToBeRemoved(() => screen.queryByText('Funny + Insightful Post'));
@@ -175,7 +175,7 @@ test('displays success alert after successful item delete', async () => {
 	fireEvent.click(screen.getByLabelText(`Delete post ${slug}`));
 	await screen.findByRole('alert');
 	expect(screen.queryByText(`${title} deleted successfully.`)).toBeInTheDocument();
-	expect(screen.queryByText(title)).not.toBeInTheDocument();
+	await waitForElementToBeRemoved(() => screen.queryByText(title));
 });
 
 test('displays error alert after failed item delete', async () => {

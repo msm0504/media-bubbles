@@ -18,13 +18,13 @@ const PostSummary: React.FC<ListItemProps<BlogPostSummary>> = ({
 	const { data: session } = useSession();
 
 	return (
-		<li className='flex items-center gap-2 px-2 py-1 even:bg-gray-200'>
-			<div className='grow'>
+		<li className='flex items-center gap-2 px-2 py-1 even:bg-slate-100 dark:even:bg-slate-800'>
+			<div className='flex grow flex-col gap-2'>
 				<h3>
 					<Link href={`/blog/${slug}`}>{title}</Link>
 				</h3>
 				{markdownToHtml(excerpt)}
-				<p className='text-sm'>Last updated at {new Date(date).toLocaleString()}</p>
+				<p className='text-sm font-light'>Last updated at {new Date(date).toLocaleString()}</p>
 			</div>
 			{isAdmin(session?.user.role) ? (
 				<>
@@ -36,7 +36,7 @@ const PostSummary: React.FC<ListItemProps<BlogPostSummary>> = ({
 							icon={faPenToSquare}
 						/>
 					</Button>
-					<Button color='primary' variant='text' onClick={() => fnDeleteItem(slug, title)}>
+					<Button color='error' variant='text' onClick={() => fnDeleteItem(slug, title)}>
 						<FontAwesomeIcon
 							id={`delete-${slug}-icon`}
 							aria-label={`Delete post ${slug}`}

@@ -1,3 +1,4 @@
+import { cacheLife } from 'next/cache';
 import type { ArticleMap, BskyArticle, SearchRequest } from '@/types';
 import { getCollection } from '@/connections/db-connection';
 import { type SourceSlant, SOURCE_SLANT_MAP } from '@/constants/source-slant';
@@ -10,11 +11,11 @@ const _collection = getCollection<BskyArticle>(COLLECTION_NAME);
 
 const getSourcePosts = async (sourceId: string): Promise<BskyArticle[]> => {
 	const db = await _collection;
-	return (await db
+	return db
 		.find({ sourceId: sourceId })
 		.sort({ publishedAt: -1 })
 		.limit(MAX_SHOW_PER_CATEGORY)
-		.toArray()) as unknown as BskyArticle[];
+		.toArray();
 };
 
 const getSourcePostsByKeyword = async (
@@ -23,7 +24,7 @@ const getSourcePostsByKeyword = async (
 	previousDays: number
 ): Promise<BskyArticle[]> => {
 	const db = await _collection;
-	return (await db
+	return db
 		.find({
 			$and: [
 				{ sourceId: sourceId },
@@ -51,16 +52,12 @@ const getSourcePostsByKeyword = async (
 		})
 		.sort({ publishedAt: -1 })
 		.limit(MAX_SHOW_PER_CATEGORY)
-		.toArray()) as unknown as BskyArticle[];
+		.toArray();
 };
 
 const getSlantPosts = async (slant: SourceSlant): Promise<BskyArticle[]> => {
 	const db = await _collection;
-	return (await db
-		.find({ slant: slant })
-		.sort({ publishedAt: -1 })
-		.limit(MAX_SLANT_RESULTS)
-		.toArray()) as unknown as BskyArticle[];
+	return db.find({ slant: slant }).sort({ publishedAt: -1 }).limit(MAX_SLANT_RESULTS).toArray();
 };
 
 const getSlantPostsByKeyword = async (
@@ -69,7 +66,7 @@ const getSlantPostsByKeyword = async (
 	previousDays: number
 ): Promise<BskyArticle[]> => {
 	const db = await _collection;
-	return (await db
+	return db
 		.find({
 			$and: [
 				{ slant: slant },
@@ -97,7 +94,7 @@ const getSlantPostsByKeyword = async (
 		})
 		.sort({ publishedAt: -1 })
 		.limit(MAX_SLANT_RESULTS)
-		.toArray()) as unknown as BskyArticle[];
+		.toArray();
 };
 
 const sortPostsFromMultiSources = (posts: BskyArticle[]): BskyArticle[] => {
@@ -154,3 +151,43 @@ export const getHeadlines = async (params: SearchRequest): Promise<ArticleMap> =
 					return acc;
 				}, Promise.resolve({}));
 };
+
+export const getRecentPosts = async (keyword = ''): Promise<BskyArticle[]> => {
+	const db = await _collection;
+	return db
+		.aggregate([
+			{
+				$match: {
+					$or: [
+						{ $expr: { $eq: [keyword, ''] } },
+						{ title: { $regex: `\\b${keyword}\\b`, $options: 'i' } },
+						{ description: { $regex: `\\b${keyword}\\b`, $options: 'i' } },
+					],
+				},
+			},
+			{
+				$setWindowFields: {
+					partitionBy: '$slant',
+					sortBy: { publishedAt: -1 },
+					output: {
+						rank: {
+							$denseRank: {},
+						},
+					},
+				},
+			},
+			{ $match: { rank: 1 } },
+			{ $project: { rank: 0 } },
+		])
+		.sort({ slant: 1 })
+		.toArray() as unknown as Promise<BskyArticle[]>;
+};
+
+export const getMostRecent = async (): Promise<BskyArticle[]> => {
+	'use cache';
+	cacheLife('default');
+	return getRecentPosts();
+};
+
+export const searchMostRecent = async (keyword: string): Promise<BskyArticle[]> =>
+	getRecentPosts(keyword);

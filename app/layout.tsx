@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Roboto_Slab } from 'next/font/google';
+import { Inter, Plus_Jakarta_Sans } from 'next/font/google';
 import { GoogleAnalytics } from '@next/third-parties/google';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { ParentCompProps } from '@/types';
@@ -25,18 +25,26 @@ export const metadata: Metadata = {
 	],
 };
 
-const robotoSlab = Roboto_Slab({
+const fontBody = Inter({
 	subsets: ['latin'],
 	display: 'swap',
-	variable: '--font-roboto-slab',
+	variable: '--font-inter',
+});
+
+const fontHeading = Plus_Jakarta_Sans({
+	subsets: ['latin'],
+	display: 'swap',
+	variable: '--font-plus-jakarta-sans',
 });
 
 const RootLayout: React.FC<ParentCompProps> = ({ children }) => (
-	<html lang='en' className={robotoSlab.variable}>
+	<html lang='en' className={`${fontBody.variable} ${fontHeading.variable}`}>
 		<body>
-			<div className='flex min-h-screen flex-col'>
+			<div className='relative flex min-h-screen flex-col overflow-hidden'>
+				<div className='bg-bubble bg-left'></div>
+				<div className='bg-bubble bg-right'></div>
 				<TopNavbar />
-				<div className='flex grow flex-col'>{children}</div>
+				<div className='grow'>{children}</div>
 				<Footer />
 			</div>
 		</body>

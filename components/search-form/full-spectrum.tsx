@@ -8,21 +8,18 @@ type FullSpectrumProps = {
 const FullSpectrum: React.FC<FullSpectrumProps> = ({ spectrumSearchAll, onChange }) => {
 	const isChecked = spectrumSearchAll === 'Y';
 	return (
-		<div className='rounded-xl bg-white p-4'>
-			<label className='flex gap-2 font-bold'>
-				<Switch
-					name='spectrumSearchAll'
-					checked={isChecked}
-					onCheckedChange={(checked, eventDetails) =>
-						onChange(
-							(eventDetails.event.target as HTMLInputElement)?.name || '',
-							checked ? 'Y' : 'N'
-						)
-					}
-				/>
-				Include Multiple Sources in Each Category
-			</label>
-		</div>
+		<label className='flex items-center gap-2'>
+			<Switch
+				name='spectrumSearchAll'
+				checked={isChecked}
+				color='primary'
+				size='xl'
+				onCheckedChange={(checked, eventDetails) =>
+					onChange((eventDetails.event.target as HTMLInputElement)?.name || '', checked ? 'Y' : 'N')
+				}
+			/>
+			Include Multiple Sources in Each Category
+		</label>
 	);
 };
 

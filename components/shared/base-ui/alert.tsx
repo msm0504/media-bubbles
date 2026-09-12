@@ -21,17 +21,20 @@ const ALERT_CONFIG: CvaColorConfig = {
 			info: tw`bg-info-light text-info-dark`,
 			warning: tw`bg-warning-light text-warning-dark`,
 			error: tw`bg-error-light text-error-dark`,
-			neutral: tw`bg-white text-black`,
+			neutral: tw`bg-white text-slate-950 dark:bg-slate-900 dark:text-slate-100`,
 		},
 	},
 };
 
-const alertVariants = cva('m-0 flex w-full items-center gap-4 rounded-sm p-5', {
-	...ALERT_CONFIG,
-	defaultVariants: {
-		color: 'success',
-	},
-});
+const alertVariants = cva(
+	'm-0 flex w-full items-center gap-4 rounded-2xl border border-transparent p-5 shadow-sm dark:border-slate-700/70',
+	{
+		...ALERT_CONFIG,
+		defaultVariants: {
+			color: 'success',
+		},
+	}
+);
 
 type AlertProps = VariantProps<typeof alertVariants> & {
 	className?: string | string[];
@@ -56,7 +59,13 @@ const Alert: React.FC<AlertProps> = ({ className = '', color, description, onClo
 			case 'error':
 				return <FontAwesomeIcon className='text-error-dark' icon={faCircleExclamation} size='xl' />;
 			case 'neutral':
-				return <FontAwesomeIcon className='text-black' icon={faCircleInfo} size='xl' />;
+				return (
+					<FontAwesomeIcon
+						className='text-slate-700 dark:text-slate-300'
+						icon={faCircleInfo}
+						size='xl'
+					/>
+				);
 			default:
 				return null;
 		}

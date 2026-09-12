@@ -15,7 +15,7 @@ afterAll(() => vi.restoreAllMocks());
 
 test('search page renders', async () => {
 	render(await Search({}));
-	expect(screen.queryByText('Headlines Search', { selector: 'h2' })).toBeInTheDocument();
+	expect(screen.queryByText('Headlines Search', { selector: 'h2 span' })).toBeInTheDocument();
 	expect(
 		screen.queryByText(`Results shown will be from ${SEARCH_MODE_MAP.FULL_SPECTRUM.description}.`)
 	).toBeInTheDocument();

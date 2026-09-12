@@ -94,7 +94,7 @@ test('caches results returned from API', async () => {
 
 	await screen.findByText('Headlines Across the Spectrum');
 	expect(apiSpy).toHaveBeenCalledTimes(1);
-	const filterInput = screen.getByLabelText(/^Filter.*/);
+	const filterInput = screen.getByLabelText(/^Search.*/);
 
 	fireEvent.change(filterInput, { target: { value: mockFilter1 } });
 	await waitForElementToBeRemoved(() => screen.queryByText('Headlines Across the Spectrum'));
@@ -135,7 +135,7 @@ test('displays success alert after successful item delete', async () => {
 	fireEvent.click(screen.getByLabelText(`Delete saved result ${itemName}`));
 	await waitFor(() => screen.getByRole('alert'));
 	expect(screen.queryByText(`${itemName} deleted successfully.`)).toBeInTheDocument();
-	expect(screen.queryByText('Headlines Across the Spectrum')).not.toBeInTheDocument();
+	await waitForElementToBeRemoved(() => screen.queryByText('Headlines Across the Spectrum'));
 });
 
 test('displays error alert after failed item delete', async () => {

@@ -40,7 +40,7 @@ vi.mock('../../data/allsides_pub_data.json', () => ({
 	},
 }));
 
-import { getSourceLists, populateSourceLists } from '../source-list-service';
+import { getSourceLists, populateSourceLists, reloadSource } from '../source-list-service';
 
 const listedSource: Source = {
 	id: 'example-news',
@@ -110,5 +110,66 @@ describe('source list service', () => {
 			sourceListBySlant: [[listedSource]],
 		});
 		expect(mocks.cacheTag).toHaveBeenCalledWith('source-lists');
+	});
+
+	test('does nothing when reloading an unknown source', async () => {
+		Object.assign(mocks.db, makeDb({ appSourceList: [listedSource], sourceListBySlant: [] }));
+		const error = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+
+		await reloadSource('unknown-source');
+
+		expect(error).toHaveBeenCalledWith('unknown-source does not match any known sources');
+		expect(mocks.getBskyProfile).not.toHaveBeenCalled();
+		expect(mocks.deleteSourcePosts).not.toHaveBeenCalled();
+		expect(mocks.loadPostsForNewSource).not.toHaveBeenCalled();
+		expect(mocks.synchBskyList).not.toHaveBeenCalled();
+	});
+
+	test('updates changed profile data, reloads posts, and synchronizes the source list', async () => {
+		const savedSource = { ...listedSource, bskyHandle: 'old.example', bskyDid: 'did:plc:old' };
+		const sourceLists = { appSourceList: [savedSource], sourceListBySlant: [[], [savedSource]] };
+		const db = Object.assign(mocks.db, makeDb(sourceLists));
+		mocks.getBskyProfile.mockResolvedValue({
+			handle: 'new.example',
+			did: 'did:plc:new',
+		});
+
+		await reloadSource(listedSource.id);
+
+		const reloadedSource = { ...savedSource, bskyHandle: 'new.example', bskyDid: 'did:plc:new' };
+		expect(db.deleteMany).toHaveBeenCalledWith({});
+		expect(db.insertOne).toHaveBeenCalledWith({
+			appSourceList: [reloadedSource],
+			sourceListBySlant: [[], [reloadedSource]],
+		});
+		expect(mocks.revalidateTag).toHaveBeenCalledWith('source-lists', 'max');
+		expect(mocks.deleteSourcePosts).toHaveBeenCalledWith(listedSource.id);
+		expect(mocks.loadPostsForNewSource).toHaveBeenCalledWith(reloadedSource);
+		expect(mocks.synchBskyList).toHaveBeenCalledWith([reloadedSource]);
+	});
+
+	test('reloads posts without saving when the profile data is unchanged', async () => {
+		const savedSource = {
+			...listedSource,
+			bskyHandle: 'example.bsky.social',
+			bskyDid: 'did:plc:example',
+		};
+		Object.assign(
+			mocks.db,
+			makeDb({ appSourceList: [savedSource], sourceListBySlant: [[], [savedSource]] })
+		);
+		mocks.getBskyProfile.mockResolvedValue({
+			handle: savedSource.bskyHandle,
+			did: 'did:plc:updated-but-not-used',
+		});
+
+		await reloadSource(savedSource.id);
+
+		expect(mocks.db.deleteMany).not.toHaveBeenCalled();
+		expect(mocks.db.insertOne).not.toHaveBeenCalled();
+		expect(mocks.revalidateTag).not.toHaveBeenCalled();
+		expect(mocks.deleteSourcePosts).toHaveBeenCalledWith(savedSource.id);
+		expect(mocks.loadPostsForNewSource).toHaveBeenCalledWith(savedSource);
+		expect(mocks.synchBskyList).toHaveBeenCalledWith([savedSource]);
 	});
 });

@@ -1,23 +1,30 @@
 @import 'tailwindcss';
 @import './colors.css';
+@plugin '@tailwindcss/typography';
 
 @theme {
-	--font-serif: var(--font-roboto-slab);
-	--text-shadow-outlined:
-		-1px 1px 8px var(--color-black), 1px 1px 8px var(--color-black),
-		1px -1px 8px var(--color-black), -1px -1px 8px var(--color-black);
+	--font-body: var(--font-inter);
+	--font-heading: var(--font-plus-jakarta-sans);
 }
 
 @layer base {
 	body {
-		font-family: var(--font-serif);
+		font-family: var(--font-body);
+		background: var(--color-white);
 	}
-	a {
-		color: var(--color-primary);
+	@media (prefers-color-scheme: dark) {
+		body {
+			color: var(--color-slate-100);
+			background-color: var(--color-slate-950);
+		}
 	}
-	a:hover {
-		color: var(--color-primary-dark);
-		text-decoration: underline;
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: var(--font-heading);
 	}
 	h1 {
 		font-size: var(--text-4xl);
@@ -31,6 +38,34 @@
 	}
 	h4 {
 		font-size: var(--text-lg);
+	}
+	.bg-left {
+		width: 580px;
+		height: 580px;
+		right: -240px;
+		top: -300px;
+		background: radial-gradient(circle at 40% 60%, var(--color-error), transparent 68%);
+	}
+	.bg-right {
+		width: 500px;
+		height: 500px;
+		left: -295px;
+		bottom: -303px;
+		background: radial-gradient(circle at 62% 35%, var(--color-info), transparent 68%);
+	}
+	.orb-left {
+		width: 187px;
+		height: 187px;
+		left: 17px;
+		bottom: -8px;
+		background: var(--color-primary);
+	}
+	.orb-right {
+		width: 265px;
+		height: 265px;
+		right: 0px;
+		top: 20px;
+		background: var(--color-primary);
 	}
 }
 
@@ -47,4 +82,18 @@ html {
 body {
 	padding: 0;
 	margin: 0;
+}
+
+.bg-bubble {
+	position: absolute;
+	border-radius: 50%;
+	pointer-events: none;
+	opacity: 0.2;
+}
+
+.orb {
+	position: absolute;
+	border-radius: 50%;
+	filter: blur(0.1px);
+	opacity: 0.1;
 }

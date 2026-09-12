@@ -1,9 +1,10 @@
 export { default as Alert } from './alert';
 export { default as Button } from './button';
 export { default as Checkbox } from './checkbox';
-export { default as Input } from './input';
+export * from './inputs';
 export { default as Link } from './link';
 export { default as Pagination } from './pagination';
+export { default as Paper } from './paper';
 export { default as Popover } from './popover';
 export { default as Radio } from './radio';
 export { default as Select } from './select';
