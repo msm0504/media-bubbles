@@ -21,7 +21,7 @@ const mocks = vi.hoisted(() => ({
 	getMostRecentHeadlines: vi.fn(),
 	searchMostRecentHeadlines: vi.fn(),
 	loadRecentPostsForAllSources: vi.fn(),
-
+	reloadSource: vi.fn(),
 	after: vi.fn().mockImplementation((callback: () => Promise<void>) => callback()),
 }));
 
@@ -50,6 +50,7 @@ vi.mock('@/services/screenshot-service', () => ({ takeScreenshot: mocks.takeScre
 vi.mock('@/services/source-list-service', () => ({
 	getSourceLists: mocks.getSourceLists,
 	populateSourceLists: mocks.populateSourceLists,
+	reloadSource: mocks.reloadSource,
 }));
 vi.mock('@/services/source-logo-service', () => ({ getSourceLogo: mocks.getSourceLogo }));
 vi.mock('@/services/bsky-post-service', () => ({
@@ -75,6 +76,7 @@ import {
 	GET as getSourceListsRoute,
 	POST as postSourceListsRoute,
 } from '@/app/api/source-lists/route';
+import { POST as reloadSourceRoute } from '@/app/api/source-lists/[id]/reload/route';
 import { GET as getSourceLogoRoute } from '@/app/api/source-logo/route';
 
 const request = (url: string, init?: RequestInit) => new Request(`http://localhost${url}`, init);
@@ -345,6 +347,42 @@ describe('source API routes', () => {
 		);
 
 		expect(mocks.populateSourceLists).not.toHaveBeenCalled();
+		expect(response.status).toBe(401);
+	});
+
+	test('reloads the source', async () => {
+		const response = await reloadSourceRoute(
+			request('/api/source-lists/test-source/reload', {
+				method: 'POST',
+				headers: { 'x-batch-job-key': 'batch-job-secret-123' },
+			}),
+			params('test-source')
+		);
+
+		expect(mocks.reloadSource).toHaveBeenCalledWith('test-source');
+		expect(response.status).toBe(202);
+	});
+
+	test('does not reload the source if no key given', async () => {
+		const response = await reloadSourceRoute(
+			request('/api/source-lists/test-source/reload', { method: 'POST' }),
+			params('test-source')
+		);
+
+		expect(mocks.reloadSource).not.toHaveBeenCalled();
+		expect(response.status).toBe(401);
+	});
+
+	test('does not reload the source if incorrect key given', async () => {
+		const response = await reloadSourceRoute(
+			request('/api/source-lists/test-source/reload', {
+				method: 'POST',
+				headers: { 'x-batch-job-key': 'wrong-key' },
+			}),
+			params('test-source')
+		);
+
+		expect(mocks.reloadSource).not.toHaveBeenCalled();
 		expect(response.status).toBe(401);
 	});
 

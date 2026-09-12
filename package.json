@@ -1,6 +1,6 @@
 {
 	"name": "media-bubbles",
-	"version": "8.0.4",
+	"version": "8.0.5",
 	"private": true,
 	"overrides": {
 		"sharp": "^0.35.3"

@@ -18,6 +18,10 @@ export const getBskyProfile = async (sourceName: string, url: string) => {
 		limit: MAX_BSKY_PROFILES,
 	});
 	if (urlResp?.actors.length) {
+		// Newsweek has a new bsky handle. Previous handle has no updates
+		if (url.includes('newsweek') && urlResp.actors.length > 1) {
+			return urlResp.actors[1];
+		}
 		return urlResp.actors[0];
 	}
 

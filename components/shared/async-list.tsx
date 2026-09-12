@@ -80,9 +80,8 @@ const AsyncList = <T,>({
 						},
 					};
 					setItems(returnedItems);
-				} else {
-					throw `Queried for page ${page} of results containing ${filter}`;
 				}
+
 				if (Object.keys(cache.current).length > CACHE_SIZE) {
 					const { [Object.keys(cache.current)[0]]: firstItem, ...rest } = cache.current;
 					cache.current = rest;

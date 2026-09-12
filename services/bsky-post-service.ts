@@ -74,15 +74,25 @@ const formatPost = (
 	if ((post.embed?.$type || '') === 'app.bsky.embed.external#view') {
 		const embed = post.embed as app.bsky.embed.external.View;
 		const external = embed?.external;
+
+		// check title has multiple words - letters or numbers and at least 1 space
+		// if title isn't valid and there is a description, set text as title
+		const normalizedTitle = external.title.replace(/[^A-Za-z0-9\s]/g, '').trim();
+		const title = /\s/.test(normalizedTitle)
+			? external.title
+			: external.description
+				? (post.record as PostRecord)?.text
+				: undefined;
+
 		return {
 			_id: rkey,
 			sourceId: postSource.id,
 			sourceName: postSource.name,
 			slant: postSource.slant,
-			title: external.title,
 			description: external.description || (post.record as PostRecord)?.text || '',
 			url: external.uri,
 			publishedAt: new Date(post.indexedAt),
+			title,
 		};
 	} else if ((post.record as PostRecord)?.text) {
 		const textWithUrl = ((post.record as PostRecord).text || '').split(URL_REGEX, 2);

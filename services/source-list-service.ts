@@ -190,3 +190,35 @@ export const getSourceLists = async (): Promise<SourceLists> => {
 		sourceListBySlant: sourceLists?.sourceListBySlant || [],
 	};
 };
+
+export const reloadSource = async (sourceId: string) => {
+	const db = await _collection;
+	const savedSourceLists = await db.findOne();
+	const curSource = savedSourceLists?.appSourceList?.find(source => source.id === sourceId);
+
+	if (!savedSourceLists || !curSource) {
+		console.error(`${sourceId} does not match any known sources`);
+		return;
+	}
+
+	const profile = await getBskyProfile(curSource.name, curSource.url);
+
+	if (profile?.handle && profile.handle !== curSource.bskyHandle) {
+		curSource.bskyDid = profile.did;
+		curSource.bskyHandle = profile.handle;
+		if (typeof curSource.slant !== 'undefined' && savedSourceLists?.sourceListBySlant) {
+			const slantListIndex = savedSourceLists.sourceListBySlant[curSource.slant].findIndex(
+				source => source.id === sourceId
+			);
+			if (slantListIndex > -1) {
+				savedSourceLists.sourceListBySlant[curSource.slant][slantListIndex] = curSource;
+			}
+		}
+		await saveSourceLists(savedSourceLists);
+		revalidateTag('source-lists', 'max');
+	}
+
+	await deleteSourcePosts(sourceId);
+	await loadPostsForNewSource(curSource);
+	await synchBskyList(savedSourceLists.appSourceList);
+};
