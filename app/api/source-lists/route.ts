@@ -3,6 +3,8 @@ import { getSourceLists, populateSourceLists } from '@/services/source-list-serv
 
 export const GET = async () => Response.json(await getSourceLists());
 
+export const maxDuration = 60;
+
 export const POST = async (request: Request) => {
 	const requestHeaders = new Headers(request.headers);
 	const secret = requestHeaders.get('x-batch-job-key');

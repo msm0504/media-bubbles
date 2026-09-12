@@ -9,6 +9,8 @@ export const GET = async (request: Request) => {
 	return Response.json(await getHeadlines(params));
 };
 
+export const maxDuration = 60;
+
 export const POST = async (request: Request) => {
 	const requestHeaders = new Headers(request.headers);
 	const secret = requestHeaders.get('x-batch-job-key');

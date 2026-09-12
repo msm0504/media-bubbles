@@ -1,6 +1,8 @@
 import { after } from 'next/server';
 import { reloadSource } from '@/services/source-list-service';
 
+export const maxDuration = 60;
+
 export const POST = async (request: Request, { params }: { params: Promise<{ id: string }> }) => {
 	const requestHeaders = new Headers(request.headers);
 	const secret = requestHeaders.get('x-batch-job-key');
