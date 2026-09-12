@@ -2,24 +2,11 @@
 import { useState, useEffect, ReactElement } from 'react';
 import { Controller, useForm, useWatch } from 'react-hook-form';
 import type { DefaultValues, FieldValues, Path, RegisterOptions } from 'react-hook-form';
-import {
-	Box,
-	Button,
-	capitalize,
-	Dialog,
-	DialogContent,
-	DialogTitle,
-	FormControl,
-	FormLabel,
-	Paper,
-	Stack,
-	TextField,
-	ToggleButtonGroup,
-	ToggleButton,
-	Typography,
-} from '@mui/material';
+import { Dialog, Field, ScrollArea, Toggle, ToggleGroup } from '@base-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import capitalize from 'lodash.capitalize';
+import { Button, Input, Paper } from './base-ui';
 import useInterval from '@/hooks/use-interval';
 import {
 	getItemFromStorage,
@@ -37,7 +24,7 @@ export type FieldSetting<T extends FieldValues> = {
 	rules?: RegisterOptions<T, Path<T>>;
 };
 
-interface SaveableFormProps<T extends FieldValues> {
+type SaveableFormProps<T extends FieldValues> = {
 	fieldList: FieldSetting<T>[];
 	formName: string;
 	initialData: DefaultValues<T>;
@@ -45,7 +32,7 @@ interface SaveableFormProps<T extends FieldValues> {
 	PreviewComponent?: React.FC<T>;
 	submitFn: (formData: T) => Promise<void>;
 	submitLabel: string;
-}
+};
 
 const kebabCaseToTitleCase = (str: string) => str.split('-').map(capitalize).join(' ');
 
@@ -87,7 +74,6 @@ const SaveableForm = <T extends FieldValues>({
 	);
 
 	const hasPreview = !!PreviewComponent;
-	const togglePreview = () => setPreview(!preview);
 
 	const submitForm = (update: T) => {
 		if (localStorageInterval && localStorageInterval > 0) {
@@ -107,27 +93,36 @@ const SaveableForm = <T extends FieldValues>({
 	};
 
 	const generateTextField = ({ name, placeholder, isDisabled, rows, rules }: FieldSetting<T>) => (
-		<Paper key={name}>
-			<Controller
-				control={control}
-				name={name}
-				rules={rules}
-				render={({ field, formState: { errors } }) => (
-					<TextField
-						{...field}
-						fullWidth
-						id={`${formName}-${field.name}`}
-						label={capitalize(field.name)}
-						placeholder={placeholder}
-						disabled={isDisabled}
-						error={!!errors[field.name]}
-						helperText={(errors[field.name]?.message as string) || ' '}
-						multiline={!!rows}
-						minRows={rows}
-					/>
-				)}
-			/>
-		</Paper>
+		<Controller
+			key={name}
+			control={control}
+			name={name}
+			rules={rules}
+			render={({ field, fieldState: { invalid, isTouched, isDirty, error } }) => {
+				return (
+					<Field.Root
+						className='flex w-full flex-col items-start gap-1'
+						invalid={invalid}
+						touched={isTouched}
+						dirty={isDirty}
+					>
+						<Field.Label htmlFor={`${formName}-${field.name}`} className='capitalize'>
+							{field.name}
+						</Field.Label>
+						<Input
+							{...field}
+							id={`${formName}-${field.name}`}
+							placeholder={placeholder}
+							disabled={isDisabled}
+							render={rows ? props => <textarea {...props} rows={rows} /> : undefined}
+						/>
+						<Field.Error className='text-sm text-error' match={!!error}>
+							{error?.message}
+						</Field.Error>
+					</Field.Root>
+				);
+			}}
+		/>
 	);
 
 	const generateButtonGroup = ({ name, options }: FieldSetting<T>) => (
@@ -136,24 +131,27 @@ const SaveableForm = <T extends FieldValues>({
 			control={control}
 			name={name}
 			render={({ field }) => (
-				<FormControl margin='none'>
-					<FormLabel id={`${formName}-${name}-label`}>
-						<Typography fontWeight='bold'>{capitalize(name)}</Typography>
-					</FormLabel>
-					<ToggleButtonGroup
-						{...field}
-						exclusive
-						color='info'
-						size='large'
+				<Field.Root className='flex flex-col items-start gap-1'>
+					<Field.Label id={`${formName}-${name}-label`} className='capitalize'>
+						{name}
+					</Field.Label>
+					<ToggleGroup
+						value={field.value ? [field.value as string] : []}
+						onValueChange={values => field.onChange(values[0] ?? null)}
 						aria-labelledby={`${formName}-${name}-label`}
+						className='flex gap-2'
 					>
 						{options?.map(({ value, label }) => (
-							<ToggleButton key={value} value={value}>
+							<Toggle
+								key={value}
+								value={value}
+								className='rounded-xl border border-slate-950 px-4 py-2 text-slate-950 data-pressed:border-primary data-pressed:font-semibold data-pressed:text-primary'
+							>
 								{label}
-							</ToggleButton>
+							</Toggle>
 						))}
-					</ToggleButtonGroup>
-				</FormControl>
+					</ToggleGroup>
+				</Field.Root>
 			)}
 		/>
 	);
@@ -161,40 +159,59 @@ const SaveableForm = <T extends FieldValues>({
 	return (
 		<>
 			{hasPreview && PreviewComponent && (
-				<>
-					<Dialog open={preview} onClose={togglePreview} fullWidth maxWidth='lg'>
-						<DialogTitle>{`Preview ${kebabCaseToTitleCase(formName)}`}</DialogTitle>
-						<DialogContent>
-							<PreviewComponent {...currentValues} />
-						</DialogContent>
-					</Dialog>
-					<Stack direction='row-reverse'>
-						<Button color='info' onClick={() => setPreview(true)}>
-							<strong>Preview</strong>
-						</Button>
-					</Stack>
-				</>
+				<div className='flex flex-row-reverse'>
+					<Dialog.Root open={preview} onOpenChange={setPreview}>
+						<Dialog.Trigger
+							render={props => (
+								<Button {...props} color='info' variant='text'>
+									Preview
+								</Button>
+							)}
+						/>
+						<Dialog.Portal>
+							<Dialog.Backdrop className='fixed inset-0 min-h-dvh bg-black/20 data-ending-style:opacity-0 data-starting-style:opacity-0' />
+							<Dialog.Viewport className='fixed inset-0 flex items-center justify-center overflow-hidden py-6 [@media(min-height:600px)]:pt-8 [@media(min-height:600px)]:pb-12'>
+								<Dialog.Popup className='fixed top-1/2 left-1/2 flex max-h-full w-full max-w-6xl -translate-x-1/2 -translate-y-1/2 flex-col gap-4 rounded-xl bg-white p-4 text-slate-950 shadow-lg outline-none data-ending-style:scale-98 data-ending-style:opacity-0 data-starting-style:scale-98 data-starting-style:opacity-0 dark:bg-slate-900 dark:text-slate-100'>
+									<Dialog.Title className='text-xl font-bold'>
+										{`Preview ${kebabCaseToTitleCase(formName)}`}
+									</Dialog.Title>
+									<ScrollArea.Root className='relative flex min-h-0 flex-auto overflow-hidden has-[>_:first-child:focus-visible]:outline-2 has-[>_:first-child:focus-visible]:outline-offset-0 has-[>_:first-child:focus-visible]:outline-slate-600 dark:has-[>_:first-child:focus-visible]:outline-white'>
+										<ScrollArea.Viewport className='min-h-0 flex-auto overflow-y-auto overscroll-contain outline-none'>
+											<ScrollArea.Content className='flex flex-col'>
+												<PreviewComponent {...currentValues} />
+											</ScrollArea.Content>
+										</ScrollArea.Viewport>
+										<ScrollArea.Scrollbar className='pointer-events-none flex w-4 justify-center rounded-full bg-black/12 opacity-0 transition-opacity duration-150 data-hovering:pointer-events-auto data-hovering:opacity-100 data-scrolling:pointer-events-auto data-scrolling:opacity-100 data-scrolling:duration-0 dark:bg-white/12'>
+											<ScrollArea.Thumb className='w-full rounded-full bg-slate-600 dark:bg-white' />
+										</ScrollArea.Scrollbar>
+									</ScrollArea.Root>
+								</Dialog.Popup>
+							</Dialog.Viewport>
+						</Dialog.Portal>
+					</Dialog.Root>
+				</div>
 			)}
 			<form onSubmit={handleSubmit(submitForm)}>
-				<Stack spacing={4}>
+				<Paper className='flex flex-col gap-6'>
 					{fieldList.map(generateFormField)}
-					<Box>
+					<div>
 						<Button
+							className='text-lg'
 							variant='contained'
 							color='primary'
-							size='large'
 							type='submit'
 							name={`submit-${formName}`}
 							id={`submit-${formName}`}
 							disabled={isProcessing}
-							endIcon={
-								isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />
-							}
 						>
-							<strong>{submitLabel}</strong>
+							{submitLabel}
+							<FontAwesomeIcon
+								icon={isProcessing ? faSpinner : faPaperPlane}
+								spinPulse={isProcessing}
+							/>
 						</Button>
-					</Box>
-				</Stack>
+					</div>
+				</Paper>
 			</form>
 		</>
 	);

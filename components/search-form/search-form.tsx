@@ -1,23 +1,14 @@
 'use client';
-import { useState, useReducer, useEffect, ChangeEvent } from 'react';
+import { useState, useReducer, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-	Box,
-	Button,
-	FormControlLabel,
-	Paper,
-	Slider,
-	Stack,
-	TextField,
-	Tooltip,
-} from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faInfoCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRightLong, faInfoCircle, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import * as ACTION_TYPES from './action-types';
 import FullSpectrum from './full-spectrum';
 import searchFormReducer, { initialState, FieldValue } from './search-form-reducer';
 import SlantRadioButtons from './slant-radio-buttons';
 import SourceCheckboxes from './source-checkboxes';
+import { Button, Input, Popover, Slider } from '../shared/base-ui';
 import type { SearchMode } from '@/constants/search-mode';
 import useHeadlineSearch from '@/hooks/use-headline-search';
 import type { Source } from '@/types';
@@ -45,8 +36,8 @@ const SearchForm: React.FC<SearchFormProps> = ({
 	const onFormFieldChange = (fieldName: string, value: FieldValue) =>
 		dispatch({ type: ACTION_TYPES.FORM_FIELD_CHANGED, payload: { fieldName, value } });
 
-	const checkboxChanged = (event: ChangeEvent<HTMLInputElement>, sourceId: string) => {
-		if (event.target.checked) {
+	const checkboxChanged = (checked: boolean, sourceId: string) => {
+		if (checked) {
 			dispatch({ type: ACTION_TYPES.SOURCE_SELECTED, payload: { sourceId } });
 		} else {
 			dispatch({ type: ACTION_TYPES.SOURCE_UNSELECTED, payload: { sourceId } });
@@ -93,71 +84,65 @@ const SearchForm: React.FC<SearchFormProps> = ({
 	};
 
 	return (
-		<form>
-			<Stack spacing={4}>
-				<Paper>
-					<Stack direction={{ xs: 'column', md: 'row' }} spacing={4}>
-						<TextField
-							name='keyword'
-							sx={{ flexGrow: 1 }}
-							value={formData.keyword}
-							onChange={event => onFormFieldChange(event.target.name, event.target.value)}
-							label={
-								<>
-									Key Words:
-									<Tooltip
-										title={
-											'If no key words are entered, top headlines will be returned for each source.'
-										}
-										placement='top'
-									>
-										<FontAwesomeIcon icon={faInfoCircle} aria-label='keyword tooltip' />
-									</Tooltip>
-								</>
+		<>
+			<div className='flex flex-col gap-4 md:flex-row'>
+				<label className='flex grow flex-col items-start gap-1'>
+					<span>
+						Key Words:{' '}
+						<Popover
+							side='top'
+							description='If no key words are entered, top headlines will be returned for each source.'
+						>
+							<FontAwesomeIcon icon={faInfoCircle} aria-label='keyword tooltip' />
+						</Popover>
+					</span>
+					<Input
+						name='keyword'
+						value={formData.keyword}
+						onValueChange={(newValue, eventDetails) =>
+							onFormFieldChange((eventDetails.event.target as HTMLInputElement)?.name, newValue)
+						}
+					/>
+				</label>
+				<div className='flex grow justify-center'>
+					{formData.keyword ? (
+						<Slider
+							className='flex w-full max-w-150 items-center justify-center gap-4'
+							label={`Search Past ${formData.previousDays} Day(s)`}
+							name='previousDays'
+							color='primary'
+							min={1}
+							max={7}
+							step={1}
+							value={formData.previousDays}
+							onValueChange={(newValue, eventDetails) =>
+								onFormFieldChange(
+									(eventDetails.event.target as HTMLInputElement)?.name,
+									newValue as number
+								)
 							}
 						/>
-						{formData.keyword ? (
-							<FormControlLabel
-								sx={theme => ({ flexGrow: 1, gap: theme.spacing(2) })}
-								control={
-									<Slider
-										name='previousDays'
-										min={1}
-										max={7}
-										step={1}
-										color='info'
-										sx={{ maxWidth: '600px' }}
-										value={formData.previousDays}
-										onChange={(_event, newValue) =>
-											onFormFieldChange('previousDays', newValue as number)
-										}
-									/>
-								}
-								label={<strong>Search Past {formData.previousDays} Day(s)</strong>}
-								labelPlacement='start'
-							/>
-						) : (
-							<Box flexGrow={1}></Box>
-						)}
-					</Stack>
-				</Paper>
-				{generateFormBySearchMode()}
-				<Box>
-					<Button
-						color='primary'
-						variant='contained'
-						size='large'
-						name='getHeadlines'
-						id='getHeadlines'
-						disabled={isSearching}
-						onClick={searchTriggered}
-						endIcon={isSearching && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
-					>
-						<strong>Get Headlines</strong>
-					</Button>
-				</Box>
-			</Stack>
-		</form>
+					) : null}
+				</div>
+			</div>
+			{generateFormBySearchMode()}
+			<Button
+				className='max-w-md'
+				color='neutral'
+				variant='contained'
+				name='getHeadlines'
+				id='getHeadlines'
+				disabled={isSearching}
+				onClick={searchTriggered}
+			>
+				Get Headlines
+				<FontAwesomeIcon
+					size='2xs'
+					icon={isSearching ? faSpinner : faArrowRightLong}
+					spinPulse={isSearching}
+				/>
+			</Button>
+		</>
 	);
 };
 

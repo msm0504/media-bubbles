@@ -1,10 +1,9 @@
 'use client';
 import { useState, useContext, useMemo } from 'react';
-import { Button } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCamera } from '@fortawesome/free-regular-svg-icons';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-
+import { Button } from '../shared/base-ui';
 import ALERT_LEVEL from '@/constants/alert-level';
 import { AlertsDispatch } from '@/contexts/alerts-context';
 import { isAdmin } from '@/constants/admin-role';
@@ -39,19 +38,13 @@ const ScreenshotButton: React.FC<ScreenshotButtonProps> = ({ urlToShare }) => {
 	if (!isAdmin(session?.user.role)) return null;
 
 	return (
-		<Button
-			color='primary'
-			variant='contained'
-			endIcon={
-				<FontAwesomeIcon
-					className='ms-2'
-					icon={isProcessing ? faSpinner : faCamera}
-					spinPulse={isProcessing}
-				/>
-			}
-			onClick={generateClicked}
-		>
+		<Button color='primary' variant='contained' onClick={generateClicked}>
 			Generate Screenshot
+			<FontAwesomeIcon
+				className='ms-2'
+				icon={isProcessing ? faSpinner : faCamera}
+				spinPulse={isProcessing}
+			/>
 		</Button>
 	);
 };

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
-import { Link, Paper } from '@mui/material';
+import { Link, Paper } from '@/components/shared/base-ui';
 
 export const metadata: Metadata = {
 	title: 'Terms and Conditions - Media Bubbles',

@@ -1,7 +1,9 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getPost } from '@/services/blog-service';
 import AddEditBlogPost from '@/components/blog/add-edit-post';
+import Spinner from '@/components/shared/spinner';
 
 type PageParams = Promise<{
 	slug: string;
@@ -19,4 +21,10 @@ const EditPost = async ({ params }: { params: PageParams }) => {
 	return <AddEditBlogPost currentVersion={post} />;
 };
 
-export default EditPost;
+const EditPostFallback = ({ params }: { params: PageParams }) => (
+	<Suspense fallback={<Spinner />}>
+		<EditPost params={params} />
+	</Suspense>
+);
+
+export default EditPostFallback;

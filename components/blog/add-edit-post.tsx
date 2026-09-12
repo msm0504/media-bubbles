@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useContext } from 'react';
-import { Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import BlogPostTemplate from './blog-post-template';
 import FIELD_LIST from './field-list';
@@ -58,7 +57,7 @@ const AddEditBlogPost: React.FC<AddEditPostProps> = ({ currentVersion }) => {
 	}, [currentVersion]);
 
 	if (!isAdmin(session?.user.role)) {
-		return <Typography color='info'>You shall not post!</Typography>;
+		return <p className='text-info'>You shall not post!</p>;
 	}
 
 	const mode = currentVersion ? 'Edit' : 'Add';

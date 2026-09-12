@@ -1,76 +1,52 @@
 'use client';
-import Link from 'next/link';
-import {
-	Button,
-	IconButton,
-	Link as MuiLink,
-	ListItem,
-	ListItemText,
-	Stack,
-	Typography,
-} from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { faPenToSquare, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { Button } from '@/components/shared/base-ui';
 import type { BlogPostSummary } from '@/types';
 import { isAdmin } from '@/constants/admin-role';
 import { useSession } from '@/lib/auth-client';
-import AsyncList, { DeleteFnType } from '@/components/shared/async-list';
+import AsyncList, { ListItemProps } from '@/components/shared/async-list';
+import { Link } from '@/components/shared/base-ui';
 import markdownToHtml from '@/components/shared/markdown-to-html';
 import PageHeading from '@/components/shared/page-heading';
 
-type PostSummaryProps = {
-	item: BlogPostSummary;
-	fnDeleteItem: DeleteFnType;
-};
-
-const PostSummary: React.FC<PostSummaryProps> = ({
+const PostSummary: React.FC<ListItemProps<BlogPostSummary>> = ({
 	item: { title, excerpt, slug, updatedAt: date },
 	fnDeleteItem,
 }) => {
 	const { data: session } = useSession();
 
 	return (
-		<ListItem>
-			<ListItemText
-				primary={
-					<MuiLink component={Link} href={`/blog/${slug}`}>
-						{title}
-					</MuiLink>
-				}
-				secondary={
-					<>
-						{markdownToHtml(excerpt)}
-						<Typography variant='caption'>
-							Last updated at {new Date(date).toLocaleString()}
-						</Typography>
-					</>
-				}
-				slotProps={{
-					primary: { component: 'div' },
-					secondary: { component: 'div' },
-				}}
-			/>
+		<li className='flex items-center gap-2 px-2 py-1 even:bg-slate-100 dark:even:bg-slate-800'>
+			<div className='flex grow flex-col gap-2'>
+				<h3>
+					<Link href={`/blog/${slug}`}>{title}</Link>
+				</h3>
+				{markdownToHtml(excerpt)}
+				<p className='text-sm font-light'>Last updated at {new Date(date).toLocaleString()}</p>
+			</div>
 			{isAdmin(session?.user.role) ? (
 				<>
-					<IconButton
-						aria-label={`Edit post ${slug}`}
-						color='info'
-						LinkComponent={Link}
-						href={`/blog/edit-post/${slug}`}
-					>
-						<FontAwesomeIcon id={`edit-${slug}-icon`} icon={faPenToSquare} />
-					</IconButton>
-					<IconButton
-						aria-label={`Delete post ${slug}`}
-						color='primary'
-						onClick={() => fnDeleteItem(slug, title)}
-					>
-						<FontAwesomeIcon id={`delete-${slug}-icon`} icon={faTrashCan} />
-					</IconButton>
+					<Button color='info' variant='text' href={`/blog/edit-post/${slug}`}>
+						<FontAwesomeIcon
+							id={`edit-${slug}-icon`}
+							aria-label={`Edit post ${slug}`}
+							size='lg'
+							icon={faPenToSquare}
+						/>
+					</Button>
+					<Button color='error' variant='text' onClick={() => fnDeleteItem(slug, title)}>
+						<FontAwesomeIcon
+							id={`delete-${slug}-icon`}
+							aria-label={`Delete post ${slug}`}
+							size='lg'
+							icon={faTrashCan}
+						/>
+					</Button>
 				</>
 			) : null}
-		</ListItem>
+		</li>
 	);
 };
 
@@ -81,16 +57,12 @@ const BlogPosts: React.FC = () => {
 		<>
 			<PageHeading heading='Blog Posts' />
 			{isAdmin(session?.user.role) && (
-				<Stack direction='row-reverse'>
-					<Button
-						variant='contained'
-						endIcon={<FontAwesomeIcon icon={faPlus} aria-label='Add Post' />}
-						component={Link}
-						href='/blog/add-post'
-					>
+				<div className='flex flex-row-reverse'>
+					<Button variant='contained' href='/blog/add-post'>
 						Add Post
+						{<FontAwesomeIcon icon={faPlus} aria-label='Add Post' />}
 					</Button>
-				</Stack>
+				</div>
 			)}
 			<AsyncList<BlogPostSummary>
 				apiListName='posts'

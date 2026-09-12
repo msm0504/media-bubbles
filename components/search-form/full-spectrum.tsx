@@ -1,8 +1,4 @@
-'use client';
-import { ChangeEvent } from 'react';
-import { Checkbox, FormControlLabel, Paper, Typography } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faToggleOff, faToggleOn } from '@fortawesome/free-solid-svg-icons';
+import { Switch } from '../shared/base-ui';
 
 type FullSpectrumProps = {
 	spectrumSearchAll: 'Y' | 'N';
@@ -12,22 +8,18 @@ type FullSpectrumProps = {
 const FullSpectrum: React.FC<FullSpectrumProps> = ({ spectrumSearchAll, onChange }) => {
 	const isChecked = spectrumSearchAll === 'Y';
 	return (
-		<Paper>
-			<FormControlLabel
-				control={
-					<Checkbox
-						name='spectrumSearchAll'
-						checked={isChecked}
-						onChange={(event: ChangeEvent<HTMLInputElement>) =>
-							onChange(event.target.name, event.target.checked ? 'Y' : 'N')
-						}
-						icon={<FontAwesomeIcon icon={faToggleOff} size='2xl' />}
-						checkedIcon={<FontAwesomeIcon icon={faToggleOn} size='2xl' />}
-					/>
+		<label className='flex items-center gap-2'>
+			<Switch
+				name='spectrumSearchAll'
+				checked={isChecked}
+				color='primary'
+				size='xl'
+				onCheckedChange={(checked, eventDetails) =>
+					onChange((eventDetails.event.target as HTMLInputElement)?.name || '', checked ? 'Y' : 'N')
 				}
-				label={<Typography fontWeight='bold'>Include Multiple Sources in Each Category</Typography>}
 			/>
-		</Paper>
+			Include Multiple Sources in Each Category
+		</label>
 	);
 };
 

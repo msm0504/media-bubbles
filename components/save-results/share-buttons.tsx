@@ -1,10 +1,9 @@
 'use client';
-import { Box, Button, Stack } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBluesky, faFacebookF, faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faClipboard, faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import ScreenshotButton from './take-screenshot-button';
-import styles from '@/styles/main.module.css';
+import { Button } from '../shared/base-ui';
 
 type ShareButtonsProps = {
 	urlToShare?: string;
@@ -14,11 +13,11 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 	if (!urlToShare) return null;
 
 	return (
-		<Stack direction='row' marginBottom={1} flexWrap='wrap' gap={4}>
+		<div className='mb-1 flex flex-wrap gap-4'>
 			<Button
 				color='info'
 				variant='contained'
-				className={styles.bskyBtn}
+				className='not-hover:bg-[#1083fe]!'
 				id='share-bsky'
 				onClick={() => {
 					window.open(`https://bsky.app/intent/compose?text=${encodeURI(urlToShare)}`, '_blank');
@@ -29,7 +28,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 			<Button
 				color='info'
 				variant='contained'
-				className={styles.facebookBtn}
+				className='not-hover:bg-[#4267b2]!'
 				id='share-facebook'
 				onClick={() => {
 					window.open(
@@ -41,7 +40,7 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 				<FontAwesomeIcon aria-label='share on Facebook' icon={faFacebookF} size='lg' />
 			</Button>
 			<Button
-				color='dark'
+				color='neutral'
 				variant='contained'
 				id='share-x'
 				onClick={() => {
@@ -51,8 +50,8 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 				<FontAwesomeIcon aria-label='share on X' icon={faXTwitter} size='lg' />
 			</Button>
 			<Button
-				color='secondary'
-				variant='contained'
+				color='neutral'
+				variant='outlined'
 				id='share-email'
 				onClick={() => {
 					window.open(
@@ -66,17 +65,17 @@ const ShareButtons: React.FC<ShareButtonsProps> = ({ urlToShare = '' }) => {
 			</Button>
 			{navigator && navigator.clipboard ? (
 				<Button
-					color='secondary'
-					variant='contained'
+					color='neutral'
+					variant='outlined'
 					id='share-copy'
 					onClick={() => navigator.clipboard.writeText(urlToShare)}
 				>
 					<FontAwesomeIcon aria-label='copy link' icon={faClipboard} size='lg' />
 				</Button>
 			) : null}
-			<Box flexGrow={1}></Box>
+			<div className='grow'></div>
 			<ScreenshotButton urlToShare={urlToShare} />
-		</Stack>
+		</div>
 	);
 };
 

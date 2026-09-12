@@ -1,22 +1,24 @@
-import { Card, CardContent, CardHeader, Link, Stack, Typography } from '@mui/material';
 import { isBskyArticle, isNewsApiArticle, isTwitterArticle } from '@/types';
 import type { Article } from '@/types';
+import { Link, Paper } from '../shared/base-ui';
+import { type Color, textVariants } from '@/styles/color-variants';
+import cn from '@/util/cn';
 
 type ColumnArticlesProps = {
 	articles: Article[];
 	isSearchAll: boolean;
-	slantClass: string;
+	slantColor: Color;
 };
 
 type ColumnArticleProps = {
 	article: Article;
 	isSearchAll: boolean;
-	slantClass: string;
+	slantColor: Color;
 };
 
 type ArticleProps = {
 	isSearchAll: boolean;
-	slantClass: string;
+	slantColor: Color;
 	sourceName: string;
 	text: string;
 	url?: string;
@@ -27,72 +29,67 @@ type ArticleWithTitleProps = Required<ArticleProps> & {
 };
 
 const NOT_FOUND_MESSAGE = (
-	<Card sx={{ textAlign: 'center', color: 'primary' }}>
-		<CardContent>No Headlines Found</CardContent>
-	</Card>
+	<Paper>
+		<p className='w-full text-center text-primary'>No Headlines Found</p>
+	</Paper>
 );
 
 const ArticleWithTitle: React.FC<ArticleWithTitleProps> = ({
 	isSearchAll,
-	slantClass,
+	slantColor,
 	sourceName,
 	text,
 	title,
 	url,
 }) => (
-	<Card>
+	<Paper className='flex flex-col gap-4'>
 		{isSearchAll ? (
-			<CardHeader slotProps={{ subheader: { color: slantClass } }} subheader={sourceName} />
+			<div className={cn(textVariants({ color: slantColor }), 'text-sm')}>{sourceName}</div>
 		) : null}
-		<CardHeader
-			slotProps={{ title: { variant: 'h6' } }}
-			title={
-				<Link
-					color={slantClass}
-					href={url}
-					target='_blank'
-					rel='noopener noreferrer'
-					dangerouslySetInnerHTML={{ __html: title }}
-				></Link>
-			}
-		/>
-		<CardContent>
-			<Typography dangerouslySetInnerHTML={{ __html: text }} />
-		</CardContent>
-	</Card>
+		<h3>
+			<Link
+				color={slantColor}
+				href={url}
+				target='_blank'
+				rel='noopener noreferrer'
+				dangerouslySetInnerHTML={{ __html: title }}
+			/>
+		</h3>
+		<p dangerouslySetInnerHTML={{ __html: text }} />
+	</Paper>
 );
 
 const ArticleWithoutTitle: React.FC<ArticleProps> = ({
 	isSearchAll,
-	slantClass,
+	slantColor,
 	sourceName,
 	text,
 	url,
 }) => (
-	<Card>
+	<Paper className='flex flex-col gap-4'>
 		{isSearchAll ? (
-			<CardHeader slotProps={{ subheader: { color: slantClass } }} subheader={sourceName} />
+			<div className={cn(textVariants({ color: slantColor }), 'text-sm')}>{sourceName}</div>
 		) : null}
-		<CardContent>
-			<Typography dangerouslySetInnerHTML={{ __html: text }} />
+		<div>
+			<p dangerouslySetInnerHTML={{ __html: text }} />
 			{url ? (
-				<Typography>
-					<Link color={slantClass} href={url} target='_blank' rel='noopener noreferrer'>
+				<p>
+					<Link color={slantColor} href={url} target='_blank' rel='noopener noreferrer'>
 						Read more
 					</Link>
-				</Typography>
+				</p>
 			) : null}
-		</CardContent>
-	</Card>
+		</div>
+	</Paper>
 );
 
-const getColumnArticle = ({ article, isSearchAll, slantClass }: ColumnArticleProps) => {
+const getColumnArticle = ({ article, isSearchAll, slantColor }: ColumnArticleProps) => {
 	if (isNewsApiArticle(article)) {
 		return (
 			<ArticleWithTitle
 				isSearchAll={isSearchAll}
 				key={article.url}
-				slantClass={slantClass}
+				slantColor={slantColor}
 				sourceName={article.source.name}
 				title={article.title}
 				text={article.description}
@@ -106,7 +103,7 @@ const getColumnArticle = ({ article, isSearchAll, slantClass }: ColumnArticlePro
 			<ArticleWithoutTitle
 				isSearchAll={isSearchAll}
 				key={article.id}
-				slantClass={slantClass}
+				slantColor={slantColor}
 				sourceName={article.sourceName}
 				text={article.text}
 				url={article.url}
@@ -119,7 +116,7 @@ const getColumnArticle = ({ article, isSearchAll, slantClass }: ColumnArticlePro
 			<ArticleWithTitle
 				isSearchAll={isSearchAll}
 				key={article._id}
-				slantClass={slantClass}
+				slantColor={slantColor}
 				sourceName={article.sourceName}
 				title={article.title}
 				text={article.description}
@@ -129,7 +126,7 @@ const getColumnArticle = ({ article, isSearchAll, slantClass }: ColumnArticlePro
 			<ArticleWithoutTitle
 				isSearchAll={isSearchAll}
 				key={article._id}
-				slantClass={slantClass}
+				slantColor={slantColor}
 				sourceName={article.sourceName}
 				text={article.description}
 				url={article.url}
@@ -140,13 +137,13 @@ const getColumnArticle = ({ article, isSearchAll, slantClass }: ColumnArticlePro
 	return null;
 };
 
-const ColumnArticles: React.FC<ColumnArticlesProps> = ({ articles, isSearchAll, slantClass }) => {
+const ColumnArticles: React.FC<ColumnArticlesProps> = ({ articles, isSearchAll, slantColor }) => {
 	if (!(articles && articles.length)) return NOT_FOUND_MESSAGE;
 
 	return (
-		<Stack spacing={4}>
-			{articles.map(article => getColumnArticle({ article, isSearchAll, slantClass }))}
-		</Stack>
+		<div className='flex flex-col gap-4'>
+			{articles.map(article => getColumnArticle({ article, isSearchAll, slantColor }))}
+		</div>
 	);
 };
 

@@ -2,7 +2,6 @@ import { afterAll, afterEach, beforeAll, expect, test, vi } from 'vitest';
 import { cleanup, render, fireEvent, screen, waitFor } from '@testing-library/react';
 import { http, HttpResponse } from 'msw';
 import { setupServer } from 'msw/node';
-import { capitalize } from '@mui/material';
 import FIELD_LIST from '../field-list';
 import Feedback from '../page';
 import { AppProviders } from '@/contexts';
@@ -28,15 +27,15 @@ test('renders correct input fields', () => {
 	render(<Feedback />);
 	FIELD_LIST.forEach(field =>
 		field.type === 'text'
-			? expect(screen.queryByLabelText(capitalize(field.name))).toBeInTheDocument()
-			: expect(screen.queryByText(capitalize(field.name))).toBeInTheDocument()
+			? expect(screen.queryByLabelText(field.name)).toBeInTheDocument()
+			: expect(screen.queryByText(field.name)).toBeInTheDocument()
 	);
 });
 
 test('displays correct error messages for invalid input', async () => {
 	vi.mocked(useSession).mockReturnValue(mockUnauthSession);
 	render(<Feedback />);
-	const emailInput = screen.getByLabelText('Email');
+	const emailInput = screen.getByLabelText('email');
 
 	fireEvent.blur(emailInput);
 	expect(await screen.findByText('Email is required')).toBeInTheDocument();
@@ -63,7 +62,7 @@ test('displays success alert after successful submit', async () => {
 		</AppProviders>
 	);
 
-	fireEvent.change(screen.getByLabelText('Message'), {
+	fireEvent.change(screen.getByLabelText('message'), {
 		target: { value: 'This site is amazing!' },
 	});
 
@@ -85,7 +84,7 @@ test('displays error alert after failed submit', async () => {
 		</AppProviders>
 	);
 
-	fireEvent.change(screen.getByLabelText('Message'), {
+	fireEvent.change(screen.getByLabelText('message'), {
 		target: { value: 'This site is amazing!' },
 	});
 

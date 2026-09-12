@@ -1,9 +1,7 @@
-'use client';
-import { ChangeEvent } from 'react';
-import { FormControlLabel, Paper, Radio, RadioGroup, Stack, Typography } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircle, faCircleDot } from '@fortawesome/free-regular-svg-icons';
+import { RadioGroup } from '@base-ui/react';
+import { Radio } from '../shared/base-ui';
 import { SOURCE_SLANT_MAP, SourceSlant } from '@/constants/source-slant';
+import getColorBySlant from '@/util/get-color-by-slant';
 import { keys } from '@/util/typed-keys';
 
 type SlantRadioButtonsProps = {
@@ -14,39 +12,29 @@ type SlantRadioButtonsProps = {
 const SlantRadioButtons: React.FC<SlantRadioButtonsProps> = ({ selection, onChange }) => {
 	const radiobuttons = keys(SOURCE_SLANT_MAP).map((sourceSlant: SourceSlant) => {
 		return (
-			<FormControlLabel
-				key={'sourceSlant' + sourceSlant}
-				value={sourceSlant}
-				control={
-					<Radio
-						icon={<FontAwesomeIcon icon={faCircle} size='xl' />}
-						checkedIcon={<FontAwesomeIcon icon={faCircleDot} size='xl' />}
-					/>
-				}
-				label={<Typography fontWeight='bold'>{SOURCE_SLANT_MAP[sourceSlant]}</Typography>}
-			/>
+			<label key={'sourceSlant' + sourceSlant} className='flex gap-2'>
+				<Radio size='xl' color={getColorBySlant(sourceSlant)} value={sourceSlant} />
+				{SOURCE_SLANT_MAP[sourceSlant]}
+			</label>
 		);
 	});
 
 	return (
 		<>
-			<Typography fontWeight='bold'>
-				Choose the category that you think best fits your political views.
-			</Typography>
-			<Paper>
-				<Stack
-					component={RadioGroup}
-					direction={{ xs: 'column', md: 'row' }}
-					justifyContent={{ md: 'space-around' }}
-					name='sourceSlant'
-					value={selection || ''}
-					onChange={(event: ChangeEvent<HTMLInputElement>) =>
-						onChange(event.target.name, +event.target.value as SourceSlant)
-					}
-				>
-					{radiobuttons}
-				</Stack>
-			</Paper>
+			<p>Choose the category that you think best fits your political views.</p>
+			<RadioGroup
+				className='flex flex-col md:flex-row md:justify-around'
+				name='sourceSlant'
+				value={selection || ''}
+				onValueChange={(value, eventDetails) =>
+					onChange(
+						(eventDetails.event.target as HTMLInputElement)?.name || '',
+						value as SourceSlant
+					)
+				}
+			>
+				{radiobuttons}
+			</RadioGroup>
 		</>
 	);
 };

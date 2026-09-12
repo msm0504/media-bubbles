@@ -1,17 +1,10 @@
-import {
-	Button,
-	Card,
-	CardHeader,
-	Collapse,
-	Stack,
-	Typography,
-	useMediaQuery,
-	useTheme,
-} from '@mui/material';
+import { Collapsible } from '@base-ui/react';
 import ColumnArticles from './column-articles';
 import ColumnHeadingIcon from './column-heading-icon';
-import { SOURCE_SLANT_MAP } from '@/constants/source-slant';
+import { Button, Paper } from '../shared/base-ui';
 import type { Article, Source } from '@/types';
+import useScreenSize, { XL_MIN_WIDTH } from '@/hooks/use-screen-size';
+import getColorBySlant from '@/util/get-color-by-slant';
 
 type ColumnProps = {
 	column: Source;
@@ -20,10 +13,6 @@ type ColumnProps = {
 	togglePanel: (columnId: string) => void;
 	isPanelInOpenList: boolean;
 };
-
-const CENTER = Math.floor(Object.keys(SOURCE_SLANT_MAP).length / 2);
-const getTextClassBySlant = (slant: number) =>
-	isNaN(slant) || slant > CENTER ? 'primary' : slant < CENTER ? 'info' : 'error';
 
 const Column: React.FC<ColumnProps> = ({
 	column,
@@ -35,51 +24,37 @@ const Column: React.FC<ColumnProps> = ({
 	const headingId = `${isSearchAll ? column.name.toLowerCase() : column.id}-heading`;
 	const collapseId = `${isSearchAll ? column.name.toLowerCase() : column.id}-collapse`;
 
-	const theme = useTheme();
-	const isLgScreen = useMediaQuery(theme.breakpoints.up('lg'));
-	const isPanelExpanded = isLgScreen || isPanelInOpenList;
+	const [width] = useScreenSize();
+	const isXlScreen = width >= XL_MIN_WIDTH;
+	const isPanelExpanded = isXlScreen || isPanelInOpenList;
 
-	const slantClass =
+	const slantColor =
 		column.slant === null || typeof column.slant === 'undefined'
-			? getTextClassBySlant(+column.id)
-			: getTextClassBySlant(column.slant);
+			? getColorBySlant(+column.id)
+			: getColorBySlant(column.slant);
 
 	return (
-		<Stack flexBasis='20%' spacing={4}>
-			<Card>
-				<CardHeader
-					disableTypography
-					id={headingId}
-					sx={{ flexDirection: { xs: 'row', lg: 'column' } }}
-					avatar={<ColumnHeadingIcon column={column} isColumnSlant={isSearchAll} />}
-					title={
-						isLgScreen ? (
-							<Typography variant='h3' textAlign='center' marginBottom={2}>
-								{column.name}
-							</Typography>
-						) : (
-							<Stack direction='row' justifyContent='center'>
-								<Button
-									variant='text'
-									color={slantClass}
-									sx={{ marginX: 'auto', textTransform: 'none' }}
-									onClick={() => togglePanel(column.id)}
-									aria-expanded={isPanelExpanded}
-									aria-controls={collapseId}
-								>
-									<Typography variant='h4'>{column.name}</Typography>
-								</Button>
-							</Stack>
-						)
-					}
-				/>
-			</Card>
-			<Collapse in={isPanelExpanded}>
-				<div id={collapseId} aria-labelledby={headingId}>
-					<ColumnArticles articles={articles} isSearchAll={isSearchAll} slantClass={slantClass} />
-				</div>
-			</Collapse>
-		</Stack>
+		<Collapsible.Root className='flex basis-1/5 flex-col gap-4' open={isPanelExpanded}>
+			<Paper className='flex flex-row items-center gap-4 xl:flex-col'>
+				<ColumnHeadingIcon column={column} isColumnSlant={isSearchAll} />
+				{isXlScreen ? (
+					<h3 className='mb-2 text-center text-2xl'>{column.name}</h3>
+				) : (
+					<Button
+						className='mx-auto'
+						variant='text'
+						color={slantColor}
+						onClick={() => togglePanel(column.id)}
+						aria-controls={collapseId}
+					>
+						<h4 className='text-xl'>{column.name}</h4>
+					</Button>
+				)}
+			</Paper>
+			<Collapsible.Panel aria-labelledby={headingId}>
+				<ColumnArticles articles={articles} isSearchAll={isSearchAll} slantColor={slantColor} />
+			</Collapsible.Panel>
+		</Collapsible.Root>
 	);
 };
 

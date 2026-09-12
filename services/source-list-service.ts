@@ -93,7 +93,7 @@ const getSourcesAndBiasRatings = () => {
 
 export const populateSourceLists = async () => {
 	const db = await _collection;
-	const savedSourceLists = (await db.findOne()) as unknown as SourceLists;
+	const savedSourceLists = await db.findOne();
 	const curSourcesMap = savedSourceLists
 		? savedSourceLists.appSourceList.reduce(
 				(acc, source) => {
@@ -184,9 +184,41 @@ export const getSourceLists = async (): Promise<SourceLists> => {
 	'use cache';
 	cacheTag('source-lists');
 	const db = await _collection;
-	const sourceLists = (await db.findOne()) as unknown as SourceLists;
+	const sourceLists = await db.findOne();
 	return {
-		appSourceList: sourceLists.appSourceList,
-		sourceListBySlant: sourceLists.sourceListBySlant,
+		appSourceList: sourceLists?.appSourceList || [],
+		sourceListBySlant: sourceLists?.sourceListBySlant || [],
 	};
+};
+
+export const reloadSource = async (sourceId: string) => {
+	const db = await _collection;
+	const savedSourceLists = await db.findOne();
+	const curSource = savedSourceLists?.appSourceList?.find(source => source.id === sourceId);
+
+	if (!savedSourceLists || !curSource) {
+		console.error(`${sourceId} does not match any known sources`);
+		return;
+	}
+
+	const profile = await getBskyProfile(curSource.name, curSource.url);
+
+	if (profile?.handle && profile.handle !== curSource.bskyHandle) {
+		curSource.bskyDid = profile.did;
+		curSource.bskyHandle = profile.handle;
+		if (typeof curSource.slant !== 'undefined' && savedSourceLists?.sourceListBySlant) {
+			const slantListIndex = savedSourceLists.sourceListBySlant[curSource.slant].findIndex(
+				source => source.id === sourceId
+			);
+			if (slantListIndex > -1) {
+				savedSourceLists.sourceListBySlant[curSource.slant][slantListIndex] = curSource;
+			}
+		}
+		await saveSourceLists(savedSourceLists);
+		revalidateTag('source-lists', 'max');
+	}
+
+	await deleteSourcePosts(sourceId);
+	await loadPostsForNewSource(curSource);
+	await synchBskyList(savedSourceLists.appSourceList);
 };

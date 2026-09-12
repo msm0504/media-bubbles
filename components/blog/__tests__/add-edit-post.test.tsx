@@ -49,7 +49,7 @@ test('renders correct input fields', () => {
 test('displays correct error messages for invalid input', async () => {
 	vi.mocked(useSession).mockReturnValue(mockAdminSession);
 	render(<AddEditBlogPost />);
-	const slugInput = screen.getByLabelText('Slug');
+	const slugInput = screen.getByLabelText('slug');
 
 	fireEvent.blur(slugInput);
 	expect(await screen.findByText('Slug is required')).toBeInTheDocument();
@@ -87,9 +87,9 @@ test('displays success alert after successful submit', async () => {
 		</AppProviders>
 	);
 
-	fireEvent.change(screen.getByLabelText('Slug'), { target: { value: 'slug' } });
-	fireEvent.change(screen.getByLabelText('Title'), { target: { value: 'Title!' } });
-	fireEvent.change(screen.getByLabelText('Content'), { target: { value: 'Content!' } });
+	fireEvent.change(screen.getByLabelText('slug'), { target: { value: 'slug' } });
+	fireEvent.change(screen.getByLabelText('title'), { target: { value: 'Title!' } });
+	fireEvent.change(screen.getByLabelText('content'), { target: { value: 'Content!' } });
 
 	fireEvent.click(screen.getByText('Save Post'));
 	await waitFor(() => screen.getByRole('alert'));
@@ -105,9 +105,9 @@ test('displays error alert after failed submit', async () => {
 		</AppProviders>
 	);
 
-	fireEvent.change(screen.getByLabelText('Slug'), { target: { value: 'slug' } });
-	fireEvent.change(screen.getByLabelText('Title'), { target: { value: 'Title!' } });
-	fireEvent.change(screen.getByLabelText('Content'), { target: { value: 'Content!' } });
+	fireEvent.change(screen.getByLabelText('slug'), { target: { value: 'slug' } });
+	fireEvent.change(screen.getByLabelText('title'), { target: { value: 'Title!' } });
+	fireEvent.change(screen.getByLabelText('content'), { target: { value: 'Content!' } });
 
 	fireEvent.click(screen.getByText('Save Post'));
 	await waitFor(() => screen.getByRole('alert'));

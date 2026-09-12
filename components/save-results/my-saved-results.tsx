@@ -1,52 +1,52 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { Button, IconButton, ListItem, ListItemText, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
-
-import AsyncList, { DeleteFnType } from '../shared/async-list';
+import { faNewspaper, faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import AsyncList, { ListItemProps } from '../shared/async-list';
+import { Button } from '../shared/base-ui';
 import type { SavedResultSummary } from '@/types';
 
-type SavedResultItemProps = {
-	item: SavedResultSummary;
-	fnDeleteItem: DeleteFnType;
-};
-
-const SavedResultItem: React.FC<SavedResultItemProps> = ({
+const SavedResultItem: React.FC<ListItemProps<SavedResultSummary>> = ({
 	item: { _id, name, createdAt },
 	fnDeleteItem,
 }) => {
 	const router = useRouter();
 	return (
-		<ListItem>
-			<ListItemText
-				primary={name}
-				secondary={`Saved at: ${new Date(createdAt).toLocaleString()}`}
-			/>
+		<li className='flex items-center gap-2 px-2 py-1 even:bg-slate-100 dark:even:bg-slate-800'>
+			<div className='grow'>
+				<p>{name}</p>
+				<p className='text-sm'>{`Saved at: ${new Date(createdAt).toLocaleString()}`}</p>
+			</div>
 			<Button
 				color='info'
-				variant='outlined'
+				variant='text'
 				onClick={() => {
 					router.push(`/headlines/${_id}`);
 				}}
 			>
-				View
+				<FontAwesomeIcon
+					id={`view-results-${_id}-icon`}
+					aria-label={`View saved result ${name}`}
+					size='lg'
+					icon={faNewspaper}
+				/>
 			</Button>
-			<IconButton
-				aria-label={`Delete saved result ${name}`}
-				color='primary'
-				onClick={() => fnDeleteItem(_id, name)}
-			>
-				<FontAwesomeIcon id={`delete-${_id}-icon`} icon={faTrashCan} />
-			</IconButton>
-		</ListItem>
+			<Button color='error' variant='text' onClick={() => fnDeleteItem(_id, name)}>
+				<FontAwesomeIcon
+					id={`delete-${_id}-icon`}
+					aria-label={`Delete saved result ${name}`}
+					size='lg'
+					icon={faTrashCan}
+				/>
+			</Button>
+		</li>
 	);
 };
 
 const LoginRequiredComponent: React.FC = () => (
 	<>
-		<Typography>Any search results you save while logged in will be shown here.</Typography>
-		<Typography>Log in to view your saved search results.</Typography>
+		<p>Any search results you save while logged in will be shown here.</p>
+		<p>Log in to view your saved search results.</p>
 	</>
 );
 

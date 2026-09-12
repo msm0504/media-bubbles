@@ -2,7 +2,6 @@
 import { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
-import { Stack } from '@mui/material';
 import Column from './column';
 import { SOURCE_SLANT_MAP, SourceSlant } from '@/constants/source-slant';
 import useLocalStorage from '@/hooks/use-local-storage';
@@ -84,18 +83,15 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 	};
 
 	return (
-		<Stack spacing={4}>
+		<div className='flex flex-col gap-4'>
 			{displayShareButtons()}
-			<Stack
+			<div
 				id='search-results'
-				spacing={4}
-				direction={{ xs: 'column', lg: 'row' }}
-				justifyContent={{ lg: 'space-around' }}
-				alignItems={{ xs: 'stretch', lg: 'start' }}
+				className='flex flex-col items-stretch gap-4 xl:flex-row xl:items-start xl:justify-around'
 			>
 				{generateColumns()}
-			</Stack>
-		</Stack>
+			</div>
+		</div>
 	);
 };
 

@@ -1,42 +1,33 @@
-'use client';
-import Link from 'next/link';
-import { Box, Container, Link as MuiLink, Stack } from '@mui/material';
+import { Link } from './base-ui';
 
 const Footer: React.FC = () => (
-	<footer>
-		<Box bgcolor='common.white' width='100%' padding={3}>
-			<Container maxWidth='xl'>
-				<Stack
-					direction={{ xs: 'column', md: 'row' }}
-					spacing={{ xs: 2, md: 5 }}
-					justifyContent={{ md: 'start' }}
+	<footer className='w-full p-3'>
+		<div className='m-auto flex w-full max-w-6xl flex-col gap-2 md:flex-row md:gap-5'>
+			<div className='flex flex-col gap-2'>
+				<Link color='neutral' href='https://bsky.app' target='_blank' rel='noreferrer'>
+					Headline Searches Powered By Bluesky
+				</Link>
+				<Link
+					color='neutral'
+					href='https://www.allsides.com/bias/bias-ratings'
+					target='_blank'
+					rel='noreferrer'
 				>
-					<Stack spacing={2}>
-						<MuiLink href='https://bsky.app' target='_blank' rel='noreferrer'>
-							Headline Searches Powered By Bluesky
-						</MuiLink>
-						<MuiLink
-							href='https://www.allsides.com/bias/bias-ratings'
-							target='_blank'
-							rel='noreferrer'
-						>
-							Source Media Bias Ratings From AllSides.com
-						</MuiLink>
-						<MuiLink href='https://logo.dev' target='_blank' rel='noreferrer'>
-							Logos provided by Logo.dev
-						</MuiLink>
-					</Stack>
-					<Stack spacing={2}>
-						<MuiLink component={Link} href='/privacy-policy' target='_blank'>
-							Privacy Policy
-						</MuiLink>
-						<MuiLink component={Link} href='/terms' target='_blank'>
-							Terms and Conditions
-						</MuiLink>
-					</Stack>
-				</Stack>
-			</Container>
-		</Box>
+					Source Media Bias Ratings From AllSides.com
+				</Link>
+				<Link color='neutral' href='https://logo.dev' target='_blank' rel='noreferrer'>
+					Logos provided by Logo.dev
+				</Link>
+			</div>
+			<div className='flex flex-col gap-2'>
+				<Link color='neutral' href='/privacy-policy' target='_blank'>
+					Privacy Policy
+				</Link>
+				<Link color='neutral' href='/terms' target='_blank'>
+					Terms and Conditions
+				</Link>
+			</div>
+		</div>
 	</footer>
 );
 

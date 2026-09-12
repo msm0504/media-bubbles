@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Link, Paper } from '@mui/material';
+import { Link, Paper } from '@/components/shared/base-ui';
 
 export const metadata: Metadata = {
 	title: 'Privacy Policy - Media Bubbles',

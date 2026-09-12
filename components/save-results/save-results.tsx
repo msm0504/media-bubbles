@@ -1,9 +1,8 @@
 'use client';
 import { useState, useContext, useMemo } from 'react';
-import { Button } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
-
+import { Button } from '../shared/base-ui';
 import ALERT_LEVEL from '@/constants/alert-level';
 import { AlertsDispatch } from '@/contexts/alerts-context';
 import { SearchResultContext } from '@/contexts/search-result-context';
@@ -52,9 +51,9 @@ const SaveResults: React.FC = () => {
 			variant='contained'
 			disabled={isSaving}
 			onClick={saveClicked}
-			endIcon={isSaving && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
 		>
 			<strong>Save Results</strong>
+			{isSaving && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
 		</Button>
 	);
 };

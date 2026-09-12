@@ -1,15 +1,7 @@
 'use client';
-import { useState, useEffect, useContext, useRef, useCallback, ReactElement } from 'react';
-import {
-	Container,
-	List,
-	Pagination,
-	Paper,
-	Stack,
-	TextField,
-	Typography,
-	debounce,
-} from '@mui/material';
+import { useState, useEffect, useContext, useRef, useMemo, ReactElement } from 'react';
+import debounce from 'lodash.debounce';
+import { Pagination, SearchInput } from './base-ui';
 import Spinner from './spinner';
 import ALERT_LEVEL from '@/constants/alert-level';
 import { AlertsDispatch } from '@/contexts/alerts-context';
@@ -18,24 +10,24 @@ import { callApi } from '@/services/api-service';
 import camelCaseToWords from '@/util/camel-case-to-words';
 import type { ItemDeletedResponse, ListItem, ListResponse } from '@/types';
 
-export type DeleteFnType = (itemId: string, itemName: string) => void;
-interface ListItemProps<T> {
+type DeleteFnType = (itemId: string, itemName: string) => void;
+export type ListItemProps<T> = {
 	item: ListItem<T>;
 	fnDeleteItem: DeleteFnType;
-}
+};
 
-interface AsyncListProps<T> {
+type AsyncListProps<T> = {
 	apiListName: string;
 	apiPath: string;
 	keyField: string;
 	ListItemComponent: React.FC<ListItemProps<T>>;
 	loginRequired?: boolean;
 	LoginRequiredComponent?: React.FC;
-}
+};
 
-interface Cache<T> {
+type Cache<T> = {
 	[name: string]: { items: { [name: number]: ListItem<T>[] }; pageCount: number };
-}
+};
 
 type GetParams = {
 	filter: string;
@@ -61,41 +53,44 @@ const AsyncList = <T,>({
 	const [page, setPage] = useState(1);
 	const cache = useRef<Cache<T>>({});
 
-	const getListItems = useCallback(async () => {
-		setLoading(true);
-		const { items: returnedItems, pageCount } = await callApi<ListResponse<T>, GetParams>(
-			'get',
-			apiPath,
-			{
-				filter: filter,
-				page: page,
-			}
-		);
-		if (page === 1) {
-			cache.current = {
-				...cache.current,
-				[filter]: { items: { [page]: returnedItems }, pageCount },
-			};
-			setItems(returnedItems);
-		} else if (page >= 1) {
-			cache.current = {
-				...cache.current,
-				[filter]: {
-					items: { ...cache.current[filter].items, [page]: returnedItems },
-					pageCount,
-				},
-			};
-			setItems(returnedItems);
-		} else {
-			throw `Queried for page ${page} of results containing ${filter}`;
-		}
-		if (Object.keys(cache).length > CACHE_SIZE) {
-			const { [Object.keys(cache.current)[0]]: firstItem, ...rest } = cache.current;
-			cache.current = rest;
-		}
-		setPageCount(pageCount);
-		setLoading(false);
-	}, [apiPath, filter, page]);
+	const getListItems = useMemo(
+		() =>
+			debounce(async () => {
+				setLoading(true);
+				const { items: returnedItems, pageCount } = await callApi<ListResponse<T>, GetParams>(
+					'get',
+					apiPath,
+					{
+						filter: filter,
+						page: page,
+					}
+				);
+				if (page === 1) {
+					cache.current = {
+						...cache.current,
+						[filter]: { items: { [page]: returnedItems }, pageCount },
+					};
+					setItems(returnedItems);
+				} else if (page >= 1) {
+					cache.current = {
+						...cache.current,
+						[filter]: {
+							items: { ...cache.current[filter].items, [page]: returnedItems },
+							pageCount,
+						},
+					};
+					setItems(returnedItems);
+				}
+
+				if (Object.keys(cache.current).length > CACHE_SIZE) {
+					const { [Object.keys(cache.current)[0]]: firstItem, ...rest } = cache.current;
+					cache.current = rest;
+				}
+				setPageCount(pageCount);
+				setLoading(false);
+			}, 300),
+		[apiPath, filter, page]
+	);
 
 	useEffect(() => {
 		if (!loginRequired || session) {
@@ -106,15 +101,15 @@ const AsyncList = <T,>({
 				getListItems();
 			}
 		}
+
+		return () => getListItems.cancel();
 	}, [loginRequired, session, page, filter, getListItems]);
 
 	if (loginRequired && !session)
 		return (
-			<Paper sx={{ marginTop: 4 }}>
-				<Typography component='div' color='primary'>
-					{LoginRequiredComponent ? <LoginRequiredComponent /> : 'Log in to view this page'}
-				</Typography>
-			</Paper>
+			<div className='text-primary'>
+				{LoginRequiredComponent ? <LoginRequiredComponent /> : 'Log in to view this page'}
+			</div>
 		);
 
 	const deleteItem = async (itemId: string, itemName: string) => {
@@ -132,32 +127,28 @@ const AsyncList = <T,>({
 		}
 	};
 
-	const handleSearch = debounce((query: string) => {
+	const handleSearch = (query: string) => {
 		setFilter(query);
 		setPage(1);
-	}, 300);
+	};
 
-	const handleLoadPage = (_event: React.ChangeEvent<unknown>, selectedPage: number) => {
+	const handleLoadPage = (selectedPage: number) => {
 		setPage(selectedPage);
 	};
 
 	return (
-		<Stack spacing={4}>
-			<Stack direction='row' justifyContent='center'>
-				<Container maxWidth='sm' component={Paper}>
-					<TextField
-						fullWidth
-						name='filter'
-						onChange={event => handleSearch(event.target.value)}
-						label='Filter:'
-					/>
-				</Container>
-			</Stack>
+		<div className='flex flex-col gap-4'>
+			<SearchInput
+				rootClassName='flex w-full flex-col items-start gap-1 sm:m-auto sm:w-xl'
+				className='pl-10'
+				placeholder='Search'
+				onValueChange={newValue => handleSearch(newValue)}
+			/>
 			{loading ? (
 				<Spinner />
 			) : (
-				<Paper>
-					<List>
+				<>
+					<ul className='flex list-none flex-col gap-2'>
 						{items && items.length ? (
 							items.map(item => (
 								<ListItemComponent
@@ -167,24 +158,22 @@ const AsyncList = <T,>({
 								/>
 							))
 						) : (
-							<Typography color='primary'>{`No ${camelCaseToWords(apiListName)} found`}</Typography>
+							<p>{`No ${camelCaseToWords(apiListName)} found`}</p>
 						)}
-					</List>
-					<Stack direction='row-reverse'>
+					</ul>
+					<div className='mt-2 flex flex-row-reverse'>
 						<Pagination
 							count={pageCount}
 							page={page}
 							onChange={handleLoadPage}
-							variant='outlined'
-							shape='rounded'
 							color='primary'
 							showFirstButton
 							showLastButton
 						/>
-					</Stack>
-				</Paper>
+					</div>
+				</>
 			)}
-		</Stack>
+		</div>
 	);
 };
 

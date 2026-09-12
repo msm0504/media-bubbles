@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { cacheLife } from 'next/cache';
 import type { SearchRequest } from '@/types';
 import { getHeadlines } from '@/services/news-search-service';
 import SearchResults from '@/components/search-results/search-results';
@@ -26,6 +27,7 @@ const LATEST_NEWS_PARAMS: SearchRequest = {
 
 const LatestNews: React.FC = async () => {
 	'use cache';
+	cacheLife('default');
 	const latestArticleMap = await getHeadlines(LATEST_NEWS_PARAMS);
 	return (
 		<>

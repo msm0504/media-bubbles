@@ -44,13 +44,13 @@ export const getSavedResults = async (
 		name: { $regex: filter, $options: 'i' },
 		userId: userId,
 	});
-	const savedResults = (await db
+	const savedResults = await db
 		.find({ name: { $regex: filter, $options: 'i' }, userId: userId })
 		.sort({ createdAt: -1 })
 		.skip(PAGE_SIZE * (page - 1))
 		.limit(PAGE_SIZE)
-		.map(({ _id, name, createdAt }) => ({ _id, name, createdAt }))
-		.toArray()) as unknown as SavedResultSummary[];
+		.map(({ _id, name, createdAt }) => ({ _id, name, createdAt: createdAt ?? '' }))
+		.toArray();
 
 	return {
 		items: savedResults,
@@ -67,13 +67,13 @@ export const getAllSavedResults = async (
 	cacheTag(CACHE_TAG);
 	const db = await _collection;
 	const count = await db.countDocuments({ name: { $regex: filter, $options: 'i' } });
-	const savedResults = (await db
+	const savedResults = await db
 		.find({ name: { $regex: filter, $options: 'i' } })
 		.sort({ createdAt: -1 })
 		.skip(pageSize * (page - 1))
 		.limit(pageSize)
-		.map(({ _id, name, createdAt }) => ({ _id, name, createdAt }))
-		.toArray()) as unknown as SavedResultSummary[];
+		.map(({ _id, name, createdAt }) => ({ _id, name, createdAt: createdAt ?? '' }))
+		.toArray();
 
 	return {
 		items: savedResults,
@@ -85,7 +85,7 @@ export const getSavedResult = async (id: string): Promise<SavedResult | null> =>
 	'use cache';
 	cacheTag(`${CACHE_TAG}-${id}`);
 	const db = await _collection;
-	return db.findOne({ _id: id }) as unknown as SavedResult;
+	return db.findOne({ _id: id });
 };
 
 export const deleteSavedResult = async (

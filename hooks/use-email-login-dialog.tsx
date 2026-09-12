@@ -1,18 +1,11 @@
 'use client';
 import { useCallback, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import {
-	Button,
-	Dialog,
-	DialogActions,
-	DialogContent,
-	DialogTitle,
-	TextField,
-	capitalize,
-} from '@mui/material';
+import { Dialog, Field } from '@base-ui/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import useAlerts from './use-alerts';
+import { Button, Input } from '@/components/shared/base-ui';
 import { authClient, signIn } from '@/lib/auth-client';
 import { EMAIL_PATTERN, getRequiredMessage } from '@/util/form-utils';
 
@@ -50,7 +43,7 @@ const FormStepOne: React.FC<StepOneProps> = ({ onSuccess }) => {
 
 	return (
 		<form onSubmit={handleSubmit(submitForm)}>
-			<DialogContent>
+			<div className='flex flex-col gap-4'>
 				<Alert />
 				<Controller
 					control={control}
@@ -59,29 +52,28 @@ const FormStepOne: React.FC<StepOneProps> = ({ onSuccess }) => {
 						required: getRequiredMessage('email'),
 						pattern: { value: EMAIL_PATTERN, message: 'Invalid email format.' },
 					}}
-					render={({ field, formState: { errors } }) => (
-						<TextField
-							{...field}
-							fullWidth
-							label={capitalize(field.name)}
-							placeholder='johndoe@domain.com'
-							error={!!errors[field.name]}
-							helperText={(errors[field.name]?.message as string) || ' '}
-						/>
+					render={({ field, fieldState: { invalid, isTouched, isDirty, error } }) => (
+						<Field.Root
+							className='flex flex-col items-start gap-1'
+							invalid={invalid}
+							touched={isTouched}
+							dirty={isDirty}
+						>
+							<Field.Label className='font-bold capitalize'>{field.name}</Field.Label>
+							<Input {...field} placeholder='johndoe@domain.com' />
+							<Field.Error className='text-sm text-error' match={!!error}>
+								{error?.message}
+							</Field.Error>
+						</Field.Root>
 					)}
 				/>
-			</DialogContent>
-			<DialogActions>
-				<Button
-					variant='contained'
-					color='primary'
-					type='submit'
-					disabled={isProcessing}
-					endIcon={isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
-				>
-					<strong>Send Log In Token</strong>
-				</Button>
-			</DialogActions>
+				<div className='flex justify-end'>
+					<Button variant='contained' color='primary' type='submit' disabled={isProcessing}>
+						<strong>Send Log In Token</strong>
+						{isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
+					</Button>
+				</div>
+			</div>
 		</form>
 	);
 };
@@ -118,34 +110,31 @@ const FormStepTwo: React.FC<StepTwoProps> = ({ onSuccess }) => {
 
 	return (
 		<form onSubmit={handleSubmit(loginWithToken)}>
-			<DialogContent>
+			<div className='flex flex-col gap-4'>
 				<Alert />
 				<Controller
 					control={control}
 					name='token'
 					rules={{ required: getRequiredMessage('token') }}
 					render={({ field, formState: { errors } }) => (
-						<TextField
-							{...field}
-							fullWidth
-							label={capitalize(field.name)}
-							error={!!errors[field.name]}
-							helperText={(errors[field.name]?.message as string) || ' '}
-						/>
+						<Field.Root className='flex flex-col items-start gap-1' invalid={!!errors[field.name]}>
+							<Field.Label className='font-bold capitalize'>{field.name}</Field.Label>
+							<Input {...field} />
+							{errors[field.name] ? (
+								<Field.Error className='text-sm text-error' match>
+									{errors[field.name]?.message as string}
+								</Field.Error>
+							) : null}
+						</Field.Root>
 					)}
 				/>
-			</DialogContent>
-			<DialogActions>
-				<Button
-					variant='contained'
-					color='primary'
-					type='submit'
-					disabled={isProcessing}
-					endIcon={isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
-				>
-					<strong>Log In</strong>
-				</Button>
-			</DialogActions>
+				<div className='flex justify-end'>
+					<Button variant='contained' color='primary' type='submit' disabled={isProcessing}>
+						<strong>Log In</strong>
+						{isProcessing && <FontAwesomeIcon className='ms-2' icon={faSpinner} spinPulse />}
+					</Button>
+				</div>
+			</div>
 		</form>
 	);
 };
@@ -162,14 +151,19 @@ const useEmailLoginDialog = (): UseEmailLoginDialog => {
 
 	const EmailLoginDialog: React.FC = () => {
 		return (
-			<Dialog fullWidth maxWidth='sm' open={isOpen} onClose={() => toggleOpen(false)}>
-				<DialogTitle>Log In With Email</DialogTitle>
-				{emailSentTo ? (
-					<FormStepTwo onSuccess={() => toggleOpen(false)} />
-				) : (
-					<FormStepOne onSuccess={email => setEmailSentTo(email)} />
-				)}
-			</Dialog>
+			<Dialog.Root open={isOpen} onOpenChange={toggleOpen}>
+				<Dialog.Portal>
+					<Dialog.Backdrop className='fixed inset-0 min-h-dvh bg-black/20 data-ending-style:opacity-0 data-starting-style:opacity-0' />
+					<Dialog.Popup className='fixed top-1/2 left-1/2 flex w-full max-w-sm -translate-x-1/2 -translate-y-1/2 flex-col gap-4 rounded-xl bg-white p-4 text-slate-950 shadow-lg outline-none data-ending-style:scale-98 data-ending-style:opacity-0 data-starting-style:scale-98 data-starting-style:opacity-0 dark:bg-slate-900 dark:text-slate-100'>
+						<Dialog.Title className='text-xl font-bold'>Log In With Email</Dialog.Title>
+						{emailSentTo ? (
+							<FormStepTwo onSuccess={() => toggleOpen(false)} />
+						) : (
+							<FormStepOne onSuccess={email => setEmailSentTo(email)} />
+						)}
+					</Dialog.Popup>
+				</Dialog.Portal>
+			</Dialog.Root>
 		);
 	};
 

@@ -1,4 +1,3 @@
-/* eslint-disable no-var */
 import type { Db, MongoClient } from 'mongodb';
 import type { Client } from '@atproto/lex';
 
