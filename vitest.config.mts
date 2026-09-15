@@ -10,6 +10,7 @@ export default defineConfig({
 	},
 	test: {
 		environment: 'jsdom',
+		pool: 'vmThreads',
 		setupFiles: './test-utils/setup-tests.ts',
 		coverage: {
 			reporter: ['html', 'lcov'],

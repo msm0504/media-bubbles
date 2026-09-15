@@ -97,6 +97,47 @@ describe('bsky post service', () => {
 		expect(mocks.db.insertMany).toHaveBeenCalledWith([]);
 	});
 
+	test('deduplicates titles and descriptions per source', async () => {
+		const secondSource: Source = {
+			...source,
+			id: 'second-example',
+			name: 'Second Example News',
+			bskyHandle: 'second-example.bsky.social',
+			bskyDid: 'did:plc:second-example',
+		};
+		const externalPost = (did: string, id: string) =>
+			makePost({
+				uri: `at://${did}/app.bsky.feed.post/${id}`,
+				author: { did },
+				embed: {
+					$type: 'app.bsky.embed.external#view',
+					external: {
+						title: 'Breaking major update',
+						description: 'Full details from Example News',
+						uri: `https://example.com/${id}`,
+					},
+				},
+			});
+		const agent = {
+			call: vi.fn().mockResolvedValue({
+				feed: [
+					{ post: externalPost(source.bskyDid!, 'first-source') },
+					{ post: externalPost(secondSource.bskyDid!, 'second-source') },
+				],
+			}),
+		};
+		mocks.getBskyPublicAgent.mockReturnValue(agent);
+		mocks.getBskyNewsListUri.mockResolvedValue('at://did:plc:owner/app.bsky.graph.list/news');
+		mocks.getSourceLists.mockResolvedValue({ appSourceList: [source, secondSource] });
+
+		await loadRecentPostsForAllSources();
+
+		expect(mocks.db.insertMany).toHaveBeenCalledWith([
+			expect.objectContaining({ _id: 'first-source', sourceId: source.id }),
+			expect.objectContaining({ _id: 'second-source', sourceId: secondSource.id }),
+		]);
+	});
+
 	test('filters posts with duplicate IDs, similar titles, or similar descriptions', async () => {
 		const externalPost = (id: string, title: string, description: string) =>
 			makePost({

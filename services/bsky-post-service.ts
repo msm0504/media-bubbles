@@ -117,8 +117,8 @@ const isUniquePost = ({
 	post,
 	uniquePosts,
 	uniqueIds,
-	uniqueTitles,
-	uniqueDescs,
+	uniqueTitles = [],
+	uniqueDescs = [],
 }: IsUniquePostParams) => {
 	if (!uniquePosts.length) return true;
 
@@ -145,8 +145,8 @@ const loadRecentPosts = async ({
 
 	const uniquePosts: BskyArticle[] = [];
 	const uniqueIds: Set<string> = new Set();
-	const uniqueTitles: string[] = [];
-	const uniqueDescs: string[] = [];
+	const uniqueTitles: { [name: string]: string[] } = {};
+	const uniqueDescs: { [name: string]: string[] } = {};
 
 	let sourcesByBskyId: { [name: string]: Source } = {};
 	if (loadAllSources) {
@@ -190,14 +190,26 @@ const loadRecentPosts = async ({
 			const formatted = formatPost(post, postSource);
 			if (
 				formatted &&
-				isUniquePost({ post: formatted, uniquePosts, uniqueIds, uniqueTitles, uniqueDescs })
+				isUniquePost({
+					post: formatted,
+					uniquePosts,
+					uniqueIds,
+					uniqueTitles: uniqueTitles[formatted.sourceId],
+					uniqueDescs: uniqueDescs[formatted.sourceId],
+				})
 			) {
 				uniqueIds.add(formatted._id.toString());
 				if (formatted.title) {
-					uniqueTitles.push(formatted.title);
+					if (!uniqueTitles[formatted.sourceId]) {
+						uniqueTitles[formatted.sourceId] = [];
+					}
+					uniqueTitles[formatted.sourceId].push(formatted.title);
 				}
 				if (formatted.description) {
-					uniqueDescs.push(formatted.description);
+					if (!uniqueDescs[formatted.sourceId]) {
+						uniqueDescs[formatted.sourceId] = [];
+					}
+					uniqueDescs[formatted.sourceId].push(formatted.description);
 				}
 				uniquePosts.push(formatted);
 			}
