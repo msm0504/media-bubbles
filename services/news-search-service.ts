@@ -158,10 +158,7 @@ export const getRecentPosts = async (keyword = ''): Promise<BskyArticle[]> => {
 		.aggregate([
 			{
 				$match: {
-					$or: [
-						{ $expr: { $eq: [keyword, ''] } },
-						{ title: { $regex: `\\b${keyword}\\b`, $options: 'i' } },
-					],
+					$or: [{ $expr: { $eq: [keyword, ''] } }, { title: { $regex: keyword, $options: 'i' } }],
 				},
 			},
 			{
